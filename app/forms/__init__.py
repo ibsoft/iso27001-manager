@@ -8,6 +8,16 @@ from wtforms import (
 from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange, ValidationError
 import re
 
+
+class BaseForm(FlaskForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self:
+            if any(isinstance(v, DataRequired) for v in field.validators):
+                if field.render_kw is None:
+                    field.render_kw = {}
+                field.render_kw.setdefault("required", True)
+
 TIMEZONE_CHOICES = [
     ("UTC", "UTC"),
     ("Europe/London", "Europe/London (GMT/BST)"),
@@ -41,13 +51,13 @@ TIMEZONE_CHOICES = [
 ]
 
 
-class LoginForm(FlaskForm):
+class LoginForm(BaseForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=3, max=80)])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Sign In")
 
 
-class ProfileForm(FlaskForm):
+class ProfileForm(BaseForm):
     first_name = StringField("First Name", validators=[DataRequired(), Length(max=64)])
     last_name = StringField("Last Name", validators=[DataRequired(), Length(max=64)])
     email = StringField("Email", validators=[DataRequired(), Email(), Length(max=120)])
@@ -59,7 +69,7 @@ class ProfileForm(FlaskForm):
     submit = SubmitField("Save Profile")
 
 
-class UserForm(FlaskForm):
+class UserForm(BaseForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=3, max=80)])
     email = StringField("Email", validators=[DataRequired(), Email(), Length(max=120)])
     first_name = StringField("First Name", validators=[DataRequired(), Length(max=64)])
@@ -81,7 +91,7 @@ class UserForm(FlaskForm):
                 raise ValidationError("Must contain special character")
 
 
-class ChangePasswordForm(FlaskForm):
+class ChangePasswordForm(BaseForm):
     current_password = PasswordField("Current Password", validators=[DataRequired()])
     new_password = PasswordField("New Password", validators=[DataRequired(), Length(min=12)])
     confirm_password = PasswordField("Confirm Password", validators=[DataRequired()])
@@ -98,7 +108,7 @@ class ChangePasswordForm(FlaskForm):
             raise ValidationError("Must contain special character")
 
 
-class ControlForm(FlaskForm):
+class ControlForm(BaseForm):
     code = StringField("Control Code", validators=[DataRequired(), Length(max=8)])
     title = StringField("Title", validators=[DataRequired(), Length(max=256)])
     description = TextAreaField("Description", validators=[Optional()])
@@ -119,7 +129,7 @@ class ControlForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class RiskForm(FlaskForm):
+class RiskForm(BaseForm):
     title = StringField("Title", validators=[DataRequired(), Length(max=256)])
     description = TextAreaField("Description", validators=[Optional()])
     asset_id = SelectField("Affected Asset", coerce=int, validators=[Optional()])
@@ -166,7 +176,7 @@ class RiskForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class AssetForm(FlaskForm):
+class AssetForm(BaseForm):
     name = StringField("Asset Name", validators=[DataRequired(), Length(max=256)])
     serial_number = StringField("Serial Number", validators=[Optional(), Length(max=128)])
     description = TextAreaField("Description", validators=[Optional()])
@@ -199,7 +209,7 @@ class AssetForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class IncidentForm(FlaskForm):
+class IncidentForm(BaseForm):
     title = StringField("Incident Title", validators=[DataRequired(), Length(max=256)])
     description = TextAreaField("Description", validators=[DataRequired()])
     severity = SelectField(
@@ -227,7 +237,7 @@ class IncidentForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class PolicyForm(FlaskForm):
+class PolicyForm(BaseForm):
     title = StringField("Title", validators=[DataRequired(), Length(max=256)])
     description = TextAreaField("Description", validators=[Optional()])
     is_document = BooleanField("This is an uploaded document (not WYSIWYG content)")
@@ -254,11 +264,13 @@ class PolicyForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class AuditForm(FlaskForm):
+class AuditForm(BaseForm):
     title = StringField("Audit Title", validators=[DataRequired(), Length(max=256)])
     lead_auditor_id = SelectField("Lead Auditor", coerce=int, validators=[Optional()])
     audit_date = DateField("Audit Date", validators=[DataRequired()])
     scope = TextAreaField("Scope", validators=[Optional()])
+    findings_summary = TextAreaField("Findings Summary", validators=[Optional()])
+    conclusion = TextAreaField("Conclusion", validators=[Optional()])
     status = SelectField(
         "Status",
         choices=[("planned", "Planned"), ("in_progress", "In Progress"),
@@ -268,7 +280,7 @@ class AuditForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class AuditFindingForm(FlaskForm):
+class AuditFindingForm(BaseForm):
     control_id = SelectField("Related Control", coerce=int, validators=[Optional()])
     finding_type = SelectField(
         "Finding Type",
@@ -285,7 +297,7 @@ class AuditFindingForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class CorrectiveActionForm(FlaskForm):
+class CorrectiveActionForm(BaseForm):
     description = TextAreaField("Action Description", validators=[DataRequired()])
     owner_id = SelectField("Assigned To", coerce=int, validators=[Optional()])
     target_date = DateField("Target Date", validators=[Optional()])
@@ -300,7 +312,7 @@ class CorrectiveActionForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class SupplierForm(FlaskForm):
+class SupplierForm(BaseForm):
     name = StringField("Supplier Name", validators=[DataRequired(), Length(max=256)])
     contact_name = StringField("Contact Name", validators=[Optional(), Length(max=128)])
     contact_email = StringField("Contact Email", validators=[Optional(), Email(), Length(max=128)])
@@ -332,7 +344,7 @@ class SupplierForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class SoAForm(FlaskForm):
+class SoAForm(BaseForm):
     applicable = SelectField(
         "Applicable",
         choices=[(1, "Yes - Control is applicable"), (0, "No - Control is not applicable")],
@@ -351,7 +363,7 @@ class SoAForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class ProcessingActivityForm(FlaskForm):
+class ProcessingActivityForm(BaseForm):
     name = StringField("Processing Activity Name", validators=[DataRequired(), Length(max=256)])
     controller_name = StringField("Data Controller Name", validators=[DataRequired(), Length(max=256)])
     controller_contact = StringField("Controller Contact Details", validators=[Optional(), Length(max=256)])
@@ -390,7 +402,7 @@ class ProcessingActivityForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class DpiaForm(FlaskForm):
+class DpiaForm(BaseForm):
     project_name = StringField("Project / System Name", validators=[DataRequired(), Length(max=256)])
     project_description = TextAreaField("Project Description", validators=[DataRequired()])
     processing_description = TextAreaField("Processing Description", validators=[DataRequired()])
@@ -416,7 +428,7 @@ class DpiaForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class DataSubjectRequestForm(FlaskForm):
+class DataSubjectRequestForm(BaseForm):
     request_type = SelectField(
         "Request Type",
         choices=[("", "Select..."), ("access", "Right of Access (Art 15)"),
@@ -457,7 +469,7 @@ class DataSubjectRequestForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class ConsentRecordForm(FlaskForm):
+class ConsentRecordForm(BaseForm):
     data_subject_identifier = StringField("Data Subject Identifier", validators=[DataRequired(), Length(max=256)])
     data_subject_email = StringField("Data Subject Email", validators=[Optional(), Email(), Length(max=120)])
     processing_purpose = StringField("Processing Purpose", validators=[DataRequired(), Length(max=256)])
@@ -475,7 +487,7 @@ class ConsentRecordForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class DataControllerForm(FlaskForm):
+class DataControllerForm(BaseForm):
     name = StringField("Entity Name", validators=[DataRequired(), Length(max=256)])
     role = SelectField(
         "Role",
@@ -503,7 +515,7 @@ class DataControllerForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class PrivacyNoticeForm(FlaskForm):
+class PrivacyNoticeForm(BaseForm):
     title = StringField("Notice Title", validators=[DataRequired(), Length(max=256)])
     version = StringField("Version", validators=[DataRequired(), Length(max=16)], default="1.0")
     language = SelectField(
@@ -522,7 +534,7 @@ class PrivacyNoticeForm(FlaskForm):
     submit = SubmitField("Save")
 
 
-class DataBreachForm(FlaskForm):
+class DataBreachForm(BaseForm):
     breach_type = SelectField(
         "Breach Type",
         choices=[("", "Select..."), ("confidentiality", "Confidentiality Breach"),
