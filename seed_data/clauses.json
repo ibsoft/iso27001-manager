@@ -1,0 +1,9 @@
+[
+  {"number": 4, "title": "Context of the Organization", "description": "Understanding the organization and its context, needs of interested parties, determining scope of ISMS, and establishing the ISMS.", "sort_order": 1},
+  {"number": 5, "title": "Leadership", "description": "Top management leadership, policy, organizational roles and responsibilities.", "sort_order": 2},
+  {"number": 6, "title": "Planning", "description": "Actions to address risks and opportunities, information security objectives and planning.", "sort_order": 3},
+  {"number": 7, "title": "Support", "description": "Resources, competence, awareness, communication, documented information.", "sort_order": 4},
+  {"number": 8, "title": "Operation", "description": "Operational planning and control, risk assessment, risk treatment.", "sort_order": 5},
+  {"number": 9, "title": "Performance Evaluation", "description": "Monitoring, measurement, analysis, evaluation, internal audit, management review.", "sort_order": 6},
+  {"number": 10, "title": "Improvement", "description": "Continual improvement, nonconformity and corrective action.", "sort_order": 7}
+]

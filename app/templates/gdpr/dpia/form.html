@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('gdpr.list_dpia') }}">{{ _('DPIAs') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-11">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <label class="form-label small">{{ _('Project / System Name') }}</label>
+              {{ form.project_name(class="form-control") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Status') }}</label>
+              {{ form.status(class="form-select") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Project Description') }}</label>
+            {{ form.project_description(class="form-control", rows=3) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Processing Description') }}</label>
+            {{ form.processing_description(class="form-control", rows=3) }}
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Necessity & Proportionality') }}</h6>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Necessity Assessment') }}</label>
+              {{ form.necessity_assessment(class="form-control", rows=3) }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Proportionality Assessment') }}</label>
+              {{ form.proportionality_assessment(class="form-control", rows=3) }}
+            </div>
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Data Categories') }}</h6>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Data Subject Categories') }}</label>
+              {{ form.data_subject_categories(class="form-control", rows=2) }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Personal Data Categories') }}</label>
+              {{ form.personal_data_categories(class="form-control", rows=2) }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="form-check">{{ form.special_category_data(class="form-check-input") }}<label class="form-check-label">{{ _('Special Category Data') }}</label></div>
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Risk Assessment') }}</h6>
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <label class="form-label small">{{ _('Risks to Rights & Freedoms') }}</label>
+              {{ form.risks_to_rights(class="form-control", rows=3) }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Residual Risk Level') }}</label>
+              {{ form.residual_risk_level(class="form-select") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Mitigation Measures') }}</label>
+            {{ form.mitigation_measures(class="form-control", rows=3) }}
+          </div>
+
+          {% if current_user.has_role('admin') %}
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('DPO Review') }}</h6>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('DPO Review / Comments') }}</label>
+            {{ form.dpo_review(class="form-control", rows=3) }}
+          </div>
+          {% endif %}
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('gdpr.list_dpia') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

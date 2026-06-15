@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block page_title %}{{ incident.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('incidents.list_incidents') }}">{{ _('Incidents') }}</a></li>
+<li class="breadcrumb-item active">{{ incident.title[:30] }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <span>{{ _('Incident Details') }}</span>
+        <div>
+          <a href="{{ url_for('incidents.edit_incident', incident_id=incident.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('incidents.delete_incident', incident_id=incident.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this incident?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:160px">{{ _('Description') }}</td><td>{{ incident.description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Severity') }}</td><td><span class="badge bg-{{ 'dark' if incident.severity == 'critical' else 'danger' if incident.severity == 'high' else 'warning text-dark' if incident.severity == 'medium' else 'success' }}">{{ incident.severity|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Category') }}</td><td>{{ incident.category|replace('_', ' ')|title if incident.category else '—' }}{% if incident.category == 'data_breach' %} <a href="{{ url_for('gdpr.edit_breach', incident_id=incident.id) }}" class="btn btn-sm btn-outline-danger ms-2"><i class="fas fa-exclamation-triangle me-1"></i>{{ _('Breach Notification') }}</a>{% endif %}</td></tr>
+          <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'warning text-dark' if incident.status == 'reported' else 'primary' if incident.status == 'investigating' else 'info' if incident.status == 'contained' else 'success' if incident.status == 'resolved' else 'secondary' }}">{{ incident.status|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Reported By') }}</td><td>{{ incident.reported_by.first_name ~ ' ' ~ incident.reported_by.last_name if incident.reported_by else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Assigned To') }}</td><td>{{ incident.assigned_to.first_name ~ ' ' ~ incident.assigned_to.last_name if incident.assigned_to else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Detected At') }}</td><td>{{ incident.detected_at.strftime('%Y-%m-%d %H:%M') }}</td></tr>
+          {% if incident.contained_at %}<tr><td class="text-muted">{{ _('Contained At') }}</td><td>{{ incident.contained_at.strftime('%Y-%m-%d %H:%M') }}</td></tr>{% endif %}
+          {% if incident.resolved_at %}<tr><td class="text-muted">{{ _('Resolved At') }}</td><td>{{ incident.resolved_at.strftime('%Y-%m-%d %H:%M') }}</td></tr>{% endif %}
+          <tr><td class="text-muted">{{ _('Root Cause') }}</td><td>{{ incident.root_cause or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Impact') }}</td><td>{{ incident.impact_description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Lessons Learned') }}</td><td>{{ incident.lessons_learned or '—' }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% if incident.data_breach %}
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-exclamation-triangle text-danger me-1"></i>{{ _('Data Breach') }}</span>
+        <a href="{{ url_for('gdpr.edit_breach', incident_id=incident.id) }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-edit"></i></a>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted">{{ _('Type') }}</td><td><span class="badge bg-danger">{{ incident.data_breach.breach_type | replace('_', ' ') | title if incident.data_breach.breach_type else '—' }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Notified SA') }}</td><td>{% if incident.data_breach.notified_supervisory_authority %}<span class="badge bg-success"><i class="fas fa-check me-1"></i>{{ _('Yes') }}</span>{% else %}<span class="badge bg-warning text-dark">{{ _('No') }}</span>{% endif %}</td></tr>
+          {% if incident.data_breach.sa_notification_date %}<tr><td class="text-muted">{{ _('SA Notification') }}</td><td>{{ incident.data_breach.sa_notification_date.strftime('%Y-%m-%d') }}</td></tr>{% endif %}
+          <tr><td class="text-muted">{{ _('Notified DS') }}</td><td>{% if incident.data_breach.notified_data_subjects %}<span class="badge bg-success"><i class="fas fa-check me-1"></i>{{ _('Yes') }}</span>{% else %}<span class="badge bg-warning text-dark">{{ _('No') }}</span>{% endif %}</td></tr>
+          {% if incident.data_breach.ds_notification_date %}<tr><td class="text-muted">{{ _('DS Notification') }}</td><td>{{ incident.data_breach.ds_notification_date.strftime('%Y-%m-%d') }}</td></tr>{% endif %}
+          {% if incident.data_breach.ds_affected_count %}<tr><td class="text-muted">{{ _('Subjects Affected') }}</td><td>{{ incident.data_breach.ds_affected_count }}</td></tr>{% endif %}
+          {% if incident.data_breach.records_affected_count %}<tr><td class="text-muted">{{ _('Records Affected') }}</td><td>{{ incident.data_breach.records_affected_count }}</td></tr>{% endif %}
+        </table>
+        {% if incident.data_breach.likelihood_of_risk %}<div class="mt-2 p-2 bg-light rounded"><small><strong>{{ _('Risk Assessment') }}:</strong><br>{{ incident.data_breach.likelihood_of_risk }}</small></div>{% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Timeline') }}</div>
+      <div class="card-body">
+        <ul class="list-unstyled">
+          <li class="mb-2"><i class="far fa-calendar text-primary me-2"></i><strong>{{ _('Reported:') }}</strong> {{ incident.detected_at.strftime('%Y-%m-%d') }}</li>
+          {% if incident.contained_at %}<li class="mb-2"><i class="fas fa-stop text-warning me-2"></i><strong>{{ _('Contained:') }}</strong> {{ incident.contained_at.strftime('%Y-%m-%d') }}</li>{% endif %}
+          {% if incident.resolved_at %}<li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>{{ _('Resolved:') }}</strong> {{ incident.resolved_at.strftime('%Y-%m-%d') }}</li>{% endif %}
+          <li><i class="far fa-clock text-muted me-2"></i><strong>{{ _('Updated:') }}</strong> {{ incident.updated_at.strftime('%Y-%m-%d') }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

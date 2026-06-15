@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('New Version') }} — {{ policy.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('policies.list_policies') }}">{{ _('Policies') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('policies.view_policy', policy_id=policy.id) }}">{{ policy.title[:20] }}</a></li>
+<li class="breadcrumb-item active">{{ _('New Version') }}</li>
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/tinymce@7.7.2/skins/ui/oxide/skin.min.css" rel="stylesheet">
+<style>
+  .upload-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .upload-area:hover, .upload-area.dragover {
+    border-color: #1a56db;
+    background: #eff6ff;
+  }
+  .upload-area.has-file {
+    border-color: #22c55e;
+    background: #f0fdf4;
+  }
+  .upload-area .file-info { display: none; }
+  .upload-area.has-file .file-info { display: block; }
+  .upload-area.has-file .upload-prompt { display: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-11">
+    <div class="card">
+      <div class="card-header">{{ _('Current version:') }} v{{ policy.current_version }} → {{ _('Next:') }} v{{ "%.1f"|format(policy.current_version|float + 1) }}</div>
+      <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Change Summary') }}</label>
+            <input type="text" name="change_summary" class="form-control" placeholder="{{ _('Brief description of changes...') }}" required>
+          </div>
+
+          {% if policy.is_document %}
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Upload New File') }}</label>
+            <div class="upload-area" id="dropZone">
+              <div class="upload-prompt">
+                <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-2"></i>
+                <p class="mb-1 text-muted">{{ _('Drag & drop a file here or click to browse') }}</p>
+                <small class="text-muted">{{ _('Allowed: PDF, DOC, DOCX, XLS, XLSX, PPT, TXT, CSV, images') }}</small>
+              </div>
+              <div class="file-info">
+                <i class="fas fa-file fa-2x text-success mb-2"></i>
+                <p class="mb-1 fw-medium" id="fileName">{{ _('File selected') }}</p>
+                <small class="text-muted" id="fileSize"></small>
+              </div>
+              {{ form.file(class="form-control d-none", id="fileInput", accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.odp,.txt,.rtf,.csv,.png,.jpg,.jpeg,.gif,.svg") }}
+            </div>
+            {% if policy.original_filename %}
+            <div class="mt-2 small text-muted">
+              <i class="fas fa-paperclip me-1"></i>{{ _('Current file') }}: <strong>{{ policy.original_filename }}</strong>
+              ({{ policy.file_size_display or '?' }})
+            </div>
+            {% endif %}
+          </div>
+          {% else %}
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Updated Content') }}</label>
+            {{ form.content(class="form-control tinymce", rows=20) }}
+          </div>
+          {% endif %}
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-code-branch me-1"></i>{{ _('Create Version') }} {{ "%.1f"|format(policy.current_version|float + 1) }}</button>
+          <a href="{{ url_for('policies.view_policy', policy_id=policy.id) }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/tinymce@7.7.2/tinymce.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileName = document.getElementById('fileName');
+    var fileSize = document.getElementById('fileSize');
+
+    if (dropZone && fileInput) {
+      dropZone.addEventListener('click', function() { fileInput.click(); });
+      dropZone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
+      dropZone.addEventListener('dragleave', function() {
+        dropZone.classList.remove('dragover');
+      });
+      dropZone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+          fileInput.files = e.dataTransfer.files;
+          updateFileInfo();
+        }
+      });
+      fileInput.addEventListener('change', updateFileInfo);
+
+      function updateFileInfo() {
+        if (fileInput.files.length) {
+          var f = fileInput.files[0];
+          fileName.textContent = f.name;
+          fileSize.textContent = (f.size / 1024).toFixed(1) + ' KB';
+          dropZone.classList.add('has-file');
+        } else {
+          dropZone.classList.remove('has-file');
+        }
+      }
+    }
+
+    {% if not policy.is_document %}
+    tinymce.init({
+      selector: '.tinymce',
+      height: 500,
+      menubar: true,
+      plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
+      toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link image media | code fullscreen | removeformat help',
+      branding: false,
+      promotion: false,
+      relative_urls: false,
+      content_style: 'body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.6; padding: 15px; } h1, h2, h3, h4 { margin-top: 1.5em; margin-bottom: 0.5em; } p { margin-bottom: 1em; }',
+    });
+    {% endif %}
+  });
+</script>
+{% endblock %}

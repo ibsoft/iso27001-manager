@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('GDPR Compliance Dashboard') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('GDPR Dashboard') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-tasks fa-2x text-primary mb-2"></i>
+        <h3 class="mb-0">{{ total_activities }}</h3>
+        <small class="text-muted">{{ _('Processing Activities') }}</small>
+        <div class="mt-2"><span class="badge bg-success">{{ active_activities }} {{ _('active') }}</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-shield-alt fa-2x text-info mb-2"></i>
+        <h3 class="mb-0">{{ total_dpias }}</h3>
+        <small class="text-muted">{{ _('DPIAs') }}</small>
+        <div class="mt-2"><span class="badge bg-success">{{ approved_dpias }} {{ _('approved') }}</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-user-check fa-2x text-warning mb-2"></i>
+        <h3 class="mb-0">{{ open_dsars }}</h3>
+        <small class="text-muted">{{ _('Open DSARs') }}</small>
+        {% if overdue_dsars > 0 %}<div class="mt-2"><span class="badge bg-danger">{{ overdue_dsars }} {{ _('overdue') }}</span></div>{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-center">
+        <i class="fas fa-check-double fa-2x text-success mb-2"></i>
+        <h3 class="mb-0">{{ active_consents }}</h3>
+        <small class="text-muted">{{ _('Active Consents') }}</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-transparent"><i class="fas fa-exclamation-triangle text-danger me-1"></i>{{ _('Data Breaches') }}</div>
+      <div class="card-body">
+        <div class="d-flex justify-content-around text-center">
+          <div>
+            <h4 class="mb-0">{{ data_breaches }}</h4>
+            <small class="text-muted">{{ _('Total breaches') }}</small>
+          </div>
+          <div>
+            <h4 class="mb-0">{{ notified_sa }}</h4>
+            <small class="text-muted">{{ _('Notified SA') }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-transparent"><i class="fas fa-clock text-danger me-1"></i>{{ _('DSAR Deadlines') }}</div>
+      <div class="card-body text-center">
+        {% if overdue_dsars > 0 %}
+        <h4 class="text-danger mb-0">{{ overdue_dsars }}</h4>
+        <small class="text-muted">{{ _('Overdue data subject requests') }}</small>
+        {% else %}
+        <p class="text-muted mb-0"><i class="fas fa-check-circle text-success me-1"></i>{{ _('No overdue DSARs') }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-transparent"><i class="fas fa-link me-1"></i>{{ _('Quick Links') }}</div>
+      <div class="card-body">
+        <div class="row g-2">
+          <div class="col-md-3"><a href="{{ url_for('gdpr.list_processing') }}" class="btn btn-outline-primary w-100"><i class="fas fa-tasks me-1"></i>{{ _('Processing Activities') }}</a></div>
+          <div class="col-md-3"><a href="{{ url_for('gdpr.list_dpia') }}" class="btn btn-outline-info w-100"><i class="fas fa-shield-alt me-1"></i>{{ _('DPIAs') }}</a></div>
+          <div class="col-md-3"><a href="{{ url_for('gdpr.list_dsar') }}" class="btn btn-outline-warning w-100"><i class="fas fa-user-check me-1"></i>{{ _('DSARs') }}</a></div>
+          <div class="col-md-3"><a href="{{ url_for('gdpr.list_consent') }}" class="btn btn-outline-success w-100"><i class="fas fa-check-double me-1"></i>{{ _('Consents') }}</a></div>
+          <div class="col-md-3"><a href="{{ url_for('gdpr.list_controllers') }}" class="btn btn-outline-secondary w-100"><i class="fas fa-building me-1"></i>{{ _('Controllers / Processors') }}</a></div>
+          <div class="col-md-3"><a href="{{ url_for('gdpr.list_notices') }}" class="btn btn-outline-dark w-100"><i class="fas fa-file-alt me-1"></i>{{ _('Privacy Notices') }}</a></div>
+          <div class="col-md-3"><a href="{{ url_for('incidents.list_incidents') }}" class="btn btn-outline-danger w-100"><i class="fas fa-exclamation-triangle me-1"></i>{{ _('Incidents & Breaches') }}</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

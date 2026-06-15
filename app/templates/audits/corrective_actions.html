@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Corrective Actions') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Corrective Actions') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-auto">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Status') }}</option>
+            <option value="open" {{ 'selected' if request.args.get('status') == 'open' }}>{{ _('Open') }}</option>
+            <option value="in_progress" {{ 'selected' if request.args.get('status') == 'in_progress' }}>{{ _('In Progress') }}</option>
+            <option value="completed" {{ 'selected' if request.args.get('status') == 'completed' }}>{{ _('Completed') }}</option>
+            <option value="verified_closed" {{ 'selected' if request.args.get('status') == 'verified_closed' }}>{{ _('Verified Closed') }}</option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>{{ _('Description') }}</th><th>{{ _('Owner') }}</th><th>{{ _('Target Date') }}</th><th>{{ _('Status') }}</th></tr></thead>
+      <tbody>
+        {% for a in actions %}
+        <tr>
+          <td class="small">{{ a.description|truncate(80) }}</td>
+          <td class="small">{{ a.owner.first_name ~ ' ' ~ a.owner.last_name if a.owner else '—' }}</td>
+          <td class="small">{{ a.target_date.strftime('%Y-%m-%d') if a.target_date else '—' }}</td>
+          <td><span class="badge bg-{{ 'danger' if a.status == 'open' else 'primary' if a.status == 'in_progress' else 'success' if a.status == 'completed' else 'secondary' }}">{{ a.status|replace('_', ' ')|title }}</span></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-center text-muted py-4">{{ _('No corrective actions') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

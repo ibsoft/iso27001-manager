@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Policies & Documents') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Policies & Documents') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <form method="GET" class="row g-2 flex-grow-1">
+        <div class="col-md-2">
+          <select name="type" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Types') }}</option>
+            <option value="policy" {{ 'selected' if request.args.get('type') == 'policy' }}>{{ _('Policies') }}</option>
+            <option value="document" {{ 'selected' if request.args.get('type') == 'document' }}>{{ _('Documents') }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Status') }}</option>
+            <option value="draft" {{ 'selected' if request.args.get('status') == 'draft' }}>{{ _('Draft') }}</option>
+            <option value="reviewed" {{ 'selected' if request.args.get('status') == 'reviewed' }}>{{ _('Reviewed') }}</option>
+            <option value="approved" {{ 'selected' if request.args.get('status') == 'approved' }}>{{ _('Approved') }}</option>
+            <option value="published" {{ 'selected' if request.args.get('status') == 'published' }}>{{ _('Published') }}</option>
+            <option value="retired" {{ 'selected' if request.args.get('status') == 'retired' }}>{{ _('Retired') }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select name="category" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Categories') }}</option>
+            <option value="information_security" {{ 'selected' if request.args.get('category') == 'information_security' }}>{{ _('Information Security') }}</option>
+            <option value="access_control" {{ 'selected' if request.args.get('category') == 'access_control' }}>{{ _('Access Control') }}</option>
+            <option value="incident_response" {{ 'selected' if request.args.get('category') == 'incident_response' }}>{{ _('Incident Response') }}</option>
+            <option value="risk_management" {{ 'selected' if request.args.get('category') == 'risk_management' }}>{{ _('Risk Management') }}</option>
+            <option value="data_protection" {{ 'selected' if request.args.get('category') == 'data_protection' }}>{{ _('Data Protection') }}</option>
+            <option value="physical_security" {{ 'selected' if request.args.get('category') == 'physical_security' }}>{{ _('Physical Security') }}</option>
+            <option value="hr_security" {{ 'selected' if request.args.get('category') == 'hr_security' }}>{{ _('HR Security') }}</option>
+            <option value="supplier_security" {{ 'selected' if request.args.get('category') == 'supplier_security' }}>{{ _('Supplier Security') }}</option>
+            <option value="other" {{ 'selected' if request.args.get('category') == 'other' }}>{{ _('Other') }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input type="text" name="search" class="form-control" placeholder="{{ _('Search by title, description or filename...') }}" value="{{ request.args.get('search', '') }}">
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+      <div class="ms-3 d-flex gap-2">
+        <a href="{{ url_for('policies.new_policy') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  {% for policy in policies %}
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5 class="mb-1">
+              <a href="{{ url_for('policies.view_policy', policy_id=policy.id) }}" class="text-decoration-none">
+                {% if policy.is_document %}<i class="fas fa-file-alt text-primary me-1"></i>{% else %}<i class="fas fa-file-lines text-info me-1"></i>{% endif %}
+                {{ policy.title }}
+              </a>
+            </h5>
+            <p class="text-muted small mb-2">{{ policy.description|truncate(100) if policy.description else '' }}</p>
+            <div>
+              {% if policy.is_document %}<span class="badge bg-primary me-1"><i class="fas fa-file-alt me-1"></i>{{ _('Document') }}</span>{% endif %}
+              <span class="badge bg-{{ 'secondary' if policy.status == 'draft' else 'info' if policy.status == 'reviewed' else 'primary' if policy.status == 'approved' else 'success' if policy.status == 'published' else 'danger' }}">{{ policy.status|title }}</span>
+              <span class="badge bg-light text-dark ms-1">v{{ policy.current_version }}</span>
+              {% if policy.category %}<span class="badge bg-light text-dark ms-1">{{ policy.category|replace('_', ' ')|title }}</span>{% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 d-flex justify-content-between small text-muted">
+          <span>
+            <i class="far fa-user me-1"></i>{{ policy.owner.first_name ~ ' ' ~ policy.owner.last_name if policy.owner else '—' }}
+            {% if policy.original_filename %}
+            &middot; <i class="fas fa-paperclip me-1"></i>{{ policy.original_filename }}
+            {% endif %}
+          </span>
+          <span>
+            {% if policy.review_date %}<span class="me-2"><i class="far fa-calendar me-1"></i>{{ _('Review') }}: {{ policy.review_date.strftime('%Y-%m-%d') }}</span>{% endif %}
+            {% if current_user.has_role('admin') %}
+            <form method="POST" action="{{ url_for('policies.delete_policy', policy_id=policy.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this policy?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12">
+    <div class="text-center text-muted py-5">
+      <i class="fas fa-file-alt fa-3x mb-3"></i>
+      <p>{{ _('No policies or documents yet.') }}</p>
+      <a href="{{ url_for('policies.new_policy') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Create your first') }}</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

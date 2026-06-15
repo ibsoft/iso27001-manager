@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('suppliers.list_suppliers') }}">{{ _('Suppliers') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <label class="form-label small">{{ _('Supplier Name') }}</label>
+              {{ form.name(class="form-control") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Status') }}</label>
+              {{ form.status(class="form-select") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Contact Name') }}</label>
+              {{ form.contact_name(class="form-control") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Contact Email') }}</label>
+              {{ form.contact_email(class="form-control") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Contact Phone') }}</label>
+              {{ form.contact_phone(class="form-control") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Service Description') }}</label>
+            {{ form.service_description(class="form-control", rows=2) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Security Requirements') }}</label>
+            {{ form.security_requirements(class="form-control", rows=2) }}
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Assessment Status') }}</label>
+              {{ form.assessment_status(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Criticality') }}</label>
+              {{ form.criticality(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Assessment Date') }}</label>
+              {{ form.assessment_date(class="form-control", type="date") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Contract Start') }}</label>
+              {{ form.contract_start_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Contract End') }}</label>
+              {{ form.contract_end_date(class="form-control", type="date") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Assessment Notes') }}</label>
+            {{ form.assessment_notes(class="form-control", rows=2) }}
+          </div>
+          <div class="form-check mb-3">
+            {{ form.data_processing_agreement(class="form-check-input") }}
+            <label class="form-check-label small">{{ _('Data Processing Agreement in place') }}</label>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('suppliers.list_suppliers') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

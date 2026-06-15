@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('User Management') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Users') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between mb-3">
+      <h5 class="mb-0"><i class="fas fa-users me-2"></i>{{ users|length }} {{ _('Users') }}</h5>
+      <a href="{{ url_for('admin.new_user') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New User') }}</a>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>{{ _('Username') }}</th><th>{{ _('Name') }}</th><th>{{ _('Email') }}</th><th>{{ _('Roles') }}</th><th>{{ _('MFA') }}</th><th>{{ _('Status') }}</th><th>{{ _('Last Login') }}</th><th>{{ _('Actions') }}</th></tr></thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td class="fw-medium">@{{ u.username }}</td>
+          <td>{{ u.first_name }} {{ u.last_name }}</td>
+          <td class="small">{{ u.email }}</td>
+          <td>{% for role in u.roles %}<span class="badge bg-primary me-1">{{ role.name }}</span>{% endfor %}</td>
+          <td>{% if u.is_mfa_enabled %}<span class="badge bg-success"><i class="fas fa-shield me-1"></i>{{ _('On') }}</span>{% else %}<span class="badge bg-secondary">{{ _('Off') }}</span>{% endif %}</td>
+          <td>{% if u.is_active %}<span class="badge bg-success">{{ _('Active') }}</span>{% else %}<span class="badge bg-danger">{{ _('Inactive') }}</span>{% endif %}</td>
+          <td class="small">{{ u.last_login.strftime('%Y-%m-%d %H:%M') if u.last_login else '—' }}</td>
+          <td>
+            <a href="{{ url_for('admin.edit_user', user_id=u.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+            {% if u.id != current_user.id %}
+            <form method="POST" action="{{ url_for('admin.toggle_user_active', user_id=u.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Deactivate this user?') if u.is_active else _('Activate this user?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-{{ 'danger' if u.is_active else 'success' }}"><i class="fas {{ 'fa-ban' if u.is_active else 'fa-check' }}"></i></button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

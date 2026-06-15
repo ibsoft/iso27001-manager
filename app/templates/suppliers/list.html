@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Suppliers') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Suppliers') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <form method="GET" class="row g-2 flex-grow-1">
+        <div class="col-md-3">
+          <select name="assessment_status" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Assessments') }}</option>
+            <option value="pending" {{ 'selected' if request.args.get('assessment_status') == 'pending' }}>{{ _('Pending') }}</option>
+            <option value="assessed" {{ 'selected' if request.args.get('assessment_status') == 'assessed' }}>{{ _('Assessed') }}</option>
+            <option value="approved" {{ 'selected' if request.args.get('assessment_status') == 'approved' }}>{{ _('Approved') }}</option>
+            <option value="rejected" {{ 'selected' if request.args.get('assessment_status') == 'rejected' }}>{{ _('Rejected') }}</option>
+            <option value="review_required" {{ 'selected' if request.args.get('assessment_status') == 'review_required' }}>{{ _('Review Required') }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <input type="text" name="search" class="form-control" placeholder="{{ _('Search suppliers...') }}" value="{{ request.args.get('search', '') }}">
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+      <div class="ms-3">
+        <a href="{{ url_for('suppliers.new_supplier') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New Supplier') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>{{ _('Name') }}</th><th>{{ _('Contact') }}</th><th>{{ _('Assessment') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('Status') }}</th><th>{{ _('Contract End') }}</th><th></th></tr></thead>
+      <tbody>
+        {% for s in suppliers %}
+        <tr>
+          <td><a href="{{ url_for('suppliers.view_supplier', supplier_id=s.id) }}" class="text-decoration-none fw-medium">{{ s.name }}</a></td>
+          <td class="small">{{ s.contact_email or '—' }}</td>
+          <td><span class="badge bg-{{ 'secondary' if s.assessment_status == 'pending' else 'info' if s.assessment_status == 'assessed' else 'success' if s.assessment_status == 'approved' else 'danger' if s.assessment_status == 'rejected' else 'warning text-dark' }}">{{ s.assessment_status|replace('_', ' ')|title }}</span></td>
+          <td><span class="badge bg-{{ 'dark' if s.criticality == 'critical' else 'danger' if s.criticality == 'high' else 'warning text-dark' if s.criticality == 'medium' else 'success' }}">{{ s.criticality|title }}</span></td>
+          <td><span class="badge bg-{{ 'success' if s.status == 'active' else 'secondary' if s.status == 'inactive' else 'danger' }}">{{ s.status|title }}</span></td>
+          <td class="small">{{ s.contract_end_date.strftime('%Y-%m-%d') if s.contract_end_date else '—' }}</td>
+          <td>
+            {% if current_user.has_role('admin') %}
+            <form method="POST" action="{{ url_for('suppliers.delete_supplier', supplier_id=s.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this supplier?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-4">{{ _('No suppliers registered') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

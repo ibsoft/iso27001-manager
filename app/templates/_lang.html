@@ -1,0 +1,9 @@
+{% macro lang_switch(current_lang) %}
+{% for code, name in LANGUAGES.items() %}
+{% if code != current_lang %}
+<a href="{{ url_for('auth.set_language', lang=code) }}" class="small text-muted me-2">
+  <i class="fas fa-globe me-1"></i>{{ name }}
+</a>
+{% endif %}
+{% endfor %}
+{% endmacro %}

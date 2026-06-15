@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block page_title %}{{ dpia.project_name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('gdpr.list_dpia') }}">{{ _('DPIAs') }}</a></li>
+<li class="breadcrumb-item active">{{ dpia.project_name[:30] }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-shield-alt me-1"></i>{{ _('DPIA Details') }}</span>
+        <div>
+          <a href="{{ url_for('gdpr.edit_dpia', dpia_id=dpia.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('gdpr.delete_dpia', dpia_id=dpia.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this DPIA?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:200px">{{ _('Project Name') }}</td><td><strong>{{ dpia.project_name }}</strong></td></tr>
+          <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'secondary' if dpia.status == 'draft' else 'info' if dpia.status == 'in_progress' else 'primary' if dpia.status == 'reviewed' else 'success' if dpia.status == 'approved' else 'danger' }}">{{ dpia.status | replace('_', ' ') | title }}</span></td></tr>
+        </table>
+
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Project & Processing') }}</h6>
+        <div class="mb-3">
+          <strong class="small">{{ _('Project Description') }}</strong>
+          <p>{{ dpia.project_description }}</p>
+        </div>
+        <div class="mb-3">
+          <strong class="small">{{ _('Processing Description') }}</strong>
+          <p>{{ dpia.processing_description }}</p>
+        </div>
+
+        {% if dpia.necessity_assessment or dpia.proportionality_assessment %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Necessity & Proportionality') }}</h6>
+        {% if dpia.necessity_assessment %}<div class="mb-3"><strong class="small">{{ _('Necessity Assessment') }}</strong><p>{{ dpia.necessity_assessment }}</p></div>{% endif %}
+        {% if dpia.proportionality_assessment %}<div class="mb-3"><strong class="small">{{ _('Proportionality Assessment') }}</strong><p>{{ dpia.proportionality_assessment }}</p></div>{% endif %}
+        {% endif %}
+
+        {% if dpia.data_subject_categories or dpia.personal_data_categories %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Data Categories') }}</h6>
+        <table class="table table-borderless">
+          {% if dpia.data_subject_categories %}<tr><td class="text-muted">{{ _('Data Subjects') }}</td><td>{{ dpia.data_subject_categories }}</td></tr>{% endif %}
+          {% if dpia.personal_data_categories %}<tr><td class="text-muted">{{ _('Personal Data') }}</td><td>{{ dpia.personal_data_categories }}</td></tr>{% endif %}
+          {% if dpia.special_category_data %}<tr><td class="text-muted">{{ _('Special Category') }}</td><td><span class="badge bg-danger">{{ _('Yes') }}</span></td></tr>{% endif %}
+        </table>
+        {% endif %}
+
+        {% if dpia.risks_to_rights or dpia.mitigation_measures %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Risk Assessment') }}</h6>
+        {% if dpia.risks_to_rights %}<div class="mb-3"><strong class="small">{{ _('Risks to Rights & Freedoms') }}</strong><p>{{ dpia.risks_to_rights }}</p></div>{% endif %}
+        {% if dpia.mitigation_measures %}<div class="mb-3"><strong class="small">{{ _('Mitigation Measures') }}</strong><p>{{ dpia.mitigation_measures }}</p></div>{% endif %}
+        <p><strong>{{ _('Residual Risk Level') }}:</strong> <span class="badge bg-{{ 'success' if dpia.residual_risk_level == 'low' else 'warning' if dpia.residual_risk_level == 'medium' else 'danger' if dpia.residual_risk_level == 'high' else 'dark' }}">{{ dpia.residual_risk_level | title }}</span></p>
+        {% endif %}
+
+        {% if dpia.dpo_review %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('DPO Review') }}</h6>
+        <div class="mb-3"><p>{{ dpia.dpo_review }}</p></div>
+        {% if dpia.dpo_reviewed_at %}<small class="text-muted">{{ _('Reviewed') }}: {{ dpia.dpo_reviewed_at.strftime('%Y-%m-%d') }}{% if dpia.dpo_reviewed_by %} {{ _('by') }} {{ dpia.dpo_reviewed_by.first_name }} {{ dpia.dpo_reviewed_by.last_name }}{% endif %}</small>{% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Metadata') }}</div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted">{{ _('Created') }}</td><td>{{ dpia.created_at.strftime('%Y-%m-%d') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Updated') }}</td><td>{{ dpia.updated_at.strftime('%Y-%m-%d') if dpia.updated_at else '—' }}</td></tr>
+          {% if dpia.created_by %}<tr><td class="text-muted">{{ _('Created by') }}</td><td>{{ dpia.created_by.first_name }} {{ dpia.created_by.last_name }}</td></tr>{% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('gdpr.list_notices') }}">{{ _('Privacy Notices') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Notice Title') }}</label>
+              {{ form.title(class="form-control") }}
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label small">{{ _('Version') }}</label>
+              {{ form.version(class="form-control") }}
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label small">{{ _('Language') }}</label>
+              {{ form.language(class="form-select") }}
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label small">{{ _('Status') }}</label>
+              {{ form.status(class="form-select") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Effective Date') }}</label>
+              {{ form.effective_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Review Date') }}</label>
+              {{ form.review_date(class="form-control", type="date") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Notice Content') }}</label>
+            {{ form.content(class="form-control", rows=15) }}
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('gdpr.list_notices') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

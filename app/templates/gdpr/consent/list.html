@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Consent Records') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Consent Records') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <form method="GET" class="row g-2 flex-grow-1">
+      <div class="col-md-2">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All') }}</option>
+          <option value="active" {{ 'selected' if request.args.get('status') == 'active' }}>{{ _('Active') }}</option>
+          <option value="withdrawn" {{ 'selected' if request.args.get('status') == 'withdrawn' }}>{{ _('Withdrawn') }}</option>
+        </select>
+      </div>
+      <div class="col-md-8">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search by identifier or purpose...') }}" value="{{ request.args.get('search', '') }}">
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    <a href="{{ url_for('gdpr.new_consent') }}" class="btn btn-primary ms-3"><i class="fas fa-plus me-1"></i>{{ _('New Record') }}</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th>{{ _('Data Subject') }}</th>
+          <th>{{ _('Purpose') }}</th>
+          <th>{{ _('Given') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Source') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.data_subject_identifier }}<br>{% if r.data_subject_email %}<small class="text-muted">{{ r.data_subject_email }}</small>{% endif %}</td>
+          <td>{{ r.processing_purpose }}</td>
+          <td>{{ r.consent_given_at.strftime('%Y-%m-%d') }}</td>
+          <td>
+            {% if r.granted and not r.withdrawn_at %}
+            <span class="badge bg-success">{{ _('Active') }}</span>
+            {% elif r.withdrawn_at %}
+            <span class="badge bg-danger">{{ _('Withdrawn') }} {{ r.withdrawn_at.strftime('%Y-%m-%d') }}</span>
+            {% else %}
+            <span class="badge bg-secondary">{{ _('Revoked') }}</span>
+            {% endif %}
+          </td>
+          <td>{{ r.consent_source | replace('_', ' ') | title if r.consent_source else '—' }}</td>
+          <td>
+            <a href="{{ url_for('gdpr.edit_consent', record_id=r.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+            {% if r.granted and not r.withdrawn_at %}
+            <form method="POST" action="{{ url_for('gdpr.withdraw_consent', record_id=r.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Withdraw this consent?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
+            </form>
+            {% endif %}
+            {% if current_user.has_role('admin') %}
+            <form method="POST" action="{{ url_for('gdpr.delete_consent', record_id=r.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this consent?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-dark"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center text-muted py-4">{{ _('No consent records yet.') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block page_title %}Control {{ control.code }}: {{ control.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('controls.list_controls') }}">{{ _('Controls') }}</a></li>
+<li class="breadcrumb-item active">{{ control.code }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>{{ _('Control Details') }}</span>
+        <div>
+          <a href="{{ url_for('controls.edit_control', control_id=control.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('controls.delete_control', control_id=control.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this control?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:160px">{{ _('Code') }}</td><td><span class="badge bg-secondary fs-6">{{ control.code }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Title') }}</td><td class="fw-bold">{{ control.title }}</td></tr>
+          <tr><td class="text-muted">{{ _('Domain') }}</td><td>{{ control.domain.name if control.domain else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Description') }}</td><td>{{ control.description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Detailed Description') }}</td><td>{{ control.detailed_description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Purpose') }}</td><td>{{ control.purpose or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Guidance') }}</td><td>{{ control.guidance or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Implementation Status') }}</td><td><span class="{{ control.status_badge_class }} fs-6">{{ control.implementation_status|replace('_', ' ')|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Owner') }}</td><td>{{ control.owner.first_name ~ ' ' ~ control.owner.last_name if control.owner else _('Unassigned') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Target Date') }}</td><td>{{ control.target_date.strftime('%Y-%m-%d') if control.target_date else _('Not set') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Review Date') }}</td><td>{{ control.review_date.strftime('%Y-%m-%d') if control.review_date else _('Not set') }}</td></tr>
+          <tr><td class="text-muted">{{ _('2022 Update') }}</td><td>{{ _('New control in 2022') if control.is_new_2022 else _('Carried forward') }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Quick Status Update') }}</div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('controls.update_status', control_id=control.id) }}">
+          <div class="mb-3">
+            <select name="implementation_status" class="form-select">
+              <option value="not_started" {{ 'selected' if control.implementation_status == 'not_started' }}>{{ _('Not Started') }}</option>
+              <option value="in_progress" {{ 'selected' if control.implementation_status == 'in_progress' }}>{{ _('In Progress') }}</option>
+              <option value="implemented" {{ 'selected' if control.implementation_status == 'implemented' }}>{{ _('Implemented') }}</option>
+              <option value="not_applicable" {{ 'selected' if control.implementation_status == 'not_applicable' }}>{{ _('Not Applicable') }}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-check me-1"></i>{{ _('Update Status') }}</button>
+        </form>
+      </div>
+    </div>
+    <div class="card mt-3">
+      <div class="card-header">{{ _('Evidence Notes') }}</div>
+      <div class="card-body">
+        <p class="small text-muted mb-0">{{ control.evidence_notes or _('No evidence notes recorded.') }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

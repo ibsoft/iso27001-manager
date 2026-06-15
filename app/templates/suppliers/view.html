@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block page_title %}{{ supplier.name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('suppliers.list_suppliers') }}">{{ _('Suppliers') }}</a></li>
+<li class="breadcrumb-item active">{{ supplier.name[:30] }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <span>{{ _('Supplier Details') }}</span>
+        <div>
+          <a href="{{ url_for('suppliers.edit_supplier', supplier_id=supplier.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('suppliers.delete_supplier', supplier_id=supplier.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this supplier?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:180px">{{ _('Service') }}</td><td>{{ supplier.service_description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Contact') }}</td><td>{{ supplier.contact_name or '—' }} ({{ supplier.contact_email or '—' }})</td></tr>
+          <tr><td class="text-muted">{{ _('Phone') }}</td><td>{{ supplier.contact_phone or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Assessment') }}</td><td><span class="badge bg-{{ 'secondary' if supplier.assessment_status == 'pending' else 'info' if supplier.assessment_status == 'assessed' else 'success' if supplier.assessment_status == 'approved' else 'danger' if supplier.assessment_status == 'rejected' else 'warning text-dark' }}">{{ supplier.assessment_status|replace('_', ' ')|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Assessment Date') }}</td><td>{{ supplier.assessment_date.strftime('%Y-%m-%d') if supplier.assessment_date else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Assessment Notes') }}</td><td>{{ supplier.assessment_notes or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Security Requirements') }}</td><td>{{ supplier.security_requirements or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('DPA in Place') }}</td><td>{{ _('Yes') if supplier.data_processing_agreement else _('No') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Contract Period') }}</td><td>{{ supplier.contract_start_date.strftime('%Y-%m-%d') if supplier.contract_start_date else '—' }} → {{ supplier.contract_end_date.strftime('%Y-%m-%d') if supplier.contract_end_date else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Criticality') }}</td><td><span class="badge bg-{{ 'dark' if supplier.criticality == 'critical' else 'danger' if supplier.criticality == 'high' else 'warning text-dark' if supplier.criticality == 'medium' else 'success' }}">{{ supplier.criticality|title }}</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card"><div class="card-body text-center py-4"><i class="fas fa-handshake fa-4x text-muted mb-3"></i><h5>{{ supplier.status|title }}</h5></div></div>
+  </div>
+</div>
+{% endblock %}

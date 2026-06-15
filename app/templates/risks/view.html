@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block page_title %}{{ risk.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('risks.list_risks') }}">{{ _('Risks') }}</a></li>
+<li class="breadcrumb-item active">{{ risk.title[:30] }}...</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <span>{{ _('Risk Details') }}</span>
+        <div>
+          <a href="{{ url_for('risks.edit_risk', risk_id=risk.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('risks.delete_risk', risk_id=risk.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this risk?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:160px">{{ _('Description') }}</td><td>{{ risk.description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Likelihood') }}</td><td>{{ risk.likelihood }}/5</td></tr>
+          <tr><td class="text-muted">{{ _('Impact') }}</td><td>{{ risk.impact }}/5</td></tr>
+          <tr><td class="text-muted">{{ _('Risk Level') }}</td><td><span class="badge bg-{{ 'dark' if risk.risk_level == 'critical' else 'danger' if risk.risk_level == 'high' else 'warning text-dark' if risk.risk_level == 'medium' else 'success' }}">{{ risk.risk_level|upper if risk.risk_level else '—' }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Treatment') }}</td><td>{{ risk.treatment_option|replace('_', ' ')|title if risk.treatment_option else _('Not selected') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Treatment Plan') }}</td><td>{{ risk.treatment_plan or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Residual Risk') }}</td><td>{{ risk.residual_risk_level|upper if risk.residual_risk_level else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'secondary' if risk.status == 'identified' else 'info' if risk.status == 'assessed' else 'primary' }}">{{ risk.status|replace('_', ' ')|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Asset') }}</td><td>{{ risk.asset.name if risk.asset else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Owner') }}</td><td>{{ risk.owner.first_name ~ ' ' ~ risk.owner.last_name if risk.owner else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Target Date') }}</td><td>{{ risk.target_date.strftime('%Y-%m-%d') if risk.target_date else '—' }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Risk Heat Map') }}</div>
+      <div class="card-body text-center">
+        <div style="font-size: 5rem; line-height: 1; font-weight: 700; color: {% if risk.risk_level == 'critical' %}#dc3545{% elif risk.risk_level == 'high' %}#fd7e14{% elif risk.risk_level == 'medium' %}#ffc107{% else %}#28a745{% endif %}">
+          {{ risk.likelihood * risk.impact }}
+        </div>
+        <div class="text-muted small">{{ _('Risk Score (L×I)') }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

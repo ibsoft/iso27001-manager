@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('My Profile') }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .profile-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+  }
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+    object-fit: cover;
+    background: rgba(255,255,255,0.15);
+  }
+  .profile-avatar-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.15);
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+  .stat-box .value {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .stat-box .label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+  .nav-tabs .nav-link {
+    color: #4a5568;
+    font-weight: 500;
+    border: none;
+    border-bottom: 2px solid transparent;
+  }
+  .nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: var(--primary);
+  }
+  .nav-tabs .nav-link.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: transparent;
+  }
+  .tab-pane { padding-top: 1.5rem; }
+  .info-row {
+    display: flex;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label {
+    width: 180px;
+    flex-shrink: 0;
+    color: #64748b;
+    font-size: 0.875rem;
+  }
+  .info-value { font-size: 0.875rem; }
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+  .role-badge-admin { background: #818cf8; color: #fff; }
+  .role-badge-manager { background: #60a5fa; color: #fff; }
+  .role-badge-auditor { background: #f59e0b; color: #fff; }
+  .role-badge-user { background: #94a3b8; color: #fff; }
+</style>
+{% endblock %}
+
+{% block content %}
+{% set initials = (current_user.first_name[:1] ~ current_user.last_name[:1]) | upper %}
+
+<div class="profile-header d-flex align-items-center gap-4">
+  <div class="flex-shrink-0">
+    {% if current_user.avatar_url %}
+    <img src="{{ current_user.avatar_url }}" alt="{{ current_user.first_name }}" class="profile-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="profile-avatar-placeholder" style="display:none">{{ initials }}</div>
+    {% else %}
+    <img src="{{ current_user.gravatar_url }}" alt="Gravatar" class="profile-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="profile-avatar-placeholder" style="display:none">{{ initials }}</div>
+    {% endif %}
+  </div>
+  <div class="flex-grow-1">
+    <h3 class="mb-1 fw-bold">{{ current_user.first_name }} {{ current_user.last_name }}</h3>
+    <p class="mb-2 opacity-75">@{{ current_user.username }} &middot; {{ current_user.email }}</p>
+    <div class="d-flex gap-2 flex-wrap">
+      {% for role in current_user.roles %}
+      <span class="role-badge role-badge-{{ role.name }}">
+        <i class="fas fa-{% if role.name == 'admin' %}crown{% elif role.name == 'manager' %}user-tie{% elif role.name == 'auditor' %}clipboard-check{% else %}user{% endif %}"></i>
+        {{ role.name | title }}
+      </span>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="d-flex gap-2">
+    <div class="stat-box">
+      <div class="value">{{ current_user.password_changed_at.strftime('%Y-%m-%d') if current_user.password_changed_at else '—' }}</div>
+      <div class="label">{{ _('Pass. Changed') }}</div>
+    </div>
+    <div class="stat-box">
+      <div class="value">{{ current_user.last_login.strftime('%Y-%m-%d') if current_user.last_login else _('Never') }}</div>
+      <div class="label">{{ _('Last Login') }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <ul class="nav nav-tabs px-3 pt-3" id="profileTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+          <i class="far fa-address-card me-1"></i>{{ _('Personal Info') }}
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab">
+          <i class="fas fa-pen me-1"></i>{{ _('Edit Profile') }}
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">
+          <i class="fas fa-shield me-1"></i>{{ _('Security') }}
+        </button>
+      </li>
+      {% if current_user.has_role('admin') %}
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="prefs-tab" data-bs-toggle="tab" data-bs-target="#prefs" type="button" role="tab">
+          <i class="fas fa-cog me-1"></i>{{ _('Preferences') }}
+        </button>
+      </li>
+      {% endif %}
+    </ul>
+    <div class="tab-content px-4 pb-4">
+
+      {# --- Info Tab --- #}
+      <div class="tab-pane fade show active" id="info" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Contact Information') }}</h6>
+            <div class="info-row">
+              <div class="info-label"><i class="far fa-envelope me-1 text-muted"></i>{{ _('Email') }}</div>
+              <div class="info-value">{{ current_user.email }}</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label"><i class="fas fa-phone me-1 text-muted"></i>{{ _('Internal Phone') }}</div>
+              <div class="info-value">{{ current_user.phone_number or _('Not set') }}</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label"><i class="fas fa-mobile-alt me-1 text-muted"></i>{{ _('Mobile Phone') }}</div>
+              <div class="info-value">{{ current_user.mobile_phone or _('Not set') }}</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Account Information') }}</h6>
+            <div class="info-row">
+              <div class="info-label"><i class="far fa-calendar me-1 text-muted"></i>{{ _('Member Since') }}</div>
+              <div class="info-value">{{ current_user.created_at.strftime('%B %d, %Y') }}</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label"><i class="fas fa-globe me-1 text-muted"></i>{{ _('Timezone') }}</div>
+              <div class="info-value">{{ current_user.timezone or _('Not set') }}</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label"><i class="fas fa-language me-1 text-muted"></i>{{ _('Language') }}</div>
+              <div class="info-value">{{ current_user.default_language | upper if current_user.default_language else _('Browser default') }}</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label"><i class="fas fa-user-tag me-1 text-muted"></i>{{ _('Roles') }}</div>
+              <div class="info-value">
+                {% for role in current_user.roles %}
+                <span class="role-badge role-badge-{{ role.name }} me-1">{{ role.name | title }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# --- Edit Tab --- #}
+      <div class="tab-pane fade" id="edit" role="tabpanel">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('First Name') }}</label>
+              {{ form.first_name(class="form-control" + (" is-invalid" if form.first_name.errors else "")) }}
+              {% for e in form.first_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Last Name') }}</label>
+              {{ form.last_name(class="form-control" + (" is-invalid" if form.last_name.errors else "")) }}
+              {% for e in form.last_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Email') }}</label>
+            {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+            {% for e in form.email.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Internal Phone') }}</label>
+              {{ form.phone_number(class="form-control" + (" is-invalid" if form.phone_number.errors else ""), placeholder=_("e.g. 1234")) }}
+              {% for e in form.phone_number.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Mobile Phone') }}</label>
+              {{ form.mobile_phone(class="form-control" + (" is-invalid" if form.mobile_phone.errors else ""), placeholder=_("e.g. +30 69X XXX XXXX")) }}
+              {% for e in form.mobile_phone.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Profile Image URL') }}</label>
+            {{ form.avatar_url(class="form-control" + (" is-invalid" if form.avatar_url.errors else ""), placeholder=_("https://example.com/avatar.jpg or leave blank for Gravatar")) }}
+            <div class="form-text">
+              <i class="fas fa-info-circle me-1"></i>{{ _('Leave empty to use Gravatar based on your email.') }}
+              <a href="https://gravatar.com" target="_blank" class="text-decoration-none">{{ _('Set up Gravatar') }}</a>
+            </div>
+            {% for e in form.avatar_url.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+
+          {% if current_user.has_role('admin') %}
+          <hr>
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Administrator Preferences') }}</h6>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Timezone') }}</label>
+              {{ form.timezone(class="form-select" + (" is-invalid" if form.timezone.errors else "")) }}
+              {% for e in form.timezone.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Default Language') }}</label>
+              {{ form.default_language(class="form-select" + (" is-invalid" if form.default_language.errors else "")) }}
+              {% for e in form.default_language.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Changes') }}</button>
+        </form>
+      </div>
+
+      {# --- Security Tab --- #}
+      <div class="tab-pane fade" id="security" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border">
+              <div class="card-body text-center">
+                <i class="fas fa-key fa-2x mb-2 text-warning"></i>
+                <h6>{{ _('Password') }}</h6>
+                <p class="small text-muted mb-2">{{ _('Last changed') }}: {{ current_user.password_changed_at.strftime('%Y-%m-%d') if current_user.password_changed_at else '—' }}</p>
+                <a href="{{ url_for('auth.change_password') }}" class="btn btn-outline-warning btn-sm">
+                  <i class="fas fa-key me-1"></i>{{ _('Change Password') }}
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border">
+              <div class="card-body text-center">
+                <i class="fas fa-shield-alt fa-2x mb-2 text-{{ 'success' if current_user.is_mfa_enabled else 'secondary' }}"></i>
+                <h6>{{ _('Two-Factor Authentication') }}</h6>
+                {% if current_user.is_mfa_enabled %}
+                  <span class="badge bg-success mb-2"><i class="fas fa-check me-1"></i>{{ _('Enabled') }}</span>
+                  <form method="POST" action="{{ url_for('auth.disable_mfa') }}">
+                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('{{ _('Disable MFA?') }}')">
+                      <i class="fas fa-times me-1"></i>{{ _('Disable') }}
+                    </button>
+                  </form>
+                {% else %}
+                  <span class="badge bg-secondary mb-2">{{ _('Disabled') }}</span>
+                  <br>
+                  <a href="{{ url_for('auth.setup_mfa') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-shield me-1"></i>{{ _('Enable 2FA') }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if current_user.has_role('admin') %}
+      {# --- Preferences Tab --- #}
+      <div class="tab-pane fade" id="prefs" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="info-row">
+              <div class="info-label">{{ _('Timezone') }}</div>
+              <div class="info-value"><strong>{{ current_user.timezone or _('Not set') }}</strong></div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">{{ _('Default Language') }}</div>
+              <div class="info-value">
+                <strong>{{ current_user.default_language | upper if current_user.default_language else _('Browser default') }}</strong>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">{{ _('Current Session') }}</div>
+              <div class="info-value"><strong>{{ current_lang | upper }}</strong></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card bg-light border-0">
+              <div class="card-body text-center py-4">
+                <i class="fas fa-info-circle fa-2x text-muted mb-2"></i>
+                <p class="small text-muted mb-0">{{ _('Timezone and language preferences can be edited in the Edit Profile tab.') }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var hash = window.location.hash;
+    if (hash) {
+      var tab = document.querySelector('[data-bs-target="' + hash + '"]');
+      if (tab) { tab.click(); }
+    }
+    var tabs = document.querySelectorAll('#profileTabs button');
+    tabs.forEach(function(t) {
+      t.addEventListener('shown.bs.tab', function(e) {
+        history.replaceState(null, null, e.target.getAttribute('data-bs-target'));
+      });
+    });
+  });
+</script>
+{% endblock %}

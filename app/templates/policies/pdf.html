@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ policy.title }} v{{ policy.current_version }}</title>
+  <style>
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #1e293b;
+      margin: 2cm;
+    }
+    h1 {
+      font-size: 20pt;
+      margin-bottom: 0.2cm;
+      color: #0f172a;
+      border-bottom: 2px solid #1a56db;
+      padding-bottom: 0.3cm;
+    }
+    h2 { font-size: 16pt; margin-top: 1cm; color: #0f172a; }
+    h3 { font-size: 13pt; margin-top: 0.8cm; color: #334155; }
+    h4 { font-size: 11pt; margin-top: 0.6cm; color: #475569; }
+    p { margin-bottom: 0.3cm; text-align: justify; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5cm 0;
+    }
+    table, th, td {
+      border: 1px solid #cbd5e1;
+    }
+    th, td {
+      padding: 6pt 8pt;
+      text-align: left;
+      font-size: 10pt;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+    }
+    ul, ol { margin-bottom: 0.3cm; padding-left: 0.8cm; }
+    li { margin-bottom: 0.15cm; }
+    .meta {
+      margin-top: 0.5cm;
+      margin-bottom: 0.5cm;
+      padding: 0.3cm;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 9pt;
+      color: #64748b;
+    }
+    .meta strong { color: #334155; }
+    .footer {
+      margin-top: 1cm;
+      padding-top: 0.3cm;
+      border-top: 1px solid #e2e8f0;
+      font-size: 8pt;
+      color: #94a3b8;
+      text-align: center;
+    }
+    code, pre {
+      background: #f1f5f9;
+      padding: 1pt 4pt;
+      border-radius: 3pt;
+      font-size: 10pt;
+    }
+    pre {
+      padding: 0.2cm;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>{{ policy.title }}</h1>
+
+  {% if policy.description %}
+  <p style="color:#64748b;font-style:italic;">{{ policy.description }}</p>
+  {% endif %}
+
+  <div class="meta">
+    <strong>Version:</strong> {{ policy.current_version }} &nbsp;|&nbsp;
+    <strong>Status:</strong> {{ policy.status|title }} &nbsp;|&nbsp;
+    {% if policy.effective_date %}<strong>Effective:</strong> {{ policy.effective_date.strftime('%Y-%m-%d') }} &nbsp;|&nbsp;{% endif %}
+    {% if policy.review_date %}<strong>Review:</strong> {{ policy.review_date.strftime('%Y-%m-%d') }} &nbsp;|&nbsp;{% endif %}
+    {% if policy.owner %}<strong>Owner:</strong> {{ policy.owner.first_name }} {{ policy.owner.last_name }}{% endif %}
+  </div>
+
+  <div>
+    {% if policy.content %}{{ policy.content|safe }}{% endif %}
+  </div>
+
+  <div class="footer">
+    Generated from ISO 27001 Manager — {{ policy.title }} v{{ policy.current_version }}
+  </div>
+</body>
+</html>

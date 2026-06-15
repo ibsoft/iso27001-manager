@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('DSAR') }} — {{ dsar.requester_name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('gdpr.list_dsar') }}">{{ _('DSARs') }}</a></li>
+<li class="breadcrumb-item active">{{ dsar.requester_name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-user-check me-1"></i>{{ _('Request Details') }}</span>
+        <div>
+          <a href="{{ url_for('gdpr.edit_dsar', dsar_id=dsar.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('gdpr.delete_dsar', dsar_id=dsar.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this request?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:180px">{{ _('Request Type') }}</td><td><span class="badge bg-info fs-6">{{ dsar.request_type | replace('_', ' ') | title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Requester') }}</td><td><strong>{{ dsar.requester_name }}</strong></td></tr>
+          <tr><td class="text-muted">{{ _('Email') }}</td><td>{{ dsar.requester_email }}</td></tr>
+          {% if dsar.requester_phone %}<tr><td class="text-muted">{{ _('Phone') }}</td><td>{{ dsar.requester_phone }}</td></tr>{% endif %}
+          <tr><td class="text-muted">{{ _('Identity Verified') }}</td><td>{% if dsar.requester_identity_verified %}<span class="badge bg-success"><i class="fas fa-check me-1"></i>{{ _('Yes') }}</span>{% else %}<span class="badge bg-warning text-dark">{{ _('No') }}</span>{% endif %}</td></tr>
+          <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'secondary' if dsar.status == 'open' else 'primary' if dsar.status == 'in_progress' else 'warning' if dsar.status == 'awaiting_info' else 'success' if dsar.status == 'completed' else 'dark' }}">{{ dsar.status | replace('_', ' ') | title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Received') }}</td><td>{{ dsar.received_date.strftime('%Y-%m-%d %H:%M') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Deadline') }}</td><td>{{ dsar.deadline_date.strftime('%Y-%m-%d') }}{% if dsar.extension_granted and dsar.extension_deadline %} <span class="badge bg-warning text-dark ms-2">{{ _('Extended to') }} {{ dsar.extension_deadline.strftime('%Y-%m-%d') }}</span>{% endif %}</td></tr>
+          {% if dsar.response_date %}<tr><td class="text-muted">{{ _('Responded') }}</td><td>{{ dsar.response_date.strftime('%Y-%m-%d') }}</td></tr>{% endif %}
+        </table>
+
+        {% if dsar.request_description %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Request Details') }}</h6>
+        <p>{{ dsar.request_description }}</p>
+        {% endif %}
+
+        {% if dsar.response_summary %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Response') }}</h6>
+        <p>{{ dsar.response_summary }}</p>
+        <p><strong>{{ _('Outcome') }}:</strong> <span class="badge bg-{{ 'success' if dsar.outcome == 'granted' else 'warning' if dsar.outcome == 'partially_granted' else 'danger' if dsar.outcome == 'denied' else 'secondary' }}">{{ dsar.outcome | replace('_', ' ') | title }}</span></p>
+        {% if dsar.denial_reason %}<p><strong>{{ _('Denial Reason') }}:</strong><br>{{ dsar.denial_reason }}</p>{% endif %}
+        {% endif %}
+
+        {% if dsar.extension_reason %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Extension') }}</h6>
+        <p>{{ dsar.extension_reason }}</p>
+        {% endif %}
+
+        {% if dsar.notes %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Internal Notes') }}</h6>
+        <p>{{ dsar.notes }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Assignment') }}</div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted">{{ _('Assigned to') }}</td><td>{{ dsar.assigned_to.first_name ~ ' ' ~ dsar.assigned_to.last_name if dsar.assigned_to else _('Unassigned') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Created') }}</td><td>{{ dsar.created_at.strftime('%Y-%m-%d') }}</td></tr>
+          {% if dsar.created_by %}<tr><td class="text-muted">{{ _('Created by') }}</td><td>{{ dsar.created_by.first_name }} {{ dsar.created_by.last_name }}</td></tr>{% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

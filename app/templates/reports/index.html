@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Reports') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Reports') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body text-center py-4">
+        <i class="fas fa-sliders-h fa-3x text-primary mb-3"></i>
+        <h5>{{ _('Controls Status') }}</h5>
+        <p class="small text-muted">{{ _('Implementation progress by domain') }}</p>
+        <a href="{{ url_for('reports.controls_status') }}" class="btn btn-outline-primary btn-sm">{{ _('View') }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body text-center py-4">
+        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+        <h5>{{ _('Risk Summary') }}</h5>
+        <p class="small text-muted">{{ _('Risk levels, treatments, and status') }}</p>
+        <a href="{{ url_for('reports.risk_summary') }}" class="btn btn-outline-danger btn-sm">{{ _('View') }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body text-center py-4">
+        <i class="fas fa-bolt fa-3x text-warning mb-3"></i>
+        <h5>{{ _('Incident Trends') }}</h5>
+        <p class="small text-muted">{{ _('Incidents by severity and status') }}</p>
+        <a href="{{ url_for('reports.incident_trends') }}" class="btn btn-outline-warning btn-sm">{{ _('View') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-3">
+  <div class="card-header">{{ _('CSV Exports') }}</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='controls') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Controls') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='risks') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Risks') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='incidents') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Incidents') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='assets') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Assets') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='soa') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('SoA') }}</a></div>
+    </div>
+  </div>
+</div>
+
+{% if current_user.has_role('admin') %}
+<div class="card mt-3">
+  <div class="card-header">{{ _('Audit Trail') }}</div>
+  <div class="card-body">
+    <a href="{{ url_for('reports.view_audit_log') }}" class="btn btn-outline-dark"><i class="fas fa-history me-1"></i>{{ _('View Audit Log') }}</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

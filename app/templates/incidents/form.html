@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('incidents.list_incidents') }}">{{ _('Incidents') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Title') }}</label>
+            {{ form.title(class="form-control") }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Description') }}</label>
+            {{ form.description(class="form-control", rows=4) }}
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Severity') }}</label>
+              {{ form.severity(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Category') }}</label>
+              {{ form.category(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Status') }}</label>
+              {{ form.status(class="form-select") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Assign To') }}</label>
+              {{ form.assigned_to_id(class="form-select") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Root Cause') }}</label>
+            {{ form.root_cause(class="form-control", rows=2) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Impact Description') }}</label>
+            {{ form.impact_description(class="form-control", rows=2) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Lessons Learned') }}</label>
+            {{ form.lessons_learned(class="form-control", rows=2) }}
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('incidents.list_incidents') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

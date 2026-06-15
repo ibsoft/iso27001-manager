@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block page_title %}{{ policy.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('policies.list_policies') }}">{{ _('Policies & Documents') }}</a></li>
+<li class="breadcrumb-item active">{{ policy.title[:30] }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <span>
+          {% if policy.is_document %}
+          <i class="fas fa-file-alt text-primary me-1"></i>
+          {% endif %}
+          {{ _('Document Content') if policy.is_document else _('Policy Content') }}
+        </span>
+        <div>
+          <a href="{{ url_for('policies.download_policy', policy_id=policy.id) }}" class="btn btn-sm btn-outline-danger" target="_blank">
+            <i class="fas fa-{% if policy.is_document %}download{% else %}file-pdf{% endif %} me-1"></i>
+            {{ _('Download') }}
+          </a>
+          <a href="{{ url_for('policies.edit_policy', policy_id=policy.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          <a href="{{ url_for('policies.new_version', policy_id=policy.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-code-branch me-1"></i>{{ _('New Version') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('policies.delete_policy', policy_id=policy.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this policy?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        {% if policy.is_document and policy.original_filename %}
+        <div class="text-center py-5">
+          <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+          <h5>{{ policy.original_filename }}</h5>
+          <p class="text-muted">
+            {% if policy.file_extension %}<span class="badge bg-secondary me-2">{{ policy.file_extension }}</span>{% endif %}
+            {% if policy.file_size_display %}<span class="text-muted">{{ policy.file_size_display }}</span>{% endif %}
+          </p>
+          <a href="{{ url_for('policies.download_policy', policy_id=policy.id) }}" class="btn btn-lg btn-outline-danger mt-2" target="_blank">
+            <i class="fas fa-download me-1"></i>{{ _('Download File') }}
+          </a>
+        </div>
+        {% if policy.description %}<div class="mt-3 p-3 bg-light rounded"><small class="text-muted">{{ policy.description }}</small></div>{% endif %}
+        {% else %}
+        <div class="p-4 bg-light rounded">
+          {% if policy.content %}{{ policy.content|safe }}{% else %}<p class="text-muted">{{ _('No content yet.') }}</p>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Details') }}</div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted">{{ _('Type') }}</td><td>{% if policy.is_document %}<span class="badge bg-primary"><i class="fas fa-file-alt me-1"></i>{{ _('Document') }}</span>{% else %}<span class="badge bg-info"><i class="fas fa-file-lines me-1"></i>{{ _('Policy') }}</span>{% endif %}</td></tr>
+          <tr><td class="text-muted">{{ _('Version') }}</td><td>{{ _('v') }}{{ policy.current_version }}</td></tr>
+          <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'secondary' if policy.status == 'draft' else 'info' if policy.status == 'reviewed' else 'primary' if policy.status == 'approved' else 'success' if policy.status == 'published' else 'danger' }}">{{ policy.status|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Category') }}</td><td>{{ policy.category|replace('_', ' ')|title if policy.category else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Owner') }}</td><td>{{ policy.owner.first_name ~ ' ' ~ policy.owner.last_name if policy.owner else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Effective') }}</td><td>{{ policy.effective_date.strftime('%Y-%m-%d') if policy.effective_date else _('Not set') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Review') }}</td><td>{{ policy.review_date.strftime('%Y-%m-%d') if policy.review_date else _('Not set') }}</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">{{ _('Version History') }}</div>
+      <ul class="list-group list-group-flush">
+        {% for v in policy.versions %}
+        <li class="list-group-item py-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <span class="fw-medium">v{{ v.version_number }}</span>
+              <small class="text-muted ms-2">{{ v.created_at.strftime('%Y-%m-%d') }}</small>
+            </div>
+            {% if v.filename %}
+            <a href="{{ url_for('policies.download_version_file', policy_id=policy.id, version_id=v.id) }}" class="btn btn-sm btn-outline-secondary" title="{{ v.original_filename }}">
+              <i class="fas fa-download"></i>
+            </a>
+            {% endif %}
+          </div>
+          {% if v.change_summary %}<small class="text-muted d-block mt-1">{{ v.change_summary }}</small>{% endif %}
+          {% if v.original_filename %}<small class="text-muted d-block mt-1"><i class="fas fa-paperclip me-1"></i>{{ v.original_filename }} {% if v.file_size_display %}({{ v.file_size_display }}){% endif %}</small>{% endif %}
+        </li>
+        {% else %}
+        <li class="list-group-item text-muted small">{{ _('No version history') }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
