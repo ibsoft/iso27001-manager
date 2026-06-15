@@ -27,8 +27,10 @@
           <tr><td class="text-muted">{{ _('Lead Auditor') }}</td><td>{{ audit.lead_auditor.first_name ~ ' ' ~ audit.lead_auditor.last_name if audit.lead_auditor else '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Audit Date') }}</td><td>{{ audit.audit_date.strftime('%Y-%m-%d') }}</td></tr>
           <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'info' if audit.status == 'planned' else 'primary' if audit.status == 'in_progress' else 'success' if audit.status == 'completed' else 'secondary' }}">{{ audit.status|replace('_', ' ')|title }}</span></td></tr>
+          {% if audit.status == 'completed' %}
           <tr><td class="text-muted">{{ _('Findings Summary') }}</td><td>{{ audit.findings_summary or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Conclusion') }}</td><td>{{ audit.conclusion or '—' }}</td></tr>
+          {% endif %}
         </table>
       </div>
     </div>
