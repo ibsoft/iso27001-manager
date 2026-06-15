@@ -1,0 +1,48 @@
+[DEFAULT]
+Flask template for the ISO 27001 Manager application.
+
+This application provides a comprehensive ISMS (Information Security Management System)
+covering all ISO 27001:2022 requirements including:
+
+- All 93 Annex A controls across 4 domains (Organizational, People, Physical, Technological)
+- ISO Clauses 4-10 compliance tracking
+- Risk assessment and treatment
+- Asset management with classification
+- Incident management
+- Policy and document version control
+- Internal audit management with findings and non-conformities
+- Statement of Applicability (SoA)
+- Supplier security assessments
+- KPI tracking and reporting
+- User management with role-based access control
+- Two-factor authentication (TOTP)
+- Full audit trail logging
+- CSV export for all modules
+
+
+QUICK START (Development):
+    cp .env.example .env
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    python run.py
+    # Open http://localhost:5000
+    # Default credentials: admin / Admin@ISO27001!2024
+
+PRODUCTION (Docker):
+    cp .env.example .env
+    # Edit .env with production values
+    docker-compose up -d
+
+DEFAULT ACCOUNTS:
+    admin    / Admin@ISO27001!2024  (full access)
+    manager  / Manager@ISO27001!2024
+    auditor  / Auditor@ISO27001!2024
+    user     / User@ISO27001!2024
+
+TECH STACK:
+    Flask 3.x, SQLAlchemy 2.x, Bootstrap 5.3, AdminLTE 4
+    SQLite (dev) / PostgreSQL (prod)
+    TOTP 2FA via pyotp
+    Gunicorn + Nginx (production)
+    Chart.js for visualizations

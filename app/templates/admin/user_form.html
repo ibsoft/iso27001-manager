@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('admin.list_users') }}">{{ _('Users') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Username') }}</label>
+              {{ form.username(class="form-control") }}
+              {% for error in form.username.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Email') }}</label>
+              {{ form.email(class="form-control") }}
+              {% for error in form.email.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('First Name') }}</label>
+              {{ form.first_name(class="form-control") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Last Name') }}</label>
+              {{ form.last_name(class="form-control") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Password') }} {{ _('(leave blank to keep current)') if user else '' }}</label>
+            {{ form.password(class="form-control") }}
+            <small class="text-muted">{{ _('Min 12 chars, must contain uppercase, lowercase, digit & special character') }}</small>
+            {% for error in form.password.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Roles') }}</label>
+              {{ form.roles(class="form-select", size=4) }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-check mt-4">
+                {{ form.is_active(class="form-check-input") }}
+                <label class="form-check-label small">{{ _('Active') }}</label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

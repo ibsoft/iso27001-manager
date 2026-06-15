@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>SoA Export</title>
+<style>body{font-family:system-ui;font-size:11px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #ccc;padding:4px 8px;text-align:left;}th{background:#f0f0f0;}
+</style></head><body>
+<h2>{{ _('Statement of Applicability') }}</h2>
+<table>
+<tr><th>{{ _('Control') }}</th><th>{{ _('Title') }}</th><th>{{ _('Applicable') }}</th><th>{{ _('Status') }}</th><th>{{ _('Justification') }}</th></tr>
+{% for e in entries %}
+<tr><td>{{ e.control.code }}</td><td>{{ e.control.title }}</td><td>{{ _('Yes') if e.applicable else _('No') }}</td><td>{{ e.implementation_status }}</td><td>{{ e.justification or '' }}</td></tr>
+{% endfor %}
+</table>
+<p><small>{{ _('Generated') }} {{ now().strftime('%Y-%m-%d %H:%M') }}</small></p>
+</body></html>

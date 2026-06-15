@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Internal Audits') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Audits') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between">
+      <form method="GET" class="row g-2">
+        <div class="col-auto">
+          <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Status') }}</option>
+            <option value="planned" {{ 'selected' if request.args.get('status') == 'planned' }}>{{ _('Planned') }}</option>
+            <option value="in_progress" {{ 'selected' if request.args.get('status') == 'in_progress' }}>{{ _('In Progress') }}</option>
+            <option value="completed" {{ 'selected' if request.args.get('status') == 'completed' }}>{{ _('Completed') }}</option>
+            <option value="reported" {{ 'selected' if request.args.get('status') == 'reported' }}>{{ _('Reported') }}</option>
+          </select>
+        </div>
+      </form>
+      <a href="{{ url_for('audits.new_audit') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Schedule Audit') }}</a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  {% for audit in audits %}
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h5 class="mb-1"><a href="{{ url_for('audits.view_audit', audit_id=audit.id) }}" class="text-decoration-none">{{ audit.title }}</a></h5>
+            <p class="small text-muted mb-2">{{ audit.scope|truncate(120) if audit.scope else '' }}</p>
+            <div>
+              <span class="badge bg-{{ 'info' if audit.status == 'planned' else 'primary' if audit.status == 'in_progress' else 'success' if audit.status == 'completed' else 'secondary' }}">{{ audit.status|replace('_', ' ')|title }}</span>
+              <span class="ms-2 text-muted small"><i class="far fa-calendar me-1"></i>{{ audit.audit_date.strftime('%Y-%m-%d') }}</span>
+              {% if audit.lead_auditor %}<span class="ms-2 text-muted small"><i class="far fa-user me-1"></i>{{ audit.lead_auditor.first_name ~ ' ' ~ audit.lead_auditor.last_name }}</span>{% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 small d-flex justify-content-between align-items-center">
+          <div>
+            <span class="text-muted">{{ audit.findings.count() }} {{ _('findings') }}</span>
+            <span class="text-muted ms-3">{{ audit.non_conformities.count() }} {{ _('NCs') }}</span>
+          </div>
+          <div>
+            {% if current_user.has_role('admin') %}
+            <form method="POST" action="{{ url_for('audits.delete_audit', audit_id=audit.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this audit?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12"><div class="text-center text-muted py-5"><i class="fas fa-clipboard-check fa-3x mb-3"></i><p>{{ _('No audits scheduled') }}</p></div></div>
+  {% endfor %}
+</div>
+{% endblock %}

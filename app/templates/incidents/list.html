@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Incidents') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Incidents') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <form method="GET" class="row g-2 flex-grow-1">
+        <div class="col-md-3">
+          <select name="severity" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Severities') }}</option>
+            <option value="low" {{ 'selected' if request.args.get('severity') == 'low' }}>{{ _('Low') }}</option>
+            <option value="medium" {{ 'selected' if request.args.get('severity') == 'medium' }}>{{ _('Medium') }}</option>
+            <option value="high" {{ 'selected' if request.args.get('severity') == 'high' }}>{{ _('High') }}</option>
+            <option value="critical" {{ 'selected' if request.args.get('severity') == 'critical' }}>{{ _('Critical') }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Status') }}</option>
+            <option value="reported" {{ 'selected' if request.args.get('status') == 'reported' }}>{{ _('Reported') }}</option>
+            <option value="investigating" {{ 'selected' if request.args.get('status') == 'investigating' }}>{{ _('Investigating') }}</option>
+            <option value="contained" {{ 'selected' if request.args.get('status') == 'contained' }}>{{ _('Contained') }}</option>
+            <option value="resolved" {{ 'selected' if request.args.get('status') == 'resolved' }}>{{ _('Resolved') }}</option>
+            <option value="closed" {{ 'selected' if request.args.get('status') == 'closed' }}>{{ _('Closed') }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <input type="text" name="search" class="form-control" placeholder="{{ _('Search incidents...') }}" value="{{ request.args.get('search', '') }}">
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+      <div class="ms-3">
+        <a href="{{ url_for('incidents.new_incident') }}" class="btn btn-warning"><i class="fas fa-plus me-1"></i>{{ _('Report Incident') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Severity') }}</th><th>{{ _('Status') }}</th><th>{{ _('Category') }}</th><th>{{ _('Reported By') }}</th><th>{{ _('Date') }}</th><th></th></tr></thead>
+      <tbody>
+        {% for inc in incidents %}
+        <tr>
+          <td><a href="{{ url_for('incidents.view_incident', incident_id=inc.id) }}" class="text-decoration-none fw-medium">{{ inc.title }}</a></td>
+          <td><span class="badge bg-{{ 'dark' if inc.severity == 'critical' else 'danger' if inc.severity == 'high' else 'warning text-dark' if inc.severity == 'medium' else 'success' }}">{{ inc.severity|title }}</span></td>
+          <td><span class="badge bg-{{ 'warning text-dark' if inc.status == 'reported' else 'primary' if inc.status == 'investigating' else 'info' if inc.status == 'contained' else 'success' if inc.status == 'resolved' else 'secondary' }}">{{ inc.status|title }}</span></td>
+          <td>{{ inc.category|replace('_', ' ')|title if inc.category else '—' }}</td>
+          <td class="small">{{ inc.reported_by.first_name ~ ' ' ~ inc.reported_by.last_name if inc.reported_by else '—' }}</td>
+          <td class="small">{{ inc.detected_at.strftime('%Y-%m-%d') }}</td>
+          <td>
+            {% if current_user.has_role('admin') %}
+            <form method="POST" action="{{ url_for('incidents.delete_incident', incident_id=inc.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this incident?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-4">{{ _('No incidents reported') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

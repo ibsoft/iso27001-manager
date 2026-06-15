@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Risk Summary') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item"><a href="{{ url_for('reports.index') }}">{{ _('Reports') }}</a></li><li class="breadcrumb-item active">{{ _('Risks') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card"><div class="card-header">{{ _('Risk Levels') }}</div>
+      <div class="card-body"><canvas id="riskLevelChart" height="180"></canvas></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card"><div class="card-header">{{ _('Status') }}</div>
+      <div class="card-body"><canvas id="riskStatusChart" height="180"></canvas></div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card"><div class="card-header">{{ _('Treatment Options') }}</div>
+      <div class="card-body"><canvas id="riskTreatmentChart" height="180"></canvas></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+new Chart(document.getElementById('riskLevelChart'), { type: 'doughnut', data: { labels: [{% for lvl, cnt in by_level %}'{{ lvl|upper }}',{% endfor %}], datasets: [{ data: [{% for lvl, cnt in by_level %}{{ cnt }},{% endfor %}], backgroundColor: ['#dc3545','#fd7e14','#ffc107','#28a745'] }] }, options: { plugins: { legend: { position: 'bottom' } } } });
+new Chart(document.getElementById('riskStatusChart'), { type: 'doughnut', data: { labels: [{% for s, cnt in by_status %}'{{ s|replace('_',' ')|title }}',{% endfor %}], datasets: [{ data: [{% for s, cnt in by_status %}{{ cnt }},{% endfor %}], backgroundColor: ['#6c757d','#0dcaf0','#0d6efd','#198754'] }] }, options: { plugins: { legend: { position: 'bottom' } } } });
+new Chart(document.getElementById('riskTreatmentChart'), { type: 'doughnut', data: { labels: [{% for t, cnt in by_treatment %}'{{ t|title if t else 'None' }}',{% endfor %}], datasets: [{ data: [{% for t, cnt in by_treatment %}{{ cnt }},{% endfor %}], backgroundColor: ['#0d6efd','#198754','#6f42c1','#dc3545','#6c757d'] }] }, options: { plugins: { legend: { position: 'bottom' } } } });
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Edit SoA Entry') }} — {{ entry.control.code }} {{ entry.control.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('soa.list_soa') }}">{{ _('SoA') }}</a></li>
+<li class="breadcrumb-item active">{{ entry.control.code }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Control') }}</label>
+            <input type="text" class="form-control" value="{{ entry.control.code }} - {{ entry.control.title }}" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Applicable') }}</label>
+            {{ form.applicable(class="form-select") }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Implementation Status') }}</label>
+            {{ form.implementation_status(class="form-select") }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Justification (if not applicable)') }}</label>
+            {{ form.justification(class="form-control", rows=3) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Control Description') }}</label>
+            {{ form.selected_control_description(class="form-control", rows=3) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Responsible Person') }}</label>
+            {{ form.responsible_person_id(class="form-select") }}
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('soa.list_soa') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

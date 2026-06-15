@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('gdpr.list_consent') }}">{{ _('Consent Records') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Data Subject Identifier') }}</label>
+              {{ form.data_subject_identifier(class="form-control") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Data Subject Email') }}</label>
+              {{ form.data_subject_email(class="form-control") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Processing Purpose') }}</label>
+            {{ form.processing_purpose(class="form-control") }}
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Consent Source') }}</label>
+              {{ form.consent_source(class="form-select") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Consent Version') }}</label>
+              {{ form.consent_version(class="form-control") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="form-check mt-4">{{ form.granted(class="form-check-input") }}<label class="form-check-label">{{ _('Consent Granted') }}</label></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Proof of Consent') }}</label>
+            {{ form.consent_proof(class="form-control", rows=3) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Notes') }}</label>
+            {{ form.notes(class="form-control", rows=2) }}
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('gdpr.list_consent') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

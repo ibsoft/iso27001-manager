@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block page_title %}{{ asset.name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('assets.list_assets') }}">{{ _('Assets') }}</a></li>
+<li class="breadcrumb-item active">{{ asset.name[:30] }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <span>{{ _('Asset Details') }}</span>
+        <div>
+          <a href="{{ url_for('assets.edit_asset', asset_id=asset.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('assets.delete_asset', asset_id=asset.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this asset?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:160px">{{ _('Name') }}</td><td class="fw-bold">{{ asset.name }}</td></tr>
+          {% if asset.serial_number %}<tr><td class="text-muted">{{ _('Serial Number') }}</td><td><code>{{ asset.serial_number }}</code></td></tr>{% endif %}
+          <tr><td class="text-muted">{{ _('Description') }}</td><td>{{ asset.description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Type') }}</td><td><span class="badge bg-secondary">{{ asset.asset_type|title if asset.asset_type else '—' }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Classification') }}</td><td><span class="badge bg-{{ 'success' if asset.classification == 'public' else 'info' if asset.classification == 'internal' else 'warning text-dark' if asset.classification == 'confidential' else 'danger' }}">{{ asset.classification|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Criticality') }}</td><td><span class="badge bg-{{ 'dark' if asset.criticality == 'critical' else 'danger' if asset.criticality == 'high' else 'warning text-dark' if asset.criticality == 'medium' else 'success' }}">{{ asset.criticality|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'success' if asset.status == 'active' else 'secondary' }}">{{ asset.status|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Owner') }}</td><td>{{ asset.owner.first_name ~ ' ' ~ asset.owner.last_name if asset.owner else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Location') }}</td><td>{{ asset.location or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Retention Period') }}</td><td>{{ asset.retention_period or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Notes') }}</td><td>{{ asset.notes or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Created') }}</td><td>{{ asset.created_at.strftime('%Y-%m-%d') }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Related Risks') }}</div>
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          {% for risk in asset.risks %}
+          <li class="list-group-item"><a href="{{ url_for('risks.view_risk', risk_id=risk.id) }}">{{ risk.title }}</a></li>
+          {% else %}
+          <li class="list-group-item text-muted small">{{ _('No risks linked') }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

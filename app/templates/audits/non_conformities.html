@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Non-Conformities') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('NCs') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-auto">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Status') }}</option>
+            <option value="open" {{ 'selected' if request.args.get('status') == 'open' }}>{{ _('Open') }}</option>
+            <option value="in_progress" {{ 'selected' if request.args.get('status') == 'in_progress' }}>{{ _('In Progress') }}</option>
+            <option value="resolved" {{ 'selected' if request.args.get('status') == 'resolved' }}>{{ _('Resolved') }}</option>
+            <option value="closed" {{ 'selected' if request.args.get('status') == 'closed' }}>{{ _('Closed') }}</option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Severity') }}</th><th>{{ _('Status') }}</th><th>{{ _('Audit') }}</th><th>{{ _('Created') }}</th></tr></thead>
+      <tbody>
+        {% for nc in non_conformities %}
+        <tr>
+          <td class="fw-medium">{{ nc.title }}</td>
+          <td><span class="badge bg-{{ 'danger' if nc.severity == 'major' or nc.severity == 'critical' else 'warning text-dark' }}">{{ nc.severity|title }}</span></td>
+          <td><span class="badge bg-{{ 'danger' if nc.status == 'open' else 'primary' if nc.status == 'in_progress' else 'success' if nc.status == 'resolved' else 'secondary' }}">{{ nc.status|replace('_', ' ')|title }}</span></td>
+          <td class="small">{{ nc.audit.title if nc.audit else '—' }}</td>
+          <td class="small">{{ nc.created_at.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center text-muted py-4">{{ _('No non-conformities') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

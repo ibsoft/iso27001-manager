@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Dashboard') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Dashboard') }}</li>{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-3 mb-4">
+  <div class="bg-gradient-primary text-white rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+    <i class="fas fa-shield-alt fa-xl"></i>
+  </div>
+  <div>
+    <h4 class="mb-0 fw-bold">{{ _('ISMS & GDPR Dashboard') }}</h4>
+    <small class="text-muted">{{ _('Consolidated view of your information security and privacy compliance posture') }}</small>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Controls') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ implemented_controls }}<small class="fw-normal fs-6">/{{ total_controls }}</small></h2>
+          </div>
+          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-sliders-h fa-lg"></i></div>
+        </div>
+        <div class="progress mt-3 bg-white bg-opacity-25" style="height:4px;">
+          <div class="progress-bar bg-white" style="width:{{ implementation_pct }}%"></div>
+        </div>
+        <div class="d-flex justify-content-between mt-1"><small class="text-white-50">{{ _('Implemented') }}</small><small class="text-white-50">{{ implementation_pct }}%</small></div>
+      </div>
+      <a href="{{ url_for('controls.list_controls') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('View all controls') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Risks') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ critical_risks + high_risks }}</h2>
+            <small class="text-white-50">{{ _('critical') }}/{{ _('high') }}</small>
+          </div>
+          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-exclamation-triangle fa-lg"></i></div>
+        </div>
+        <div class="mt-3"><small class="text-white-50">{{ total_risks }} {{ _('total risks') }}</small></div>
+      </div>
+      <a href="{{ url_for('risks.list_risks') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('Manage risks') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Incidents') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ open_incidents }}</h2>
+            <small class="text-white-50">{{ _('open') }}</small>
+          </div>
+          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-bolt fa-lg"></i></div>
+        </div>
+        <div class="mt-3"><small class="text-white-50">{{ total_incidents }} {{ _('total incidents') }}</small></div>
+      </div>
+      <a href="{{ url_for('incidents.list_incidents') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('View incidents') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Audits') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ open_non_conformities }}</h2>
+            <small class="text-white-50">{{ _('open NCs') }}</small>
+          </div>
+          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-clipboard-check fa-lg"></i></div>
+        </div>
+        <div class="mt-3"><small class="text-white-50">{{ policies_needing_review }} {{ _('policies need review') }}</small></div>
+      </div>
+      <a href="{{ url_for('audits.list_non_conformities') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('View NCs') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex align-items-center gap-3 mb-3 mt-5">
+  <div style="width:4px;height:28px;background:linear-gradient(180deg,#1a56db,#7c3aed);border-radius:2px;"></div>
+  <h5 class="mb-0 fw-bold">{{ _('GDPR Compliance Overview') }}</h5>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-muted small mb-1">{{ _('Processing Activities') }}</p>
+            <h3 class="mb-0 fw-bold">{{ total_activities }}</h3>
+          </div>
+          <div class="rounded-2 p-2" style="background:rgba(102,126,234,0.12);color:#667eea;"><i class="fas fa-tasks"></i></div>
+        </div>
+        <small class="text-muted">{{ active_activities }} {{ _('active') }}</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-muted small mb-1">{{ _('DPIAs') }}</p>
+            <h3 class="mb-0 fw-bold">{{ total_dpias }}</h3>
+          </div>
+          <div class="rounded-2 p-2" style="background:rgba(79,172,254,0.12);color:#4facfe;"><i class="fas fa-shield-alt"></i></div>
+        </div>
+        <small class="text-muted">{{ approved_dpias }} {{ _('approved') }}</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-muted small mb-1">{{ _('Open DSARs') }}</p>
+            <h3 class="mb-0 fw-bold {% if overdue_dsars > 0 %}text-danger{% endif %}">{{ open_dsars }}</h3>
+          </div>
+          <div class="rounded-2 p-2" style="background:rgba(240,147,251,0.12);color:#f093fb;"><i class="fas fa-user-check"></i></div>
+        </div>
+        {% if overdue_dsars > 0 %}<small class="text-danger fw-semibold"><i class="fas fa-exclamation-circle me-1"></i>{{ overdue_dsars }} {{ _('overdue') }}</small>{% else %}<small class="text-muted">{{ _('All on track') }}</small>{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div>
+            <p class="text-muted small mb-1">{{ _('Consent Records') }}</p>
+            <h3 class="mb-0 fw-bold">{{ active_consents }}</h3>
+          </div>
+          <div class="rounded-2 p-2" style="background:rgba(67,233,123,0.12);color:#43e97b;"><i class="fas fa-check-double"></i></div>
+        </div>
+        <small class="text-muted">{{ _('active consents') }}</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mt-2">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-transparent border-bottom d-flex align-items-center gap-2">
+        <i class="fas fa-chart-donut text-primary"></i>
+        <span class="fw-semibold">{{ _('Controls Implementation Status') }}</span>
+      </div>
+      <div class="card-body">
+        <canvas id="controlsChart" height="200"></canvas>
+      </div>
+    </div>
+    <div class="card border-0 shadow-sm mt-4">
+      <div class="card-header bg-transparent border-bottom d-flex align-items-center gap-2">
+        <i class="fas fa-bolt text-warning"></i>
+        <span class="fw-semibold">{{ _('Recent Incidents') }}</span>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead class="table-light"><tr><th>{{ _('Title') }}</th><th>{{ _('Severity') }}</th><th>{{ _('Status') }}</th><th>{{ _('Reported') }}</th></tr></thead>
+          <tbody>
+            {% for inc in recent_incidents %}
+            <tr>
+              <td><a href="{{ url_for('incidents.view_incident', incident_id=inc.id) }}" class="text-decoration-none fw-medium">{{ inc.title }}</a></td>
+              <td><span class="badge bg-{{ 'dark' if inc.severity == 'critical' else 'danger' if inc.severity == 'high' else 'warning text-dark' if inc.severity == 'medium' else 'success' }}">{{ inc.severity | title }}</span></td>
+              <td><span class="badge bg-{{ 'warning text-dark' if inc.status == 'reported' else 'primary' if inc.status == 'investigating' else 'info' if inc.status == 'contained' else 'success' if inc.status == 'resolved' else 'secondary' }}">{{ inc.status | replace('_', ' ') | title }}</span></td>
+              <td class="small text-muted">{{ inc.detected_at.strftime('%Y-%m-%d') }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center text-muted py-4">{{ _('No incidents reported') }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-transparent border-bottom d-flex align-items-center gap-2">
+        <i class="fas fa-bolt text-primary"></i>
+        <span class="fw-semibold">{{ _('Quick Actions') }}</span>
+      </div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <a href="{{ url_for('controls.list_controls') }}" class="btn btn-outline-primary btn-sm text-start"><i class="fas fa-sliders-h me-2"></i>{{ _('Browse Annex A Controls') }}</a>
+          <a href="{{ url_for('risks.new_risk') }}" class="btn btn-outline-danger btn-sm text-start"><i class="fas fa-plus-circle me-2"></i>{{ _('New Risk Assessment') }}</a>
+          <a href="{{ url_for('incidents.new_incident') }}" class="btn btn-outline-warning btn-sm text-start"><i class="fas fa-bolt me-2"></i>{{ _('Report Incident') }}</a>
+          <a href="{{ url_for('audits.new_audit') }}" class="btn btn-outline-info btn-sm text-start"><i class="fas fa-clipboard-check me-2"></i>{{ _('Schedule Internal Audit') }}</a>
+          <a href="{{ url_for('policies.new_policy') }}" class="btn btn-outline-secondary btn-sm text-start"><i class="fas fa-file-alt me-2"></i>{{ _('Create Policy') }}</a>
+          <a href="{{ url_for('soa.soa_summary') }}" class="btn btn-outline-success btn-sm text-start"><i class="fas fa-file-signature me-2"></i>{{ _('View SoA Summary') }}</a>
+          <hr class="my-1">
+          <a href="{{ url_for('gdpr.list_processing') }}" class="btn btn-outline-primary btn-sm text-start"><i class="fas fa-tasks me-2"></i>{{ _('Processing Activities') }}</a>
+          <a href="{{ url_for('gdpr.list_dsar') }}" class="btn btn-outline-warning btn-sm text-start"><i class="fas fa-user-check me-2"></i>{{ _('DSARs') }}</a>
+          <a href="{{ url_for('gdpr.list_consent') }}" class="btn btn-outline-success btn-sm text-start"><i class="fas fa-check-double me-2"></i>{{ _('Consent Records') }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="card border-0 shadow-sm mt-4">
+      <div class="card-header bg-transparent border-bottom d-flex align-items-center gap-2">
+        <i class="fas fa-shield-alt text-info"></i>
+        <span class="fw-semibold">{{ _('ISMS Health') }}</span>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted small">{{ _('Controls Implemented') }}</span><span class="fw-bold">{{ implementation_pct }}%</span></div>
+        <div class="progress mb-3" style="height:6px;"><div class="progress-bar bg-success" style="width:{{ implementation_pct }}%"></div></div>
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted small">{{ _('Policies Up to Date') }}</span><span class="fw-bold">{{ total_policies - policies_needing_review }}/{{ total_policies }}</span></div>
+        <div class="progress mb-3" style="height:6px;"><div class="progress-bar bg-info" style="width:{{ ((total_policies - policies_needing_review) / total_policies * 100) if total_policies else 0 }}%"></div></div>
+        <div class="d-flex justify-content-between mb-1"><span class="text-muted small">{{ _('Data Breaches') }}</span><span class="fw-bold {% if data_breaches > 0 %}text-danger{% endif %}">{{ data_breaches }}</span></div>
+        <div class="d-flex justify-content-between mb-1"><span class="text-muted small">{{ _('Breaches Notified to SA') }}</span><span class="fw-bold">{{ notified_sa }}</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  new Chart(document.getElementById('controlsChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['{{ _("Implemented") }}', '{{ _("In Progress") }}', '{{ _("Not Started") }}', '{{ _("N/A") }}'],
+      datasets: [{
+        data: [
+          {{ implemented_controls }},
+          {{ in_progress_controls }},
+          {{ not_started_controls }},
+          {{ total_controls - implemented_controls - in_progress_controls - not_started_controls }}
+        ],
+        backgroundColor: ['#10b981', '#f59e0b', '#6b7280', '#3b82f6'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, font: { size: 12 } } }
+      },
+      cutout: '68%'
+    }
+  });
+});
+</script>
+{% endblock %}

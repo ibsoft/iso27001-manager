@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Statement of Applicability') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('SoA') }}</li>{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+  <a href="{{ url_for('soa.soa_summary') }}" class="btn btn-outline-primary"><i class="fas fa-chart-pie me-1"></i>{{ _('Summary') }}</a>
+  <a href="{{ url_for('soa.export_soa') }}" class="btn btn-outline-success"><i class="fas fa-download me-1"></i>{{ _('Export') }}</a>
+</div>
+
+{% for domain_id, data in soa_entries.items() %}
+<div class="card mb-4">
+  <div class="card-header">
+    <span>{{ data.domain.code }}. {{ data.domain.name }}</span>
+    <span class="small text-muted ms-3">
+      {% set imp = data.entries|selectattr('implementation_status', 'equalto', 'implemented')|list|length %}
+      {{ imp }}/{{ data.entries|length }} implemented
+    </span>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>{{ _('Control') }}</th><th>{{ _('Title') }}</th><th>{{ _('Applicable') }}</th><th>{{ _('Status') }}</th><th>{{ _('Action') }}</th></tr></thead>
+      <tbody>
+        {% for entry in data.entries %}
+        <tr>
+          <td><span class="badge bg-secondary">{{ entry.control.code }}</span></td>
+          <td class="small">{{ entry.control.title }}</td>
+          <td>
+            {% if entry.applicable %}
+              <span class="badge bg-success"><i class="fas fa-check me-1"></i>{{ _('Yes') }}</span>
+            {% else %}
+              <span class="badge bg-secondary"><i class="fas fa-times me-1"></i>{{ _('No') }}</span>
+            {% endif %}
+          </td>
+          <td><span class="badge bg-{{ 'success' if entry.implementation_status == 'implemented' else 'warning text-dark' if entry.implementation_status == 'in_progress' else 'secondary' }}">{{ entry.implementation_status|replace('_', ' ')|title }}</span></td>
+          <td><a href="{{ url_for('soa.edit_entry', entry_id=entry.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

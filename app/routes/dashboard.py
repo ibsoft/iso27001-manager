@@ -1,0 +1,98 @@
+from flask import Blueprint, render_template
+from flask_login import login_required
+from flask_babel import gettext as _
+from app.extensions import db
+from app.models.control import Control
+from app.models.risk import Risk
+from app.models.incident import Incident
+from app.models.policy import Policy
+from app.models.audit import NonConformity
+from app.models.processing import ProcessingActivity
+from app.models.dpia import Dpia
+from app.models.data_subject_request import DataSubjectRequest
+from app.models.consent import ConsentRecord
+from app.models.data_breach import DataBreach
+from datetime import datetime
+from sqlalchemy import func
+
+dashboard_bp = Blueprint("dashboard", __name__)
+
+
+@dashboard_bp.route("/")
+@dashboard_bp.route("/dashboard")
+@login_required
+def index():
+    now = datetime.utcnow()
+
+    # ISMS
+    total_controls = Control.query.count()
+    implemented_controls = Control.query.filter_by(implementation_status="implemented").count()
+    in_progress_controls = Control.query.filter_by(implementation_status="in_progress").count()
+    not_started_controls = Control.query.filter_by(implementation_status="not_started").count()
+
+    total_risks = Risk.query.count()
+    critical_risks = Risk.query.filter_by(risk_level="critical").count()
+    high_risks = Risk.query.filter_by(risk_level="high").count()
+
+    total_incidents = Incident.query.count()
+    open_incidents = Incident.query.filter(
+        Incident.status.in_(["reported", "investigating", "contained"])
+    ).count()
+
+    total_policies = Policy.query.count()
+    policies_needing_review = Policy.query.filter(
+        Policy.review_date.isnot(None),
+        Policy.review_date < func.current_date()
+    ).count()
+
+    open_non_conformities = NonConformity.query.filter(
+        NonConformity.status.in_(["open", "in_progress"])
+    ).count()
+
+    recent_incidents = Incident.query.order_by(Incident.created_at.desc()).limit(5).all()
+
+    # GDPR
+    total_activities = ProcessingActivity.query.count()
+    active_activities = ProcessingActivity.query.filter_by(status="active").count()
+    total_dpias = Dpia.query.count()
+    approved_dpias = Dpia.query.filter_by(status="approved").count()
+    open_dsars = DataSubjectRequest.query.filter(
+        DataSubjectRequest.status.in_(["open", "in_progress", "awaiting_info"])
+    ).count()
+    overdue_dsars = DataSubjectRequest.query.filter(
+        DataSubjectRequest.deadline_date < now,
+        DataSubjectRequest.status.in_(["open", "in_progress", "awaiting_info"]),
+    ).count()
+    active_consents = ConsentRecord.query.filter_by(granted=True).filter(
+        ConsentRecord.withdrawn_at.is_(None)
+    ).count()
+    data_breaches = DataBreach.query.count()
+    notified_sa = DataBreach.query.filter_by(notified_supervisory_authority=True).count()
+
+    context = {
+        "total_controls": total_controls,
+        "implemented_controls": implemented_controls,
+        "in_progress_controls": in_progress_controls,
+        "not_started_controls": not_started_controls,
+        "implementation_pct": round((implemented_controls / total_controls * 100)) if total_controls else 0,
+        "total_risks": total_risks,
+        "critical_risks": critical_risks,
+        "high_risks": high_risks,
+        "total_incidents": total_incidents,
+        "open_incidents": open_incidents,
+        "total_policies": total_policies,
+        "policies_needing_review": policies_needing_review,
+        "open_non_conformities": open_non_conformities,
+        "recent_incidents": recent_incidents,
+        "total_activities": total_activities,
+        "active_activities": active_activities,
+        "total_dpias": total_dpias,
+        "approved_dpias": approved_dpias,
+        "open_dsars": open_dsars,
+        "overdue_dsars": overdue_dsars,
+        "active_consents": active_consents,
+        "data_breaches": data_breaches,
+        "notified_sa": notified_sa,
+    }
+
+    return render_template("dashboard/index.html", **context)

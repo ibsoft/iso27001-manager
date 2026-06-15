@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('policies.list_policies') }}">{{ _('Policies & Documents') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/tinymce@7.7.2/skins/ui/oxide/skin.min.css" rel="stylesheet">
+<style>
+  .upload-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .upload-area:hover, .upload-area.dragover {
+    border-color: #1a56db;
+    background: #eff6ff;
+  }
+  .upload-area.has-file {
+    border-color: #22c55e;
+    background: #f0fdf4;
+  }
+  .upload-area .file-info { display: none; }
+  .upload-area.has-file .file-info { display: block; }
+  .upload-area.has-file .upload-prompt { display: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-11">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Title') }}</label>
+            {{ form.title(class="form-control") }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Description') }}</label>
+            {{ form.description(class="form-control", rows=2) }}
+          </div>
+
+          <div class="mb-3">
+            <div class="form-check">
+              {{ form.is_document(class="form-check-input", id="is_document") }}
+              <label class="form-check-label" for="is_document">{{ _('This is an uploaded document (PDF, Word, Excel, etc.)') }}</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Category') }}</label>
+              {{ form.category(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Status') }}</label>
+              {{ form.status(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Owner') }}</label>
+              {{ form.owner_id(class="form-select") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Effective Date') }}</label>
+              {{ form.effective_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Review Date') }}</label>
+              {{ form.review_date(class="form-control", type="date") }}
+            </div>
+          </div>
+
+          <div id="content-editor">
+            <div class="mb-3">
+              <label class="form-label small">{{ _('Content') }}</label>
+              {{ form.content(class="form-control tinymce", rows=15) }}
+            </div>
+          </div>
+
+          <div id="file-uploader" style="display:none;">
+            <div class="mb-3">
+              <label class="form-label small">{{ _('Upload File') }}</label>
+              <div class="upload-area" id="dropZone">
+                <div class="upload-prompt">
+                  <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-2"></i>
+                  <p class="mb-1 text-muted">{{ _('Drag & drop a file here or click to browse') }}</p>
+                  <small class="text-muted">{{ _('Allowed: PDF, DOC, DOCX, XLS, XLSX, PPT, TXT, CSV, images') }}</small>
+                </div>
+                <div class="file-info">
+                  <i class="fas fa-file fa-2x text-success mb-2"></i>
+                  <p class="mb-1 fw-medium" id="fileName">{{ _('File selected') }}</p>
+                  <small class="text-muted" id="fileSize"></small>
+                </div>
+                {{ form.file(class="form-control d-none", id="fileInput", accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.odp,.txt,.rtf,.csv,.png,.jpg,.jpeg,.gif,.svg") }}
+              </div>
+              {% if policy and policy.original_filename %}
+              <div class="mt-2 small text-muted">
+                <i class="fas fa-paperclip me-1"></i>{{ _('Current file') }}: <strong>{{ policy.original_filename }}</strong>
+                ({{ policy.file_size_display or '?' }})
+                {% if policy.filename %}
+                <a href="{{ url_for('policies.download_policy', policy_id=policy.id) }}" class="ms-2 text-decoration-none" target="_blank">
+                  <i class="fas fa-download"></i>
+                </a>
+                {% endif %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('policies.list_policies') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/tinymce@7.7.2/tinymce.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var isDoc = document.getElementById('is_document');
+    var editor = document.getElementById('content-editor');
+    var uploader = document.getElementById('file-uploader');
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var fileName = document.getElementById('fileName');
+    var fileSize = document.getElementById('fileSize');
+
+    function toggleMode() {
+      if (isDoc.checked) {
+        editor.style.display = 'none';
+        uploader.style.display = 'block';
+      } else {
+        editor.style.display = 'block';
+        uploader.style.display = 'none';
+      }
+    }
+    isDoc.addEventListener('change', toggleMode);
+    toggleMode();
+
+    dropZone.addEventListener('click', function() { fileInput.click(); });
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        updateFileInfo();
+      }
+    });
+    fileInput.addEventListener('change', updateFileInfo);
+
+    function updateFileInfo() {
+      if (fileInput.files.length) {
+        var f = fileInput.files[0];
+        fileName.textContent = f.name;
+        fileSize.textContent = (f.size / 1024).toFixed(1) + ' KB';
+        dropZone.classList.add('has-file');
+      } else {
+        dropZone.classList.remove('has-file');
+      }
+    }
+
+    // Init TinyMCE only if editor is visible
+    if (!isDoc.checked) {
+      initTinyMCE();
+    }
+    isDoc.addEventListener('change', function() {
+      if (!isDoc.checked && !tinymce.get('.tinymce')) {
+        initTinyMCE();
+      }
+    });
+
+    function initTinyMCE() {
+      tinymce.init({
+        selector: '.tinymce',
+        height: 500,
+        menubar: true,
+        plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
+        toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link image media | code fullscreen | removeformat help',
+        branding: false,
+        promotion: false,
+        relative_urls: false,
+        content_style: 'body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; line-height: 1.6; padding: 15px; } h1, h2, h3, h4 { margin-top: 1.5em; margin-bottom: 0.5em; } p { margin-bottom: 1em; }',
+      });
+    }
+  });
+</script>
+{% endblock %}

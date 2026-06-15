@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Data Controllers & Processors') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Controllers / Processors') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <form method="GET" class="row g-2 flex-grow-1">
+      <div class="col-md-2">
+        <select name="role" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Roles') }}</option>
+          <option value="controller" {{ 'selected' if request.args.get('role') == 'controller' }}>{{ _('Controllers') }}</option>
+          <option value="processor" {{ 'selected' if request.args.get('role') == 'processor' }}>{{ _('Processors') }}</option>
+          <option value="joint_controller" {{ 'selected' if request.args.get('role') == 'joint_controller' }}>{{ _('Joint Controllers') }}</option>
+        </select>
+      </div>
+      <div class="col-md-8">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search by name...') }}" value="{{ request.args.get('search', '') }}">
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    <a href="{{ url_for('gdpr.new_controller') }}" class="btn btn-primary ms-3"><i class="fas fa-plus me-1"></i>{{ _('New Entity') }}</a>
+  </div>
+</div>
+
+<div class="row">
+  {% for e in entities %}
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <h6 class="mb-1"><a href="{{ url_for('gdpr.view_controller', entity_id=e.id) }}" class="text-decoration-none">{{ e.name }}</a></h6>
+          <span class="badge bg-{{ 'primary' if e.role == 'controller' else 'info' if e.role == 'joint_controller' else 'secondary' }}">{{ e.role | replace('_', ' ') | title }}</span>
+        </div>
+        {% if e.contact_person %}<small class="text-muted d-block">{{ e.contact_person }}</small>{% endif %}
+        {% if e.country %}<small class="text-muted"><i class="fas fa-globe me-1"></i>{{ e.country }}</small>{% endif %}
+        {% if e.dpo_name %}<br><small class="text-muted"><i class="fas fa-user-shield me-1"></i>{{ _('DPO') }}: {{ e.dpo_name }}</small>{% endif %}
+        <div class="mt-2">
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('gdpr.delete_controller', entity_id=e.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this entity?') }}')">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12 text-center text-muted py-5">
+    <i class="fas fa-building fa-3x mb-3"></i>
+    <p>{{ _('No controllers or processors registered.') }}</p>
+    <a href="{{ url_for('gdpr.new_controller') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Register entity') }}</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

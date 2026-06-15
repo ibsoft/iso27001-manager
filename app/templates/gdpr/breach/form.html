@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Data Breach Notification') }} — {{ incident.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('incidents.view_incident', incident_id=incident.id) }}">{{ incident.title[:20] }}</a></li>
+<li class="breadcrumb-item active">{{ _('Breach Notification') }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-exclamation-triangle text-danger me-1"></i>{{ _('Data Breach Notification Details') }}
+        <small class="text-muted ms-2">— {{ _('Incident') }}: {{ incident.title }}</small>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Breach Type') }}</label>
+              {{ form.breach_type(class="form-select") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-check mt-4">{{ form.personal_data_breach(class="form-check-input") }}<label class="form-check-label">{{ _('Personal Data Breach') }}</label></div>
+            </div>
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Notification to Supervisory Authority (Art 33)') }}</h6>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="form-check">{{ form.notified_supervisory_authority(class="form-check-input") }}<label class="form-check-label">{{ _('Notified Supervisory Authority') }}</label></div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('SA Notification Date') }}</label>
+              {{ form.sa_notification_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('SA Reference Number') }}</label>
+              {{ form.sa_reference(class="form-control") }}
+            </div>
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Notification to Data Subjects (Art 34)') }}</h6>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="form-check">{{ form.notified_data_subjects(class="form-check-input") }}<label class="form-check-label">{{ _('Notified Data Subjects') }}</label></div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('DS Notification Date') }}</label>
+              {{ form.ds_notification_date(class="form-control", type="date") }}
+            </div>
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Impact Assessment') }}</h6>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Data Subjects Affected') }}</label>
+              {{ form.ds_affected_count(class="form-control", type="number") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Personal Data Records Affected') }}</label>
+              {{ form.records_affected_count(class="form-control", type="number") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Likelihood & Severity of Risk to Rights') }}</label>
+            {{ form.likelihood_of_risk(class="form-control", rows=3) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Mitigation Measures Taken') }}</label>
+            {{ form.mitigation_measures(class="form-control", rows=3) }}
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Notification Delay') }}</h6>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Reason for Delay (if > 72 hours)') }}</label>
+            {{ form.notification_delay_reason(class="form-control", rows=2) }}
+          </div>
+          <div class="mb-3">
+            <div class="form-check">{{ form.notification_delay_justified(class="form-check-input") }}<label class="form-check-label">{{ _('Delay Justified (Art 33(3))') }}</label></div>
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Breach Details') }}</button>
+          <a href="{{ url_for('incidents.view_incident', incident_id=incident.id) }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

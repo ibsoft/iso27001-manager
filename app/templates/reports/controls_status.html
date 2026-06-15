@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Controls Implementation Status') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item"><a href="{{ url_for('reports.index') }}">{{ _('Reports') }}</a></li><li class="breadcrumb-item active">{{ _('Controls') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <canvas id="controlsStatusChart" height="200"></canvas>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table mb-0">
+      <thead><tr><th>{{ _('Domain') }}</th><th>{{ _('Total') }}</th><th>{{ _('Implemented') }}</th><th>{{ _('In Progress') }}</th><th>{{ _('Not Started') }}</th><th>{{ _('N/A') }}</th><th>%</th></tr></thead>
+      <tbody>
+        {% for name, stats in data.items() %}
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ stats.total }}</td>
+          <td><span class="text-success fw-bold">{{ stats.implemented }}</span></td>
+          <td><span class="text-warning fw-bold">{{ stats.in_progress }}</span></td>
+          <td><span class="text-secondary fw-bold">{{ stats.not_started }}</span></td>
+          <td>{{ stats.na }}</td>
+          <td>
+            <div class="progress" style="height:20px;">
+              <div class="progress-bar bg-success" style="width: {{ (stats.implemented/stats.total*100) if stats.total else 0 }}%">{{ (stats.implemented/stats.total*100)|round if stats.total else 0 }}%</div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+new Chart(document.getElementById('controlsStatusChart'), {
+  type: 'bar',
+  data: {
+    labels: [{% for name in data.keys() %}'{{ name[:20] }}',{% endfor %}],
+    datasets: [
+      { label: 'Implemented', data: [{% for s in data.values() %}{{ s.implemented }},{% endfor %}], backgroundColor: '#10b981', borderRadius: 4 },
+      { label: 'In Progress', data: [{% for s in data.values() %}{{ s.in_progress }},{% endfor %}], backgroundColor: '#f59e0b', borderRadius: 4 },
+      { label: 'Not Started', data: [{% for s in data.values() %}{{ s.not_started }},{% endfor %}], backgroundColor: '#6b7280', borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } } }
+});
+</script>
+{% endblock %}

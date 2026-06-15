@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('SoA Summary') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item"><a href="{{ url_for('soa.list_soa') }}">{{ _('SoA') }}</a></li><li class="breadcrumb-item active">{{ _('Summary') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-info"><div class="inner"><div class="stat-value">{{ total }}</div><div class="stat-label">{{ _('Total Controls') }}</div></div><div class="icon"><i class="fas fa-list"></i></div></div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-success"><div class="inner"><div class="stat-value">{{ applicable }}</div><div class="stat-label">{{ _('Applicable') }}</div></div><div class="icon"><i class="fas fa-check"></i></div></div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-secondary"><div class="inner"><div class="stat-value">{{ not_applicable }}</div><div class="stat-label">{{ _('Not Applicable') }}</div></div><div class="icon"><i class="fas fa-times"></i></div></div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-success"><div class="inner"><div class="stat-value">{{ implemented }}/{{ applicable }}</div><div class="stat-label">{{ _('Implemented') }}</div></div><div class="icon"><i class="fas fa-shield-alt"></i></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <canvas id="soaChart" height="100"></canvas>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+new Chart(document.getElementById('soaChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Implemented', 'In Progress', 'Not Started', 'Not Applicable'],
+    datasets: [{
+      label: 'Controls',
+      data: [{{ implemented }}, {{ in_progress }}, {{ not_started }}, {{ not_applicable }}],
+      backgroundColor: ['#10b981', '#f59e0b', '#6b7280', '#3b82f6'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, ticks: { stepSize: 10 } } }
+  }
+});
+</script>
+{% endblock %}

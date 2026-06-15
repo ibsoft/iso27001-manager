@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('gdpr.list_processing') }}">{{ _('Processing Activities') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-11">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Activity & Controller') }}</h6>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Processing Activity Name') }}</label>
+              {{ form.name(class="form-control") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Data Controller Name') }}</label>
+              {{ form.controller_name(class="form-control") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Controller Contact') }}</label>
+              {{ form.controller_contact(class="form-control") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Controller Email') }}</label>
+              {{ form.controller_email(class="form-control") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('EU Representative (Art 27)') }}</label>
+              {{ form.representative(class="form-control") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('DPO Name') }}</label>
+              {{ form.dpo_name(class="form-control") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('DPO Contact') }}</label>
+              {{ form.dpo_contact(class="form-control") }}
+            </div>
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Processing Details') }}</h6>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Processing Purpose') }}</label>
+            {{ form.processing_purpose(class="form-control", rows=3) }}
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Legal Basis') }}</label>
+              {{ form.legal_basis(class="form-select") }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Status') }}</label>
+              {{ form.status(class="form-select") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Legal Basis Details') }}</label>
+            {{ form.legal_basis_details(class="form-control", rows=2) }}
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Data Categories') }}</h6>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Data Subject Categories') }}</label>
+              {{ form.data_subject_categories(class="form-control", rows=3) }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Personal Data Categories') }}</label>
+              {{ form.personal_data_categories(class="form-control", rows=3) }}
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-check">{{ form.special_category_data(class="form-check-input") }}<label class="form-check-label">{{ _('Special Category Data (Art 9)') }}</label></div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check">{{ form.criminal_data(class="form-check-input") }}<label class="form-check-label">{{ _('Criminal Conviction Data (Art 10)') }}</label></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Special Category Details') }}</label>
+            {{ form.special_category_details(class="form-control", rows=2) }}
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Recipients & Retention') }}</h6>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Categories of Recipients') }}</label>
+            {{ form.recipients(class="form-control", rows=2) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Data Retention / Erasure Schedule') }}</label>
+            {{ form.data_retention(class="form-control", rows=2) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Technical & Organisational Measures') }}</label>
+            {{ form.tech_org_measures(class="form-control", rows=3) }}
+          </div>
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Cross-border Transfers') }}</h6>
+          <div class="mb-3">
+            <div class="form-check">{{ form.cross_border_transfer(class="form-check-input") }}<label class="form-check-label">{{ _('Cross-border Transfer (outside EU/EEA)') }}</label></div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Third Countries') }}</label>
+              {{ form.transfer_countries(class="form-control", rows=2) }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Safeguards (SCCs, BCRs, etc.)') }}</label>
+              {{ form.transfer_safeguards(class="form-control", rows=2) }}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('gdpr.list_processing') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

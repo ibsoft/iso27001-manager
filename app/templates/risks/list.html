@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Risk Management') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Risks') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <form method="GET" class="row g-2 flex-grow-1">
+        <div class="col-md-3">
+          <select name="risk_level" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Risk Levels') }}</option>
+            <option value="critical" {{ 'selected' if request.args.get('risk_level') == 'critical' }}>{{ _('Critical') }}</option>
+            <option value="high" {{ 'selected' if request.args.get('risk_level') == 'high' }}>{{ _('High') }}</option>
+            <option value="medium" {{ 'selected' if request.args.get('risk_level') == 'medium' }}>{{ _('Medium') }}</option>
+            <option value="low" {{ 'selected' if request.args.get('risk_level') == 'low' }}>{{ _('Low') }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select name="status" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Status') }}</option>
+            <option value="identified" {{ 'selected' if request.args.get('status') == 'identified' }}>{{ _('Identified') }}</option>
+            <option value="assessed" {{ 'selected' if request.args.get('status') == 'assessed' }}>{{ _('Assessed') }}</option>
+            <option value="treatment_in_progress" {{ 'selected' if request.args.get('status') == 'treatment_in_progress' }}>{{ _('Treatment In Progress') }}</option>
+            <option value="residual_accepted" {{ 'selected' if request.args.get('status') == 'residual_accepted' }}>{{ _('Residual Accepted') }}</option>
+            <option value="closed" {{ 'selected' if request.args.get('status') == 'closed' }}>{{ _('Closed') }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <input type="text" name="search" class="form-control" placeholder="{{ _('Search risks...') }}" value="{{ request.args.get('search', '') }}">
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+      <div class="ms-3">
+        <a href="{{ url_for('risks.new_risk') }}" class="btn btn-danger"><i class="fas fa-plus me-1"></i>{{ _('New Risk') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Likelihood') }}</th><th>{{ _('Impact') }}</th><th>{{ _('Risk Level') }}</th><th>{{ _('Treatment') }}</th><th>{{ _('Status') }}</th><th>{{ _('Actions') }}</th></tr></thead>
+      <tbody>
+        {% for risk in risks %}
+        <tr>
+          <td><a href="{{ url_for('risks.view_risk', risk_id=risk.id) }}" class="text-decoration-none fw-medium">{{ risk.title }}</a></td>
+          <td>{{ risk.likelihood }}/5</td>
+          <td>{{ risk.impact }}/5</td>
+          <td><span class="badge bg-{{ 'dark' if risk.risk_level == 'critical' else 'danger' if risk.risk_level == 'high' else 'warning text-dark' if risk.risk_level == 'medium' else 'success' }}">{{ risk.risk_level|upper if risk.risk_level else '—' }}</span></td>
+          <td><span class="badge bg-info">{{ risk.treatment_option|replace('_', ' ')|title if risk.treatment_option else '—' }}</span></td>
+          <td><span class="badge bg-{{ 'secondary' if risk.status == 'identified' else 'info' if risk.status == 'assessed' else 'primary' if risk.status == 'treatment_in_progress' else 'success' if risk.status == 'residual_accepted' else 'secondary' }}">{{ risk.status|replace('_', ' ')|title }}</span></td>
+          <td>
+            <a href="{{ url_for('risks.edit_risk', risk_id=risk.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+            {% if current_user.has_role('admin') %}
+            <form method="POST" action="{{ url_for('risks.delete_risk', risk_id=risk.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this risk?') }}')">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-4">{{ _('No risks registered') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

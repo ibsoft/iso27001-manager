@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block page_title %}{{ activity.name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('gdpr.list_processing') }}">{{ _('Processing Activities') }}</a></li>
+<li class="breadcrumb-item active">{{ activity.name[:30] }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-tasks me-1"></i>{{ _('Activity Details') }}</span>
+        <div>
+          <a href="{{ url_for('gdpr.edit_processing', activity_id=activity.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('gdpr.delete_processing', activity_id=activity.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this activity?') }}')">
+            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Processing Information') }}</h6>
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:200px">{{ _('Purpose') }}</td><td>{{ activity.processing_purpose }}</td></tr>
+          <tr><td class="text-muted">{{ _('Legal Basis') }}</td><td><span class="badge bg-info">{{ activity.legal_basis | replace('_', ' ') | title }}</span></td></tr>
+          {% if activity.legal_basis_details %}<tr><td class="text-muted">{{ _('Legal Basis Details') }}</td><td>{{ activity.legal_basis_details }}</td></tr>{% endif %}
+          <tr><td class="text-muted">{{ _('Status') }}</td><td><span class="badge bg-{{ 'success' if activity.status == 'active' else 'secondary' if activity.status == 'draft' else 'dark' }}">{{ activity.status | title }}</span></td></tr>
+        </table>
+
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Data Categories') }}</h6>
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:200px">{{ _('Data Subjects') }}</td><td>{{ activity.data_subject_categories }}</td></tr>
+          <tr><td class="text-muted">{{ _('Personal Data') }}</td><td>{{ activity.personal_data_categories }}</td></tr>
+          {% if activity.special_category_data %}<tr><td class="text-muted">{{ _('Special Category') }}</td><td><span class="badge bg-danger">{{ _('Yes') }}</span> {{ activity.special_category_details or '' }}</td></tr>{% endif %}
+          {% if activity.criminal_data %}<tr><td class="text-muted">{{ _('Criminal Data') }}</td><td><span class="badge bg-warning text-dark">{{ _('Yes') }}</span></td></tr>{% endif %}
+        </table>
+
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Controller & Governance') }}</h6>
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:200px">{{ _('Controller') }}</td><td>{{ activity.controller_name }}</td></tr>
+          {% if activity.controller_contact %}<tr><td class="text-muted">{{ _('Controller Contact') }}</td><td>{{ activity.controller_contact }}</td></tr>{% endif %}
+          {% if activity.controller_email %}<tr><td class="text-muted">{{ _('Controller Email') }}</td><td>{{ activity.controller_email }}</td></tr>{% endif %}
+          {% if activity.representative %}<tr><td class="text-muted">{{ _('EU Representative') }}</td><td>{{ activity.representative }}</td></tr>{% endif %}
+          {% if activity.dpo_name %}<tr><td class="text-muted">{{ _('DPO') }}</td><td>{{ activity.dpo_name }}{% if activity.dpo_contact %} — {{ activity.dpo_contact }}{% endif %}</td></tr>{% endif %}
+        </table>
+
+        {% if activity.recipients or activity.data_retention or activity.tech_org_measures %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Additional Information') }}</h6>
+        <table class="table table-borderless">
+          {% if activity.recipients %}<tr><td class="text-muted" style="width:200px">{{ _('Recipients') }}</td><td>{{ activity.recipients }}</td></tr>{% endif %}
+          {% if activity.data_retention %}<tr><td class="text-muted">{{ _('Retention / Erasure') }}</td><td>{{ activity.data_retention }}</td></tr>{% endif %}
+          {% if activity.tech_org_measures %}<tr><td class="text-muted">{{ _('Tech & Org Measures') }}</td><td>{{ activity.tech_org_measures }}</td></tr>{% endif %}
+        </table>
+        {% endif %}
+
+        {% if activity.cross_border_transfer %}
+        <h6 class="text-muted text-uppercase small fw-semibold mb-3 mt-4">{{ _('Cross-border Transfers') }}</h6>
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:200px">{{ _('Third Countries') }}</td><td>{{ activity.transfer_countries or _('Not specified') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Safeguards') }}</td><td>{{ activity.transfer_safeguards or _('Not specified') }}</td></tr>
+        </table>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Metadata') }}</div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted">{{ _('Created') }}</td><td>{{ activity.created_at.strftime('%Y-%m-%d') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Updated') }}</td><td>{{ activity.updated_at.strftime('%Y-%m-%d') if activity.updated_at else '—' }}</td></tr>
+          {% if activity.created_by %}<tr><td class="text-muted">{{ _('Created by') }}</td><td>{{ activity.created_by.first_name }} {{ activity.created_by.last_name }}</td></tr>{% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

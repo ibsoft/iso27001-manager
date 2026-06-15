@@ -1,0 +1,3365 @@
+# Greek translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-06-15 16:29+0300\n"
+"PO-Revision-Date: 2026-06-15 14:10+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: el\n"
+"Language-Team: el <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/routes/admin.py:31 app/routes/admin.py:74
+msgid "Username already exists."
+msgstr "Το όνομα χρήστη υπάρχει ήδη."
+
+#: app/routes/admin.py:32 app/routes/admin.py:36 app/routes/admin.py:40
+#: app/routes/admin.py:61 app/templates/admin/users.html:10
+msgid "New User"
+msgstr "Νέος Χρήστης"
+
+#: app/routes/admin.py:35 app/routes/admin.py:78
+msgid "Email already exists."
+msgstr "Το email υπάρχει ήδη."
+
+#: app/routes/admin.py:39
+msgid "Password is required for new users."
+msgstr "Απαιτείται κωδικός για νέους χρήστες."
+
+#: app/routes/admin.py:58
+msgid "User created successfully."
+msgstr "Ο χρήστης δημιουργήθηκε επιτυχώς."
+
+#: app/routes/admin.py:75 app/routes/admin.py:79 app/routes/admin.py:103
+msgid "Edit User"
+msgstr "Επεξεργασία Χρήστη"
+
+#: app/routes/admin.py:99
+msgid "User updated successfully."
+msgstr "Ο χρήστης ενημερώθηκε επιτυχώς."
+
+#: app/routes/admin.py:112
+msgid "You cannot deactivate your own account."
+msgstr "Δεν μπορείτε να απενεργοποιήσετε τον δικό σας λογαριασμό."
+
+#: app/routes/admin.py:118
+msgid "User activated."
+msgstr "Ο χρήστης ενεργοποιήθηκε."
+
+#: app/routes/admin.py:118
+msgid "User deactivated."
+msgstr "Ο χρήστης απενεργοποιήθηκε."
+
+#: app/routes/assets.py:42 app/routes/assets.py:71 app/routes/audits.py:32
+#: app/routes/audits.py:61 app/routes/controls.py:53 app/routes/controls.py:83
+#: app/routes/gdpr.py:27 app/routes/incidents.py:39 app/routes/incidents.py:69
+#: app/routes/policies.py:71 app/routes/risks.py:42 app/routes/risks.py:80
+#: app/routes/soa.py:51 app/templates/controls/view.html:33
+#: app/templates/gdpr/dsar/view.html:65
+msgid "Unassigned"
+msgstr "Χωρίς Ανάθεση"
+
+#: app/routes/assets.py:52
+msgid "Asset created successfully."
+msgstr "Το περιουσιακό στοιχείο δημιουργήθηκε επιτυχώς."
+
+#: app/routes/assets.py:55 app/templates/assets/list.html:36
+msgid "New Asset"
+msgstr "Νέο Περιουσιακό Στοιχείο"
+
+#: app/routes/assets.py:80
+msgid "Asset updated successfully."
+msgstr "Το περιουσιακό στοιχείο ενημερώθηκε επιτυχώς."
+
+#: app/routes/assets.py:84
+msgid "Edit Asset"
+msgstr "Επεξεργασία Περιουσιακού Στοιχείου"
+
+#: app/routes/assets.py:96
+#, fuzzy
+msgid "Asset deleted."
+msgstr "Η ΑΕΠΔ διαγράφηκε."
+
+#: app/routes/audits.py:42
+msgid "Audit created successfully."
+msgstr "Ο έλεγχος δημιουργήθηκε επιτυχώς."
+
+#: app/routes/audits.py:45
+msgid "New Internal Audit"
+msgstr "Νέος Εσωτερικός Έλεγχος"
+
+#: app/routes/audits.py:70
+msgid "Audit updated successfully."
+msgstr "Ο έλεγχος ενημερώθηκε επιτυχώς."
+
+#: app/routes/audits.py:74
+msgid "Edit Audit"
+msgstr "Επεξεργασία Ελέγχου"
+
+#: app/routes/audits.py:83
+msgid "No specific control"
+msgstr "Χωρίς συγκεκριμένο έλεγχο"
+
+#: app/routes/audits.py:93
+msgid "Finding added successfully."
+msgstr "Το εύρημα προστέθηκε επιτυχώς."
+
+#: app/routes/audits.py:96 app/templates/audits/finding_form.html:5
+#: app/templates/audits/view.html:15
+msgid "Add Finding"
+msgstr "Προσθήκη Ευρήματος"
+
+#: app/routes/audits.py:130
+#, fuzzy
+msgid "Audit deleted."
+msgstr "Η οντότητα διαγράφηκε."
+
+#: app/routes/audits.py:142
+#, fuzzy
+msgid "Finding deleted."
+msgstr "Η οντότητα διαγράφηκε."
+
+#: app/routes/auth.py:40 app/routes/auth.py:53
+msgid "Account locked due to too many failed attempts. Try again in 15 minutes."
+msgstr ""
+"Ο λογαριασμός κλειδώθηκε λόγω πολλών αποτυχημένων προσπαθειών. Δοκιμάστε "
+"ξανά σε 15 λεπτά.Ο λογαριασμός κλειδώθηκε λόγω πολλών αποτυχημένων "
+"προσπαθειών. Δοκιμάστε ξανά σε 15 λεπτά."
+
+#: app/routes/auth.py:43
+msgid "Invalid username or password."
+msgstr "Μη έγκυρο όνομα χρήστη ή κωδικός."
+
+#: app/routes/auth.py:49
+msgid "Account is deactivated. Contact an administrator."
+msgstr ""
+"Ο λογαριασμός είναι απενεργοποιημένος. Επικοινωνήστε με έναν "
+"διαχειριστή.Ο λογαριασμός είναι απενεργοποιημένος. Επικοινωνήστε με έναν "
+"διαχειριστή.Ο λογαριασμός είναι απενεργοποιημένος. Επικοινωνήστε με έναν "
+"διαχειριστή.Ο λογαριασμός είναι απενεργοποιημένος. Επικοινωνήστε με έναν "
+"διαχειριστή."
+
+#: app/routes/auth.py:95
+msgid "Please enter your TOTP code."
+msgstr "Παρακαλώ εισάγετε τον κωδικό TOTP."
+
+#: app/routes/auth.py:120
+msgid "Invalid TOTP code."
+msgstr "Μη έγκυρος κωδικός TOTP."
+
+#: app/routes/auth.py:131
+msgid "You have been logged out."
+msgstr "Αποσυνδεθήκατε."
+
+#: app/routes/auth.py:141
+#, fuzzy
+msgid "Email already in use."
+msgstr "Το email υπάρχει ήδη."
+
+#: app/routes/auth.py:160
+#, fuzzy
+msgid "Profile updated successfully."
+msgstr "Η πολιτική ενημερώθηκε επιτυχώς."
+
+#: app/routes/auth.py:172
+msgid "Current password is incorrect."
+msgstr "Ο τρέχων κωδικός είναι λανθασμένος."
+
+#: app/routes/auth.py:176
+msgid "New passwords do not match."
+msgstr "Οι νέοι κωδικοί δεν ταιριάζουν."
+
+#: app/routes/auth.py:183
+msgid "Password changed successfully."
+msgstr "Ο κωδικός άλλαξε επιτυχώς."
+
+#: app/routes/auth.py:193
+msgid "MFA is already enabled."
+msgstr "Το MFA είναι ήδη ενεργοποιημένο."
+
+#: app/routes/auth.py:217
+msgid "MFA has been enabled successfully."
+msgstr "Το MFA ενεργοποιήθηκε επιτυχώς."
+
+#: app/routes/auth.py:219
+msgid "Invalid verification code. Please try again."
+msgstr "Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ δοκιμάστε ξανά."
+
+#: app/routes/auth.py:231
+msgid "MFA has been disabled."
+msgstr "Το MFA απενεργοποιήθηκε."
+
+#: app/routes/controls.py:63
+#, fuzzy
+msgid "Control created successfully."
+msgstr "Ο έλεγχος ενημερώθηκε επιτυχώς."
+
+#: app/routes/controls.py:66 app/templates/controls/list.html:36
+#, fuzzy
+msgid "New Control"
+msgstr "Έλεγχος"
+
+#: app/routes/controls.py:92
+msgid "Control updated successfully."
+msgstr "Ο έλεγχος ενημερώθηκε επιτυχώς."
+
+#: app/routes/controls.py:96
+msgid "Edit Control"
+msgstr "Επεξεργασία Ελέγχου"
+
+#: app/routes/controls.py:110
+msgid "Status updated."
+msgstr "Η κατάσταση ενημερώθηκε."
+
+#: app/routes/controls.py:126
+#, fuzzy
+msgid "Control deleted."
+msgstr "Δεν έχουν καταγραφεί σημειώσεις τεκμηρίωσης."
+
+#: app/routes/gdpr.py:76
+msgid "Processing activity created."
+msgstr "Η δραστηριότητα επεξεργασίας δημιουργήθηκε."
+
+#: app/routes/gdpr.py:78
+msgid "New Processing Activity"
+msgstr "Νέα Δραστηριότητα Επεξεργασίας"
+
+#: app/routes/gdpr.py:98
+#, fuzzy
+msgid "Processing activity updated."
+msgstr "Η εγγραφή SoA ενημερώθηκε."
+
+#: app/routes/gdpr.py:100
+msgid "Edit Processing Activity"
+msgstr "Επεξεργασία Δραστηριότητας Επεξεργασίας"
+
+#: app/routes/gdpr.py:111
+msgid "Processing activity deleted."
+msgstr "Η δραστηριότητα επεξεργασίας διαγράφηκε."
+
+#: app/routes/gdpr.py:139
+#, fuzzy
+msgid "DPIA created."
+msgstr "Δημιουργήθηκε"
+
+#: app/routes/gdpr.py:141 app/templates/gdpr/dpia/list.html:20
+msgid "New DPIA"
+msgstr "Νέα ΑΕΠΔ"
+
+#: app/routes/gdpr.py:161
+#, fuzzy
+msgid "DPIA updated."
+msgstr "Η εγγραφή SoA ενημερώθηκε."
+
+#: app/routes/gdpr.py:163
+#, fuzzy
+msgid "Edit DPIA"
+msgstr "Επεξεργασία Περιουσιακού Στοιχείου"
+
+#: app/routes/gdpr.py:174
+msgid "DPIA deleted."
+msgstr "Η ΑΕΠΔ διαγράφηκε."
+
+#: app/routes/gdpr.py:218
+#, python-brace-format
+msgid "Data subject request created. Deadline: {}"
+msgstr "Το αίτημα υποκειμένου δημιουργήθηκε. Προθεσμία: {}"
+
+#: app/routes/gdpr.py:220
+msgid "New Data Subject Request"
+msgstr "Νέο Αίτημα Υποκειμένου"
+
+#: app/routes/gdpr.py:247
+#, fuzzy
+msgid "Data subject request updated."
+msgstr "Η κατάσταση ενημερώθηκε."
+
+#: app/routes/gdpr.py:250
+msgid "Edit Data Subject Request"
+msgstr "Επεξεργασία Αιτήματος Υποκειμένου"
+
+#: app/routes/gdpr.py:261
+msgid "Data subject request deleted."
+msgstr "Το αίτημα υποκειμένου διαγράφηκε."
+
+#: app/routes/gdpr.py:299
+#, fuzzy
+msgid "Consent record created."
+msgstr "Δημιουργήθηκε νέα έκδοση."
+
+#: app/routes/gdpr.py:301
+msgid "New Consent Record"
+msgstr "Νέα Εγγραφή Συγκατάθεσης"
+
+#: app/routes/gdpr.py:314
+#, fuzzy
+msgid "Consent record updated."
+msgstr "Η εγγραφή SoA ενημερώθηκε."
+
+#: app/routes/gdpr.py:316
+#, fuzzy
+msgid "Edit Consent Record"
+msgstr "Επεξεργασία Ελέγχου"
+
+#: app/routes/gdpr.py:328
+msgid "Consent withdrawn."
+msgstr "Η συγκατάθεση ανακλήθηκε."
+
+#: app/routes/gdpr.py:340
+#, fuzzy
+msgid "Consent record deleted."
+msgstr "Δεν έχουν καταγραφεί σημειώσεις τεκμηρίωσης."
+
+#: app/routes/gdpr.py:371
+#, fuzzy
+msgid "Entity created."
+msgstr "Δημιουργία Λογαριασμού"
+
+#: app/routes/gdpr.py:373
+msgid "New Data Controller / Processor"
+msgstr "Νέος Υπεύθυνος / Εκτελών"
+
+#: app/routes/gdpr.py:393
+#, fuzzy
+msgid "Entity updated."
+msgstr "Η κατάσταση ενημερώθηκε."
+
+#: app/routes/gdpr.py:395
+msgid "Edit Data Controller / Processor"
+msgstr "Επεξεργασία Υπευθύνου / Εκτελούντος"
+
+#: app/routes/gdpr.py:406
+msgid "Entity deleted."
+msgstr "Η οντότητα διαγράφηκε."
+
+#: app/routes/gdpr.py:434
+msgid "Privacy notice created."
+msgstr "Η ανακοίνωση απορρήτου δημιουργήθηκε."
+
+#: app/routes/gdpr.py:436
+msgid "New Privacy Notice"
+msgstr "Νέα Ανακοίνωση Απορρήτου"
+
+#: app/routes/gdpr.py:456
+msgid "Privacy notice updated."
+msgstr "Η ανακοίνωση απορρήτου ενημερώθηκε."
+
+#: app/routes/gdpr.py:458
+#, fuzzy
+msgid "Edit Privacy Notice"
+msgstr "Επεξεργασία Πολιτικής"
+
+#: app/routes/gdpr.py:469
+msgid "Privacy notice deleted."
+msgstr "Η ανακοίνωση απορρήτου διαγράφηκε."
+
+#: app/routes/gdpr.py:491
+#, fuzzy
+msgid "Data breach details updated."
+msgstr "Η κατάσταση ενημερώθηκε."
+
+#: app/routes/incidents.py:50
+msgid "Incident reported successfully."
+msgstr "Το περιστατικό αναφέρθηκε επιτυχώς."
+
+#: app/routes/incidents.py:53 app/templates/dashboard/index.html:194
+#: app/templates/incidents/list.html:37
+msgid "Report Incident"
+msgstr "Αναφορά Περιστατικού"
+
+#: app/routes/incidents.py:82
+msgid "Incident updated successfully."
+msgstr "Το περιστατικό ενημερώθηκε επιτυχώς."
+
+#: app/routes/incidents.py:86
+msgid "Edit Incident"
+msgstr "Επεξεργασία Περιστατικού"
+
+#: app/routes/incidents.py:98
+#, fuzzy
+msgid "Incident deleted."
+msgstr "Η οντότητα διαγράφηκε."
+
+#: app/routes/policies.py:114
+#, fuzzy
+msgid "Created successfully."
+msgstr "Ο χρήστης δημιουργήθηκε επιτυχώς."
+
+#: app/routes/policies.py:117 app/templates/policies/list.html:49
+msgid "New"
+msgstr "Νέο"
+
+#: app/routes/policies.py:171
+#, fuzzy
+msgid "Updated successfully."
+msgstr "Ο χρήστης ενημερώθηκε επιτυχώς."
+
+#: app/routes/policies.py:175 app/templates/assets/view.html:15
+#: app/templates/audits/view.html:16 app/templates/controls/view.html:15
+#: app/templates/gdpr/controllers/view.html:15
+#: app/templates/gdpr/dpia/view.html:15 app/templates/gdpr/dsar/view.html:15
+#: app/templates/gdpr/notices/view.html:15
+#: app/templates/gdpr/processing/view.html:15
+#: app/templates/incidents/view.html:15 app/templates/policies/view.html:24
+#: app/templates/risks/view.html:15 app/templates/suppliers/view.html:15
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: app/routes/policies.py:220
+msgid "New version created."
+msgstr "Δημιουργήθηκε νέα έκδοση."
+
+#: app/routes/policies.py:235 app/routes/policies.py:259
+msgid "File not found on disk."
+msgstr "Το αρχείο δεν βρέθηκε στο δίσκο."
+
+#: app/routes/policies.py:243
+msgid "Failed to generate PDF."
+msgstr "Αποτυχία δημιουργίας PDF."
+
+#: app/routes/policies.py:255
+msgid "No file for this version."
+msgstr "Δεν υπάρχει αρχείο για αυτήν την έκδοση."
+
+#: app/routes/policies.py:278
+#, fuzzy
+msgid "Policy deleted."
+msgstr "Η οντότητα διαγράφηκε."
+
+#: app/routes/reports.py:90 app/templates/controls/form.html:17
+#: app/templates/controls/list.html:58 app/templates/controls/view.html:25
+msgid "Code"
+msgstr "Κωδικός"
+
+#: app/routes/reports.py:90 app/routes/reports.py:96 app/routes/reports.py:101
+#: app/templates/audits/form.html:16
+#: app/templates/audits/non_conformities.html:25
+#: app/templates/controls/form.html:22 app/templates/controls/list.html:58
+#: app/templates/controls/view.html:26 app/templates/dashboard/index.html:167
+#: app/templates/incidents/form.html:16 app/templates/incidents/list.html:46
+#: app/templates/policies/form.html:42 app/templates/risks/form.html:16
+#: app/templates/risks/list.html:46 app/templates/soa/export.html:7
+#: app/templates/soa/list.html:22
+msgid "Title"
+msgstr "Τίτλος"
+
+#: app/routes/reports.py:90 app/templates/controls/form.html:27
+#: app/templates/controls/list.html:10 app/templates/controls/view.html:27
+#: app/templates/reports/controls_status.html:14
+msgid "Domain"
+msgstr "Τομέας"
+
+#: app/routes/reports.py:90 app/routes/reports.py:96 app/routes/reports.py:101
+#: app/routes/reports.py:106 app/routes/reports.py:110
+#: app/templates/admin/users.html:18 app/templates/assets/form.html:43
+#: app/templates/assets/list.html:45 app/templates/assets/view.html:31
+#: app/templates/audits/corrective_actions.html:25
+#: app/templates/audits/form.html:30
+#: app/templates/audits/non_conformities.html:25
+#: app/templates/audits/view.html:29 app/templates/controls/list.html:19
+#: app/templates/controls/list.html:58 app/templates/dashboard/index.html:167
+#: app/templates/gdpr/consent/list.html:35
+#: app/templates/gdpr/controllers/form.html:25
+#: app/templates/gdpr/controllers/view.html:27
+#: app/templates/gdpr/dpia/form.html:21 app/templates/gdpr/dpia/view.html:26
+#: app/templates/gdpr/dsar/form.html:21 app/templates/gdpr/dsar/list.html:50
+#: app/templates/gdpr/dsar/view.html:30 app/templates/gdpr/notices/form.html:29
+#: app/templates/gdpr/processing/form.html:62
+#: app/templates/gdpr/processing/view.html:29
+#: app/templates/incidents/form.html:33 app/templates/incidents/list.html:46
+#: app/templates/incidents/view.html:28 app/templates/policies/form.html:63
+#: app/templates/policies/view.html:62
+#: app/templates/reports/risk_summary.html:13 app/templates/risks/form.html:48
+#: app/templates/risks/list.html:46 app/templates/risks/view.html:32
+#: app/templates/soa/export.html:7 app/templates/soa/list.html:22
+#: app/templates/suppliers/form.html:21 app/templates/suppliers/list.html:37
+msgid "Status"
+msgstr "Κατάσταση"
+
+#: app/routes/reports.py:90 app/templates/assets/form.html:49
+#: app/templates/assets/view.html:32
+#: app/templates/audits/corrective_actions.html:25
+#: app/templates/controls/form.html:52 app/templates/controls/list.html:58
+#: app/templates/controls/view.html:33 app/templates/policies/form.html:67
+#: app/templates/policies/view.html:64 app/templates/risks/view.html:34
+msgid "Owner"
+msgstr "Υπεύθυνος"
+
+#: app/routes/reports.py:90 app/templates/audits/corrective_actions.html:25
+#: app/templates/controls/form.html:56 app/templates/controls/view.html:34
+#: app/templates/risks/form.html:66 app/templates/risks/view.html:35
+msgid "Target Date"
+msgstr "Ημερομηνία Στόχος"
+
+#: app/routes/reports.py:96 app/templates/risks/list.html:46
+#: app/templates/risks/view.html:26
+msgid "Likelihood"
+msgstr "Πιθανότητα"
+
+#: app/routes/reports.py:96 app/templates/incidents/view.html:35
+#: app/templates/risks/list.html:46 app/templates/risks/view.html:27
+msgid "Impact"
+msgstr "Επίπτωση"
+
+#: app/routes/reports.py:96 app/templates/risks/list.html:46
+#: app/templates/risks/view.html:28
+msgid "Risk Level"
+msgstr "Επίπεδο Κινδύνου"
+
+#: app/routes/reports.py:96 app/templates/risks/form.html:44
+#: app/templates/risks/list.html:46 app/templates/risks/view.html:29
+msgid "Treatment"
+msgstr "Μεταχείριση"
+
+#: app/routes/reports.py:101 app/templates/audits/finding_form.html:24
+#: app/templates/audits/non_conformities.html:25
+#: app/templates/audits/view.html:40 app/templates/dashboard/index.html:167
+#: app/templates/incidents/form.html:25 app/templates/incidents/list.html:46
+#: app/templates/incidents/view.html:26
+msgid "Severity"
+msgstr "Σοβαρότητα"
+
+#: app/routes/reports.py:101 app/templates/incidents/form.html:29
+#: app/templates/incidents/list.html:46 app/templates/incidents/view.html:27
+#: app/templates/policies/form.html:59 app/templates/policies/view.html:63
+msgid "Category"
+msgstr "Κατηγορία"
+
+#: app/routes/reports.py:101 app/templates/audits/list.html:16
+#: app/templates/dashboard/index.html:167 app/templates/incidents/list.html:22
+msgid "Reported"
+msgstr "Αναφέρθηκε"
+
+#: app/routes/reports.py:101 app/templates/audits/non_conformities.html:14
+#: app/templates/incidents/list.html:25
+msgid "Resolved"
+msgstr "Επιλύθηκε"
+
+#: app/routes/reports.py:106 app/templates/admin/users.html:18
+#: app/templates/assets/list.html:45 app/templates/assets/view.html:25
+#: app/templates/suppliers/list.html:37
+msgid "Name"
+msgstr "Όνομα"
+
+#: app/routes/reports.py:106 app/templates/assets/form.html:29
+#: app/templates/assets/list.html:45 app/templates/assets/view.html:28
+#: app/templates/audits/view.html:40 app/templates/gdpr/dsar/list.html:47
+#: app/templates/incidents/view.html:50 app/templates/policies/view.html:60
+msgid "Type"
+msgstr "Τύπος"
+
+#: app/routes/reports.py:106 app/templates/assets/form.html:33
+#: app/templates/assets/list.html:45 app/templates/assets/view.html:29
+msgid "Classification"
+msgstr "Ταξινόμηση"
+
+#: app/routes/reports.py:106 app/templates/assets/form.html:39
+#: app/templates/assets/list.html:45 app/templates/assets/view.html:30
+#: app/templates/suppliers/form.html:53 app/templates/suppliers/list.html:37
+#: app/templates/suppliers/view.html:34
+msgid "Criticality"
+msgstr "Κρισιμότητα"
+
+#: app/routes/reports.py:110 app/templates/audits/view.html:40
+#: app/templates/soa/edit.html:16 app/templates/soa/export.html:7
+#: app/templates/soa/list.html:22
+msgid "Control"
+msgstr "Έλεγχος"
+
+#: app/routes/reports.py:110 app/templates/soa/edit.html:20
+#: app/templates/soa/export.html:7 app/templates/soa/list.html:22
+#: app/templates/soa/summary.html:11
+msgid "Applicable"
+msgstr "Εφαρμόσιμο"
+
+#: app/routes/reports.py:110 app/templates/soa/export.html:7
+msgid "Justification"
+msgstr "Αιτιολόγηση"
+
+#: app/routes/reports.py:113 app/templates/gdpr/dpia/view.html:50
+#: app/templates/gdpr/dsar/view.html:29
+#: app/templates/gdpr/processing/view.html:36
+#: app/templates/gdpr/processing/view.html:37
+#: app/templates/incidents/view.html:51 app/templates/incidents/view.html:53
+#: app/templates/soa/export.html:9 app/templates/soa/list.html:30
+#: app/templates/suppliers/view.html:32
+msgid "Yes"
+msgstr "Ναι"
+
+#: app/routes/reports.py:113 app/templates/gdpr/dsar/view.html:29
+#: app/templates/incidents/view.html:51 app/templates/incidents/view.html:53
+#: app/templates/soa/export.html:9 app/templates/soa/list.html:32
+#: app/templates/suppliers/view.html:32
+msgid "No"
+msgstr "Όχι"
+
+#: app/routes/reports.py:116
+msgid "Unknown resource"
+msgstr "Άγνωστος πόρος"
+
+#: app/routes/risks.py:41 app/routes/risks.py:79
+msgid "No specific asset"
+msgstr "Χωρίς συγκεκριμένο περιουσιακό στοιχείο"
+
+#: app/routes/risks.py:60
+msgid "Risk created successfully."
+msgstr "Ο κίνδυνος δημιουργήθηκε επιτυχώς."
+
+#: app/routes/risks.py:63 app/templates/dashboard/index.html:193
+msgid "New Risk Assessment"
+msgstr "Νέα Αξιολόγηση Κινδύνου"
+
+#: app/routes/risks.py:99
+msgid "Risk updated successfully."
+msgstr "Ο κίνδυνος ενημερώθηκε επιτυχώς."
+
+#: app/routes/risks.py:106
+msgid "Edit Risk Assessment"
+msgstr "Επεξεργασία Αξιολόγησης Κινδύνου"
+
+#: app/routes/risks.py:125
+#, fuzzy
+msgid "Risk deleted."
+msgstr "Η οντότητα διαγράφηκε."
+
+#: app/routes/soa.py:62
+msgid "SoA entry updated."
+msgstr "Η εγγραφή SoA ενημερώθηκε."
+
+#: app/routes/suppliers.py:44
+msgid "Supplier created successfully."
+msgstr "Ο προμηθευτής δημιουργήθηκε επιτυχώς."
+
+#: app/routes/suppliers.py:47 app/templates/suppliers/list.html:28
+msgid "New Supplier"
+msgstr "Νέος Προμηθευτής"
+
+#: app/routes/suppliers.py:68
+msgid "Supplier updated successfully."
+msgstr "Ο προμηθευτής ενημερώθηκε επιτυχώς."
+
+#: app/routes/suppliers.py:71
+msgid "Edit Supplier"
+msgstr "Επεξεργασία Προμηθευτή"
+
+#: app/routes/suppliers.py:83
+#, fuzzy
+msgid "Supplier deleted."
+msgstr "Όνομα Προμηθευτή"
+
+#: app/templates/base.html:327
+msgid "Toggle sidebar"
+msgstr "Εναλλαγή πλαϊνής γραμμής"
+
+#: app/templates/base.html:339
+#, fuzzy
+msgid "Toggle theme"
+msgstr "Εναλλαγή θέματος"
+
+#: app/templates/base.html:361
+msgid "Profile"
+msgstr "Προφίλ"
+
+#: app/templates/auth/change_password.html:2
+#: app/templates/auth/change_password.html:26
+#: app/templates/auth/profile.html:277 app/templates/base.html:362
+msgid "Change Password"
+msgstr "Αλλαγή Κωδικού"
+
+#: app/templates/admin/users.html:2 app/templates/base.html:365
+#: app/templates/base.html:437
+msgid "User Management"
+msgstr "Διαχείριση Χρηστών"
+
+#: app/templates/base.html:368
+msgid "Sign Out"
+msgstr "Αποσύνδεση"
+
+#: app/templates/base.html:381 app/templates/dashboard/index.html:2
+#: app/templates/dashboard/index.html:3
+msgid "Dashboard"
+msgstr "Πίνακας Ελέγχου"
+
+#: app/templates/base.html:385
+msgid "ISO Clauses 4-10"
+msgstr "Ρήτρες ISO 4-10"
+
+#: app/templates/base.html:386 app/templates/controls/list.html:2
+msgid "Annex A Controls"
+msgstr "Έλεγχοι Παραρτήματος Α"
+
+#: app/templates/base.html:387 app/templates/soa/export.html:5
+#: app/templates/soa/list.html:2
+msgid "Statement of Applicability"
+msgstr "Δήλωση Εφαρμογής"
+
+#: app/templates/base.html:390 app/templates/policies/list.html:33
+#: app/templates/risks/list.html:2
+msgid "Risk Management"
+msgstr "Διαχείριση Κινδύνων"
+
+#: app/templates/assets/list.html:2 app/templates/base.html:391
+msgid "Asset Register"
+msgstr "Μητρώο Περιουσιακών Στοιχείων"
+
+#: app/templates/base.html:394 app/templates/dashboard/index.html:56
+#: app/templates/incidents/form.html:4 app/templates/incidents/list.html:2
+#: app/templates/incidents/list.html:3 app/templates/incidents/view.html:4
+#: app/templates/reports/incident_trends.html:3
+#: app/templates/reports/index.html:45
+msgid "Incidents"
+msgstr "Περιστατικά"
+
+#: app/templates/base.html:395 app/templates/policies/form.html:4
+#: app/templates/policies/list.html:2 app/templates/policies/list.html:3
+#: app/templates/policies/view.html:4
+msgid "Policies & Documents"
+msgstr "Πολιτικές & Έγγραφα"
+
+#: app/templates/audits/list.html:2 app/templates/base.html:396
+msgid "Internal Audits"
+msgstr "Εσωτερικοί Έλεγχοι"
+
+#: app/templates/audits/non_conformities.html:2
+#: app/templates/audits/view.html:69 app/templates/base.html:397
+msgid "Non-Conformities"
+msgstr "Μη Συμμορφώσεις"
+
+#: app/templates/base.html:398 app/templates/suppliers/form.html:4
+#: app/templates/suppliers/list.html:2 app/templates/suppliers/list.html:3
+#: app/templates/suppliers/view.html:4
+msgid "Suppliers"
+msgstr "Προμηθευτές"
+
+#: app/templates/base.html:401 app/templates/gdpr/dashboard.html:3
+#, fuzzy
+msgid "GDPR Dashboard"
+msgstr "Πίνακας Ελέγχου"
+
+#: app/templates/base.html:402 app/templates/dashboard/index.html:96
+#: app/templates/dashboard/index.html:199 app/templates/gdpr/dashboard.html:12
+#: app/templates/gdpr/dashboard.html:87
+#: app/templates/gdpr/processing/form.html:4
+#: app/templates/gdpr/processing/list.html:3
+#: app/templates/gdpr/processing/view.html:4
+msgid "Processing Activities"
+msgstr "Δραστηριότητες Επεξεργασίας"
+
+#: app/templates/base.html:403 app/templates/dashboard/index.html:110
+#: app/templates/gdpr/dashboard.html:22 app/templates/gdpr/dashboard.html:88
+#: app/templates/gdpr/dpia/form.html:4 app/templates/gdpr/dpia/list.html:3
+#: app/templates/gdpr/dpia/view.html:4
+msgid "DPIAs"
+msgstr "ΑΕΠΔ"
+
+#: app/templates/base.html:404 app/templates/dashboard/index.html:200
+#: app/templates/gdpr/dashboard.html:89 app/templates/gdpr/dsar/form.html:4
+#: app/templates/gdpr/dsar/list.html:3 app/templates/gdpr/dsar/view.html:4
+msgid "DSARs"
+msgstr "Αιτήματα"
+
+#: app/templates/base.html:405 app/templates/gdpr/dashboard.html:90
+msgid "Consents"
+msgstr "Συγκαταθέσεις"
+
+#: app/templates/base.html:406 app/templates/gdpr/controllers/list.html:12
+#, fuzzy
+msgid "Controllers"
+msgstr "Έλεγχοι"
+
+#: app/templates/base.html:407 app/templates/gdpr/dashboard.html:92
+#: app/templates/gdpr/notices/form.html:4
+#: app/templates/gdpr/notices/list.html:2
+#: app/templates/gdpr/notices/list.html:3
+#: app/templates/gdpr/notices/view.html:4
+msgid "Privacy Notices"
+msgstr "Ανακοινώσεις Απορρήτου"
+
+#: app/templates/base.html:410 app/templates/reports/audit_log.html:3
+#: app/templates/reports/controls_status.html:3
+#: app/templates/reports/incident_trends.html:3
+#: app/templates/reports/index.html:2 app/templates/reports/index.html:3
+#: app/templates/reports/risk_summary.html:3
+msgid "Reports"
+msgstr "Αναφορές"
+
+#: app/templates/base.html:432
+msgid "Administration"
+msgstr "Διαχείριση"
+
+#: app/templates/admin/audit_log.html:2 app/templates/base.html:438
+#: app/templates/reports/audit_log.html:2 app/templates/reports/index.html:54
+msgid "Audit Trail"
+msgstr "Ίχνος Ελέγχου"
+
+#: app/templates/base.html:479
+msgid "ISMS Manager. All rights reserved."
+msgstr "ISMS Manager. Με επιφύλαξη κάθε δικαιώματος."
+
+#: app/templates/admin/audit_log.html:3 app/templates/reports/audit_log.html:3
+msgid "Audit Log"
+msgstr "Αρχείο Ελέγχου"
+
+#: app/templates/admin/audit_log.html:10
+#: app/templates/reports/audit_log.html:10
+msgid "Time"
+msgstr "Ώρα"
+
+#: app/templates/admin/audit_log.html:10
+#: app/templates/reports/audit_log.html:10
+msgid "User"
+msgstr "Χρήστης"
+
+#: app/templates/admin/audit_log.html:10
+#: app/templates/reports/audit_log.html:10 app/templates/soa/list.html:22
+msgid "Action"
+msgstr "Ενέργεια"
+
+#: app/templates/admin/audit_log.html:10
+#: app/templates/reports/audit_log.html:10
+msgid "Resource"
+msgstr "Πόρος"
+
+#: app/templates/admin/audit_log.html:10 app/templates/policies/view.html:57
+#: app/templates/reports/audit_log.html:10
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+#: app/templates/admin/audit_log.html:10
+#: app/templates/reports/audit_log.html:10
+msgid "IP"
+msgstr "IP"
+
+#: app/templates/admin/audit_log.html:22
+msgid "No entries"
+msgstr "Δεν υπάρχουν εγγραφές"
+
+#: app/templates/admin/roles.html:2 app/templates/admin/roles.html:3
+#: app/templates/admin/user_form.html:45 app/templates/admin/users.html:18
+#: app/templates/auth/profile.html:192
+msgid "Roles"
+msgstr "Ρόλοι"
+
+#: app/templates/admin/roles.html:12
+msgid "users"
+msgstr "χρήστες"
+
+#: app/templates/admin/roles.html:16
+msgid "Permissions:"
+msgstr "Δικαιώματα:"
+
+#: app/templates/admin/user_form.html:4 app/templates/admin/users.html:3
+#: app/templates/admin/users.html:9
+msgid "Users"
+msgstr "Χρήστες"
+
+#: app/templates/admin/user_form.html:17 app/templates/admin/users.html:18
+#: app/templates/auth/login.html:56
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+#: app/templates/admin/user_form.html:22 app/templates/admin/users.html:18
+#: app/templates/auth/profile.html:165 app/templates/auth/profile.html:220
+#: app/templates/gdpr/controllers/form.html:35
+#: app/templates/gdpr/controllers/view.html:33
+#: app/templates/gdpr/dsar/view.html:27
+msgid "Email"
+msgstr "Email"
+
+#: app/templates/admin/user_form.html:29 app/templates/auth/profile.html:209
+msgid "First Name"
+msgstr "Όνομα"
+
+#: app/templates/admin/user_form.html:33 app/templates/auth/profile.html:214
+msgid "Last Name"
+msgstr "Επίθετο"
+
+#: app/templates/admin/user_form.html:38 app/templates/auth/login.html:61
+#: app/templates/auth/profile.html:274
+msgid "Password"
+msgstr "Κωδικός"
+
+#: app/templates/admin/user_form.html:38
+msgid "(leave blank to keep current)"
+msgstr "(αφήστε κενό για να παραμείνει ως έχει)"
+
+#: app/templates/admin/user_form.html:40
+msgid "Min 12 chars, must contain uppercase, lowercase, digit & special character"
+msgstr "Ελάχ. 12 χαρακτήρες, κεφαλαίο, πεζό, ψηφίο & ειδικό χαρακτήρα"
+
+#: app/templates/admin/user_form.html:51 app/templates/admin/users.html:27
+#: app/templates/gdpr/consent/list.html:12
+#: app/templates/gdpr/consent/list.html:48
+#: app/templates/gdpr/processing/list.html:13
+msgid "Active"
+msgstr "Ενεργό"
+
+#: app/templates/admin/user_form.html:55 app/templates/assets/form.html:61
+#: app/templates/audits/form.html:37 app/templates/controls/form.html:68
+#: app/templates/gdpr/consent/form.html:50
+#: app/templates/gdpr/controllers/form.html:87
+#: app/templates/gdpr/dpia/form.html:85 app/templates/gdpr/dsar/form.html:84
+#: app/templates/gdpr/notices/form.html:47
+#: app/templates/gdpr/processing/form.html:124
+#: app/templates/incidents/form.html:55 app/templates/policies/form.html:119
+#: app/templates/risks/form.html:70 app/templates/soa/edit.html:39
+#: app/templates/suppliers/form.html:79
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: app/templates/admin/user_form.html:56 app/templates/assets/form.html:62
+#: app/templates/audits/finding_form.html:32 app/templates/audits/form.html:38
+#: app/templates/auth/change_password.html:27
+#: app/templates/controls/form.html:69 app/templates/gdpr/breach/form.html:86
+#: app/templates/gdpr/consent/form.html:51
+#: app/templates/gdpr/controllers/form.html:88
+#: app/templates/gdpr/dpia/form.html:86 app/templates/gdpr/dsar/form.html:85
+#: app/templates/gdpr/notices/form.html:48
+#: app/templates/gdpr/processing/form.html:125
+#: app/templates/incidents/form.html:56 app/templates/policies/form.html:120
+#: app/templates/policies/new_version.html:79 app/templates/risks/form.html:71
+#: app/templates/soa/edit.html:40 app/templates/suppliers/form.html:80
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: app/templates/admin/users.html:18
+msgid "MFA"
+msgstr "MFA"
+
+#: app/templates/admin/users.html:18 app/templates/auth/profile.html:126
+msgid "Last Login"
+msgstr "Τελευταία Σύνδεση"
+
+#: app/templates/admin/users.html:18 app/templates/assets/list.html:45
+#: app/templates/risks/list.html:46
+msgid "Actions"
+msgstr "Ενέργειες"
+
+#: app/templates/admin/users.html:26
+msgid "On"
+msgstr "Ενεργό"
+
+#: app/templates/admin/users.html:26
+msgid "Off"
+msgstr "Ανενεργό"
+
+#: app/templates/admin/users.html:27
+msgid "Inactive"
+msgstr "Ανενεργό"
+
+#: app/templates/admin/users.html:32
+msgid "Deactivate this user?"
+msgstr "Απενεργοποίηση αυτού του χρήστη;"
+
+#: app/templates/admin/users.html:32
+msgid "Activate this user?"
+msgstr "Ενεργοποίηση αυτού του χρήστη;"
+
+#: app/templates/assets/form.html:4 app/templates/assets/list.html:3
+#: app/templates/assets/view.html:4 app/templates/reports/index.html:46
+msgid "Assets"
+msgstr "Περιουσιακά Στοιχεία"
+
+#: app/templates/assets/form.html:16
+msgid "Asset Name"
+msgstr "Όνομα Περιουσιακού Στοιχείου"
+
+#: app/templates/assets/form.html:20 app/templates/assets/list.html:45
+#: app/templates/assets/view.html:26
+msgid "Serial Number"
+msgstr "Σειριακός Αριθμός"
+
+#: app/templates/assets/form.html:20
+#, fuzzy
+msgid "optional"
+msgstr "Τοποθεσία"
+
+#: app/templates/assets/form.html:21
+msgid "e.g. SN-12345 or asset tag"
+msgstr "π.χ. SN-12345 ή ετικέτα παγίου"
+
+#: app/templates/assets/form.html:24 app/templates/assets/view.html:27
+#: app/templates/audits/corrective_actions.html:25
+#: app/templates/audits/finding_form.html:28 app/templates/audits/view.html:40
+#: app/templates/controls/form.html:31 app/templates/controls/view.html:28
+#: app/templates/incidents/form.html:20 app/templates/incidents/view.html:25
+#: app/templates/policies/form.html:46 app/templates/risks/form.html:21
+#: app/templates/risks/view.html:25
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: app/templates/assets/form.html:53 app/templates/assets/view.html:33
+msgid "Location"
+msgstr "Τοποθεσία"
+
+#: app/templates/assets/form.html:58 app/templates/assets/view.html:35
+#: app/templates/gdpr/consent/form.html:47
+#: app/templates/gdpr/controllers/form.html:83
+#: app/templates/gdpr/controllers/view.html:49
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+#: app/templates/assets/list.html:12
+msgid "All Classifications"
+msgstr "Όλες οι Ταξινομήσεις"
+
+#: app/templates/assets/list.html:13
+msgid "Public"
+msgstr "Δημόσιο"
+
+#: app/templates/assets/list.html:14
+msgid "Internal"
+msgstr "Εσωτερικό"
+
+#: app/templates/assets/list.html:15
+msgid "Confidential"
+msgstr "Εμπιστευτικό"
+
+#: app/templates/assets/list.html:16
+msgid "Restricted"
+msgstr "Περιορισμένο"
+
+#: app/templates/assets/list.html:21 app/templates/gdpr/dsar/list.html:21
+#: app/templates/policies/list.html:12
+msgid "All Types"
+msgstr "Όλοι οι Τύποι"
+
+#: app/templates/assets/list.html:22
+msgid "Hardware"
+msgstr "Υλικό"
+
+#: app/templates/assets/list.html:23
+msgid "Software"
+msgstr "Λογισμικό"
+
+#: app/templates/assets/list.html:24
+msgid "Data"
+msgstr "Δεδομένα"
+
+#: app/templates/assets/list.html:25 app/templates/policies/list.html:38
+msgid "Other"
+msgstr "Άλλο"
+
+#: app/templates/assets/list.html:29
+msgid "Search assets..."
+msgstr "Αναζήτηση περιουσιακών στοιχείων..."
+
+#: app/templates/assets/list.html:58 app/templates/assets/view.html:17
+msgid "Delete this asset?"
+msgstr "Διαγραφή αυτού του στοιχείου;"
+
+#: app/templates/assets/list.html:65
+msgid "No assets registered"
+msgstr "Δεν έχουν καταχωρηθεί περιουσιακά στοιχεία"
+
+#: app/templates/assets/view.html:13
+msgid "Asset Details"
+msgstr "Λεπτομέρειες Περιουσιακού Στοιχείου"
+
+#: app/templates/assets/view.html:18 app/templates/audits/view.html:19
+#: app/templates/controls/view.html:18
+#: app/templates/gdpr/controllers/view.html:18
+#: app/templates/gdpr/dpia/view.html:18 app/templates/gdpr/dsar/view.html:18
+#: app/templates/gdpr/notices/view.html:18
+#: app/templates/gdpr/processing/view.html:18
+#: app/templates/incidents/view.html:18 app/templates/policies/view.html:28
+#: app/templates/risks/view.html:18 app/templates/suppliers/view.html:18
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: app/templates/assets/view.html:34
+msgid "Retention Period"
+msgstr "Περίοδος Διατήρησης"
+
+#: app/templates/assets/view.html:36
+#: app/templates/audits/non_conformities.html:25
+#: app/templates/gdpr/controllers/view.html:60
+#: app/templates/gdpr/dpia/view.html:74 app/templates/gdpr/dsar/view.html:66
+#: app/templates/gdpr/notices/view.html:42
+#: app/templates/gdpr/processing/view.html:73
+msgid "Created"
+msgstr "Δημιουργήθηκε"
+
+#: app/templates/assets/view.html:43
+msgid "Related Risks"
+msgstr "Σχετικοί Κίνδυνοι"
+
+#: app/templates/assets/view.html:49
+msgid "No risks linked"
+msgstr "Δεν υπάρχουν συνδεδεμένοι κίνδυνοι"
+
+#: app/templates/audits/corrective_actions.html:2
+#: app/templates/audits/corrective_actions.html:3
+msgid "Corrective Actions"
+msgstr "Διορθωτικές Ενέργειες"
+
+#: app/templates/audits/corrective_actions.html:11
+#: app/templates/audits/list.html:12
+#: app/templates/audits/non_conformities.html:11
+#: app/templates/gdpr/dpia/list.html:11 app/templates/gdpr/dsar/list.html:11
+#: app/templates/gdpr/notices/list.html:11
+#: app/templates/gdpr/processing/list.html:11
+#: app/templates/incidents/list.html:21 app/templates/policies/list.html:19
+#: app/templates/risks/list.html:21
+msgid "All Status"
+msgstr "Όλες οι Καταστάσεις"
+
+#: app/templates/audits/corrective_actions.html:12
+#: app/templates/audits/non_conformities.html:12
+#: app/templates/gdpr/dsar/list.html:12
+msgid "Open"
+msgstr "Ανοικτό"
+
+#: app/templates/audits/corrective_actions.html:13
+#: app/templates/audits/list.html:14
+#: app/templates/audits/non_conformities.html:13
+#: app/templates/controls/list.html:23 app/templates/controls/view.html:49
+#: app/templates/dashboard/index.html:230 app/templates/gdpr/dpia/list.html:13
+#: app/templates/gdpr/dsar/list.html:13
+#: app/templates/reports/controls_status.html:14
+msgid "In Progress"
+msgstr "Σε Εξέλιξη"
+
+#: app/templates/audits/corrective_actions.html:14
+#: app/templates/audits/list.html:15 app/templates/gdpr/dsar/list.html:15
+msgid "Completed"
+msgstr "Ολοκληρωμένο"
+
+#: app/templates/audits/corrective_actions.html:15
+msgid "Verified Closed"
+msgstr "Επαληθεύτηκε - Κλειστό"
+
+#: app/templates/audits/corrective_actions.html:35
+msgid "No corrective actions"
+msgstr "Δεν υπάρχουν διορθωτικές ενέργειες"
+
+#: app/templates/audits/finding_form.html:4 app/templates/audits/form.html:4
+#: app/templates/audits/list.html:3 app/templates/audits/view.html:4
+#: app/templates/dashboard/index.html:72
+msgid "Audits"
+msgstr "Έλεγχοι"
+
+#: app/templates/audits/finding_form.html:16
+msgid "Finding Type"
+msgstr "Τύπος Ευρήματος"
+
+#: app/templates/audits/finding_form.html:20
+msgid "Related Control"
+msgstr "Σχετικός Έλεγχος"
+
+#: app/templates/audits/finding_form.html:31
+msgid "Save Finding"
+msgstr "Αποθήκευση Ευρήματος"
+
+#: app/templates/audits/form.html:21 app/templates/audits/view.html:27
+msgid "Lead Auditor"
+msgstr "Επικεφαλής Ελεγκτής"
+
+#: app/templates/audits/form.html:25 app/templates/audits/view.html:28
+msgid "Audit Date"
+msgstr "Ημερομηνία Ελέγχου"
+
+#: app/templates/audits/form.html:34 app/templates/audits/view.html:26
+msgid "Scope"
+msgstr "Πεδίο Εφαρμογής"
+
+#: app/templates/audits/list.html:13
+msgid "Planned"
+msgstr "Προγραμματισμένο"
+
+#: app/templates/audits/list.html:20
+msgid "Schedule Audit"
+msgstr "Προγραμματισμός Ελέγχου"
+
+#: app/templates/audits/list.html:43
+msgid "findings"
+msgstr "ευρήματα"
+
+#: app/templates/audits/list.html:44
+#: app/templates/audits/non_conformities.html:3
+msgid "NCs"
+msgstr "ΜΣ"
+
+#: app/templates/audits/list.html:48 app/templates/audits/view.html:18
+msgid "Delete this audit?"
+msgstr "Διαγραφή αυτού του ελέγχου;"
+
+#: app/templates/audits/list.html:58
+msgid "No audits scheduled"
+msgstr "Δεν υπάρχουν προγραμματισμένοι έλεγχοι"
+
+#: app/templates/audits/non_conformities.html:15
+#: app/templates/gdpr/dsar/list.html:16 app/templates/incidents/list.html:26
+#: app/templates/risks/list.html:26
+msgid "Closed"
+msgstr "Κλειστό"
+
+#: app/templates/audits/non_conformities.html:25
+msgid "Audit"
+msgstr "Έλεγχος"
+
+#: app/templates/audits/non_conformities.html:36
+msgid "No non-conformities"
+msgstr "Δεν υπάρχουν μη συμμορφώσεις"
+
+#: app/templates/audits/view.html:13
+msgid "Audit Details"
+msgstr "Λεπτομέρειες Ελέγχου"
+
+#: app/templates/audits/view.html:30
+msgid "Findings Summary"
+msgstr "Σύνοψη Ευρημάτων"
+
+#: app/templates/audits/view.html:31
+msgid "Conclusion"
+msgstr "Συμπέρασμα"
+
+#: app/templates/audits/view.html:37
+msgid "Findings"
+msgstr "Ευρήματα"
+
+#: app/templates/audits/view.html:50
+msgid "Delete this finding?"
+msgstr "Διαγραφή αυτού του ευρήματος;"
+
+#: app/templates/audits/view.html:57
+msgid "No findings recorded"
+msgstr "Δεν έχουν καταγραφεί ευρήματα"
+
+#: app/templates/audits/view.html:66
+msgid "Statistics"
+msgstr "Στατιστικά"
+
+#: app/templates/audits/view.html:68
+msgid "Total Findings"
+msgstr "Σύνολο Ευρημάτων"
+
+#: app/templates/audits/view.html:70
+msgid "Observations"
+msgstr "Παρατηρήσεις"
+
+#: app/templates/audits/view.html:71
+msgid "OFIs"
+msgstr "ΕΕΒ"
+
+#: app/templates/auth/change_password.html:11
+msgid "Current Password"
+msgstr "Τρέχων Κωδικός"
+
+#: app/templates/auth/change_password.html:16
+msgid "New Password"
+msgstr "Νέος Κωδικός"
+
+#: app/templates/auth/change_password.html:18
+msgid "Min 12 chars with uppercase, lowercase, digit & special character"
+msgstr "Ελάχ. 12 χαρακτήρες, κεφαλαίο, πεζό, ψηφίο & ειδικό χαρακτήρα"
+
+#: app/templates/auth/change_password.html:22
+msgid "Confirm New Password"
+msgstr "Επιβεβαίωση Νέου Κωδικού"
+
+#: app/templates/auth/login.html:7
+msgid "Sign In"
+msgstr "Σύνδεση"
+
+#: app/templates/auth/login.html:39
+msgid "Information Security Management System"
+msgstr "Σύστημα Διαχείρισης Ασφάλειας Πληροφοριών"
+
+#: app/templates/auth/login.html:57
+msgid "Enter your username"
+msgstr "Εισάγετε το όνομά σας"
+
+#: app/templates/auth/login.html:62
+msgid "Enter your password"
+msgstr "Εισάγετε τον κωδικό σας"
+
+#: app/templates/auth/login.html:69
+msgid "Default accounts"
+msgstr "Προεπιλεγμένοι λογαριασμοί"
+
+#: app/templates/auth/login.html:69
+msgid "admin"
+msgstr "διαχειριστής"
+
+#: app/templates/auth/login.html:69
+msgid "manager"
+msgstr "διαχειριστής"
+
+#: app/templates/auth/login.html:69
+msgid "auditor"
+msgstr "ελεγκτής"
+
+#: app/templates/auth/login.html:69
+msgid "user"
+msgstr "χρήστης"
+
+#: app/templates/auth/login.html:75
+msgid "Secured with bcrypt + TOTP 2FA"
+msgstr "Ασφαλισμένο με bcrypt + TOTP 2FA"
+
+#: app/templates/auth/mfa_verify.html:6
+msgid "MFA Verification"
+msgstr "Επαλήθευση MFA"
+
+#: app/templates/auth/mfa_verify.html:23 app/templates/auth/profile.html:286
+msgid "Two-Factor Authentication"
+msgstr "Πιστοποίηση Δύο Παραγόντων"
+
+#: app/templates/auth/mfa_verify.html:24
+msgid "Enter the code from your authenticator app"
+msgstr "Εισάγετε τον κωδικό από την εφαρμογή ταυτοποίησης"
+
+#: app/templates/auth/mfa_verify.html:34
+msgid "Authentication Code"
+msgstr "Κωδικός Ταυτοποίησης"
+
+#: app/templates/auth/mfa_verify.html:37 app/templates/auth/setup_mfa.html:29
+msgid "Verify"
+msgstr "Επαλήθευση"
+
+#: app/templates/auth/mfa_verify.html:39
+msgid "Back to login"
+msgstr "Επιστροφή στη σύνδεση"
+
+#: app/templates/auth/profile.html:2
+msgid "My Profile"
+msgstr "Το Προφίλ Μου"
+
+#: app/templates/auth/profile.html:122
+#, fuzzy
+msgid "Pass. Changed"
+msgstr "Τελευταία Αλλαγή Κωδικού"
+
+#: app/templates/auth/profile.html:125
+msgid "Never"
+msgstr "Ποτέ"
+
+#: app/templates/auth/profile.html:136
+msgid "Personal Info"
+msgstr "Προσωπικά Στοιχεία"
+
+#: app/templates/auth/profile.html:141
+#, fuzzy
+msgid "Edit Profile"
+msgstr "Προφίλ"
+
+#: app/templates/auth/profile.html:146
+#, fuzzy
+msgid "Security"
+msgstr "Σοβαρότητα"
+
+#: app/templates/auth/profile.html:152
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+#: app/templates/auth/profile.html:163
+#, fuzzy
+msgid "Contact Information"
+msgstr "Email Επαφής"
+
+#: app/templates/auth/profile.html:169 app/templates/auth/profile.html:226
+#, fuzzy
+msgid "Internal Phone"
+msgstr "Εσωτερικό"
+
+#: app/templates/auth/profile.html:170 app/templates/auth/profile.html:174
+#: app/templates/auth/profile.html:185 app/templates/auth/profile.html:314
+#: app/templates/controls/view.html:34 app/templates/controls/view.html:35
+#: app/templates/policies/view.html:65 app/templates/policies/view.html:66
+msgid "Not set"
+msgstr "Δεν ορίστηκε"
+
+#: app/templates/auth/profile.html:173 app/templates/auth/profile.html:231
+msgid "Mobile Phone"
+msgstr "Κινητό Τηλέφωνο"
+
+#: app/templates/auth/profile.html:178
+#, fuzzy
+msgid "Account Information"
+msgstr "Δημιουργία Λογαριασμού"
+
+#: app/templates/auth/profile.html:180
+msgid "Member Since"
+msgstr "Μέλος Από"
+
+#: app/templates/auth/profile.html:184 app/templates/auth/profile.html:251
+#: app/templates/auth/profile.html:313
+#, fuzzy
+msgid "Timezone"
+msgstr "Χρονολόγιο"
+
+#: app/templates/auth/profile.html:188 app/templates/gdpr/notices/form.html:25
+#: app/templates/gdpr/notices/view.html:41
+msgid "Language"
+msgstr "Γλώσσα"
+
+#: app/templates/auth/profile.html:189 app/templates/auth/profile.html:319
+msgid "Browser default"
+msgstr "Προεπιλογή περιηγητή"
+
+#: app/templates/auth/profile.html:227
+msgid "e.g. 1234"
+msgstr "π.χ. 1234"
+
+#: app/templates/auth/profile.html:232
+msgid "e.g. +30 69X XXX XXXX"
+msgstr "π.χ. +30 69X XXX XXXX"
+
+#: app/templates/auth/profile.html:237
+msgid "Profile Image URL"
+msgstr "URL Εικόνας Προφίλ"
+
+#: app/templates/auth/profile.html:238
+msgid "https://example.com/avatar.jpg or leave blank for Gravatar"
+msgstr "https://example.com/avatar.jpg ή αφήστε κενό για Gravatar"
+
+#: app/templates/auth/profile.html:240
+msgid "Leave empty to use Gravatar based on your email."
+msgstr "Αφήστε κενό για χρήση Gravatar βάσει του email σας."
+
+#: app/templates/auth/profile.html:241
+msgid "Set up Gravatar"
+msgstr "Ρύθμιση Gravatar"
+
+#: app/templates/auth/profile.html:248
+#, fuzzy
+msgid "Administrator Preferences"
+msgstr "Διαχείριση"
+
+#: app/templates/auth/profile.html:256 app/templates/auth/profile.html:317
+#, fuzzy
+msgid "Default Language"
+msgstr "Προεπιλεγμένοι λογαριασμοί"
+
+#: app/templates/auth/profile.html:263
+msgid "Save Changes"
+msgstr "Αποθήκευση Αλλαγών"
+
+#: app/templates/auth/profile.html:275
+#, fuzzy
+msgid "Last changed"
+msgstr "Τελευταία Αλλαγή Κωδικού"
+
+#: app/templates/auth/profile.html:288
+msgid "Enabled"
+msgstr "Ενεργοποιημένο"
+
+#: app/templates/auth/profile.html:290
+msgid "Disable MFA?"
+msgstr "Απενεργοποίηση MFA;"
+
+#: app/templates/auth/profile.html:291
+msgid "Disable"
+msgstr "Απενεργοποίηση"
+
+#: app/templates/auth/profile.html:295
+msgid "Disabled"
+msgstr "Απενεργοποιημένο"
+
+#: app/templates/auth/profile.html:298
+msgid "Enable 2FA"
+msgstr "Ενεργοποίηση 2FA"
+
+#: app/templates/auth/profile.html:323
+#, fuzzy
+msgid "Current Session"
+msgstr "Τρέχουσα έκδοση:"
+
+#: app/templates/auth/profile.html:331
+msgid "Timezone and language preferences can be edited in the Edit Profile tab."
+msgstr ""
+"Οι προτιμήσεις ζώνης ώρας και γλώσσας μπορούν να επεξεργαστούν στην "
+"καρτέλα Επεξεργασίας Προφίλ."
+
+#: app/templates/auth/setup_mfa.html:2
+msgid "Setup Two-Factor Authentication"
+msgstr "Ρύθμιση Πιστοποίησης Δύο Παραγόντων"
+
+#: app/templates/auth/setup_mfa.html:9
+msgid "Scan with Authenticator App"
+msgstr "Σάρωση με την εφαρμογή ταυτοποίησης"
+
+#: app/templates/auth/setup_mfa.html:10
+msgid ""
+"Use Google Authenticator, Microsoft Authenticator, or Authy to scan the "
+"QR code below."
+msgstr ""
+"Χρησιμοποιήστε το Google Authenticator, Microsoft Authenticator ή Authy "
+"για να σαρώσετε τον παρακάτω κωδικό QR."
+
+#: app/templates/auth/setup_mfa.html:16
+msgid "Or enter this key manually:"
+msgstr "Ή εισάγετε αυτό το κλειδί χειροκίνητα:"
+
+#: app/templates/auth/setup_mfa.html:23
+msgid "Verify Setup"
+msgstr "Επαλήθευση Ρύθμισης"
+
+#: app/templates/clauses/list.html:2
+msgid "ISO Clauses 4–10"
+msgstr "Ρήτρες ISO 4–10"
+
+#: app/templates/clauses/list.html:3
+msgid "Clauses"
+msgstr "Ρήτρες"
+
+#: app/templates/clauses/list.html:14
+msgid "Clause"
+msgstr "Ρήτρα"
+
+#: app/templates/controls/form.html:4 app/templates/controls/list.html:3
+#: app/templates/controls/view.html:4 app/templates/dashboard/index.html:22
+#: app/templates/reports/controls_status.html:3
+#: app/templates/reports/index.html:43
+msgid "Controls"
+msgstr "Έλεγχοι"
+
+#: app/templates/controls/form.html:19
+msgid "Code cannot be changed after creation."
+msgstr "Ο κωδικός δεν μπορεί να αλλάξει μετά τη δημιουργία."
+
+#: app/templates/controls/form.html:35 app/templates/controls/view.html:29
+msgid "Detailed Description"
+msgstr "Λεπτομερής Περιγραφή"
+
+#: app/templates/controls/form.html:39 app/templates/controls/view.html:30
+#: app/templates/gdpr/consent/list.html:33
+#: app/templates/gdpr/processing/view.html:26
+msgid "Purpose"
+msgstr "Σκοπός"
+
+#: app/templates/controls/form.html:43 app/templates/controls/view.html:31
+msgid "Guidance"
+msgstr "Καθοδήγηση"
+
+#: app/templates/controls/form.html:48 app/templates/controls/view.html:32
+#: app/templates/soa/edit.html:24
+msgid "Implementation Status"
+msgstr "Κατάσταση Υλοποίησης"
+
+#: app/templates/controls/form.html:61 app/templates/controls/view.html:35
+#: app/templates/gdpr/notices/form.html:39 app/templates/policies/form.html:77
+msgid "Review Date"
+msgstr "Ημερομηνία Αναθεώρησης"
+
+#: app/templates/controls/form.html:65 app/templates/controls/view.html:59
+msgid "Evidence Notes"
+msgstr "Σημειώσεις Τεκμηρίωσης"
+
+#: app/templates/controls/list.html:12
+msgid "All Domains"
+msgstr "Όλοι οι Τομείς"
+
+#: app/templates/controls/list.html:21 app/templates/gdpr/consent/list.html:11
+msgid "All"
+msgstr "Όλα"
+
+#: app/templates/controls/list.html:22 app/templates/controls/view.html:48
+#: app/templates/dashboard/index.html:230
+#: app/templates/reports/controls_status.html:14
+msgid "Not Started"
+msgstr "Δεν Ξεκίνησε"
+
+#: app/templates/controls/list.html:24 app/templates/controls/view.html:50
+#: app/templates/dashboard/index.html:30 app/templates/dashboard/index.html:230
+#: app/templates/reports/controls_status.html:14
+#: app/templates/soa/summary.html:17
+msgid "Implemented"
+msgstr "Υλοποιήθηκε"
+
+#: app/templates/controls/list.html:25 app/templates/dashboard/index.html:230
+#: app/templates/reports/controls_status.html:14
+msgid "N/A"
+msgstr "Μ/Ε"
+
+#: app/templates/controls/list.html:29
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: app/templates/controls/list.html:30
+msgid "Search controls..."
+msgstr "Αναζήτηση ελέγχων..."
+
+#: app/templates/controls/list.html:39 app/templates/reports/index.html:47
+#: app/templates/soa/edit.html:4 app/templates/soa/list.html:3
+#: app/templates/soa/summary.html:3
+msgid "SoA"
+msgstr "SoA"
+
+#: app/templates/controls/list.html:53
+msgid "implemented"
+msgstr "υλοποιήθηκε"
+
+#: app/templates/controls/list.html:58
+msgid "Target"
+msgstr "Στόχος"
+
+#: app/templates/controls/list.html:76 app/templates/controls/view.html:17
+msgid "Delete this control?"
+msgstr "Διαγραφή αυτού του ελέγχου;"
+
+#: app/templates/controls/view.html:13
+msgid "Control Details"
+msgstr "Λεπτομέρειες Ελέγχου"
+
+#: app/templates/controls/view.html:36
+msgid "2022 Update"
+msgstr "Ενημέρωση 2022"
+
+#: app/templates/controls/view.html:36
+msgid "New control in 2022"
+msgstr "Νέος έλεγχος το 2022"
+
+#: app/templates/controls/view.html:36
+msgid "Carried forward"
+msgstr "Μεταφέρθηκε"
+
+#: app/templates/controls/view.html:43
+msgid "Quick Status Update"
+msgstr "Γρήγορη Ενημέρωση Κατάστασης"
+
+#: app/templates/controls/view.html:51 app/templates/soa/summary.html:14
+msgid "Not Applicable"
+msgstr "Μη Εφαρμόσιμο"
+
+#: app/templates/controls/view.html:54
+msgid "Update Status"
+msgstr "Ενημέρωση Κατάστασης"
+
+#: app/templates/controls/view.html:61
+msgid "No evidence notes recorded."
+msgstr "Δεν έχουν καταγραφεί σημειώσεις τεκμηρίωσης."
+
+#: app/templates/dashboard/index.html:11
+#, fuzzy
+msgid "ISMS & GDPR Dashboard"
+msgstr "Πίνακας Ελέγχου ISMS & GDPR"
+
+#: app/templates/dashboard/index.html:12
+msgid ""
+"Consolidated view of your information security and privacy compliance "
+"posture"
+msgstr "Ενοποιημένη εικόνα της συμμόρφωσης ασφάλειας πληροφοριών και απορρήτου"
+
+#: app/templates/dashboard/index.html:32
+#, fuzzy
+msgid "View all controls"
+msgstr "Προβολή όλων των ελέγχων"
+
+#: app/templates/dashboard/index.html:40 app/templates/reports/index.html:44
+#: app/templates/reports/risk_summary.html:3 app/templates/risks/form.html:4
+#: app/templates/risks/list.html:3 app/templates/risks/view.html:4
+msgid "Risks"
+msgstr "Κίνδυνοι"
+
+#: app/templates/dashboard/index.html:42
+#, fuzzy
+msgid "critical"
+msgstr "Κρίσιμο"
+
+#: app/templates/dashboard/index.html:42
+#, fuzzy
+msgid "high"
+msgstr "Υψηλό"
+
+#: app/templates/dashboard/index.html:46
+msgid "total risks"
+msgstr "σύνολο κινδύνων"
+
+#: app/templates/dashboard/index.html:48
+msgid "Manage risks"
+msgstr "Διαχείριση κινδύνων"
+
+#: app/templates/dashboard/index.html:58
+#, fuzzy
+msgid "open"
+msgstr "Ανοικτό"
+
+#: app/templates/dashboard/index.html:62
+#, fuzzy
+msgid "total incidents"
+msgstr "σύνολο περιστατικών"
+
+#: app/templates/dashboard/index.html:64
+msgid "View incidents"
+msgstr "Προβολή περιστατικών"
+
+#: app/templates/dashboard/index.html:74
+#, fuzzy
+msgid "open NCs"
+msgstr "ανοικτές ΜΣ"
+
+#: app/templates/dashboard/index.html:78
+msgid "policies need review"
+msgstr "πολιτικές χρήζουν αναθεώρησης"
+
+#: app/templates/dashboard/index.html:80
+msgid "View NCs"
+msgstr "Προβολή ΜΣ"
+
+#: app/templates/dashboard/index.html:87
+#, fuzzy
+msgid "GDPR Compliance Overview"
+msgstr "Πίνακας Ελέγχου GDPR"
+
+#: app/templates/dashboard/index.html:101 app/templates/gdpr/dashboard.html:13
+#, fuzzy
+msgid "active"
+msgstr "Ανενεργό"
+
+#: app/templates/dashboard/index.html:115 app/templates/gdpr/dashboard.html:23
+#, fuzzy
+msgid "approved"
+msgstr "Εγκρίθηκε"
+
+#: app/templates/dashboard/index.html:124 app/templates/gdpr/dashboard.html:32
+msgid "Open DSARs"
+msgstr "Ανοιχτά Αιτήματα"
+
+#: app/templates/dashboard/index.html:129 app/templates/gdpr/dashboard.html:33
+msgid "overdue"
+msgstr "εκπρόθεσμα"
+
+#: app/templates/dashboard/index.html:129
+msgid "All on track"
+msgstr "Όλα εντός προθεσμίας"
+
+#: app/templates/dashboard/index.html:138
+#: app/templates/dashboard/index.html:201
+#: app/templates/gdpr/consent/form.html:4
+#: app/templates/gdpr/consent/list.html:2
+#: app/templates/gdpr/consent/list.html:3
+msgid "Consent Records"
+msgstr "Αρχεία Συγκατάθεσης"
+
+#: app/templates/dashboard/index.html:143
+#, fuzzy
+msgid "active consents"
+msgstr "ενεργές συγκαταθέσεις"
+
+#: app/templates/dashboard/index.html:154
+#: app/templates/reports/controls_status.html:2
+msgid "Controls Implementation Status"
+msgstr "Κατάσταση Υλοποίησης Ελέγχων"
+
+#: app/templates/dashboard/index.html:163
+msgid "Recent Incidents"
+msgstr "Πρόσφατα Περιστατικά"
+
+#: app/templates/dashboard/index.html:177 app/templates/incidents/list.html:65
+msgid "No incidents reported"
+msgstr "Δεν έχουν αναφερθεί περιστατικά"
+
+#: app/templates/dashboard/index.html:188
+msgid "Quick Actions"
+msgstr "Γρήγορες Ενέργειες"
+
+#: app/templates/dashboard/index.html:192
+msgid "Browse Annex A Controls"
+msgstr "Περιήγηση Ελέγχων Παραρτήματος Α"
+
+#: app/templates/dashboard/index.html:195
+msgid "Schedule Internal Audit"
+msgstr "Προγραμματισμός Εσωτερικού Ελέγχου"
+
+#: app/templates/dashboard/index.html:196
+msgid "Create Policy"
+msgstr "Δημιουργία Πολιτικής"
+
+#: app/templates/dashboard/index.html:197
+msgid "View SoA Summary"
+msgstr "Προβολή Σύνοψης SoA"
+
+#: app/templates/dashboard/index.html:208
+msgid "ISMS Health"
+msgstr "Υγεία ΣΔΑΠ"
+
+#: app/templates/dashboard/index.html:211
+msgid "Controls Implemented"
+msgstr "Έλεγχοι που Υλοποιήθηκαν"
+
+#: app/templates/dashboard/index.html:213
+msgid "Policies Up to Date"
+msgstr "Πολιτικές Ενημερωμένες"
+
+#: app/templates/dashboard/index.html:215 app/templates/gdpr/dashboard.html:51
+msgid "Data Breaches"
+msgstr "Παραβιάσεις Δεδομένων"
+
+#: app/templates/dashboard/index.html:216
+#, fuzzy
+msgid "Breaches Notified to SA"
+msgstr "Κοινοποιήσεις στην Αρχή"
+
+#: app/templates/gdpr/dashboard.html:2
+msgid "GDPR Compliance Dashboard"
+msgstr "Πίνακας Ελέγχου GDPR"
+
+#: app/templates/gdpr/dashboard.html:42
+#, fuzzy
+msgid "Active Consents"
+msgstr "Ενέργειες"
+
+#: app/templates/gdpr/dashboard.html:56
+msgid "Total breaches"
+msgstr "Σύνολο παραβιάσεων"
+
+#: app/templates/gdpr/dashboard.html:60 app/templates/incidents/view.html:51
+msgid "Notified SA"
+msgstr "Κοινοποίηση στην Αρχή"
+
+#: app/templates/gdpr/dashboard.html:68
+msgid "DSAR Deadlines"
+msgstr "Προθεσμίες Αιτημάτων"
+
+#: app/templates/gdpr/dashboard.html:72
+msgid "Overdue data subject requests"
+msgstr "Εκπρόθεσμα αιτήματα υποκειμένων"
+
+#: app/templates/gdpr/dashboard.html:74
+msgid "No overdue DSARs"
+msgstr "Κανένα εκπρόθεσμο αίτημα"
+
+#: app/templates/gdpr/dashboard.html:84
+#, fuzzy
+msgid "Quick Links"
+msgstr "Γρήγορες Ενέργειες"
+
+#: app/templates/gdpr/controllers/form.html:4
+#: app/templates/gdpr/controllers/list.html:3
+#: app/templates/gdpr/controllers/view.html:4
+#: app/templates/gdpr/dashboard.html:91
+msgid "Controllers / Processors"
+msgstr "Υπεύθυνοι / Εκτελούντες"
+
+#: app/templates/gdpr/dashboard.html:93
+#, fuzzy
+msgid "Incidents & Breaches"
+msgstr "Τάσεις Περιστατικών"
+
+#: app/templates/gdpr/breach/form.html:2
+msgid "Data Breach Notification"
+msgstr "Κοινοποίηση Παραβίασης Δεδομένων"
+
+#: app/templates/gdpr/breach/form.html:5 app/templates/incidents/view.html:27
+#, fuzzy
+msgid "Breach Notification"
+msgstr "Αιτιολόγηση"
+
+#: app/templates/gdpr/breach/form.html:13
+msgid "Data Breach Notification Details"
+msgstr "Λεπτομέρειες Κοινοποίησης Παραβίασης"
+
+#: app/templates/gdpr/breach/form.html:14
+#, fuzzy
+msgid "Incident"
+msgstr "Περιστατικά"
+
+#: app/templates/gdpr/breach/form.html:22
+msgid "Breach Type"
+msgstr "Τύπος Παραβίασης"
+
+#: app/templates/gdpr/breach/form.html:26
+msgid "Personal Data Breach"
+msgstr "Παραβίαση Προσωπικών Δεδομένων"
+
+#: app/templates/gdpr/breach/form.html:30
+msgid "Notification to Supervisory Authority (Art 33)"
+msgstr "Κοινοποίηση στην Εποπτική Αρχή (Άρ. 33)"
+
+#: app/templates/gdpr/breach/form.html:33
+msgid "Notified Supervisory Authority"
+msgstr "Κοινοποιήθηκε στην Αρχή"
+
+#: app/templates/gdpr/breach/form.html:36
+#, fuzzy
+msgid "SA Notification Date"
+msgstr "Επαλήθευση MFA"
+
+#: app/templates/gdpr/breach/form.html:40
+msgid "SA Reference Number"
+msgstr "Αριθμός Αναφοράς Αρχής"
+
+#: app/templates/gdpr/breach/form.html:45
+msgid "Notification to Data Subjects (Art 34)"
+msgstr "Κοινοποίηση στα Υποκείμενα (Άρ. 34)"
+
+#: app/templates/gdpr/breach/form.html:48
+msgid "Notified Data Subjects"
+msgstr "Κοινοποιήθηκε στα Υποκείμενα"
+
+#: app/templates/gdpr/breach/form.html:51
+#, fuzzy
+msgid "DS Notification Date"
+msgstr "Αιτιολόγηση"
+
+#: app/templates/gdpr/breach/form.html:56
+#, fuzzy
+msgid "Impact Assessment"
+msgstr "Αξιολόγηση"
+
+#: app/templates/gdpr/breach/form.html:59
+msgid "Data Subjects Affected"
+msgstr "Επηρεαζόμενα Υποκείμενα"
+
+#: app/templates/gdpr/breach/form.html:63
+msgid "Personal Data Records Affected"
+msgstr "Επηρεαζόμενες Εγγραφές"
+
+#: app/templates/gdpr/breach/form.html:68
+msgid "Likelihood & Severity of Risk to Rights"
+msgstr "Πιθανότητα & Σοβαρότητα Κινδύνου για Δικαιώματα"
+
+#: app/templates/gdpr/breach/form.html:72
+msgid "Mitigation Measures Taken"
+msgstr "Μέτρα Μετριασμού που Λήφθηκαν"
+
+#: app/templates/gdpr/breach/form.html:76
+#, fuzzy
+msgid "Notification Delay"
+msgstr "Αιτιολόγηση"
+
+#: app/templates/gdpr/breach/form.html:78
+msgid "Reason for Delay (if > 72 hours)"
+msgstr "Λόγος Καθυστέρησης (εάν > 72 ώρες)"
+
+#: app/templates/gdpr/breach/form.html:82
+msgid "Delay Justified (Art 33(3))"
+msgstr "Καθυστέρηση Δικαιολογημένη (Άρ. 33(3))"
+
+#: app/templates/gdpr/breach/form.html:85
+#, fuzzy
+msgid "Save Breach Details"
+msgstr "Λεπτομέρειες Προμηθευτή"
+
+#: app/templates/gdpr/consent/form.html:17
+msgid "Data Subject Identifier"
+msgstr "Αναγνωριστικό Υποκειμένου"
+
+#: app/templates/gdpr/consent/form.html:21
+#, fuzzy
+msgid "Data Subject Email"
+msgstr "Email Επαφής"
+
+#: app/templates/gdpr/consent/form.html:26
+#: app/templates/gdpr/processing/form.html:53
+msgid "Processing Purpose"
+msgstr "Σκοπός Επεξεργασίας"
+
+#: app/templates/gdpr/consent/form.html:31
+msgid "Consent Source"
+msgstr "Πηγή Συγκατάθεσης"
+
+#: app/templates/gdpr/consent/form.html:35
+#, fuzzy
+msgid "Consent Version"
+msgstr "Δημιουργία Έκδοσης"
+
+#: app/templates/gdpr/consent/form.html:39
+msgid "Consent Granted"
+msgstr "Συγκατάθεση Παρέχεται"
+
+#: app/templates/gdpr/consent/form.html:43
+#, fuzzy
+msgid "Proof of Consent"
+msgstr "Περιεχόμενο Πολιτικής"
+
+#: app/templates/gdpr/consent/list.html:13
+#: app/templates/gdpr/consent/list.html:50
+msgid "Withdrawn"
+msgstr "Ανακλήθηκε"
+
+#: app/templates/gdpr/consent/list.html:17
+#, fuzzy
+msgid "Search by identifier or purpose..."
+msgstr "Αναζήτηση περιστατικών..."
+
+#: app/templates/gdpr/consent/list.html:23
+#, fuzzy
+msgid "New Record"
+msgstr "Νέος Χρήστης"
+
+#: app/templates/gdpr/consent/list.html:32
+msgid "Data Subject"
+msgstr "Υποκείμενο"
+
+#: app/templates/gdpr/consent/list.html:34
+msgid "Given"
+msgstr "Δόθηκε"
+
+#: app/templates/gdpr/consent/list.html:36
+#, fuzzy
+msgid "Source"
+msgstr "Πόρος"
+
+#: app/templates/gdpr/consent/list.html:52
+msgid "Revoked"
+msgstr "Ανακλήθηκε"
+
+#: app/templates/gdpr/consent/list.html:59
+msgid "Withdraw this consent?"
+msgstr "Ανάκληση αυτής της συγκατάθεσης;"
+
+#: app/templates/gdpr/consent/list.html:64
+msgid "Delete this consent?"
+msgstr "Διαγραφή αυτής της συγκατάθεσης;"
+
+#: app/templates/gdpr/consent/list.html:71
+#, fuzzy
+msgid "No consent records yet."
+msgstr "Δεν υπάρχει ακόμα περιεχόμενο."
+
+#: app/templates/gdpr/controllers/form.html:17
+#: app/templates/gdpr/controllers/view.html:25
+#, fuzzy
+msgid "Entity Name"
+msgstr "Όνομα Επαφής"
+
+#: app/templates/gdpr/controllers/form.html:21
+#: app/templates/gdpr/controllers/view.html:26
+#, fuzzy
+msgid "Role"
+msgstr "Ρόλοι"
+
+#: app/templates/gdpr/controllers/form.html:31
+#: app/templates/gdpr/controllers/view.html:32
+#, fuzzy
+msgid "Contact Person"
+msgstr "Περίοδος Σύμβασης"
+
+#: app/templates/gdpr/controllers/form.html:39
+#: app/templates/gdpr/controllers/view.html:34
+#: app/templates/gdpr/dsar/view.html:28 app/templates/suppliers/view.html:27
+msgid "Phone"
+msgstr "Τηλέφωνο"
+
+#: app/templates/gdpr/controllers/form.html:44
+#: app/templates/gdpr/controllers/view.html:35
+msgid "Address"
+msgstr "Διεύθυνση"
+
+#: app/templates/gdpr/controllers/form.html:49
+#: app/templates/gdpr/controllers/view.html:36
+msgid "Country"
+msgstr "Χώρα"
+
+#: app/templates/gdpr/controllers/form.html:53
+msgid "Registration / ID Number"
+msgstr "Αριθμός Μητρώου / Ταυτότητας"
+
+#: app/templates/gdpr/controllers/form.html:58
+#: app/templates/gdpr/processing/form.html:36
+msgid "EU Representative (Art 27)"
+msgstr "Εκπρόσωπος ΕΕ (Άρ. 27)"
+
+#: app/templates/gdpr/controllers/form.html:61
+msgid "Representative Name"
+msgstr "Όνομα Εκπροσώπου"
+
+#: app/templates/gdpr/controllers/form.html:65
+#, fuzzy
+msgid "Representative Contact"
+msgstr "Κατάσταση Υλοποίησης"
+
+#: app/templates/gdpr/controllers/form.html:70
+msgid "Data Protection Officer"
+msgstr "Υπεύθυνος Προστασίας Δεδομένων"
+
+#: app/templates/gdpr/controllers/form.html:73
+#: app/templates/gdpr/processing/form.html:42
+#, fuzzy
+msgid "DPO Name"
+msgstr "Όνομα"
+
+#: app/templates/gdpr/controllers/form.html:77
+#, fuzzy
+msgid "DPO Email"
+msgstr "Email"
+
+#: app/templates/gdpr/controllers/list.html:2
+msgid "Data Controllers & Processors"
+msgstr "Υπεύθυνοι & Εκτελούντες Επεξεργασίας"
+
+#: app/templates/gdpr/controllers/list.html:11
+#, fuzzy
+msgid "All Roles"
+msgstr "Ρόλοι"
+
+#: app/templates/gdpr/controllers/list.html:13
+msgid "Processors"
+msgstr "Εκτελούντες"
+
+#: app/templates/gdpr/controllers/list.html:14
+#, fuzzy
+msgid "Joint Controllers"
+msgstr "Σύνολο Ελέγχων"
+
+#: app/templates/gdpr/controllers/list.html:18
+#, fuzzy
+msgid "Search by name..."
+msgstr "Αναζήτηση περιουσιακών στοιχείων..."
+
+#: app/templates/gdpr/controllers/list.html:24
+#, fuzzy
+msgid "New Entity"
+msgstr "Νέα Πολιτική"
+
+#: app/templates/gdpr/controllers/list.html:39
+#: app/templates/gdpr/controllers/view.html:44
+#: app/templates/gdpr/processing/view.html:46
+msgid "DPO"
+msgstr "ΥΠΔ"
+
+#: app/templates/gdpr/controllers/list.html:42
+#: app/templates/gdpr/controllers/view.html:17
+msgid "Delete this entity?"
+msgstr "Διαγραφή αυτής της οντότητας;"
+
+#: app/templates/gdpr/controllers/list.html:53
+#, fuzzy
+msgid "No controllers or processors registered."
+msgstr "Δεν έχουν καταχωρηθεί προμηθευτές"
+
+#: app/templates/gdpr/controllers/list.html:54
+msgid "Register entity"
+msgstr "Καταχώρηση οντότητας"
+
+#: app/templates/gdpr/controllers/view.html:13
+#, fuzzy
+msgid "Entity Details"
+msgstr "Λεπτομέρειες Ελέγχου"
+
+#: app/templates/gdpr/controllers/view.html:30
+#: app/templates/suppliers/list.html:37 app/templates/suppliers/view.html:26
+msgid "Contact"
+msgstr "Επαφή"
+
+#: app/templates/gdpr/controllers/view.html:37
+msgid "Registration Number"
+msgstr "Αριθμός Μητρώου"
+
+#: app/templates/gdpr/controllers/view.html:41
+msgid "Governance"
+msgstr "Διακυβέρνηση"
+
+#: app/templates/gdpr/controllers/view.html:43
+#: app/templates/gdpr/processing/view.html:45
+msgid "EU Representative"
+msgstr "Εκπρόσωπος ΕΕ"
+
+#: app/templates/gdpr/controllers/view.html:57
+#: app/templates/gdpr/dpia/view.html:71 app/templates/gdpr/notices/view.html:37
+#: app/templates/gdpr/processing/view.html:70
+msgid "Metadata"
+msgstr "Μεταδεδομένα"
+
+#: app/templates/gdpr/controllers/view.html:61
+#: app/templates/gdpr/dpia/view.html:75 app/templates/gdpr/notices/view.html:43
+#: app/templates/gdpr/processing/view.html:74
+#, fuzzy
+msgid "Updated"
+msgstr "Ενημερώθηκε:"
+
+#: app/templates/gdpr/dpia/form.html:17
+msgid "Project / System Name"
+msgstr "Όνομα Έργου / Συστήματος"
+
+#: app/templates/gdpr/dpia/form.html:26 app/templates/gdpr/dpia/view.html:31
+#, fuzzy
+msgid "Project Description"
+msgstr "Περιγραφή Επίπτωσης"
+
+#: app/templates/gdpr/dpia/form.html:30 app/templates/gdpr/dpia/view.html:35
+#, fuzzy
+msgid "Processing Description"
+msgstr "Περιγραφή Υπηρεσίας"
+
+#: app/templates/gdpr/dpia/form.html:34 app/templates/gdpr/dpia/view.html:40
+msgid "Necessity & Proportionality"
+msgstr "Αναγκαιότητα & Αναλογικότητα"
+
+#: app/templates/gdpr/dpia/form.html:37 app/templates/gdpr/dpia/view.html:41
+#, fuzzy
+msgid "Necessity Assessment"
+msgstr "Νέα Αξιολόγηση Κινδύνου"
+
+#: app/templates/gdpr/dpia/form.html:41 app/templates/gdpr/dpia/view.html:42
+msgid "Proportionality Assessment"
+msgstr "Αξιολόγηση Αναλογικότητας"
+
+#: app/templates/gdpr/dpia/form.html:46 app/templates/gdpr/dpia/view.html:46
+#: app/templates/gdpr/processing/form.html:71
+#: app/templates/gdpr/processing/view.html:32
+#, fuzzy
+msgid "Data Categories"
+msgstr "Ανά Κατηγορία"
+
+#: app/templates/gdpr/dpia/form.html:49
+#: app/templates/gdpr/processing/form.html:74
+msgid "Data Subject Categories"
+msgstr "Κατηγορίες Υποκειμένων"
+
+#: app/templates/gdpr/dpia/form.html:53
+#: app/templates/gdpr/processing/form.html:78
+msgid "Personal Data Categories"
+msgstr "Κατηγορίες Προσωπικών Δεδομένων"
+
+#: app/templates/gdpr/dpia/form.html:58
+msgid "Special Category Data"
+msgstr "Δεδομένα Ειδικής Κατηγορίας"
+
+#: app/templates/gdpr/dpia/form.html:61 app/templates/gdpr/dpia/view.html:55
+#: app/templates/incidents/view.html:58
+#, fuzzy
+msgid "Risk Assessment"
+msgstr "Νέα Αξιολόγηση Κινδύνου"
+
+#: app/templates/gdpr/dpia/form.html:64 app/templates/gdpr/dpia/view.html:56
+msgid "Risks to Rights & Freedoms"
+msgstr "Κίνδυνοι για Δικαιώματα & Ελευθερίες"
+
+#: app/templates/gdpr/dpia/form.html:68 app/templates/gdpr/dpia/view.html:58
+#, fuzzy
+msgid "Residual Risk Level"
+msgstr "Υπολειπόμενος Κίνδυνος"
+
+#: app/templates/gdpr/dpia/form.html:73 app/templates/gdpr/dpia/view.html:57
+msgid "Mitigation Measures"
+msgstr "Μέτρα Μετριασμού"
+
+#: app/templates/gdpr/dpia/form.html:78 app/templates/gdpr/dpia/view.html:62
+#, fuzzy
+msgid "DPO Review"
+msgstr "Αναθεώρηση"
+
+#: app/templates/gdpr/dpia/form.html:80
+msgid "DPO Review / Comments"
+msgstr "Αναθεώρηση / Σχόλια ΥΠΔ"
+
+#: app/templates/gdpr/dpia/list.html:2
+msgid "Data Protection Impact Assessments (DPIA)"
+msgstr "Εκτιμήσεις Αντικτύπου Προστασίας Δεδομένων"
+
+#: app/templates/gdpr/dpia/list.html:12 app/templates/gdpr/notices/list.html:12
+#: app/templates/gdpr/processing/list.html:12
+#: app/templates/policies/list.html:20
+msgid "Draft"
+msgstr "Προσχέδιο"
+
+#: app/templates/gdpr/dpia/list.html:14 app/templates/gdpr/dpia/view.html:64
+#: app/templates/policies/list.html:21
+msgid "Reviewed"
+msgstr "Αναθεωρήθηκε"
+
+#: app/templates/gdpr/dpia/list.html:15 app/templates/policies/list.html:22
+#: app/templates/suppliers/list.html:15
+msgid "Approved"
+msgstr "Εγκρίθηκε"
+
+#: app/templates/gdpr/dpia/list.html:16 app/templates/suppliers/list.html:16
+msgid "Rejected"
+msgstr "Απορρίφθηκε"
+
+#: app/templates/gdpr/dpia/list.html:35
+#, fuzzy
+msgid "Residual risk"
+msgstr "Υπολειπόμενος Κίνδυνος"
+
+#: app/templates/gdpr/dpia/list.html:38 app/templates/gdpr/dpia/view.html:17
+msgid "Delete this DPIA?"
+msgstr "Διαγραφή αυτής της ΑΕΠΔ;"
+
+#: app/templates/gdpr/dpia/list.html:50
+msgid "No DPIAs yet."
+msgstr "Δεν υπάρχουν ΑΕΠΔ ακόμα."
+
+#: app/templates/gdpr/dpia/list.html:51
+#, fuzzy
+msgid "Create DPIA"
+msgstr "Δημιουργία Πολιτικής"
+
+#: app/templates/gdpr/dpia/view.html:13
+#, fuzzy
+msgid "DPIA Details"
+msgstr "Λεπτομέρειες"
+
+#: app/templates/gdpr/dpia/view.html:25
+#, fuzzy
+msgid "Project Name"
+msgstr "Όνομα Επαφής"
+
+#: app/templates/gdpr/dpia/view.html:29
+msgid "Project & Processing"
+msgstr "Έργο & Επεξεργασία"
+
+#: app/templates/gdpr/dpia/view.html:48
+#: app/templates/gdpr/processing/view.html:34
+msgid "Data Subjects"
+msgstr "Υποκείμενα Δεδομένων"
+
+#: app/templates/gdpr/dpia/view.html:49
+#: app/templates/gdpr/processing/view.html:35
+msgid "Personal Data"
+msgstr "Προσωπικά Δεδομένα"
+
+#: app/templates/gdpr/dpia/view.html:50
+#: app/templates/gdpr/processing/view.html:36
+#, fuzzy
+msgid "Special Category"
+msgstr "Ανά Κατηγορία"
+
+#: app/templates/gdpr/dpia/view.html:64
+msgid "by"
+msgstr "από"
+
+#: app/templates/gdpr/dpia/view.html:76 app/templates/gdpr/dsar/view.html:67
+#: app/templates/gdpr/notices/view.html:44
+#: app/templates/gdpr/processing/view.html:75
+#, fuzzy
+msgid "Created by"
+msgstr "Δημιουργήθηκε"
+
+#: app/templates/gdpr/dsar/form.html:17 app/templates/gdpr/dsar/view.html:25
+msgid "Request Type"
+msgstr "Τύπος Αιτήματος"
+
+#: app/templates/gdpr/dsar/form.html:25 app/templates/incidents/view.html:30
+msgid "Assigned To"
+msgstr "Ανατέθηκε Σε"
+
+#: app/templates/gdpr/dsar/form.html:31
+#, fuzzy
+msgid "Requester Name"
+msgstr "Επίθετο"
+
+#: app/templates/gdpr/dsar/form.html:35
+msgid "Requester Email"
+msgstr "Email Αιτούντος"
+
+#: app/templates/gdpr/dsar/form.html:39
+msgid "Requester Phone"
+msgstr "Τηλέφωνο Αιτούντος"
+
+#: app/templates/gdpr/dsar/form.html:44 app/templates/gdpr/dsar/view.html:29
+#, fuzzy
+msgid "Identity Verified"
+msgstr "Αναγνωρίστηκε"
+
+#: app/templates/gdpr/dsar/form.html:47 app/templates/gdpr/dsar/view.html:13
+#: app/templates/gdpr/dsar/view.html:37
+#, fuzzy
+msgid "Request Details"
+msgstr "Λεπτομέρειες Κινδύνου"
+
+#: app/templates/gdpr/dsar/form.html:52 app/templates/gdpr/dsar/view.html:42
+#, fuzzy
+msgid "Response"
+msgstr "Υπεύθυνο Άτομο"
+
+#: app/templates/gdpr/dsar/form.html:55 app/templates/gdpr/dsar/list.html:51
+#: app/templates/gdpr/dsar/view.html:44
+msgid "Outcome"
+msgstr "Αποτέλεσμα"
+
+#: app/templates/gdpr/dsar/form.html:59
+msgid "Extension Granted"
+msgstr "Χορηγήθηκε Παράταση"
+
+#: app/templates/gdpr/dsar/form.html:60
+msgid "Extend by 2 months"
+msgstr "Παράταση 2 μηνών"
+
+#: app/templates/gdpr/dsar/form.html:63
+msgid "Extension Deadline"
+msgstr "Νέα Προθεσμία"
+
+#: app/templates/gdpr/dsar/form.html:68
+#, fuzzy
+msgid "Response Summary"
+msgstr "Σύνοψη Κινδύνων"
+
+#: app/templates/gdpr/dsar/form.html:72 app/templates/gdpr/dsar/view.html:45
+msgid "Denial Reason"
+msgstr "Λόγος Απόρριψης"
+
+#: app/templates/gdpr/dsar/form.html:76
+msgid "Extension Reason"
+msgstr "Λόγος Παράτασης"
+
+#: app/templates/gdpr/dsar/form.html:80 app/templates/gdpr/dsar/view.html:54
+#, fuzzy
+msgid "Internal Notes"
+msgstr "Εσωτερικοί Έλεγχοι"
+
+#: app/templates/gdpr/dsar/list.html:2
+msgid "Data Subject Access Requests (DSAR)"
+msgstr "Αιτήματα Πρόσβασης Υποκειμένων"
+
+#: app/templates/gdpr/dsar/list.html:14
+msgid "Awaiting Info"
+msgstr "Αναμονή Πληροφοριών"
+
+#: app/templates/gdpr/dsar/list.html:22
+msgid "Access"
+msgstr "Πρόσβαση"
+
+#: app/templates/gdpr/dsar/list.html:23
+#, fuzzy
+msgid "Rectification"
+msgstr "Αιτιολόγηση"
+
+#: app/templates/gdpr/dsar/list.html:24
+msgid "Erasure"
+msgstr "Διαγραφή"
+
+#: app/templates/gdpr/dsar/list.html:25
+#, fuzzy
+msgid "Portability"
+msgstr "Κρισιμότητα"
+
+#: app/templates/gdpr/dsar/list.html:26
+#, fuzzy
+msgid "Restriction"
+msgstr "Περιορισμένο"
+
+#: app/templates/gdpr/dsar/list.html:27
+#, fuzzy
+msgid "Objection"
+msgstr "Ενέργεια"
+
+#: app/templates/gdpr/dsar/list.html:31
+msgid "Search by name or email..."
+msgstr "Αναζήτηση με όνομα ή email..."
+
+#: app/templates/gdpr/dsar/list.html:37
+#, fuzzy
+msgid "New Request"
+msgstr "Νέος Κίνδυνος"
+
+#: app/templates/gdpr/dsar/list.html:46 app/templates/gdpr/dsar/view.html:26
+msgid "Requester"
+msgstr "Αιτών"
+
+#: app/templates/gdpr/dsar/list.html:48 app/templates/gdpr/dsar/view.html:31
+msgid "Received"
+msgstr "Λήφθηκε"
+
+#: app/templates/gdpr/dsar/list.html:49 app/templates/gdpr/dsar/view.html:32
+#, fuzzy
+msgid "Deadline"
+msgstr "Χρονολόγιο"
+
+#: app/templates/gdpr/dsar/list.html:67
+msgid "OVERDUE"
+msgstr "ΕΚΠΡΟΘΕΣΜΟ"
+
+#: app/templates/gdpr/dsar/list.html:79 app/templates/gdpr/dsar/view.html:17
+msgid "Delete this request?"
+msgstr "Διαγραφή αυτού του αιτήματος;"
+
+#: app/templates/gdpr/dsar/list.html:86
+msgid "No data subject requests yet."
+msgstr "Δεν υπάρχουν ακόμα αιτήματα."
+
+#: app/templates/gdpr/dsar/view.html:2
+msgid "DSAR"
+msgstr "ΔΑΠΥ"
+
+#: app/templates/gdpr/dsar/view.html:32
+msgid "Extended to"
+msgstr "Παρατάθηκε έως"
+
+#: app/templates/gdpr/dsar/view.html:33
+msgid "Responded"
+msgstr "Απαντήθηκε"
+
+#: app/templates/gdpr/dsar/view.html:49
+#, fuzzy
+msgid "Extension"
+msgstr "Έκδοση"
+
+#: app/templates/gdpr/dsar/view.html:62
+#, fuzzy
+msgid "Assignment"
+msgstr "Αξιολόγηση"
+
+#: app/templates/gdpr/dsar/view.html:65
+#, fuzzy
+msgid "Assigned to"
+msgstr "Ανατέθηκε Σε"
+
+#: app/templates/gdpr/notices/form.html:17
+msgid "Notice Title"
+msgstr "Τίτλος Ανακοίνωσης"
+
+#: app/templates/gdpr/notices/form.html:21
+#: app/templates/gdpr/notices/view.html:40 app/templates/policies/view.html:61
+msgid "Version"
+msgstr "Έκδοση"
+
+#: app/templates/gdpr/notices/form.html:35 app/templates/policies/form.html:73
+msgid "Effective Date"
+msgstr "Ημερομηνία Ισχύος"
+
+#: app/templates/gdpr/notices/form.html:44
+#, fuzzy
+msgid "Notice Content"
+msgstr "Περιεχόμενο Πολιτικής"
+
+#: app/templates/gdpr/notices/list.html:13 app/templates/policies/list.html:23
+msgid "Published"
+msgstr "Δημοσιεύθηκε"
+
+#: app/templates/gdpr/notices/list.html:14 app/templates/policies/list.html:24
+msgid "Retired"
+msgstr "Αποσύρθηκε"
+
+#: app/templates/gdpr/notices/list.html:18
+#, fuzzy
+msgid "New Notice"
+msgstr "Νέα Πολιτική"
+
+#: app/templates/gdpr/notices/list.html:33 app/templates/policies/view.html:61
+msgid "v"
+msgstr "έκδ"
+
+#: app/templates/gdpr/notices/list.html:39
+#: app/templates/gdpr/notices/view.html:17
+msgid "Delete this notice?"
+msgstr "Διαγραφή αυτής της ανακοίνωσης;"
+
+#: app/templates/gdpr/notices/list.html:51
+#, fuzzy
+msgid "No privacy notices yet."
+msgstr "Δεν υπάρχουν ακόμα πολιτικές"
+
+#: app/templates/gdpr/notices/list.html:52
+msgid "Create your first notice"
+msgstr "Δημιουργήστε την πρώτη ανακοίνωση"
+
+#: app/templates/gdpr/notices/view.html:13
+msgid "Notice"
+msgstr "Ανακοίνωση"
+
+#: app/templates/gdpr/notices/view.html:27 app/templates/policies/view.html:65
+msgid "Effective"
+msgstr "Ισχύει"
+
+#: app/templates/gdpr/notices/view.html:28 app/templates/policies/list.html:85
+#: app/templates/policies/view.html:66
+msgid "Review"
+msgstr "Αναθεώρηση"
+
+#: app/templates/gdpr/processing/form.html:15
+#, fuzzy
+msgid "Activity & Controller"
+msgstr "Επεξεργασία Ελέγχου"
+
+#: app/templates/gdpr/processing/form.html:18
+msgid "Processing Activity Name"
+msgstr "Όνομα Δραστηριότητας"
+
+#: app/templates/gdpr/processing/form.html:22
+msgid "Data Controller Name"
+msgstr "Όνομα Υπευθύνου"
+
+#: app/templates/gdpr/processing/form.html:28
+#: app/templates/gdpr/processing/view.html:43
+#, fuzzy
+msgid "Controller Contact"
+msgstr "Κατάσταση Ελέγχων"
+
+#: app/templates/gdpr/processing/form.html:32
+#: app/templates/gdpr/processing/view.html:44
+#, fuzzy
+msgid "Controller Email"
+msgstr "Λεπτομέρειες Ελέγχου"
+
+#: app/templates/gdpr/processing/form.html:46
+#, fuzzy
+msgid "DPO Contact"
+msgstr "Επαφή"
+
+#: app/templates/gdpr/processing/form.html:51
+#, fuzzy
+msgid "Processing Details"
+msgstr "Λεπτομέρειες Περιστατικού"
+
+#: app/templates/gdpr/processing/form.html:58
+#: app/templates/gdpr/processing/view.html:27
+msgid "Legal Basis"
+msgstr "Νομική Βάση"
+
+#: app/templates/gdpr/processing/form.html:67
+#: app/templates/gdpr/processing/view.html:28
+#, fuzzy
+msgid "Legal Basis Details"
+msgstr "Λεπτομέρειες Κινδύνου"
+
+#: app/templates/gdpr/processing/form.html:84
+msgid "Special Category Data (Art 9)"
+msgstr "Δεδομένα Ειδικής Κατηγορίας (Άρ. 9)"
+
+#: app/templates/gdpr/processing/form.html:87
+msgid "Criminal Conviction Data (Art 10)"
+msgstr "Δεδομένα Ποινικών Καταδικών (Άρ. 10)"
+
+#: app/templates/gdpr/processing/form.html:91
+#, fuzzy
+msgid "Special Category Details"
+msgstr "Λεπτομέρειες Προμηθευτή"
+
+#: app/templates/gdpr/processing/form.html:95
+msgid "Recipients & Retention"
+msgstr "Αποδέκτες & Διατήρηση"
+
+#: app/templates/gdpr/processing/form.html:97
+msgid "Categories of Recipients"
+msgstr "Κατηγορίες Αποδεκτών"
+
+#: app/templates/gdpr/processing/form.html:101
+msgid "Data Retention / Erasure Schedule"
+msgstr "Περίοδοι Διατήρησης / Διαγραφής"
+
+#: app/templates/gdpr/processing/form.html:105
+msgid "Technical & Organisational Measures"
+msgstr "Τεχνικά & Οργανωτικά Μέτρα"
+
+#: app/templates/gdpr/processing/form.html:109
+#: app/templates/gdpr/processing/view.html:59
+msgid "Cross-border Transfers"
+msgstr "Διασυνοριακές Διαβιβάσεις"
+
+#: app/templates/gdpr/processing/form.html:111
+msgid "Cross-border Transfer (outside EU/EEA)"
+msgstr "Διασυνοριακή Διαβίβαση (εκτός ΕΕ/ΕΟΧ)"
+
+#: app/templates/gdpr/processing/form.html:115
+#: app/templates/gdpr/processing/view.html:61
+msgid "Third Countries"
+msgstr "Τρίτες Χώρες"
+
+#: app/templates/gdpr/processing/form.html:119
+msgid "Safeguards (SCCs, BCRs, etc.)"
+msgstr "Εγγυήσεις (SCCs, BCRs, κλπ.)"
+
+#: app/templates/gdpr/processing/list.html:2
+msgid "Processing Activities (ROPA)"
+msgstr "Δραστηριότητες Επεξεργασίας (ΜΗΔ)"
+
+#: app/templates/gdpr/processing/list.html:14
+msgid "Archived"
+msgstr "Αρχειοθετημένο"
+
+#: app/templates/gdpr/processing/list.html:18
+#, fuzzy
+msgid "Search activities..."
+msgstr "Αναζήτηση πολιτικών..."
+
+#: app/templates/gdpr/processing/list.html:24
+msgid "New Activity"
+msgstr "Νέα Δραστηριότητα"
+
+#: app/templates/gdpr/processing/list.html:37
+#: app/templates/gdpr/processing/view.html:42
+#, fuzzy
+msgid "Controller"
+msgstr "Έλεγχος"
+
+#: app/templates/gdpr/processing/list.html:39
+msgid "Cross-border transfer"
+msgstr "Διασυνοριακή διαβίβαση"
+
+#: app/templates/gdpr/processing/list.html:40
+msgid "Special category"
+msgstr "Ειδική κατηγορία"
+
+#: app/templates/gdpr/processing/list.html:43
+#: app/templates/gdpr/processing/view.html:17
+msgid "Delete this activity?"
+msgstr "Διαγραφή αυτής της δραστηριότητας;"
+
+#: app/templates/gdpr/processing/list.html:55
+#, fuzzy
+msgid "No processing activities recorded."
+msgstr "Δεν έχουν καταγραφεί σημειώσεις τεκμηρίωσης."
+
+#: app/templates/gdpr/processing/list.html:56
+msgid "Record your first activity"
+msgstr "Καταγράψτε την πρώτη δραστηριότητα"
+
+#: app/templates/gdpr/processing/view.html:13
+#, fuzzy
+msgid "Activity Details"
+msgstr "Λεπτομέρειες Ελέγχου"
+
+#: app/templates/gdpr/processing/view.html:24
+msgid "Processing Information"
+msgstr "Πληροφορίες Επεξεργασίας"
+
+#: app/templates/gdpr/processing/view.html:37
+msgid "Criminal Data"
+msgstr "Ποινικά Δεδομένα"
+
+#: app/templates/gdpr/processing/view.html:40
+msgid "Controller & Governance"
+msgstr "Υπεύθυνος & Διακυβέρνηση"
+
+#: app/templates/gdpr/processing/view.html:50
+msgid "Additional Information"
+msgstr "Πρόσθετες Πληροφορίες"
+
+#: app/templates/gdpr/processing/view.html:52
+#, fuzzy
+msgid "Recipients"
+msgstr "Περιστατικά"
+
+#: app/templates/gdpr/processing/view.html:53
+#, fuzzy
+msgid "Retention / Erasure"
+msgstr "Περίοδος Διατήρησης"
+
+#: app/templates/gdpr/processing/view.html:54
+msgid "Tech & Org Measures"
+msgstr "Τεχνικά & Οργανωτικά Μέτρα"
+
+#: app/templates/gdpr/processing/view.html:61
+#: app/templates/gdpr/processing/view.html:62
+#, fuzzy
+msgid "Not specified"
+msgstr "Χωρίς συγκεκριμένο περιουσιακό στοιχείο"
+
+#: app/templates/gdpr/processing/view.html:62
+msgid "Safeguards"
+msgstr "Εγγυήσεις"
+
+#: app/templates/incidents/form.html:39
+msgid "Assign To"
+msgstr "Ανάθεση Σε"
+
+#: app/templates/incidents/form.html:44 app/templates/incidents/view.html:34
+msgid "Root Cause"
+msgstr "Ριζική Αιτία"
+
+#: app/templates/incidents/form.html:48
+msgid "Impact Description"
+msgstr "Περιγραφή Επίπτωσης"
+
+#: app/templates/incidents/form.html:52 app/templates/incidents/view.html:36
+msgid "Lessons Learned"
+msgstr "Διδάγματα"
+
+#: app/templates/incidents/list.html:12
+msgid "All Severities"
+msgstr "Όλες οι Σοβαρότητες"
+
+#: app/templates/incidents/list.html:13 app/templates/risks/list.html:16
+msgid "Low"
+msgstr "Χαμηλό"
+
+#: app/templates/incidents/list.html:14 app/templates/risks/list.html:15
+msgid "Medium"
+msgstr "Μέτριο"
+
+#: app/templates/incidents/list.html:15 app/templates/risks/list.html:14
+msgid "High"
+msgstr "Υψηλό"
+
+#: app/templates/incidents/list.html:16 app/templates/risks/list.html:13
+msgid "Critical"
+msgstr "Κρίσιμο"
+
+#: app/templates/incidents/list.html:23
+msgid "Investigating"
+msgstr "Διερεύνηση"
+
+#: app/templates/incidents/list.html:24
+msgid "Contained"
+msgstr "Περιορίστηκε"
+
+#: app/templates/incidents/list.html:30
+msgid "Search incidents..."
+msgstr "Αναζήτηση περιστατικών..."
+
+#: app/templates/incidents/list.html:46 app/templates/incidents/view.html:29
+msgid "Reported By"
+msgstr "Αναφέρθηκε Από"
+
+#: app/templates/incidents/list.html:46
+msgid "Date"
+msgstr "Ημερομηνία"
+
+#: app/templates/incidents/list.html:58 app/templates/incidents/view.html:17
+msgid "Delete this incident?"
+msgstr "Διαγραφή αυτού του περιστατικού;"
+
+#: app/templates/incidents/view.html:13
+msgid "Incident Details"
+msgstr "Λεπτομέρειες Περιστατικού"
+
+#: app/templates/incidents/view.html:31
+msgid "Detected At"
+msgstr "Εντοπίστηκε Στις"
+
+#: app/templates/incidents/view.html:32
+msgid "Contained At"
+msgstr "Περιορίστηκε Στις"
+
+#: app/templates/incidents/view.html:33
+msgid "Resolved At"
+msgstr "Επιλύθηκε Στις"
+
+#: app/templates/incidents/view.html:45
+msgid "Data Breach"
+msgstr "Παραβίαση Δεδομένων"
+
+#: app/templates/incidents/view.html:52
+#, fuzzy
+msgid "SA Notification"
+msgstr "Αιτιολόγηση"
+
+#: app/templates/incidents/view.html:53
+msgid "Notified DS"
+msgstr "Ενημέρωση Υποκειμένου"
+
+#: app/templates/incidents/view.html:54
+#, fuzzy
+msgid "DS Notification"
+msgstr "Αιτιολόγηση"
+
+#: app/templates/incidents/view.html:55
+msgid "Subjects Affected"
+msgstr "Επηρεαζόμενα Υποκείμενα"
+
+#: app/templates/incidents/view.html:56
+msgid "Records Affected"
+msgstr "Επηρεαζόμενες Εγγραφές"
+
+#: app/templates/incidents/view.html:65
+msgid "Timeline"
+msgstr "Χρονολόγιο"
+
+#: app/templates/incidents/view.html:68
+msgid "Reported:"
+msgstr "Αναφέρθηκε:"
+
+#: app/templates/incidents/view.html:69
+msgid "Contained:"
+msgstr "Περιορίστηκε:"
+
+#: app/templates/incidents/view.html:70
+msgid "Resolved:"
+msgstr "Επιλύθηκε:"
+
+#: app/templates/incidents/view.html:71
+msgid "Updated:"
+msgstr "Ενημερώθηκε:"
+
+#: app/templates/policies/form.html:53
+msgid "This is an uploaded document (PDF, Word, Excel, etc.)"
+msgstr "Αυτό είναι ένα μεταφορτωμένο έγγραφο (PDF, Word, Excel, κλπ.)"
+
+#: app/templates/policies/form.html:84
+#, fuzzy
+msgid "Content"
+msgstr "Επαφή"
+
+#: app/templates/policies/form.html:91
+msgid "Upload File"
+msgstr "Μεταφόρτωση Αρχείου"
+
+#: app/templates/policies/form.html:95
+#: app/templates/policies/new_version.html:54
+msgid "Drag & drop a file here or click to browse"
+msgstr "Σύρετε ένα αρχείο εδώ ή κάντε κλικ για περιήγηση"
+
+#: app/templates/policies/form.html:96
+#: app/templates/policies/new_version.html:55
+msgid "Allowed: PDF, DOC, DOCX, XLS, XLSX, PPT, TXT, CSV, images"
+msgstr "Επιτρέπονται: PDF, DOC, DOCX, XLS, XLSX, PPT, TXT, CSV, εικόνες"
+
+#: app/templates/policies/form.html:100
+#: app/templates/policies/new_version.html:59
+#, fuzzy
+msgid "File selected"
+msgstr "Δεν επιλέχθηκε"
+
+#: app/templates/policies/form.html:107
+#: app/templates/policies/new_version.html:66
+#, fuzzy
+msgid "Current file"
+msgstr "Τρέχουσα έκδοση:"
+
+#: app/templates/policies/list.html:13
+#: app/templates/policies/new_version.html:4
+msgid "Policies"
+msgstr "Πολιτικές"
+
+#: app/templates/policies/list.html:14
+#, fuzzy
+msgid "Documents"
+msgstr "Πολιτικές & Έγγραφα"
+
+#: app/templates/policies/list.html:29
+#, fuzzy
+msgid "All Categories"
+msgstr "Όλες οι Σοβαρότητες"
+
+#: app/templates/policies/list.html:30
+#, fuzzy
+msgid "Information Security"
+msgstr "Σύστημα Διαχείρισης Ασφάλειας Πληροφοριών"
+
+#: app/templates/policies/list.html:31
+#, fuzzy
+msgid "Access Control"
+msgstr "Έλεγχοι Παραρτήματος Α"
+
+#: app/templates/policies/list.html:32
+#, fuzzy
+msgid "Incident Response"
+msgstr "Τάσεις Περιστατικών"
+
+#: app/templates/policies/list.html:34
+msgid "Data Protection"
+msgstr "Προστασία Δεδομένων"
+
+#: app/templates/policies/list.html:35
+msgid "Physical Security"
+msgstr "Φυσική Ασφάλεια"
+
+#: app/templates/policies/list.html:36
+#, fuzzy
+msgid "HR Security"
+msgstr "Ανά Σοβαρότητα"
+
+#: app/templates/policies/list.html:37
+#, fuzzy
+msgid "Supplier Security"
+msgstr "Όνομα Προμηθευτή"
+
+#: app/templates/policies/list.html:42
+#, fuzzy
+msgid "Search by title, description or filename..."
+msgstr "Σύντομη περιγραφή αλλαγών..."
+
+#: app/templates/policies/list.html:70 app/templates/policies/view.html:60
+msgid "Document"
+msgstr "Έγγραφο"
+
+#: app/templates/policies/list.html:87 app/templates/policies/view.html:27
+msgid "Delete this policy?"
+msgstr "Διαγραφή αυτής της πολιτικής;"
+
+#: app/templates/policies/list.html:100
+#, fuzzy
+msgid "No policies or documents yet."
+msgstr "Πολιτικές & Έγγραφα"
+
+#: app/templates/policies/list.html:101
+#, fuzzy
+msgid "Create your first"
+msgstr "Δημιουργία Πολιτικής"
+
+#: app/templates/policies/new_version.html:2
+#: app/templates/policies/new_version.html:6
+#: app/templates/policies/view.html:25
+msgid "New Version"
+msgstr "Νέα Έκδοση"
+
+#: app/templates/policies/new_version.html:39
+msgid "Current version:"
+msgstr "Τρέχουσα έκδοση:"
+
+#: app/templates/policies/new_version.html:39
+msgid "Next:"
+msgstr "Επόμενη:"
+
+#: app/templates/policies/new_version.html:44
+msgid "Change Summary"
+msgstr "Σύνοψη Αλλαγών"
+
+#: app/templates/policies/new_version.html:45
+msgid "Brief description of changes..."
+msgstr "Σύντομη περιγραφή αλλαγών..."
+
+#: app/templates/policies/new_version.html:50
+msgid "Upload New File"
+msgstr "Μεταφόρτωση Νέου Αρχείου"
+
+#: app/templates/policies/new_version.html:73
+msgid "Updated Content"
+msgstr "Ενημερωμένο Περιεχόμενο"
+
+#: app/templates/policies/new_version.html:78
+msgid "Create Version"
+msgstr "Δημιουργία Έκδοσης"
+
+#: app/templates/policies/view.html:17
+#, fuzzy
+msgid "Document Content"
+msgstr "Περιεχόμενο Πολιτικής"
+
+#: app/templates/policies/view.html:17
+msgid "Policy Content"
+msgstr "Περιεχόμενο Πολιτικής"
+
+#: app/templates/policies/view.html:22
+msgid "Download"
+msgstr "Λήψη"
+
+#: app/templates/policies/view.html:43
+msgid "Download File"
+msgstr "Λήψη Αρχείου"
+
+#: app/templates/policies/view.html:49
+msgid "No content yet."
+msgstr "Δεν υπάρχει ακόμα περιεχόμενο."
+
+#: app/templates/policies/view.html:60
+#, fuzzy
+msgid "Policy"
+msgstr "Νέα Πολιτική"
+
+#: app/templates/policies/view.html:71
+msgid "Version History"
+msgstr "Ιστορικό Εκδόσεων"
+
+#: app/templates/policies/view.html:90
+msgid "No version history"
+msgstr "Δεν υπάρχει ιστορικό εκδόσεων"
+
+#: app/templates/reports/audit_log.html:22
+msgid "No audit log entries"
+msgstr "Δεν υπάρχουν εγγραφές αρχείου ελέγχου"
+
+#: app/templates/reports/controls_status.html:14
+msgid "Total"
+msgstr "Σύνολο"
+
+#: app/templates/reports/incident_trends.html:2
+#: app/templates/reports/index.html:31
+msgid "Incident Trends"
+msgstr "Τάσεις Περιστατικών"
+
+#: app/templates/reports/incident_trends.html:8
+msgid "By Severity"
+msgstr "Ανά Σοβαρότητα"
+
+#: app/templates/reports/incident_trends.html:13
+msgid "By Status"
+msgstr "Ανά Κατάσταση"
+
+#: app/templates/reports/incident_trends.html:18
+msgid "By Category"
+msgstr "Ανά Κατηγορία"
+
+#: app/templates/reports/index.html:11
+msgid "Controls Status"
+msgstr "Κατάσταση Ελέγχων"
+
+#: app/templates/reports/index.html:12
+msgid "Implementation progress by domain"
+msgstr "Πρόοδος υλοποίησης ανά τομέα"
+
+#: app/templates/reports/index.html:13 app/templates/reports/index.html:23
+#: app/templates/reports/index.html:33
+msgid "View"
+msgstr "Προβολή"
+
+#: app/templates/reports/index.html:21
+#: app/templates/reports/risk_summary.html:2
+msgid "Risk Summary"
+msgstr "Σύνοψη Κινδύνων"
+
+#: app/templates/reports/index.html:22
+msgid "Risk levels, treatments, and status"
+msgstr "Επίπεδα κινδύνων, μεταχείριση και κατάσταση"
+
+#: app/templates/reports/index.html:32
+msgid "Incidents by severity and status"
+msgstr "Περιστατικά ανά σοβαρότητα και κατάσταση"
+
+#: app/templates/reports/index.html:40
+msgid "CSV Exports"
+msgstr "Εξαγωγές CSV"
+
+#: app/templates/reports/index.html:56
+msgid "View Audit Log"
+msgstr "Προβολή Αρχείου Ελέγχου"
+
+#: app/templates/reports/risk_summary.html:8
+msgid "Risk Levels"
+msgstr "Επίπεδα Κινδύνων"
+
+#: app/templates/reports/risk_summary.html:18
+msgid "Treatment Options"
+msgstr "Επιλογές Μεταχείρισης"
+
+#: app/templates/risks/form.html:26 app/templates/risks/view.html:33
+msgid "Asset"
+msgstr "Περιουσιακό Στοιχείο"
+
+#: app/templates/risks/form.html:30
+msgid "Risk Owner"
+msgstr "Υπεύθυνος Κινδύνου"
+
+#: app/templates/risks/form.html:36
+msgid "Likelihood (1–5)"
+msgstr "Πιθανότητα (1–5)"
+
+#: app/templates/risks/form.html:40
+msgid "Impact (1–5)"
+msgstr "Επίπτωση (1–5)"
+
+#: app/templates/risks/form.html:53 app/templates/risks/view.html:30
+msgid "Treatment Plan"
+msgstr "Σχέδιο Μεταχείρισης"
+
+#: app/templates/risks/form.html:58
+msgid "Residual Likelihood"
+msgstr "Υπολειπόμενη Πιθανότητα"
+
+#: app/templates/risks/form.html:62
+msgid "Residual Impact"
+msgstr "Υπολειπόμενη Επίπτωση"
+
+#: app/templates/risks/list.html:12
+msgid "All Risk Levels"
+msgstr "Όλα τα Επίπεδα Κινδύνων"
+
+#: app/templates/risks/list.html:22
+msgid "Identified"
+msgstr "Αναγνωρίστηκε"
+
+#: app/templates/risks/list.html:23 app/templates/suppliers/list.html:14
+msgid "Assessed"
+msgstr "Αξιολογήθηκε"
+
+#: app/templates/risks/list.html:24
+msgid "Treatment In Progress"
+msgstr "Μεταχείριση σε Εξέλιξη"
+
+#: app/templates/risks/list.html:25
+msgid "Residual Accepted"
+msgstr "Υπολειπόμενος Αποδεκτός"
+
+#: app/templates/risks/list.html:30
+msgid "Search risks..."
+msgstr "Αναζήτηση κινδύνων..."
+
+#: app/templates/risks/list.html:37
+msgid "New Risk"
+msgstr "Νέος Κίνδυνος"
+
+#: app/templates/risks/list.html:59 app/templates/risks/view.html:17
+msgid "Delete this risk?"
+msgstr "Διαγραφή αυτού του κινδύνου;"
+
+#: app/templates/risks/list.html:66
+msgid "No risks registered"
+msgstr "Δεν έχουν καταχωρηθεί κίνδυνοι"
+
+#: app/templates/risks/view.html:13
+msgid "Risk Details"
+msgstr "Λεπτομέρειες Κινδύνου"
+
+#: app/templates/risks/view.html:29
+msgid "Not selected"
+msgstr "Δεν επιλέχθηκε"
+
+#: app/templates/risks/view.html:31
+msgid "Residual Risk"
+msgstr "Υπολειπόμενος Κίνδυνος"
+
+#: app/templates/risks/view.html:42
+msgid "Risk Heat Map"
+msgstr "Θερμικός Χάρτης Κινδύνων"
+
+#: app/templates/risks/view.html:47
+msgid "Risk Score (L×I)"
+msgstr "Βαθμολογία Κινδύνου (Π×Ε)"
+
+#: app/templates/soa/edit.html:2
+msgid "Edit SoA Entry"
+msgstr "Επεξεργασία Εγγραφής SoA"
+
+#: app/templates/soa/edit.html:28
+msgid "Justification (if not applicable)"
+msgstr "Αιτιολόγηση (αν δεν εφαρμόζεται)"
+
+#: app/templates/soa/edit.html:32
+msgid "Control Description"
+msgstr "Περιγραφή Ελέγχου"
+
+#: app/templates/soa/edit.html:36
+msgid "Responsible Person"
+msgstr "Υπεύθυνο Άτομο"
+
+#: app/templates/soa/export.html:12
+msgid "Generated"
+msgstr "Δημιουργήθηκε"
+
+#: app/templates/soa/list.html:7 app/templates/soa/summary.html:3
+msgid "Summary"
+msgstr "Σύνοψη"
+
+#: app/templates/soa/list.html:8
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: app/templates/soa/summary.html:2
+msgid "SoA Summary"
+msgstr "Σύνοψη SoA"
+
+#: app/templates/soa/summary.html:8
+msgid "Total Controls"
+msgstr "Σύνολο Ελέγχων"
+
+#: app/templates/suppliers/form.html:17
+msgid "Supplier Name"
+msgstr "Όνομα Προμηθευτή"
+
+#: app/templates/suppliers/form.html:27
+msgid "Contact Name"
+msgstr "Όνομα Επαφής"
+
+#: app/templates/suppliers/form.html:31
+msgid "Contact Email"
+msgstr "Email Επαφής"
+
+#: app/templates/suppliers/form.html:35
+msgid "Contact Phone"
+msgstr "Τηλέφωνο Επαφής"
+
+#: app/templates/suppliers/form.html:40
+msgid "Service Description"
+msgstr "Περιγραφή Υπηρεσίας"
+
+#: app/templates/suppliers/form.html:44 app/templates/suppliers/view.html:31
+msgid "Security Requirements"
+msgstr "Απαιτήσεις Ασφάλειας"
+
+#: app/templates/suppliers/form.html:49
+msgid "Assessment Status"
+msgstr "Κατάσταση Αξιολόγησης"
+
+#: app/templates/suppliers/form.html:57 app/templates/suppliers/view.html:29
+msgid "Assessment Date"
+msgstr "Ημερομηνία Αξιολόγησης"
+
+#: app/templates/suppliers/form.html:63
+msgid "Contract Start"
+msgstr "Έναρξη Σύμβασης"
+
+#: app/templates/suppliers/form.html:67 app/templates/suppliers/list.html:37
+msgid "Contract End"
+msgstr "Λήξη Σύμβασης"
+
+#: app/templates/suppliers/form.html:72 app/templates/suppliers/view.html:30
+msgid "Assessment Notes"
+msgstr "Σημειώσεις Αξιολόγησης"
+
+#: app/templates/suppliers/form.html:77
+msgid "Data Processing Agreement in place"
+msgstr "Σύμβαση Επεξεργασίας Δεδομένων σε ισχύ"
+
+#: app/templates/suppliers/list.html:12
+msgid "All Assessments"
+msgstr "Όλες οι Αξιολογήσεις"
+
+#: app/templates/suppliers/list.html:13
+msgid "Pending"
+msgstr "Εκκρεμεί"
+
+#: app/templates/suppliers/list.html:17
+msgid "Review Required"
+msgstr "Απαιτείται Αναθεώρηση"
+
+#: app/templates/suppliers/list.html:21
+msgid "Search suppliers..."
+msgstr "Αναζήτηση προμηθευτών..."
+
+#: app/templates/suppliers/list.html:37 app/templates/suppliers/view.html:28
+msgid "Assessment"
+msgstr "Αξιολόγηση"
+
+#: app/templates/suppliers/list.html:49 app/templates/suppliers/view.html:17
+msgid "Delete this supplier?"
+msgstr "Διαγραφή αυτού του προμηθευτή;"
+
+#: app/templates/suppliers/list.html:56
+msgid "No suppliers registered"
+msgstr "Δεν έχουν καταχωρηθεί προμηθευτές"
+
+#: app/templates/suppliers/view.html:13
+msgid "Supplier Details"
+msgstr "Λεπτομέρειες Προμηθευτή"
+
+#: app/templates/suppliers/view.html:25
+msgid "Service"
+msgstr "Υπηρεσία"
+
+#: app/templates/suppliers/view.html:32
+msgid "DPA in Place"
+msgstr "ΣΕΔ σε Ισχύ"
+
+#: app/templates/suppliers/view.html:33
+msgid "Contract Period"
+msgstr "Περίοδος Σύμβασης"
+
+#~ msgid "ISMS Framework"
+#~ msgstr "Πλαίσιο ΣΔΑΠ"
+
+#~ msgid "Risk & Assets"
+#~ msgstr "Κίνδυνοι & Περιουσιακά Στοιχεία"
+
+#~ msgid "Operations"
+#~ msgstr "Λειτουργίες"
+
+#~ msgid "GDPR Compliance"
+#~ msgstr "Συμμόρφωση GDPR"
+
+#~ msgid "Reporting"
+#~ msgstr "Αναφορές"
+
+#~ msgid "Policy created successfully."
+#~ msgstr "Η πολιτική δημιουργήθηκε επιτυχώς."
+
+#~ msgid "Account Details"
+#~ msgstr "Στοιχεία Λογαριασμού"
+
+#~ msgid "Two-Factor Auth"
+#~ msgstr "Πιστοποίηση Δύο Παραγόντων"
+
+#~ msgid "Content (HTML supported)"
+#~ msgstr "Περιεχόμενο (υποστηρίζεται HTML)"
+
+#~ msgid "TOTP Code"
+#~ msgstr "Κωδικός TOTP"
+
+#~ msgid "if enabled"
+#~ msgstr "αν είναι ενεργοποιημένο"
+
+#~ msgid "View all"
+#~ msgstr "Προβολή όλων"
+
+#~ msgid "Critical/High Risks"
+#~ msgstr "Κρίσιμοι/Υψηλοί Κίνδυνοι"
+
+#~ msgid "total"
+#~ msgstr "σύνολο"
+
+#~ msgid "Open Non-Conformities"
+#~ msgstr "Ανοικτές Μη Συμμορφώσεις"
+

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('audits.list_audits') }}">{{ _('Audits') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Add Finding') }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Finding Type') }}</label>
+            {{ form.finding_type(class="form-select") }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Related Control') }}</label>
+            {{ form.control_id(class="form-select") }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Severity') }}</label>
+            {{ form.severity(class="form-select") }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Description') }}</label>
+            {{ form.description(class="form-control", rows=5) }}
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Finding') }}</button>
+          <a href="{{ url_for('audits.view_audit', audit_id=audit.id) }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

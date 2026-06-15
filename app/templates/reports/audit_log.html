@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Audit Trail') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item"><a href="{{ url_for('reports.index') }}">{{ _('Reports') }}</a></li><li class="breadcrumb-item active">{{ _('Audit Log') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body p-0">
+    <div style="max-height: 600px; overflow-y: auto;">
+      <table class="table table-sm table-hover mb-0">
+        <thead><tr><th>{{ _('Time') }}</th><th>{{ _('User') }}</th><th>{{ _('Action') }}</th><th>{{ _('Resource') }}</th><th>{{ _('Details') }}</th><th>{{ _('IP') }}</th></tr></thead>
+        <tbody>
+          {% for log in logs.items %}
+          <tr>
+            <td class="small text-nowrap">{{ log.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td class="small">{{ log.user.username if log.user else '—' }}</td>
+            <td><span class="badge bg-{{ 'success' if log.action in ('LOGIN','CREATE') else 'warning text-dark' if log.action == 'UPDATE' else 'danger' if log.action in ('DELETE','FAILED_LOGIN') else 'info' }}">{{ log.action }}</span></td>
+            <td class="small">{{ log.resource_type }}#{{ log.resource_id }}</td>
+            <td class="small text-muted">{{ log.details|truncate(60) if log.details else '' }}</td>
+            <td class="small text-muted">{{ log.ip_address }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-4">{{ _('No audit log entries') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% if logs.pages > 1 %}
+<nav><ul class="pagination">
+  {% for page in logs.iter_pages() %}
+    {% if page %}<li class="page-item {{ 'active' if page == logs.page }}"><a class="page-link" href="{{ url_for('reports.view_audit_log', page=page) }}">{{ page }}</a></li>
+    {% else %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}
+  {% endfor %}
+</ul></nav>
+{% endif %}
+{% endblock %}
