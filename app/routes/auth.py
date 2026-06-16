@@ -5,6 +5,7 @@ from flask_babel import gettext as _
 from app.extensions import db, bcrypt, limiter
 from app.models.user import User, Role
 from app.models.audit_log import AuditLog
+from app.models.asset_assignment import AssetAssignment
 from app.forms import LoginForm, ChangePasswordForm, ProfileForm
 from datetime import datetime
 
@@ -152,10 +153,14 @@ def logout():
 @login_required
 def profile():
     form = ProfileForm(obj=current_user)
+    my_assignments = current_user.asset_assignments.order_by(
+        AssetAssignment.checkout_date.desc()
+    ).all()
+
     if form.validate_on_submit():
         if form.email.data != current_user.email and User.query.filter_by(email=form.email.data).first():
             flash(_("Email already in use."), "danger")
-            return render_template("auth/profile.html", form=form)
+            return render_template("auth/profile.html", form=form, my_assignments=my_assignments)
 
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
@@ -200,7 +205,7 @@ def profile():
         flash(_("Profile updated successfully."), "success")
         return redirect(url_for("auth.profile"))
 
-    return render_template("auth/profile.html", form=form)
+    return render_template("auth/profile.html", form=form, my_assignments=my_assignments)
 
 
 @auth_bp.route("/change-password", methods=["GET", "POST"])

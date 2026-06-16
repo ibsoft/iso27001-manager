@@ -2022,6 +2022,14 @@ msgstr "Εισάγετε το όνομά σας"
 msgid "Enter your password"
 msgstr "Εισάγετε τον κωδικό σας"
 
+#: app/templates/auth/login.html:289 app/templates/auth/login.html:322
+msgid "Show password"
+msgstr "Εμφάνιση κωδικού"
+
+#: app/templates/auth/login.html:322
+msgid "Hide password"
+msgstr "Απόκρυψη κωδικού"
+
 #: app/templates/auth/login.html:227
 msgid "Default accounts"
 msgstr "Προεπιλεγμένοι λογαριασμοί"
@@ -5580,6 +5588,30 @@ msgstr "Απαιτείται υπογραφή επιστροφής."
 
 msgid "Please correct the errors below."
 msgstr "Παρακαλώ διορθώστε τα σφάλματα παρακάτω."
+
+#: app/__init__.py app/templates/base.html
+msgid "Forbidden"
+msgstr "Απαγορεύεται"
+
+#: app/__init__.py
+msgid "You do not have permission to access this resource."
+msgstr "Δεν έχετε δικαίωμα πρόσβασης σε αυτόν τον πόρο."
+
+#: app/templates/base.html
+msgid "Success"
+msgstr "Επιτυχία"
+
+#: app/templates/base.html
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: app/templates/base.html
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+#: app/templates/base.html
+msgid "Info"
+msgstr "Πληροφορία"
 
 #: app/management_review.py
 msgid "Management Reviews"
