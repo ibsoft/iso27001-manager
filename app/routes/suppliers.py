@@ -17,6 +17,8 @@ suppliers_bp = Blueprint("suppliers", __name__)
 def list_suppliers():
     status = request.args.get("status")
     assessment = request.args.get("assessment_status")
+    risk = request.args.get("risk")
+    lifecycle = request.args.get("lifecycle_stage")
     search = request.args.get("search", "")
 
     query = Supplier.query
@@ -24,11 +26,40 @@ def list_suppliers():
         query = query.filter_by(status=status)
     if assessment:
         query = query.filter_by(assessment_status=assessment)
+    if lifecycle:
+        query = query.filter_by(lifecycle_stage=lifecycle)
+    if risk == "critical":
+        query = query.filter(Supplier.risk_score >= 80)
+    elif risk == "high":
+        query = query.filter(Supplier.risk_score >= 60, Supplier.risk_score < 80)
+    elif risk == "medium":
+        query = query.filter(Supplier.risk_score >= 30, Supplier.risk_score < 60)
+    elif risk == "low":
+        query = query.filter(Supplier.risk_score < 30)
+    elif risk == "overdue_review":
+        query = query.filter(
+            Supplier.next_review_date.isnot(None),
+            Supplier.next_review_date < datetime.utcnow().date(),
+            Supplier.lifecycle_stage.notin_(["terminated", "offboarding"]),
+        )
     if search:
         query = query.filter(Supplier.name.ilike(f"%{search}%"))
 
-    suppliers = paginate(query.order_by(Supplier.name))
-    return render_template("suppliers/list.html", suppliers=suppliers)
+    suppliers = paginate(query.order_by(Supplier.risk_score.desc(), Supplier.name))
+    all_suppliers = Supplier.query.all()
+    today = datetime.utcnow().date()
+    stats = {
+        "total": len(all_suppliers),
+        "critical_high": sum(1 for s in all_suppliers if (s.risk_score or 0) >= 60),
+        "overdue_reviews": sum(
+            1 for s in all_suppliers
+            if s.next_review_date and s.next_review_date < today
+            and s.lifecycle_stage not in ("terminated", "offboarding")
+        ),
+        "due_diligence_open": sum(1 for s in all_suppliers if not s.due_diligence_completed),
+        "nis2_scope": sum(1 for s in all_suppliers if s.nis2_in_scope),
+    }
+    return render_template("suppliers/list.html", suppliers=suppliers, stats=stats)
 
 
 @suppliers_bp.route("/new", methods=["GET", "POST"])
@@ -45,7 +76,7 @@ def new_supplier():
         flash(_("Supplier created successfully."), "success")
         return redirect(url_for("suppliers.view_supplier", supplier_id=supplier.id))
 
-    return render_template("suppliers/form.html", form=form, title=_("New Supplier"))
+    return render_template("suppliers/form.html", form=form, title=_("New Supplier/Vendor"))
 
 
 @suppliers_bp.route("/<int:supplier_id>")
@@ -69,7 +100,7 @@ def edit_supplier(supplier_id):
         flash(_("Supplier updated successfully."), "success")
         return redirect(url_for("suppliers.view_supplier", supplier_id=supplier.id))
 
-    return render_template("suppliers/form.html", form=form, title=_("Edit Supplier"), supplier=supplier)
+    return render_template("suppliers/form.html", form=form, title=_("Edit Supplier/Vendor"), supplier=supplier)
 
 
 @suppliers_bp.route("/<int:supplier_id>/delete", methods=["POST"])

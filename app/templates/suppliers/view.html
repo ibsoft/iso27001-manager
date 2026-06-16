@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block page_title %}{{ supplier.name }}{% endblock %}
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{{ url_for('suppliers.list_suppliers') }}">{{ _('Suppliers') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('suppliers.list_suppliers') }}">{{ _('Supplier/Vendor Risk Management') }}</a></li>
 <li class="breadcrumb-item active">{{ supplier.name[:30] }}</li>
 {% endblock %}
 
@@ -10,7 +10,7 @@
   <div class="col-lg-8">
     <div class="card">
       <div class="card-header d-flex justify-content-between">
-        <span>{{ _('Supplier Details') }}</span>
+        <span>{{ _('Supplier/Vendor Risk Profile') }}</span>
         <div>
           <a href="{{ url_for('suppliers.edit_supplier', supplier_id=supplier.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
           {% if current_user.has_role('admin') %}
@@ -23,22 +23,50 @@
       </div>
       <div class="card-body">
         <table class="table table-borderless">
-          <tr><td class="text-muted" style="width:180px">{{ _('Service') }}</td><td>{{ supplier.service_description or '—' }}</td></tr>
+          <tr><td class="text-muted" style="width:220px">{{ _('Type') }}</td><td>{{ (supplier.vendor_type or 'supplier')|replace('_', ' ')|title }}</td></tr>
+          <tr><td class="text-muted">{{ _('Lifecycle Stage') }}</td><td><span class="badge bg-secondary">{{ (supplier.lifecycle_stage or 'onboarded')|replace('_', ' ')|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Service') }}</td><td>{{ supplier.service_description or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Contact') }}</td><td>{{ supplier.contact_name or '—' }} ({{ supplier.contact_email or '—' }})</td></tr>
           <tr><td class="text-muted">{{ _('Phone') }}</td><td>{{ supplier.contact_phone or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Data Access Level') }}</td><td>{{ (supplier.data_access_level or 'none')|replace('_', ' ')|title }}</td></tr>
+          <tr><td class="text-muted">{{ _('ICT Service Type') }}</td><td>{{ (supplier.ict_service_type or '—')|replace('_', ' ')|title }}</td></tr>
+          <tr><td class="text-muted">{{ _('Dependency Tier') }}</td><td>{{ _('Tier') }} {{ supplier.dependency_tier or '3' }}</td></tr>
+          <tr><td class="text-muted">{{ _('NIS2 Scope') }}</td><td>{{ _('Yes') if supplier.nis2_in_scope else _('No') }}</td></tr>
           <tr><td class="text-muted">{{ _('Assessment') }}</td><td><span class="badge bg-{{ 'secondary' if supplier.assessment_status == 'pending' else 'info' if supplier.assessment_status == 'assessed' else 'success' if supplier.assessment_status == 'approved' else 'danger' if supplier.assessment_status == 'rejected' else 'warning text-dark' }}">{{ supplier.assessment_status|replace('_', ' ')|title }}</span></td></tr>
           <tr><td class="text-muted">{{ _('Assessment Date') }}</td><td>{{ supplier.assessment_date.strftime('%Y-%m-%d') if supplier.assessment_date else '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Assessment Notes') }}</td><td>{{ supplier.assessment_notes or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Security Requirements') }}</td><td>{{ supplier.security_requirements or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('DPA in Place') }}</td><td>{{ _('Yes') if supplier.data_processing_agreement else _('No') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Due Diligence Completed') }}</td><td>{{ _('Yes') if supplier.due_diligence_completed else _('No') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Security Clauses in Contract') }}</td><td>{{ _('Yes') if supplier.contract_security_clauses else _('No') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Audit Rights Included') }}</td><td>{{ _('Yes') if supplier.audit_rights else _('No') }}</td></tr>
           <tr><td class="text-muted">{{ _('Contract Period') }}</td><td>{{ supplier.contract_start_date.strftime('%Y-%m-%d') if supplier.contract_start_date else '—' }} → {{ supplier.contract_end_date.strftime('%Y-%m-%d') if supplier.contract_end_date else '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Criticality') }}</td><td><span class="badge bg-{{ 'dark' if supplier.criticality == 'critical' else 'danger' if supplier.criticality == 'high' else 'warning text-dark' if supplier.criticality == 'medium' else 'success' }}">{{ supplier.criticality|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Inherent Risk') }}</td><td><span class="badge bg-{{ 'dark' if supplier.inherent_risk == 'critical' else 'danger' if supplier.inherent_risk == 'high' else 'warning text-dark' if supplier.inherent_risk == 'medium' else 'success' }}">{{ (supplier.inherent_risk or 'medium')|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Residual Risk') }}</td><td><span class="badge bg-{{ 'dark' if supplier.residual_risk == 'critical' else 'danger' if supplier.residual_risk == 'high' else 'warning text-dark' if supplier.residual_risk == 'medium' else 'success' }}">{{ (supplier.residual_risk or 'medium')|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Risk Treatment') }}</td><td>{{ (supplier.risk_treatment or 'mitigate')|title }}</td></tr>
+          <tr><td class="text-muted">{{ _('Risk Owner') }}</td><td>{{ supplier.risk_owner or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Monitoring Frequency') }}</td><td>{{ (supplier.monitoring_frequency or 'annual')|replace('_', ' ')|title }}</td></tr>
+          <tr><td class="text-muted">{{ _('Next Review Date') }}</td><td>{{ supplier.next_review_date.strftime('%Y-%m-%d') if supplier.next_review_date else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Incident Notification SLA') }}</td><td>{{ supplier.incident_notification_sla or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('SLA Requirements') }}</td><td>{{ supplier.sla_requirements or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Risk Treatment Plan') }}</td><td>{{ supplier.risk_treatment_plan or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Exit Strategy / Offboarding Plan') }}</td><td>{{ supplier.exit_strategy or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Offboarding Date') }}</td><td>{{ supplier.offboarding_date.strftime('%Y-%m-%d') if supplier.offboarding_date else '—' }}</td></tr>
         </table>
       </div>
     </div>
   </div>
   <div class="col-lg-4">
-    <div class="card"><div class="card-body text-center py-4"><i class="fas fa-handshake fa-4x text-muted mb-3"></i><h5>{{ supplier.status|title }}</h5></div></div>
+    <div class="card mb-3">
+      <div class="card-body text-center py-4">
+        <i class="fas fa-handshake fa-4x text-muted mb-3"></i>
+        <h5>{{ supplier.status|title }}</h5>
+        <div class="display-6 fw-bold mt-2">{{ supplier.risk_score or 0 }}</div>
+        <div class="text-muted small">{{ _('Risk Score') }} / 100</div>
+        <span class="badge bg-{{ 'dark' if supplier.risk_score_level == 'critical' else 'danger' if supplier.risk_score_level == 'high' else 'warning text-dark' if supplier.risk_score_level == 'medium' else 'success' }} mt-2">{{ supplier.risk_score_level|title }}</span>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

@@ -276,15 +276,22 @@ def export_pdf_soa():
 @login_required
 @permission_required("report_export")
 def export_pdf_suppliers():
-    suppliers = Supplier.query.order_by(Supplier.criticality.desc()).all()
+    suppliers = Supplier.query.order_by(Supplier.risk_score.desc(), Supplier.name).all()
+    today = now().date()
     stats = {
         "total": len(suppliers),
         "active": sum(1 for s in suppliers if s.status == "active"),
         "assessed": sum(1 for s in suppliers if s.assessment_status == "approved"),
         "nis2_scope": sum(1 for s in suppliers if s.nis2_in_scope),
+        "high_risk": sum(1 for s in suppliers if (s.risk_score or 0) >= 60),
+        "overdue_reviews": sum(
+            1 for s in suppliers
+            if s.next_review_date and s.next_review_date < today
+            and s.lifecycle_stage not in ("terminated", "offboarding")
+        ),
     }
     pdf = render_pdf("reports/pdf/suppliers.html", suppliers=suppliers, stats=stats,
-                      title=_("Supplier Security Report"), now=now, filename="suppliers_report")
+                      title=_("Supplier/Vendor Risk Management Report"), now=now, filename="supplier_vendor_risk_report")
     if pdf is None:
         return _("PDF generation failed"), 500
     return pdf
