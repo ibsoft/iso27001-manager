@@ -6852,6 +6852,498 @@ msgstr "Δημιουργήστε σχέδιο συνέχειας πριν προ
 msgid "Business Continuity Report"
 msgstr "Αναφορά Επιχειρησιακής Συνέχειας"
 
+#: app/forms/__init__.py app/templates/suppliers/form.html
+msgid "Supplier/Vendor Type"
+msgstr "Τύπος Προμηθευτή/Παρόχου"
+
+#: app/forms/__init__.py
+msgid "Vendor"
+msgstr "Πάροχος"
+
+#: app/forms/__init__.py
+msgid "Data Processor"
+msgstr "Εκτελών την Επεξεργασία"
+
+#: app/forms/__init__.py
+msgid "Subprocessor"
+msgstr "Υπεκτελών την Επεξεργασία"
+
+#: app/forms/__init__.py
+msgid "Outsourcer"
+msgstr "Εξωτερικός Ανάδοχος"
+
+#: app/forms/__init__.py
+msgid "Partner"
+msgstr "Συνεργάτης"
+
+#: app/forms/__init__.py app/templates/suppliers/list.html
+msgid "Due Diligence"
+msgstr "Δέουσα Επιμέλεια"
+
+#: app/forms/__init__.py app/templates/suppliers/list.html
+msgid "Contracting"
+msgstr "Σύναψη Σύμβασης"
+
+#: app/forms/__init__.py app/templates/suppliers/list.html
+msgid "Onboarded"
+msgstr "Ενταγμένος"
+
+#: app/forms/__init__.py app/templates/suppliers/list.html
+msgid "Active Monitoring"
+msgstr "Ενεργή Παρακολούθηση"
+
+#: app/forms/__init__.py app/templates/suppliers/list.html
+msgid "Renewal"
+msgstr "Ανανέωση"
+
+#: app/forms/__init__.py app/templates/suppliers/list.html
+msgid "Offboarding"
+msgstr "Αποδέσμευση"
+
+#: app/forms/__init__.py app/templates/suppliers/list.html
+msgid "Terminated"
+msgstr "Τερματισμένος"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Data Access Level"
+msgstr "Επίπεδο Πρόσβασης σε Δεδομένα"
+
+#: app/forms/__init__.py
+msgid "No Data Access"
+msgstr "Χωρίς Πρόσβαση σε Δεδομένα"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Inherent Risk"
+msgstr "Εγγενής Κίνδυνος"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html
+msgid "Risk Score (0-100)"
+msgstr "Βαθμολογία Κινδύνου (0-100)"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Risk Treatment"
+msgstr "Αντιμετώπιση Κινδύνου"
+
+#: app/forms/__init__.py
+msgid "Accept"
+msgstr "Αποδοχή"
+
+#: app/forms/__init__.py
+msgid "Mitigate"
+msgstr "Μετριασμός"
+
+#: app/forms/__init__.py
+msgid "Transfer"
+msgstr "Μεταφορά"
+
+#: app/forms/__init__.py
+msgid "Avoid"
+msgstr "Αποφυγή"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Monitoring Frequency"
+msgstr "Συχνότητα Παρακολούθησης"
+
+#: app/forms/__init__.py
+msgid "Monthly"
+msgstr "Μηνιαία"
+
+#: app/forms/__init__.py
+msgid "Quarterly"
+msgstr "Τριμηνιαία"
+
+#: app/forms/__init__.py
+msgid "Semi-Annual"
+msgstr "Εξαμηνιαία"
+
+#: app/forms/__init__.py
+msgid "Annual"
+msgstr "Ετήσια"
+
+#: app/forms/__init__.py
+msgid "Event Based"
+msgstr "Βάσει Συμβάντος"
+
+#: app/forms/__init__.py
+msgid "Cloud Services"
+msgstr "Υπηρεσίες Cloud"
+
+#: app/forms/__init__.py
+msgid "SaaS"
+msgstr "SaaS"
+
+#: app/forms/__init__.py
+msgid "Network Services"
+msgstr "Υπηρεσίες Δικτύου"
+
+#: app/forms/__init__.py
+msgid "Managed Service"
+msgstr "Διαχειριζόμενη Υπηρεσία"
+
+#: app/forms/__init__.py
+msgid "Consulting"
+msgstr "Συμβουλευτικές Υπηρεσίες"
+
+#: app/forms/__init__.py
+msgid "Tier 1 - Direct critical"
+msgstr "Επίπεδο 1 - Άμεσα κρίσιμο"
+
+#: app/forms/__init__.py
+msgid "Tier 2 - Direct non-critical"
+msgstr "Επίπεδο 2 - Άμεσα μη κρίσιμο"
+
+#: app/forms/__init__.py
+msgid "Tier 3 - Indirect"
+msgstr "Επίπεδο 3 - Έμμεσο"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html
+msgid "In NIS2 Supply Chain Scope"
+msgstr "Στο Πεδίο Εφοδιαστικής Αλυσίδας NIS2"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html
+msgid "Last Supply Chain Review"
+msgstr "Τελευταία Ανασκόπηση Εφοδιαστικής Αλυσίδας"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Due Diligence Completed"
+msgstr "Ολοκληρώθηκε η Δέουσα Επιμέλεια"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Security Clauses in Contract"
+msgstr "Ρήτρες Ασφάλειας στη Σύμβαση"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Audit Rights Included"
+msgstr "Περιλαμβάνονται Δικαιώματα Ελέγχου"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html
+msgid "Subcontractors Allowed"
+msgstr "Επιτρέπονται Υπεργολάβοι"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Incident Notification SLA"
+msgstr "SLA Ειδοποίησης Περιστατικού"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "SLA Requirements"
+msgstr "Απαιτήσεις SLA"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Risk Treatment Plan"
+msgstr "Σχέδιο Αντιμετώπισης Κινδύνου"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Exit Strategy / Offboarding Plan"
+msgstr "Στρατηγική Εξόδου / Σχέδιο Αποδέσμευσης"
+
+#: app/forms/__init__.py app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Offboarding Date"
+msgstr "Ημερομηνία Αποδέσμευσης"
+
+#: app/routes/suppliers.py
+msgid "New Supplier/Vendor"
+msgstr "Νέος Προμηθευτής/Πάροχος"
+
+#: app/routes/suppliers.py
+msgid "Edit Supplier/Vendor"
+msgstr "Επεξεργασία Προμηθευτή/Παρόχου"
+
+#: app/routes/reports.py
+msgid "Supplier/Vendor Risk Management Report"
+msgstr "Αναφορά Διαχείρισης Κινδύνων Προμηθευτών/Παρόχων"
+
+#: app/templates/base.html app/templates/suppliers/list.html app/templates/suppliers/form.html app/templates/suppliers/view.html
+msgid "Supplier/Vendor Risk Management"
+msgstr "Διαχείριση Κινδύνων Προμηθευτών/Παρόχων"
+
+#: app/templates/suppliers/list.html app/templates/dashboard/index.html
+msgid "Suppliers / Vendors"
+msgstr "Προμηθευτές / Πάροχοι"
+
+#: app/templates/suppliers/list.html
+msgid "High / Critical Risk"
+msgstr "Υψηλός / Κρίσιμος Κίνδυνος"
+
+#: app/templates/suppliers/list.html
+msgid "Due Diligence Open"
+msgstr "Ανοικτή Δέουσα Επιμέλεια"
+
+#: app/templates/suppliers/list.html app/templates/reports/pdf/suppliers.html
+msgid "High Risk"
+msgstr "Υψηλός Κίνδυνος"
+
+#: app/templates/suppliers/list.html
+msgid "Medium Risk"
+msgstr "Μεσαίος Κίνδυνος"
+
+#: app/templates/suppliers/list.html
+msgid "Low Risk"
+msgstr "Χαμηλός Κίνδυνος"
+
+#: app/templates/suppliers/list.html
+msgid "Overdue Review"
+msgstr "Εκπρόθεσμη Ανασκόπηση"
+
+#: app/templates/suppliers/list.html
+msgid "All Lifecycle Stages"
+msgstr "Όλα τα Στάδια Κύκλου Ζωής"
+
+#: app/templates/suppliers/list.html app/templates/reports/pdf/suppliers.html
+msgid "Lifecycle"
+msgstr "Κύκλος Ζωής"
+
+#: app/templates/suppliers/list.html app/templates/suppliers/view.html app/templates/reports/pdf/suppliers.html
+msgid "Risk Score"
+msgstr "Βαθμολογία Κινδύνου"
+
+#: app/templates/suppliers/list.html
+msgid "Not Scheduled"
+msgstr "Μη Προγραμματισμένο"
+
+#: app/templates/suppliers/list.html
+msgid "No suppliers or vendors registered"
+msgstr "Δεν έχουν καταχωρηθεί προμηθευτές ή πάροχοι"
+
+#: app/templates/suppliers/view.html
+msgid "Supplier/Vendor Risk Profile"
+msgstr "Προφίλ Κινδύνου Προμηθευτή/Παρόχου"
+
+#: app/templates/suppliers/form.html
+msgid "Controls and Contract Requirements"
+msgstr "Έλεγχοι και Συμβατικές Απαιτήσεις"
+
+#: app/templates/suppliers/form.html
+msgid "Exit and Offboarding"
+msgstr "Έξοδος και Αποδέσμευση"
+
+#: app/templates/dashboard/index.html
+msgid "High / Critical Supplier Risk"
+msgstr "Υψηλός / Κρίσιμος Κίνδυνος Προμηθευτή"
+
+#: app/templates/dashboard/index.html
+msgid "Overdue Supplier Reviews"
+msgstr "Εκπρόθεσμες Ανασκοπήσεις Προμηθευτών"
+
+#: app/templates/reports/index.html
+msgid "Supplier/Vendor Risk"
+msgstr "Κίνδυνος Προμηθευτών/Παρόχων"
+
+#: app/forms/__init__.py
+msgid "Energy"
+msgstr "Ενέργεια"
+
+#: app/forms/__init__.py
+msgid "Transport"
+msgstr "Μεταφορές"
+
+#: app/forms/__init__.py
+msgid "Banking"
+msgstr "Τραπεζική"
+
+#: app/forms/__init__.py
+msgid "Health"
+msgstr "Υγεία"
+
+#: app/forms/__init__.py
+msgid "Digital Infrastructure"
+msgstr "Ψηφιακή Υποδομή"
+
+#: app/forms/__init__.py
+msgid "Water Supply"
+msgstr "Ύδρευση"
+
+#: app/forms/__init__.py
+msgid "Waste Management"
+msgstr "Διαχείριση Αποβλήτων"
+
+#: app/forms/__init__.py
+msgid "Manufacturing"
+msgstr "Μεταποίηση"
+
+#: app/forms/__init__.py
+msgid "Food Production"
+msgstr "Παραγωγή Τροφίμων"
+
+#: app/forms/__init__.py
+msgid "Postal Services"
+msgstr "Ταχυδρομικές Υπηρεσίες"
+
+#: app/forms/__init__.py
+msgid "Sub-Sector"
+msgstr "Υποτομέας"
+
+#: app/forms/__init__.py
+msgid "Essential"
+msgstr "Ουσιώδης"
+
+#: app/forms/__init__.py
+msgid "Important"
+msgstr "Σημαντικός"
+
+#: app/forms/__init__.py
+msgid "Competent Authority"
+msgstr "Αρμόδια Αρχή"
+
+#: app/forms/__init__.py
+msgid "CSIRT Email"
+msgstr "Email CSIRT"
+
+#: app/forms/__init__.py
+msgid "CSIRT Phone"
+msgstr "Τηλέφωνο CSIRT"
+
+#: app/forms/__init__.py
+msgid "Headquarters Address"
+msgstr "Διεύθυνση Έδρας"
+
+#: app/forms/__init__.py
+msgid "Operates in EU"
+msgstr "Δραστηριοποιείται στην ΕΕ"
+
+#: app/forms/__init__.py
+msgid "EU Member States"
+msgstr "Κράτη Μέλη ΕΕ"
+
+#: app/forms/__init__.py
+msgid "Employee Count"
+msgstr "Αριθμός Εργαζομένων"
+
+#: app/forms/__init__.py
+msgid "Annual Turnover"
+msgstr "Ετήσιος Κύκλος Εργασιών"
+
+#: app/forms/__init__.py
+msgid "Registration Date"
+msgstr "Ημερομηνία Εγγραφής"
+
+#: app/forms/__init__.py
+msgid "Last Review Date"
+msgstr "Ημερομηνία Τελευταίας Ανασκόπησης"
+
+#: app/forms/__init__.py
+msgid "Suspended"
+msgstr "Σε Αναστολή"
+
+#: app/forms/__init__.py
+msgid "Incident Title"
+msgstr "Τίτλος Περιστατικού"
+
+#: app/forms/__init__.py
+msgid "Affected Users Count"
+msgstr "Πλήθος Επηρεαζόμενων Χρηστών"
+
+#: app/forms/__init__.py
+msgid "Incident Detected At"
+msgstr "Εντοπίστηκε στις"
+
+#: app/forms/__init__.py
+msgid "Early Warning Deadline (24h)"
+msgstr "Προθεσμία Έγκαιρης Προειδοποίησης (24 ώρες)"
+
+#: app/forms/__init__.py
+msgid "Early Warning Submitted At"
+msgstr "Η Έγκαιρη Προειδοποίηση Υποβλήθηκε στις"
+
+#: app/forms/__init__.py
+msgid "Notification Deadline (72h)"
+msgstr "Προθεσμία Κοινοποίησης (72 ώρες)"
+
+#: app/forms/__init__.py
+msgid "Notification Submitted At"
+msgstr "Η Κοινοποίηση Υποβλήθηκε στις"
+
+#: app/forms/__init__.py
+msgid "Final Report Deadline (1 month)"
+msgstr "Προθεσμία Τελικής Αναφοράς (1 μήνας)"
+
+#: app/forms/__init__.py
+msgid "Final Report Submitted At"
+msgstr "Η Τελική Αναφορά Υποβλήθηκε στις"
+
+#: app/forms/__init__.py
+msgid "Notification Status"
+msgstr "Κατάσταση Κοινοποίησης"
+
+#: app/forms/__init__.py
+msgid "Supply Chain Risk Level"
+msgstr "Επίπεδο Κινδύνου Εφοδιαστικής Αλυσίδας"
+
+#: app/forms/__init__.py
+msgid "Next Assessment Date"
+msgstr "Ημερομηνία Επόμενης Αξιολόγησης"
+
+#: app/forms/__init__.py
+msgid "Subcontractors Identified"
+msgstr "Εντοπίστηκαν Υπεργολάβοι"
+
+#: app/forms/__init__.py
+msgid "Subcontractor Details"
+msgstr "Στοιχεία Υπεργολάβων"
+
+#: app/forms/__init__.py
+msgid "Termination Notice (days)"
+msgstr "Προειδοποίηση Λύσης (ημέρες)"
+
+#: app/forms/__init__.py
+msgid "Biannual"
+msgstr "Εξαμηνιαία"
+
+#: app/forms/__init__.py
+msgid "Assignee Type"
+msgstr "Τύπος Ανατεθειμένου"
+
+#: app/forms/__init__.py
+msgid "Internal User"
+msgstr "Εσωτερικός Χρήστης"
+
+#: app/forms/__init__.py
+msgid "External Person"
+msgstr "Εξωτερικό Πρόσωπο"
+
+#: app/forms/__init__.py
+msgid "Full Name"
+msgstr "Πλήρες Όνομα"
+
+#: app/forms/__init__.py
+msgid "Department / Team"
+msgstr "Τμήμα / Ομάδα"
+
+#: app/forms/__init__.py
+msgid "Expected Return Date"
+msgstr "Αναμενόμενη Ημερομηνία Επιστροφής"
+
+#: app/forms/__init__.py
+msgid "Purpose / Reason"
+msgstr "Σκοπός / Αιτία"
+
+#: app/forms/__init__.py
+msgid "Signature"
+msgstr "Υπογραφή"
+
+#: app/forms/__init__.py
+msgid "Actual Return Date"
+msgstr "Πραγματική Ημερομηνία Επιστροφής"
+
+#: app/forms/__init__.py
+msgid "Return Signature"
+msgstr "Υπογραφή Επιστροφής"
+
+#: app/forms/__init__.py
+msgid "NIS2 Measure"
+msgstr "Μέτρο NIS2"
+
+#: app/forms/__init__.py
+msgid "Measure Display Name"
+msgstr "Εμφανιζόμενο Όνομα Μέτρου"
+
+#: app/forms/__init__.py
+msgid "Feedback"
+msgstr "Σχόλια"
+
+#: app/routes/reports.py
+msgid "Management Review Report"
+msgstr "Αναφορά Ανασκόπησης Διοίκησης"
+
 
 #~ msgid "Reporting"
 #~ msgstr "Αναφορές"

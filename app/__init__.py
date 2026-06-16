@@ -197,6 +197,8 @@ def create_app(config_name=None):
     with app.app_context():
         from app.extensions import db as _db
         _db.create_all()
+        from app.utils.schema import ensure_supplier_risk_columns
+        ensure_supplier_risk_columns()
         from app.utils.seed import seed_database
         seed_database()
 

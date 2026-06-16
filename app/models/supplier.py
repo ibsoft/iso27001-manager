@@ -26,8 +26,54 @@ class Supplier(db.Model):
     dependency_tier = db.Column(db.String(8), default="3", comment="1|2|3")
     nis2_in_scope = db.Column(db.Boolean, default=False)
     last_supply_chain_review = db.Column(db.Date, nullable=True)
+    vendor_type = db.Column(db.String(32), default="supplier",
+                            comment="supplier|vendor|processor|subprocessor|outsourcer|partner")
+    lifecycle_stage = db.Column(db.String(32), default="onboarded",
+                                comment="identified|due_diligence|contracting|onboarded|active_monitoring|renewal|offboarding|terminated")
+    data_access_level = db.Column(db.String(32), default="none",
+                                  comment="none|public|internal|confidential|restricted|personal_data|special_category")
+    inherent_risk = db.Column(db.String(16), default="medium", comment="low|medium|high|critical")
+    residual_risk = db.Column(db.String(16), default="medium", comment="low|medium|high|critical")
+    risk_score = db.Column(db.Integer, default=50)
+    risk_treatment = db.Column(db.String(32), default="mitigate",
+                               comment="accept|mitigate|transfer|avoid")
+    risk_owner = db.Column(db.String(128), nullable=True)
+    next_review_date = db.Column(db.Date, nullable=True)
+    monitoring_frequency = db.Column(db.String(32), default="annual",
+                                     comment="monthly|quarterly|semi_annual|annual|event_based")
+    due_diligence_completed = db.Column(db.Boolean, default=False)
+    contract_security_clauses = db.Column(db.Boolean, default=False)
+    audit_rights = db.Column(db.Boolean, default=False)
+    subcontractors_allowed = db.Column(db.Boolean, default=False)
+    incident_notification_sla = db.Column(db.String(64), nullable=True)
+    sla_requirements = db.Column(db.Text, nullable=True)
+    risk_treatment_plan = db.Column(db.Text, nullable=True)
+    exit_strategy = db.Column(db.Text, nullable=True)
+    offboarding_date = db.Column(db.Date, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    @property
+    def risk_score_level(self):
+        score = self.risk_score or 0
+        if score >= 80:
+            return "critical"
+        if score >= 60:
+            return "high"
+        if score >= 30:
+            return "medium"
+        return "low"
+
+    @property
+    def review_status(self):
+        today = datetime.utcnow().date()
+        if self.lifecycle_stage in ("terminated", "offboarding"):
+            return "closed"
+        if self.next_review_date and self.next_review_date < today:
+            return "overdue"
+        if self.next_review_date:
+            return "scheduled"
+        return "not_scheduled"
 
     def __repr__(self):
         return f"<Supplier {self.name}>"

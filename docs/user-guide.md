@@ -273,19 +273,27 @@ Plan and conduct internal audits. Each audit tracks:
 
 A consolidated view of all non-conformities across all audits, with their current corrective action status.
 
-### Suppliers (`/suppliers/`)
+### Supplier/Vendor Risk Management (`/suppliers/`)
 
-Manage supplier relationships and their security posture. Each supplier tracks:
+Manage the full supplier and vendor risk lifecycle from identification, due diligence and contracting through active monitoring, renewal, offboarding and termination. Each supplier/vendor tracks:
 
 | Field | Description |
 |---|---|
-| Supplier Name | Organization name |
+| Supplier/Vendor Name | Organization name |
+| Supplier/Vendor Type | Supplier, vendor, processor, subprocessor, outsourcer or partner |
+| Lifecycle Stage | Identified, due diligence, contracting, onboarded, active monitoring, renewal, offboarding or terminated |
 | Contact | Name, email, phone |
 | Service Description | What they provide |
+| Data Access Level | No access, internal, confidential, restricted, personal data or special category data |
+| Risk Score | 0-100 score with Low / Medium / High / Critical classification |
+| Inherent and Residual Risk | Risk before and after controls/treatment |
+| Risk Treatment | Accept, mitigate, transfer or avoid |
+| Due Diligence | Completion status and assessment notes |
 | Security Requirements | Contractual security obligations |
+| Contract Controls | DPA, security clauses, audit rights, subcontractors and SLA requirements |
 | Assessment Status | Pending / Approved / Review Required / Rejected |
-| DPA in Place | Data Processing Agreement status |
-| Contract Period | Start and end dates |
+| Monitoring | Frequency, last supply-chain review and next review date |
+| Exit Strategy | Offboarding date and exit/transition plan |
 
 ---
 
