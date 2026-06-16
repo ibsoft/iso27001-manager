@@ -58,13 +58,15 @@
           <td>
             <a href="{{ url_for('gdpr.edit_consent', record_id=r.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
             {% if r.granted and not r.withdrawn_at %}
-            <form method="POST" action="{{ url_for('gdpr.withdraw_consent', record_id=r.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Withdraw this consent?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
+            <form method="POST" action="{{ url_for('gdpr.withdraw_consent', record_id=r.id) }}" class="d-inline" data-confirm="{{ _('Withdraw this consent?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button>
             </form>
             {% endif %}
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('gdpr.delete_consent', record_id=r.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this consent?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-dark"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('gdpr.delete_consent', record_id=r.id) }}" class="d-inline" data-confirm="{{ _('Delete this consent?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-dark"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </td>

@@ -56,9 +56,9 @@
 
 <div class="row">
   {% for policy in policies.items %}
-  <div class="col-lg-6">
-    <div class="card mb-3">
-      <div class="card-body">
+  <div class="col-lg-6 d-flex align-items-stretch">
+    <div class="card mb-3 w-100 d-flex flex-column">
+      <div class="card-body d-flex flex-column">
         <div class="d-flex justify-content-between">
           <div>
             <h5 class="mb-1">
@@ -76,7 +76,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-2 d-flex justify-content-between small text-muted">
+        <div class="mt-auto d-flex justify-content-between small text-muted pt-2">
           <span>
             <i class="far fa-user me-1"></i>{{ policy.owner.first_name ~ ' ' ~ policy.owner.last_name if policy.owner else '—' }}
             {% if policy.original_filename %}
@@ -86,8 +86,9 @@
           <span>
             {% if policy.review_date %}<span class="me-2"><i class="far fa-calendar me-1"></i>{{ _('Review') }}: {{ policy.review_date.strftime('%Y-%m-%d') }}</span>{% endif %}
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('policies.delete_policy', policy_id=policy.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this policy?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('policies.delete_policy', policy_id=policy.id) }}" class="d-inline" data-confirm="{{ _('Delete this policy?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </span>

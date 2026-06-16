@@ -57,10 +57,12 @@
           <td><span class="badge bg-{{ 'dark' if asset.criticality == 'critical' else 'danger' if asset.criticality == 'high' else 'warning text-dark' if asset.criticality == 'medium' else 'success' }}">{{ asset.criticality|title }}</span></td>
           <td><span class="badge bg-{{ 'success' if asset.status == 'active' else 'secondary' if asset.status == 'inactive' else 'danger' }}">{{ asset.status|title }}</span></td>
           <td>
+            <a href="{{ url_for('assignments.checkout_asset', asset_id=asset.id) }}" class="btn btn-sm btn-outline-success" title="{{ _('Check Out') }}"><i class="fas fa-sign-out-alt"></i></a>
             <a href="{{ url_for('assets.edit_asset', asset_id=asset.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('assets.delete_asset', asset_id=asset.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this asset?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('assets.delete_asset', asset_id=asset.id) }}" class="d-inline" data-confirm="{{ _('Delete this asset?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </td>

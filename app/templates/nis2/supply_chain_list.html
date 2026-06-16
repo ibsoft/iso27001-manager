@@ -70,8 +70,8 @@
             <td><span class="badge bg-{{ 'success' if a.status == 'approved' else 'warning' if a.status == 'review_required' or a.status == 'pending' else 'danger' if a.status == 'rejected' else 'info' }}">{{ _(a.status.replace('_', ' ').title()) }}</span></td>
             <td>
               <a href="{{ url_for('nis2.edit_supply_chain', assessment_id=a.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Edit') }}"><i class="fas fa-edit"></i></a>
-              <form method="POST" action="{{ url_for('nis2.delete_supply_chain', assessment_id=a.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this assessment?') }}')">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <form method="POST" action="{{ url_for('nis2.delete_supply_chain', assessment_id=a.id) }}" class="d-inline" data-confirm="{{ _('Delete this assessment?') }}">
+                <input type="hidden" name="csrf_token" value="<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">">
                 <button class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
               </form>
             </td>

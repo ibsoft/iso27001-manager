@@ -14,7 +14,8 @@
         <div>
           <a href="{{ url_for('risks.edit_risk', risk_id=risk.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
           {% if current_user.has_role('admin') %}
-          <form method="POST" action="{{ url_for('risks.delete_risk', risk_id=risk.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this risk?') }}')">
+          <form method="POST" action="{{ url_for('risks.delete_risk', risk_id=risk.id) }}" class="d-inline" data-confirm="{{ _('Delete this risk?') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
           </form>
           {% endif %}

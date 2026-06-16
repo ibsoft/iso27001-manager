@@ -43,6 +43,12 @@ class Control(db.Model):
     def localized_purpose(self, lang="en"):
         return self.purpose_el if lang == "el" and self.purpose_el else self.purpose
 
+    def localized_detailed_description(self, lang="en"):
+        return self.detailed_description_el if lang == "el" and self.detailed_description_el else self.detailed_description
+
+    def localized_guidance(self, lang="en"):
+        return self.guidance_el if lang == "el" and self.guidance_el else self.guidance
+
     def __repr__(self):
         return f"<Control {self.code}: {self.title}>"
 

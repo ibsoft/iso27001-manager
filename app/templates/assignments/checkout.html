@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Check Out Asset') }}: {{ asset.name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('assets.list_assets') }}">{{ _('Assets') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('assets.view_asset', asset_id=asset.id) }}">{{ asset.name[:30] }}</a></li>
+<li class="breadcrumb-item active">{{ _('Check Out') }}</li>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  #signature-pad {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    cursor: crosshair;
+    width: 100%;
+    height: 200px;
+    touch-action: none;
+  }
+  #signature-pad.drawing { border-color: var(--primary); }
+  .sig-label { font-size: 0.8rem; color: #6c757d; margin-bottom: 0.25rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header">
+        <span>{{ _('Check Out Asset:') }} <strong>{{ asset.name }}</strong></span>
+        {% if asset.serial_number %}<code class="ms-2 small">{{ asset.serial_number }}</code>{% endif %}
+      </div>
+      <div class="card-body">
+        <form method="POST" id="checkoutForm">
+          {{ form.csrf_token }}
+
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Assignee') }}</h6>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label small">{{ form.assignee_type.label.text }}</label>
+              {{ form.assignee_type(class="form-select", id="assigneeType") }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small">{{ form.department.label.text }}</label>
+              {{ form.department(class="form-control", placeholder=_("e.g. IT Department")) }}
+            </div>
+          </div>
+
+          <div id="internalFields" class="row mb-3">
+            <div class="col-md-12">
+              <label class="form-label small">{{ form.user_id.label.text }}</label>
+              {{ form.user_id(class="form-select") }}
+            </div>
+          </div>
+
+          <div id="externalFields" class="row mb-3" style="display:none">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ form.assignee_name.label.text }}</label>
+              {{ form.assignee_name(class="form-control", placeholder=_("Full name of external person")) }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ form.contact_email.label.text }}</label>
+              {{ form.contact_email(class="form-control", placeholder="email@example.com") }}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small">{{ form.contact_phone.label.text }}</label>
+              {{ form.contact_phone(class="form-control", placeholder=_("+30 69X XXX XXXX")) }}
+            </div>
+          </div>
+
+          <hr>
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Assignment Details') }}</h6>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label small">{{ form.expected_return_date.label.text }}</label>
+              {{ form.expected_return_date(class="form-control", type="date") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ form.purpose.label.text }}</label>
+            {{ form.purpose(class="form-control", rows=3, placeholder=_("Why is this asset needed?")) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ form.notes.label.text }}</label>
+            {{ form.notes(class="form-control", rows=2) }}
+          </div>
+
+          <hr>
+          <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Digital Signature') }}</h6>
+          <p class="small text-muted">{{ _('The assignee must sign below to acknowledge receipt of this asset.') }}</p>
+          <div class="mb-2 sig-label">{{ _('Signature:') }}</div>
+          <canvas id="signature-pad"></canvas>
+          <div class="mt-2 d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="clearSignature">
+              <i class="fas fa-eraser me-1"></i>{{ _('Clear') }}
+            </button>
+          </div>
+          {{ form.signature_data(id="signatureData") }}
+          <div class="invalid-feedback" id="sigError" style="display:none">{{ _('Signature is required.') }}</div>
+
+          <hr>
+          <div class="d-flex gap-2">
+            {{ form.submit(class="btn btn-primary", id="submitBtn") }}
+            <a href="{{ url_for('assets.view_asset', asset_id=asset.id) }}" class="btn btn-outline-secondary">{{ _('Cancel') }}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Asset Info') }}</div>
+      <div class="card-body small">
+        <div class="mb-2"><span class="text-muted">{{ _('Name') }}:</span> <strong>{{ asset.name }}</strong></div>
+        {% if asset.serial_number %}<div class="mb-2"><span class="text-muted">{{ _('Serial') }}:</span> <code>{{ asset.serial_number }}</code></div>{% endif %}
+        <div class="mb-2"><span class="text-muted">{{ _('Type') }}:</span> {{ asset.asset_type|title if asset.asset_type else '—' }}</div>
+        <div class="mb-2"><span class="text-muted">{{ _('Criticality') }}:</span> <span class="badge bg-{{ 'dark' if asset.criticality == 'critical' else 'danger' if asset.criticality == 'high' else 'warning text-dark' }}">{{ asset.criticality|title }}</span></div>
+        <div class="mb-2"><span class="text-muted">{{ _('Location') }}:</span> {{ asset.location or '—' }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+  const canvas = document.getElementById('signature-pad');
+  const ctx = canvas.getContext('2d');
+  const sigInput = document.getElementById('signatureData');
+  const clearBtn = document.getElementById('clearSignature');
+
+  let drawing = false;
+  let hasDrawn = false;
+  let lastX = 0, lastY = 0;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width - 4;
+    canvas.height = 200;
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function startDrawing(e) {
+    e.preventDefault();
+    drawing = true;
+    const pos = getPos(e);
+    lastX = pos.x; lastY = pos.y;
+    canvas.classList.add('drawing');
+  }
+
+  function draw(e) {
+    e.preventDefault();
+    if (!drawing) return;
+    hasDrawn = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastX = pos.x; lastY = pos.y;
+  }
+
+  function stopDrawing(e) {
+    e.preventDefault();
+    drawing = false;
+    canvas.classList.remove('drawing');
+    sigInput.value = hasDrawn ? canvas.toDataURL('image/png') : '';
+  }
+
+  function clearSig() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    sigInput.value = '';
+    hasDrawn = false;
+  }
+
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseleave', stopDrawing);
+  canvas.addEventListener('touchstart', startDrawing, { passive: false });
+  canvas.addEventListener('touchmove', draw, { passive: false });
+  canvas.addEventListener('touchend', stopDrawing, { passive: false });
+  clearBtn.addEventListener('click', clearSig);
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Require signature before submit
+  const submitBtn = document.getElementById('submitBtn');
+  const sigError = document.getElementById('sigError');
+  var formEl = document.getElementById('checkoutForm');
+  formEl.addEventListener('submit', function(e) {
+    if (!sigInput.value) {
+      e.preventDefault();
+      canvas.style.borderColor = '#dc3545';
+      sigError.style.display = 'block';
+      document.getElementById('signature-pad').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+  function sigUpdated() {
+    if (sigInput.value) {
+      canvas.style.borderColor = '#ccc';
+      sigError.style.display = 'none';
+    }
+  }
+  canvas.addEventListener('mouseup', sigUpdated);
+  canvas.addEventListener('touchend', sigUpdated);
+
+  // Toggle internal/external fields
+  const typeSelect = document.getElementById('assigneeType');
+  const internalFields = document.getElementById('internalFields');
+  const externalFields = document.getElementById('externalFields');
+
+  function toggleFields() {
+    if (typeSelect.value === 'external') {
+      internalFields.style.display = 'none';
+      externalFields.style.display = '';
+    } else {
+      internalFields.style.display = '';
+      externalFields.style.display = 'none';
+    }
+  }
+  typeSelect.addEventListener('change', toggleFields);
+  toggleFields();
+})();
+</script>
+{% endblock %}

@@ -78,8 +78,9 @@
           <td>
             <a href="{{ url_for('gdpr.view_dsar', dsar_id=r.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('gdpr.delete_dsar', dsar_id=r.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this request?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('gdpr.delete_dsar', dsar_id=r.id) }}" class="d-inline" data-confirm="{{ _('Delete this request?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </td>

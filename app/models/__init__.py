@@ -20,3 +20,4 @@ from app.models.data_controller import DataControllerProcessor
 from app.models.privacy_notice import PrivacyNotice
 from app.models.nis2 import Nis2EntityRegistration, Nis2IncidentNotification, Nis2SupplyChainAssessment, Nis2ContinuityPlan, Nis2ComplianceCheck
 from app.models.user import SystemSetting
+from app.models.asset_assignment import AssetAssignment
