@@ -5579,6 +5579,654 @@ msgid "Return signature is required."
 msgstr "Απαιτείται υπογραφή επιστροφής."
 
 msgid "Please correct the errors below."
+
+#: app/management_review.py
+msgid "Management Reviews"
+msgstr "Ανασκοπήσεις Διοίκησης"
+
+#: app/management_review.py
+msgid "Management Review"
+msgstr "Ανασκόπηση Διοίκησης"
+
+#: app/management_review.py
+msgid "New Management Review"
+msgstr "Νέα Ανασκόπηση Διοίκησης"
+
+#: app/management_review.py
+msgid "Edit Management Review"
+msgstr "Επεξεργασία Ανασκόπησης Διοίκησης"
+
+#: app/management_review.py
+msgid "Management review created successfully."
+msgstr "Η ανασκόπηση διοίκησης δημιουργήθηκε επιτυχώς."
+
+#: app/management_review.py
+msgid "Management review updated successfully."
+msgstr "Η ανασκόπηση διοίκησης ενημερώθηκε επιτυχώς."
+
+#: app/management_review.py
+msgid "Management review deleted."
+msgstr "Η ανασκόπηση διοίκησης διαγράφηκε."
+
+#: app/management_review.py
+msgid "Schedule Review"
+msgstr "Προγραμματισμός Ανασκόπησης"
+
+#: app/management_review.py
+msgid "Review Title"
+msgstr "Τίτλος Ανασκόπησης"
+
+#: app/management_review.py
+msgid "Conducted By"
+msgstr "Διεξήχθη Από"
+
+#: app/management_review.py
+msgid "Next Review Date"
+msgstr "Επόμενη Ανασκόπηση"
+
+#: app/management_review.py
+msgid "Minutes / Notes"
+msgstr "Πρακτικά / Σημειώσεις"
+
+#: app/management_review.py
+msgid "Agenda"
+msgstr "Ημερήσια Διάταξη"
+
+#: app/management_review.py
+msgid "Attendees"
+msgstr "Συμμετέχοντες"
+
+#: app/management_review.py
+msgid "Comma-separated list of names"
+msgstr "Λίστα ονομάτων διαχωρισμένη με κόμμα"
+
+#: app/management_review.py
+msgid "Recommendations"
+msgstr "Συστάσεις"
+
+#: app/management_review.py
+msgid "Action Items"
+msgstr "Ενέργειες"
+
+#: app/management_review.py
+msgid "Action Item"
+msgstr "Ενέργεια"
+
+#: app/management_review.py
+msgid "Add Action Item"
+msgstr "Προσθήκη Ενέργειας"
+
+#: app/management_review.py
+msgid "Edit Action Item"
+msgstr "Επεξεργασία Ενέργειας"
+
+#: app/management_review.py
+msgid "Action Description"
+msgstr "Περιγραφή Ενέργειας"
+
+#: app/management_review.py
+msgid "Action item added."
+msgstr "Η ενέργεια προστέθηκε."
+
+#: app/management_review.py
+msgid "Action item updated."
+msgstr "Η ενέργεια ενημερώθηκε."
+
+#: app/management_review.py
+msgid "Action item deleted."
+msgstr "Η ενέργεια διαγράφηκε."
+
+#: app/management_review.py
+msgid "Closure Notes"
+msgstr "Σημειώσεις Κλεισίματος"
+
+#: app/management_review.py
+msgid "Completed Date"
+msgstr "Ημερομηνία Ολοκλήρωσης"
+
+#: app/management_review.py
+msgid "Total Actions"
+msgstr "Σύνολο Ενεργειών"
+
+#: app/management_review.py
+msgid "complete"
+msgstr "ολοκληρωμένο"
+
+#: app/management_review.py
+msgid "scheduled"
+msgstr "προγραμματισμένες"
+
+#: app/management_review.py
+msgid "open actions"
+msgstr "ανοιχτές ενέργειες"
+
+#: app/management_review.py
+msgid "No management reviews scheduled yet."
+msgstr "Δεν υπάρχουν ακόμη προγραμματισμένες ανασκοπήσεις."
+
+#: app/management_review.py
+msgid "Schedule your first review"
+msgstr "Προγραμματίστε την πρώτη σας ανασκόπηση"
+
+#: app/management_review.py
+msgid "No action items yet."
+msgstr "Δεν υπάρχουν ακόμη ενέργειες."
+
+#: app/management_review.py
+msgid "ISO 27001 Reference"
+msgstr "Αναφορά ISO 27001"
+
+#: app/management_review.py
+msgid "Clause 9.3"
+msgstr "Ρήτρα 9.3"
+
+#: app/management_review.py
+msgid "Top management shall review the ISMS at planned intervals to ensure its continuing suitability, adequacy, effectiveness and alignment with strategic direction."
+msgstr "Η ανώτατη διοίκηση πρέπει να ανασκοπεί το ΣΑΠ σε προγραμματισμένα διαστήματα για να διασφαλίζει τη συνεχή καταλληλότητα, επάρκεια, αποτελεσματικότητα και ευθυγράμμιση με τη στρατηγική κατεύθυνση."
+
+#: app/management_review.py
+msgid "Delete this review?"
+msgstr "Διαγραφή αυτής της ανασκόπησης;"
+
+#: app/management_review.py
+msgid "Delete this action?"
+msgstr "Διαγραφή αυτής της ενέργειας;"
+
+#: app/management_review.py
+msgid "View reviews"
+msgstr "Προβολή ανασκοπήσεων"
+
+#: app/management_review.py
+msgid "Mgmt Reviews"
+msgstr "Ανασκ. Διοίκησης"
+
+#: app/management_review.py
+msgid "Count"
+msgstr "Πλήθος"
+
+#: app/capa.py
+msgid "CAPA Requests"
+msgstr "Αιτήματα CAPA"
+
+#: app/capa.py
+msgid "CAPA"
+msgstr "CAPA"
+
+#: app/capa.py
+msgid "New CAPA Request"
+msgstr "Νέο Αίτημα CAPA"
+
+#: app/capa.py
+msgid "Edit CAPA Request"
+msgstr "Επεξεργασία Αιτήματος CAPA"
+
+#: app/capa.py
+msgid "CAPA request created successfully."
+msgstr "Το αίτημα CAPA δημιουργήθηκε επιτυχώς."
+
+#: app/capa.py
+msgid "CAPA request updated successfully."
+msgstr "Το αίτημα CAPA ενημερώθηκε επιτυχώς."
+
+#: app/capa.py
+msgid "CAPA request deleted."
+msgstr "Το αίτημα CAPA διαγράφηκε."
+
+#: app/capa.py
+msgid "New CAPA"
+msgstr "Νέο CAPA"
+
+#: app/capa.py
+msgid "Source Type"
+msgstr "Τύπος Πηγής"
+
+#: app/capa.py
+msgid "Source Reference"
+msgstr "Αναφορά Πηγής"
+
+#: app/capa.py
+msgid "Root Cause Analysis"
+msgstr "Ανάλυση Βασικής Αιτίας"
+
+#: app/capa.py
+msgid "Root Cause Category"
+msgstr "Κατηγορία Βασικής Αιτίας"
+
+#: app/capa.py
+msgid "Proposed Action / Corrective Plan"
+msgstr "Προτεινόμενη Ενέργεια / Διορθωτικό Σχέδιο"
+
+#: app/capa.py
+msgid "Action Owner"
+msgstr "Υπεύθυνος Ενέργειας"
+
+#: app/capa.py
+msgid "Target Completion Date"
+msgstr "Ημερομηνία Στόχος Ολοκλήρωσης"
+
+#: app/capa.py
+msgid "Effectiveness Review"
+msgstr "Ανασκόπηση Αποτελεσματικότητας"
+
+#: app/capa.py
+msgid "Effectiveness Rating"
+msgstr "Αξιολόγηση Αποτελεσματικότητας"
+
+#: app/capa.py
+msgid "Created By"
+msgstr "Δημιουργήθηκε Από"
+
+#: app/capa.py
+msgid "Under Review"
+msgstr "Υπό Ανασκόπηση"
+
+#: app/capa.py
+msgid "Action Planned"
+msgstr "Προγραμματισμένη Ενέργεια"
+
+#: app/capa.py
+msgid "Verified"
+msgstr "Επαληθευμένο"
+
+#: app/capa.py
+msgid "All Sources"
+msgstr "Όλες οι Πηγές"
+
+#: app/capa.py
+msgid "Complaint"
+msgstr "Παράπονο"
+
+#: app/capa.py
+msgid "Regulatory"
+msgstr "Κανονιστικό"
+
+#: app/capa.py
+msgid "People"
+msgstr "Άνθρωποι"
+
+#: app/capa.py
+msgid "Process"
+msgstr "Διαδικασία"
+
+#: app/capa.py
+msgid "Technology"
+msgstr "Τεχνολογία"
+
+#: app/capa.py
+msgid "External"
+msgstr "Εξωτερικό"
+
+#: app/capa.py
+msgid "Partially Effective"
+msgstr "Μερικώς Αποτελεσματικό"
+
+#: app/capa.py
+msgid "Ineffective"
+msgstr "Μη Αποτελεσματικό"
+
+#: app/capa.py
+msgid "Select..."
+msgstr "Επιλέξτε..."
+
+#: app/capa.py
+msgid "No CAPA requests yet."
+msgstr "Δεν υπάρχουν ακόμη αιτήματα CAPA."
+
+#: app/capa.py
+msgid "Create your first CAPA"
+msgstr "Δημιουργήστε το πρώτο σας CAPA"
+
+#: app/capa.py
+msgid "Delete this CAPA?"
+msgstr "Διαγραφή αυτού του CAPA;"
+
+#: app/capa.py
+msgid "Ref"
+msgstr "Αναφ."
+
+#: app/capa.py
+msgid "Mark as"
+msgstr "Ορισμός ως"
+
+#: app/capa.py
+msgid "Age"
+msgstr "Ηλικία"
+
+#: app/capa.py
+msgid "Remaining"
+msgstr "Υπόλοιπο"
+
+#: app/capa.py
+msgid "Status updated to %(status)s."
+msgstr "Η κατάσταση ενημερώθηκε σε %(status)s."
+
+#: app/capa.py
+msgid "open_uc"
+msgstr "Ανοιχτά"
+
+#: app/capa.py
+msgid "critical_uc"
+msgstr "Κρίσιμα"
+
+#: app/capa.py
+msgid "View CAPA"
+msgstr "Προβολή CAPA"
+
+#: app/training.py
+msgid "Training Courses"
+msgstr "Εκπαιδευτικά Προγράμματα"
+
+#: app/training.py
+msgid "Training & Competence"
+msgstr "Εκπαίδευση & Ικανότητες"
+
+#: app/training.py
+msgid "Training"
+msgstr "Εκπαίδευση"
+
+#: app/training.py
+msgid "New Training Course"
+msgstr "Νέο Εκπαιδευτικό Πρόγραμμα"
+
+#: app/training.py
+msgid "Edit Training Course"
+msgstr "Επεξεργασία Εκπαιδευτικού Προγράμματος"
+
+#: app/training.py
+msgid "Training course created."
+msgstr "Το εκπαιδευτικό πρόγραμμα δημιουργήθηκε."
+
+#: app/training.py
+msgid "Training course updated."
+msgstr "Το εκπαιδευτικό πρόγραμμα ενημερώθηκε."
+
+#: app/training.py
+msgid "Training course deleted."
+msgstr "Το εκπαιδευτικό πρόγραμμα διαγράφηκε."
+
+#: app/training.py
+msgid "New Training Session"
+msgstr "Νέα Εκπαιδευτική Συνεδρία"
+
+#: app/training.py
+msgid "Edit Training Session"
+msgstr "Επεξεργασία Εκπαιδευτικής Συνεδρίας"
+
+#: app/training.py
+msgid "Training session created."
+msgstr "Η εκπαιδευτική συνεδρία δημιουργήθηκε."
+
+#: app/training.py
+msgid "Training session updated."
+msgstr "Η εκπαιδευτική συνεδρία ενημερώθηκε."
+
+#: app/training.py
+msgid "Training session deleted."
+msgstr "Η εκπαιδευτική συνεδρία διαγράφηκε."
+
+#: app/training.py
+msgid "Training record updated."
+msgstr "Το εκπαιδευτικό αρχείο ενημερώθηκε."
+
+#: app/training.py
+msgid "Training record removed."
+msgstr "Το εκπαιδευτικό αρχείο αφαιρέθηκε."
+
+#: app/training.py
+msgid "Competence profile updated."
+msgstr "Το προφίλ ικανοτήτων ενημερώθηκε."
+
+#: app/training.py
+msgid "Competence profile created."
+msgstr "Το προφίλ ικανοτήτων δημιουργήθηκε."
+
+#: app/training.py
+msgid "Competence profile deleted."
+msgstr "Το προφίλ ικανοτήτων διαγράφηκε."
+
+#: app/training.py
+msgid "Course Title"
+msgstr "Τίτλος Προγράμματος"
+
+#: app/training.py
+msgid "Session Title"
+msgstr "Τίτλος Συνεδρίας"
+
+#: app/training.py
+msgid "Provider"
+msgstr "Πάροχος"
+
+#: app/training.py
+msgid "Duration (hours)"
+msgstr "Διάρκεια (ώρες)"
+
+#: app/training.py
+msgid "Validity (days)"
+msgstr "Ισχύς (ημέρες)"
+
+#: app/training.py
+msgid "Mandatory Course"
+msgstr "Υποχρεωτικό Πρόγραμμα"
+
+#: app/training.py
+msgid "Schedule Session"
+msgstr "Προγραμματισμός Συνεδρίας"
+
+#: app/training.py
+msgid "Session Date"
+msgstr "Ημερομηνία Συνεδρίας"
+
+#: app/training.py
+msgid "Trainer"
+msgstr "Εκπαιδευτής"
+
+#: app/training.py
+msgid "Location / Platform"
+msgstr "Τοποθεσία / Πλατφόρμα"
+
+#: app/training.py
+msgid "Max Attendees"
+msgstr "Μέγιστος Αριθμός Συμμετεχόντων"
+
+#: app/training.py
+msgid "Scheduled"
+msgstr "Προγραμματισμένο"
+
+#: app/training.py
+msgid "Cancelled"
+msgstr "Ακυρωμένο"
+
+#: app/training.py
+msgid "Enrolled"
+msgstr "Εγγεγραμμένος"
+
+#: app/training.py
+msgid "No Show"
+msgstr "Απών"
+
+#: app/training.py
+msgid "Expired"
+msgstr "Ληγμένο"
+
+#: app/training.py
+msgid "Score (%)"
+msgstr "Βαθμολογία (%)"
+
+#: app/training.py
+msgid "Certificate Ref"
+msgstr "Αριθμός Πιστοποιητικού"
+
+#: app/training.py
+msgid "Skill / Competence"
+msgstr "Δεξιότητα / Ικανότητα"
+
+#: app/training.py
+msgid "Skill Level"
+msgstr "Επίπεδο Δεξιότητας"
+
+#: app/training.py
+msgid "Beginner"
+msgstr "Αρχάριος"
+
+#: app/training.py
+msgid "Intermediate"
+msgstr "Μέσος"
+
+#: app/training.py
+msgid "Advanced"
+msgstr "Προχωρημένος"
+
+#: app/training.py
+msgid "Expert"
+msgstr "Ειδικός"
+
+#: app/training.py
+msgid "Last Assessment Date"
+msgstr "Ημερομηνία Τελευταίας Αξιολόγησης"
+
+#: app/training.py
+msgid "Expiry Date"
+msgstr "Ημερομηνία Λήξης"
+
+#: app/training.py
+msgid "My Training"
+msgstr "Η Εκπαίδευσή Μου"
+
+#: app/training.py
+msgid "Competence"
+msgstr "Ικανότητες"
+
+#: app/training.py
+msgid "Upcoming Sessions"
+msgstr "Επερχόμενες Συνεδρίες"
+
+#: app/training.py
+msgid "Past Sessions"
+msgstr "Προηγούμενες Συνεδρίες"
+
+#: app/training.py
+msgid "Enroll Me"
+msgstr "Εγγραφή Μου"
+
+#: app/training.py
+msgid "You are already enrolled in this session."
+msgstr "Είστε ήδη εγγεγραμμένοι σε αυτή τη συνεδρία."
+
+#: app/training.py
+msgid "Enrolled successfully."
+msgstr "Επιτυχής εγγραφή."
+
+#: app/training.py
+msgid "No upcoming sessions."
+msgstr "Δεν υπάρχουν επερχόμενες συνεδρίες."
+
+#: app/training.py
+msgid "No attendees yet."
+msgstr "Δεν υπάρχουν ακόμη συμμετέχοντες."
+
+#: app/training.py
+msgid "No training records yet."
+msgstr "Δεν υπάρχουν ακόμη εκπαιδευτικά αρχεία."
+
+#: app/training.py
+msgid "No competence records yet."
+msgstr "Δεν υπάρχουν ακόμη αρχεία ικανοτήτων."
+
+#: app/training.py
+msgid "No training courses yet."
+msgstr "Δεν υπάρχουν ακόμη εκπαιδευτικά προγράμματα."
+
+#: app/training.py
+msgid "Create your first course"
+msgstr "Δημιουργήστε το πρώτο σας πρόγραμμα"
+
+#: app/training.py
+msgid "Delete this course?"
+msgstr "Διαγραφή αυτού του προγράμματος;"
+
+#: app/training.py
+msgid "Delete this session?"
+msgstr "Διαγραφή αυτής της συνεδρίας;"
+
+#: app/training.py
+msgid "Remove this record?"
+msgstr "Αφαίρεση αυτής της εγγραφής;"
+
+#: app/training.py
+msgid "Competence Profile"
+msgstr "Προφίλ Ικανοτήτων"
+
+#: app/training.py
+msgid "Competence Matrix"
+msgstr "Πίνακας Ικανοτήτων"
+
+#: app/training.py
+msgid "People Trained"
+msgstr "Άτομα που Εκπαιδεύτηκαν"
+
+#: app/training.py
+msgid "Total Sessions"
+msgstr "Σύνολο Συνεδριών"
+
+#: app/training.py
+msgid "Refresher"
+msgstr "Ανανέωση"
+
+#: app/training.py
+msgid "Session Info"
+msgstr "Πληροφορίες Συνεδρίας"
+
+#: app/training.py
+msgid "Awareness"
+msgstr "Ευαισθητοποίηση"
+
+#: app/training.py
+msgid "Technical"
+msgstr "Τεχνική"
+
+#: app/training.py
+msgid "Management"
+msgstr "Διοίκηση"
+
+#: app/training.py
+msgid "Soft Skill"
+msgstr "Ήπια Δεξιότητα"
+
+#: app/training.py
+msgid "courses"
+msgstr "προγράμματα"
+
+#: app/training.py
+msgid "upcoming"
+msgstr "επερχόμενες"
+
+#: app/training.py
+msgid "completed"
+msgstr "ολοκληρωμένες"
+
+#: app/training.py
+msgid "View training"
+msgstr "Προβολή εκπαίδευσης"
+
+#: app/training.py
+msgid "This course requires retraining every %(days)d days."
+msgstr "Αυτό το πρόγραμμα απαιτεί επανεκπαίδευση κάθε %(days)d ημέρες."
+
+#: app/training.py
+msgid "Training & Competence Report"
+msgstr "Αναφορά Εκπαίδευσης & Ικανοτήτων"
+
+#: app/training.py
+msgid "Training Report"
+msgstr "Αναφορά Εκπαίδευσης"
+
+#: app/training.py
+msgid "No courses recorded."
+msgstr "Δεν καταγράφηκαν προγράμματα."
+
+#: app/training.py
+msgid "All Training Records"
+msgstr "Όλες οι Εκπαιδευτικές Εγγραφές"
 msgstr "Παρακαλώ διορθώστε τα σφάλματα παρακάτω."
 
 

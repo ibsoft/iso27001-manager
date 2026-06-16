@@ -16,6 +16,9 @@ from app.models.soa import SoAEntry
 from app.models.supplier import Supplier
 from app.models.audit_log import AuditLog
 from app.models.asset_assignment import AssetAssignment
+from app.models.management_review import ManagementReview
+from app.models.capa import CapaRequest
+from app.models.training import TrainingCourse, TrainingSession, TrainingRecord
 from app.models.nis2 import Nis2EntityRegistration, Nis2IncidentNotification, Nis2SupplyChainAssessment, Nis2ContinuityPlan, Nis2ComplianceCheck
 from app.models.processing import ProcessingActivity
 from app.models.dpia import Dpia
@@ -353,6 +356,56 @@ def export_pdf_assignments():
                       checked_out=checked_out, returned=returned, overdue=overdue,
                       title=_("Asset Assignment Report"),
                       now=now, filename="asset_assignments_report")
+    if pdf is None:
+        return _("PDF generation failed"), 500
+    return pdf
+
+
+@reports_bp.route("/export/pdf/capas")
+@login_required
+@permission_required("report_export")
+def export_pdf_capas():
+    status = request.args.get("status")
+    query = CapaRequest.query
+    if status:
+        query = query.filter_by(status=status)
+    capas = query.order_by(CapaRequest.created_at.desc()).all()
+    pdf = render_pdf("reports/pdf/capas.html",
+                      capas=capas, now=now,
+                      title=_("CAPA Report"),
+                      filename="capa_report")
+    if pdf is None:
+        return _("PDF generation failed"), 500
+    return pdf
+
+
+@reports_bp.route("/export/pdf/training")
+@login_required
+@permission_required("report_export")
+def export_pdf_training():
+    courses = TrainingCourse.query.order_by(TrainingCourse.title).all()
+    pdf = render_pdf("reports/pdf/training.html",
+                      courses=courses, now=now,
+                      title=_("Training Report"),
+                      filename="training_report")
+    if pdf is None:
+        return _("PDF generation failed"), 500
+    return pdf
+
+
+@reports_bp.route("/export/pdf/management-reviews")
+@login_required
+@permission_required("report_export")
+def export_pdf_management_reviews():
+    status = request.args.get("status")
+    query = ManagementReview.query
+    if status:
+        query = query.filter_by(status=status)
+    reviews = query.order_by(ManagementReview.review_date.desc()).all()
+    pdf = render_pdf("reports/pdf/management_reviews.html",
+                      reviews=reviews, now=now,
+                      title=_("Management Review Report"),
+                      filename="management_reviews_report")
     if pdf is None:
         return _("PDF generation failed"), 500
     return pdf

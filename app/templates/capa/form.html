@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('capa.list_capas') }}">{{ _('CAPA') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0">{{ title }}</h5></div>
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row g-3">
+            <div class="col-md-8">
+              {{ form.title.label(class="form-label") }}
+              {{ form.title(class="form-control" + (' is-invalid' if form.title.errors else '')) }}
+              {% for e in form.title.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.severity.label(class="form-label") }}
+              {{ form.severity(class="form-select" + (' is-invalid' if form.severity.errors else '')) }}
+              {% for e in form.severity.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="mt-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control" + (' is-invalid' if form.description.errors else ''), rows=4) }}
+            {% for e in form.description.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              {{ form.source_type.label(class="form-label") }}
+              {{ form.source_type(class="form-select" + (' is-invalid' if form.source_type.errors else '')) }}
+              {% for e in form.source_type.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.source_reference.label(class="form-label") }}
+              {{ form.source_reference(class="form-control" + (' is-invalid' if form.source_reference.errors else '')) }}
+              {% for e in form.source_reference.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.status.label(class="form-label") }}
+              {{ form.status(class="form-select" + (' is-invalid' if form.status.errors else '')) }}
+              {% for e in form.status.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+
+          <hr class="my-4">
+          <h6 class="fw-bold mb-3"><i class="fas fa-search me-2"></i>{{ _('Root Cause Analysis') }}</h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              {{ form.root_cause.label(class="form-label") }}
+              {{ form.root_cause(class="form-control" + (' is-invalid' if form.root_cause.errors else ''), rows=3) }}
+              {% for e in form.root_cause.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-3">
+              {{ form.root_cause_category.label(class="form-label") }}
+              {{ form.root_cause_category(class="form-select" + (' is-invalid' if form.root_cause_category.errors else '')) }}
+              {% for e in form.root_cause_category.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-3">
+              {{ form.target_date.label(class="form-label") }}
+              {{ form.target_date(class="form-control" + (' is-invalid' if form.target_date.errors else '')) }}
+              {% for e in form.target_date.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+
+          <hr class="my-4">
+          <h6 class="fw-bold mb-3"><i class="fas fa-tasks me-2"></i>{{ _('Corrective Action Plan') }}</h6>
+          <div class="mt-3">
+            {{ form.proposed_action.label(class="form-label") }}
+            {{ form.proposed_action(class="form-control" + (' is-invalid' if form.proposed_action.errors else ''), rows=4) }}
+            {% for e in form.proposed_action.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              {{ form.action_owner_id.label(class="form-label") }}
+              {{ form.action_owner_id(class="form-select" + (' is-invalid' if form.action_owner_id.errors else '')) }}
+              {% for e in form.action_owner_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.assigned_to_id.label(class="form-label") }}
+              {{ form.assigned_to_id(class="form-select" + (' is-invalid' if form.assigned_to_id.errors else '')) }}
+              {% for e in form.assigned_to_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.created_by_id.label(class="form-label") }}
+              {{ form.created_by_id(class="form-select" + (' is-invalid' if form.created_by_id.errors else '')) }}
+              {% for e in form.created_by_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+
+          {% if capa and capa.status in ('verified','closed') %}
+          <hr class="my-4">
+          <h6 class="fw-bold mb-3"><i class="fas fa-check-circle me-2"></i>{{ _('Effectiveness Verification') }}</h6>
+          <div class="row g-3">
+            <div class="col-md-8">
+              {{ form.effectiveness_review.label(class="form-label") }}
+              {{ form.effectiveness_review(class="form-control" + (' is-invalid' if form.effectiveness_review.errors else ''), rows=3) }}
+              {% for e in form.effectiveness_review.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.effectiveness_rating.label(class="form-label") }}
+              {{ form.effectiveness_rating(class="form-select" + (' is-invalid' if form.effectiveness_rating.errors else '')) }}
+              {% for e in form.effectiveness_rating.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="mt-3">
+            {{ form.closure_notes.label(class="form-label") }}
+            {{ form.closure_notes(class="form-control" + (' is-invalid' if form.closure_notes.errors else ''), rows=3) }}
+            {% for e in form.closure_notes.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+
+          <div class="mt-4 d-flex gap-2">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('capa.list_capas') }}" class="btn btn-outline-secondary">{{ _('Cancel') }}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

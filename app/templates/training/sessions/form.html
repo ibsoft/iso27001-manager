@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('training.list_courses') }}">{{ _('Training') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('training.view_course', course_id=course.id) if course else '#' }}">{{ course.title if course else '' }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0">{{ title }}</h5></div>
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row g-3">
+            <div class="col-md-8">
+              {{ form.title.label(class="form-label") }}
+              {{ form.title(class="form-control" + (' is-invalid' if form.title.errors else '')) }}
+              {% for e in form.title.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.session_date.label(class="form-label") }}
+              {{ form.session_date(class="form-control" + (' is-invalid' if form.session_date.errors else '')) }}
+              {% for e in form.session_date.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-md-5">
+              {{ form.trainer.label(class="form-label") }}
+              {{ form.trainer(class="form-control" + (' is-invalid' if form.trainer.errors else '')) }}
+              {% for e in form.trainer.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.location.label(class="form-label") }}
+              {{ form.location(class="form-control" + (' is-invalid' if form.location.errors else '')) }}
+              {% for e in form.location.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-3">
+              {{ form.max_attendees.label(class="form-label") }}
+              {{ form.max_attendees(class="form-control" + (' is-invalid' if form.max_attendees.errors else '')) }}
+              {% for e in form.max_attendees.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              {{ form.status.label(class="form-label") }}
+              {{ form.status(class="form-select" + (' is-invalid' if form.status.errors else '')) }}
+              {% for e in form.status.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="mt-3">
+            {{ form.notes.label(class="form-label") }}
+            {{ form.notes(class="form-control" + (' is-invalid' if form.notes.errors else ''), rows=3) }}
+            {% for e in form.notes.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('training.view_course', course_id=course.id) if course else url_for('training.list_courses') }}" class="btn btn-outline-secondary">{{ _('Cancel') }}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

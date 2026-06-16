@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('management_review.list_reviews') }}">{{ _('Management Reviews') }}</a></li>
+<li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0">{{ title }}</h5></div>
+      <div class="card-body">
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="row g-3">
+            <div class="col-md-8">
+              {{ form.title.label(class="form-label") }}
+              {{ form.title(class="form-control" + (' is-invalid' if form.title.errors else '')) }}
+              {% for e in form.title.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-4">
+              {{ form.review_date.label(class="form-label") }}
+              {{ form.review_date(class="form-control" + (' is-invalid' if form.review_date.errors else '')) }}
+              {% for e in form.review_date.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-md-6">
+              {{ form.conducted_by_id.label(class="form-label") }}
+              {{ form.conducted_by_id(class="form-select" + (' is-invalid' if form.conducted_by_id.errors else '')) }}
+              {% for e in form.conducted_by_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-3">
+              {{ form.status.label(class="form-label") }}
+              {{ form.status(class="form-select" + (' is-invalid' if form.status.errors else '')) }}
+              {% for e in form.status.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-3">
+              {{ form.next_review_date.label(class="form-label") }}
+              {{ form.next_review_date(class="form-control" + (' is-invalid' if form.next_review_date.errors else '')) }}
+              {% for e in form.next_review_date.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="mt-3">
+            {{ form.attendees.label(class="form-label") }}
+            {{ form.attendees(class="form-control" + (' is-invalid' if form.attendees.errors else ''), rows=2) }}
+            {% if form.attendees.description %}<small class="text-muted">{{ form.attendees.description }}</small>{% endif %}
+            {% for e in form.attendees.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="mt-3">
+            {{ form.agenda.label(class="form-label") }}
+            {{ form.agenda(class="form-control" + (' is-invalid' if form.agenda.errors else ''), rows=5) }}
+            {% for e in form.agenda.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="mt-3">
+            {{ form.minutes.label(class="form-label") }}
+            {{ form.minutes(class="form-control" + (' is-invalid' if form.minutes.errors else ''), rows=6) }}
+            {% for e in form.minutes.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="mt-3">
+            {{ form.recommendations.label(class="form-label") }}
+            {{ form.recommendations(class="form-control" + (' is-invalid' if form.recommendations.errors else ''), rows=4) }}
+            {% for e in form.recommendations.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="mt-4 d-flex gap-2">
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('management_review.list_reviews') }}" class="btn btn-outline-secondary">{{ _('Cancel') }}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
