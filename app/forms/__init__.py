@@ -322,52 +322,110 @@ class CorrectiveActionForm(BaseForm):
 
 
 class SupplierForm(BaseForm):
-    name = StringField("Supplier Name", validators=[DataRequired(), Length(max=256)])
-    contact_name = StringField("Contact Name", validators=[Optional(), Length(max=128)])
-    contact_email = StringField("Contact Email", validators=[Optional(), Email(), Length(max=128)])
-    contact_phone = StringField("Contact Phone", validators=[Optional(), Length(max=64)])
-    service_description = TextAreaField("Service Description", validators=[Optional()])
-    security_requirements = TextAreaField("Security Requirements", validators=[Optional()])
+    name = StringField(_l("Supplier Name"), validators=[DataRequired(), Length(max=256)])
+    vendor_type = SelectField(
+        _l("Supplier/Vendor Type"),
+        choices=[("supplier", _l("Supplier")), ("vendor", _l("Vendor")),
+                 ("processor", _l("Data Processor")), ("subprocessor", _l("Subprocessor")),
+                 ("outsourcer", _l("Outsourcer")), ("partner", _l("Partner"))],
+        default="supplier",
+    )
+    lifecycle_stage = SelectField(
+        _l("Lifecycle Stage"),
+        choices=[("identified", _l("Identified")), ("due_diligence", _l("Due Diligence")),
+                 ("contracting", _l("Contracting")), ("onboarded", _l("Onboarded")),
+                 ("active_monitoring", _l("Active Monitoring")), ("renewal", _l("Renewal")),
+                 ("offboarding", _l("Offboarding")), ("terminated", _l("Terminated"))],
+        default="onboarded",
+    )
+    contact_name = StringField(_l("Contact Name"), validators=[Optional(), Length(max=128)])
+    contact_email = StringField(_l("Contact Email"), validators=[Optional(), Email(), Length(max=128)])
+    contact_phone = StringField(_l("Contact Phone"), validators=[Optional(), Length(max=64)])
+    service_description = TextAreaField(_l("Service Description"), validators=[Optional()])
+    security_requirements = TextAreaField(_l("Security Requirements"), validators=[Optional()])
     assessment_status = SelectField(
-        "Assessment Status",
-        choices=[("pending", "Pending"), ("assessed", "Assessed"),
-                 ("approved", "Approved"), ("rejected", "Rejected"),
-                 ("review_required", "Review Required")],
+        _l("Assessment Status"),
+        choices=[("pending", _l("Pending")), ("assessed", _l("Assessed")),
+                 ("approved", _l("Approved")), ("rejected", _l("Rejected")),
+                 ("review_required", _l("Review Required"))],
         default="pending",
     )
-    assessment_notes = TextAreaField("Assessment Notes", validators=[Optional()])
-    assessment_date = DateField("Assessment Date", validators=[Optional()])
-    contract_start_date = DateField("Contract Start", validators=[Optional()])
-    contract_end_date = DateField("Contract End", validators=[Optional()])
-    data_processing_agreement = BooleanField("DPA in Place")
+    assessment_notes = TextAreaField(_l("Assessment Notes"), validators=[Optional()])
+    assessment_date = DateField(_l("Assessment Date"), validators=[Optional()])
+    contract_start_date = DateField(_l("Contract Start"), validators=[Optional()])
+    contract_end_date = DateField(_l("Contract End"), validators=[Optional()])
+    data_processing_agreement = BooleanField(_l("DPA in Place"))
     criticality = SelectField(
-        "Criticality",
-        choices=[("low", "Low"), ("medium", "Medium"), ("high", "High"), ("critical", "Critical")],
+        _l("Criticality"),
+        choices=[("low", _l("Low")), ("medium", _l("Medium")), ("high", _l("High")), ("critical", _l("Critical"))],
         default="medium",
     )
+    data_access_level = SelectField(
+        _l("Data Access Level"),
+        choices=[("none", _l("No Data Access")), ("public", _l("Public")),
+                 ("internal", _l("Internal")), ("confidential", _l("Confidential")),
+                 ("restricted", _l("Restricted")), ("personal_data", _l("Personal Data")),
+                 ("special_category", _l("Special Category Data"))],
+        default="none",
+    )
+    inherent_risk = SelectField(
+        _l("Inherent Risk"),
+        choices=[("low", _l("Low")), ("medium", _l("Medium")), ("high", _l("High")), ("critical", _l("Critical"))],
+        default="medium",
+    )
+    residual_risk = SelectField(
+        _l("Residual Risk"),
+        choices=[("low", _l("Low")), ("medium", _l("Medium")), ("high", _l("High")), ("critical", _l("Critical"))],
+        default="medium",
+    )
+    risk_score = IntegerField(_l("Risk Score (0-100)"), validators=[Optional(), NumberRange(min=0, max=100)], default=50)
+    risk_treatment = SelectField(
+        _l("Risk Treatment"),
+        choices=[("accept", _l("Accept")), ("mitigate", _l("Mitigate")),
+                 ("transfer", _l("Transfer")), ("avoid", _l("Avoid"))],
+        default="mitigate",
+    )
+    risk_owner = StringField(_l("Risk Owner"), validators=[Optional(), Length(max=128)])
+    next_review_date = DateField(_l("Next Review Date"), validators=[Optional()])
+    monitoring_frequency = SelectField(
+        _l("Monitoring Frequency"),
+        choices=[("monthly", _l("Monthly")), ("quarterly", _l("Quarterly")),
+                 ("semi_annual", _l("Semi-Annual")), ("annual", _l("Annual")),
+                 ("event_based", _l("Event Based"))],
+        default="annual",
+    )
     status = SelectField(
-        "Status",
-        choices=[("active", "Active"), ("inactive", "Inactive"), ("terminated", "Terminated")],
+        _l("Status"),
+        choices=[("active", _l("Active")), ("inactive", _l("Inactive")), ("terminated", _l("Terminated"))],
         default="active",
     )
     ict_service_type = SelectField(
-        "ICT Service Type",
-        choices=[("", "Select..."), ("cloud", "Cloud Services"),
-                 ("saas", "SaaS"), ("network", "Network Services"),
-                 ("hardware", "Hardware"), ("software", "Software"),
-                 ("managed_service", "Managed Service"),
-                 ("consulting", "Consulting"), ("other", "Other")],
+        _l("ICT Service Type"),
+        choices=[("", _l("Select...")), ("cloud", _l("Cloud Services")),
+                 ("saas", _l("SaaS")), ("network", _l("Network Services")),
+                 ("hardware", _l("Hardware")), ("software", _l("Software")),
+                 ("managed_service", _l("Managed Service")),
+                 ("consulting", _l("Consulting")), ("other", _l("Other"))],
         validators=[Optional()],
     )
-    security_certification = StringField("Security Certifications", validators=[Optional(), Length(max=256)])
+    security_certification = StringField(_l("Security Certifications"), validators=[Optional(), Length(max=256)])
     dependency_tier = SelectField(
-        "Dependency Tier",
-        choices=[("1", "Tier 1 - Direct critical"), ("2", "Tier 2 - Direct non-critical"),
-                 ("3", "Tier 3 - Indirect")],
+        _l("Dependency Tier"),
+        choices=[("1", _l("Tier 1 - Direct critical")), ("2", _l("Tier 2 - Direct non-critical")),
+                 ("3", _l("Tier 3 - Indirect"))],
         default="3",
     )
-    nis2_in_scope = BooleanField("In NIS2 Supply Chain Scope")
-    last_supply_chain_review = DateField("Last Supply Chain Review", validators=[Optional()])
+    nis2_in_scope = BooleanField(_l("In NIS2 Supply Chain Scope"))
+    last_supply_chain_review = DateField(_l("Last Supply Chain Review"), validators=[Optional()])
+    due_diligence_completed = BooleanField(_l("Due Diligence Completed"))
+    contract_security_clauses = BooleanField(_l("Security Clauses in Contract"))
+    audit_rights = BooleanField(_l("Audit Rights Included"))
+    subcontractors_allowed = BooleanField(_l("Subcontractors Allowed"))
+    incident_notification_sla = StringField(_l("Incident Notification SLA"), validators=[Optional(), Length(max=64)])
+    sla_requirements = TextAreaField(_l("SLA Requirements"), validators=[Optional()])
+    risk_treatment_plan = TextAreaField(_l("Risk Treatment Plan"), validators=[Optional()])
+    exit_strategy = TextAreaField(_l("Exit Strategy / Offboarding Plan"), validators=[Optional()])
+    offboarding_date = DateField(_l("Offboarding Date"), validators=[Optional()])
     submit = SubmitField("Save")
 
 

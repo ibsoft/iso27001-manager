@@ -3,20 +3,20 @@
 <div class="stat-row">
   <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total') }}</div></div>
   <div class="stat-box"><div class="num">{{ stats.active }}</div><div class="lbl">{{ _('Active') }}</div></div>
-  <div class="stat-box"><div class="num">{{ stats.assessed }}</div><div class="lbl">{{ _('Assessed') }}</div></div>
-  <div class="stat-box"><div class="num">{{ stats.nis2_scope }}</div><div class="lbl">{{ _('NIS2 Scope') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.high_risk }}</div><div class="lbl">{{ _('High Risk') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.overdue_reviews }}</div><div class="lbl">{{ _('Overdue Reviews') }}</div></div>
 </div>
 <table>
-  <tr><th>{{ _('Name') }}</th><th>{{ _('Service') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('Assessment') }}</th><th>{{ _('ICT Type') }}</th><th>{{ _('Tier') }}</th><th>{{ _('NIS2') }}</th></tr>
+  <tr><th>{{ _('Name') }}</th><th>{{ _('Lifecycle') }}</th><th>{{ _('Risk Score') }}</th><th>{{ _('Residual Risk') }}</th><th>{{ _('Assessment') }}</th><th>{{ _('Tier') }}</th><th>{{ _('Next Review') }}</th></tr>
   {% for s in suppliers %}
   <tr>
     <td>{{ (s.name or '')[:35] }}</td>
-    <td>{{ (s.service_description or '')[:40] }}</td>
-    <td><span class="badge badge-{{ 'danger' if s.criticality == 'critical' else 'warning' if s.criticality == 'high' else 'info' }}">{{ s.criticality or '' }}</span></td>
+    <td>{{ (s.lifecycle_stage or 'onboarded').replace('_', ' ') }}</td>
+    <td><span class="badge badge-{{ 'danger' if s.risk_score_level in ['critical', 'high'] else 'warning' if s.risk_score_level == 'medium' else 'success' }}">{{ s.risk_score or 0 }}/100</span></td>
+    <td><span class="badge badge-{{ 'danger' if s.residual_risk in ['critical', 'high'] else 'warning' if s.residual_risk == 'medium' else 'success' }}">{{ s.residual_risk or '' }}</span></td>
     <td><span class="badge badge-{{ 'success' if s.assessment_status == 'approved' else 'warning' }}">{{ (s.assessment_status or '').replace('_', ' ') }}</span></td>
-    <td>{{ s.ict_service_type or '-' }}</td>
     <td>{{ _('Tier') }} {{ s.dependency_tier }}</td>
-    <td>{% if s.nis2_in_scope %}{{ _('Yes') }}{% else %}{{ _('No') }}{% endif %}</td>
+    <td>{{ s.next_review_date.strftime('%Y-%m-%d') if s.next_review_date else '-' }}</td>
   </tr>
   {% endfor %}
 </table>

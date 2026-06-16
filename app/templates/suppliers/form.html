@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block page_title %}{{ title }}{% endblock %}
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{{ url_for('suppliers.list_suppliers') }}">{{ _('Suppliers') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('suppliers.list_suppliers') }}">{{ _('Supplier/Vendor Risk Management') }}</a></li>
 <li class="breadcrumb-item active">{{ title }}</li>
 {% endblock %}
 
@@ -13,13 +13,31 @@
         <form method="POST">
           {{ form.hidden_tag() }}
           <div class="row">
-            <div class="col-md-8 mb-3">
+            <div class="col-md-5 mb-3">
               <label class="form-label small">{{ _('Supplier Name') }}</label>
               {{ form.name(class="form-control") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Supplier/Vendor Type') }}</label>
+              {{ form.vendor_type(class="form-select") }}
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label small">{{ _('Status') }}</label>
               {{ form.status(class="form-select") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Lifecycle Stage') }}</label>
+              {{ form.lifecycle_stage(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('ICT Service Type') }}</label>
+              {{ form.ict_service_type(class="form-select") }}
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Data Access Level') }}</label>
+              {{ form.data_access_level(class="form-select") }}
             </div>
           </div>
           <div class="row">
@@ -45,36 +63,132 @@
             {{ form.security_requirements(class="form-control", rows=2) }}
           </div>
           <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label small">{{ _('Assessment Status') }}</label>
               {{ form.assessment_status(class="form-select") }}
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label small">{{ _('Criticality') }}</label>
               {{ form.criticality(class="form-select") }}
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label small">{{ _('Assessment Date') }}</label>
               {{ form.assessment_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Last Supply Chain Review') }}</label>
+              {{ form.last_supply_chain_review(class="form-control", type="date") }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Contract Start') }}</label>
+              {{ form.contract_start_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Contract End') }}</label>
+              {{ form.contract_end_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Dependency Tier') }}</label>
+              {{ form.dependency_tier(class="form-select") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Next Review Date') }}</label>
+              {{ form.next_review_date(class="form-control", type="date") }}
+            </div>
+          </div>
+          <hr>
+          <h6 class="fw-bold mb-3">{{ _('Risk Assessment') }}</h6>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Risk Score (0-100)') }}</label>
+              {{ form.risk_score(class="form-control", min="0", max="100") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Inherent Risk') }}</label>
+              {{ form.inherent_risk(class="form-select") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Residual Risk') }}</label>
+              {{ form.residual_risk(class="form-select") }}
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label small">{{ _('Risk Treatment') }}</label>
+              {{ form.risk_treatment(class="form-select") }}
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Contract Start') }}</label>
-              {{ form.contract_start_date(class="form-control", type="date") }}
+              <label class="form-label small">{{ _('Risk Owner') }}</label>
+              {{ form.risk_owner(class="form-control") }}
             </div>
             <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Contract End') }}</label>
-              {{ form.contract_end_date(class="form-control", type="date") }}
+              <label class="form-label small">{{ _('Monitoring Frequency') }}</label>
+              {{ form.monitoring_frequency(class="form-select") }}
             </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Risk Treatment Plan') }}</label>
+            {{ form.risk_treatment_plan(class="form-control", rows=2) }}
           </div>
           <div class="mb-3">
             <label class="form-label small">{{ _('Assessment Notes') }}</label>
             {{ form.assessment_notes(class="form-control", rows=2) }}
           </div>
+          <hr>
+          <h6 class="fw-bold mb-3">{{ _('Controls and Contract Requirements') }}</h6>
+          <div class="row">
+            <div class="col-md-3 mb-3 form-check ms-2">
+              {{ form.data_processing_agreement(class="form-check-input") }}
+              <label class="form-check-label small">{{ _('Data Processing Agreement in place') }}</label>
+            </div>
+            <div class="col-md-3 mb-3 form-check">
+              {{ form.due_diligence_completed(class="form-check-input") }}
+              <label class="form-check-label small">{{ _('Due Diligence Completed') }}</label>
+            </div>
+            <div class="col-md-3 mb-3 form-check">
+              {{ form.contract_security_clauses(class="form-check-input") }}
+              <label class="form-check-label small">{{ _('Security Clauses in Contract') }}</label>
+            </div>
+            <div class="col-md-2 mb-3 form-check">
+              {{ form.audit_rights(class="form-check-input") }}
+              <label class="form-check-label small">{{ _('Audit Rights Included') }}</label>
+            </div>
+          </div>
           <div class="form-check mb-3">
-            {{ form.data_processing_agreement(class="form-check-input") }}
-            <label class="form-check-label small">{{ _('Data Processing Agreement in place') }}</label>
+            {{ form.nis2_in_scope(class="form-check-input") }}
+            <label class="form-check-label small">{{ _('In NIS2 Supply Chain Scope') }}</label>
+          </div>
+          <div class="form-check mb-3">
+            {{ form.subcontractors_allowed(class="form-check-input") }}
+            <label class="form-check-label small">{{ _('Subcontractors Allowed') }}</label>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Incident Notification SLA') }}</label>
+              {{ form.incident_notification_sla(class="form-control") }}
+            </div>
+            <div class="col-md-8 mb-3">
+              <label class="form-label small">{{ _('Security Certifications') }}</label>
+              {{ form.security_certification(class="form-control") }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('SLA Requirements') }}</label>
+            {{ form.sla_requirements(class="form-control", rows=2) }}
+          </div>
+          <hr>
+          <h6 class="fw-bold mb-3">{{ _('Exit and Offboarding') }}</h6>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Offboarding Date') }}</label>
+              {{ form.offboarding_date(class="form-control", type="date") }}
+            </div>
+            <div class="col-md-8 mb-3">
+              <label class="form-label small">{{ _('Exit Strategy / Offboarding Plan') }}</label>
+              {{ form.exit_strategy(class="form-control", rows=2) }}
+            </div>
           </div>
           <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
           <a href="{{ url_for('suppliers.list_suppliers') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>

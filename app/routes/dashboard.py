@@ -22,6 +22,7 @@ from app.models.capa import CapaRequest
 from app.models.business_continuity import (
     BusinessImpactAnalysis, BusinessContinuityPlan, BusinessContinuityAction
 )
+from app.models.supplier import Supplier
 from datetime import datetime, date
 from sqlalchemy import func
 
@@ -131,6 +132,15 @@ def index():
     active_continuity = Nis2ContinuityPlan.query.filter_by(status="active").count()
     critical_supply_chain = Nis2SupplyChainAssessment.query.filter_by(supply_chain_risk_level="critical").count()
 
+    # Supplier / Vendor Risk
+    total_suppliers = Supplier.query.count()
+    high_risk_suppliers = Supplier.query.filter(Supplier.risk_score >= 60).count()
+    overdue_supplier_reviews = Supplier.query.filter(
+        Supplier.next_review_date.isnot(None),
+        Supplier.next_review_date < date.today(),
+        Supplier.lifecycle_stage.notin_(["terminated", "offboarding"]),
+    ).count()
+
     context = {
         "total_controls": total_controls,
         "implemented_controls": implemented_controls,
@@ -162,6 +172,9 @@ def index():
         "pending_notifications": pending_notifications,
         "active_continuity": active_continuity,
         "critical_supply_chain": critical_supply_chain,
+        "total_suppliers": total_suppliers,
+        "high_risk_suppliers": high_risk_suppliers,
+        "overdue_supplier_reviews": overdue_supplier_reviews,
         "total_reviews": total_reviews,
         "overdue_reviews": overdue_reviews,
         "open_review_actions": open_review_actions,
