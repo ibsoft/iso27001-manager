@@ -72,8 +72,8 @@
             <td>{{ c.responsible_person.first_name + ' ' + c.responsible_person.last_name if c.responsible_person else '-' }}</td>
             <td>
               <a href="{{ url_for('nis2.edit_compliance', check_id=c.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Edit') }}"><i class="fas fa-edit"></i></a>
-              <form method="POST" action="{{ url_for('nis2.delete_compliance', check_id=c.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this check?') }}')">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <form method="POST" action="{{ url_for('nis2.delete_compliance', check_id=c.id) }}" class="d-inline" data-confirm="{{ _('Delete this check?') }}">
+                <input type="hidden" name="csrf_token" value="<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">">
                 <button class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
               </form>
             </td>

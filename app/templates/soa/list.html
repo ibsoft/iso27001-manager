@@ -28,7 +28,7 @@
         <tr>
           <td><span class="badge bg-secondary">{{ entry.control.code }}</span></td>
           <td class="small">{{ entry.control.localized_title(lang) }}</td>
-          <td class="small text-muted" style="max-width:250px;">{{ (entry.localized_description(lang) or entry.control.localized_purpose(lang) or '')|truncate(100) }}</td>
+          <td class="small text-muted">{{ (entry.localized_description(lang) or entry.control.localized_purpose(lang) or '')|truncate(180) }}</td>
           <td>
             {% if entry.applicable %}
               <span class="badge bg-success"><i class="fas fa-check me-1"></i>{{ _('Yes') }}</span>

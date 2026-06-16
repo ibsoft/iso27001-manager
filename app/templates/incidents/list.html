@@ -59,8 +59,9 @@
           <td class="small">{{ inc.detected_at.strftime('%Y-%m-%d') }}</td>
           <td>
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('incidents.delete_incident', incident_id=inc.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this incident?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('incidents.delete_incident', incident_id=inc.id) }}" class="d-inline" data-confirm="{{ _('Delete this incident?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </td>

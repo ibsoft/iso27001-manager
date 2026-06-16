@@ -15,6 +15,7 @@ from app.models.audit import InternalAudit, NonConformity, CorrectiveAction
 from app.models.soa import SoAEntry
 from app.models.supplier import Supplier
 from app.models.audit_log import AuditLog
+from app.models.asset_assignment import AssetAssignment
 from app.models.nis2 import Nis2EntityRegistration, Nis2IncidentNotification, Nis2SupplyChainAssessment, Nis2ContinuityPlan, Nis2ComplianceCheck
 from app.models.processing import ProcessingActivity
 from app.models.dpia import Dpia
@@ -327,6 +328,31 @@ def export_pdf_gdpr():
                       data_breaches=data_breaches, consents=consents,
                       title=_("GDPR Compliance Report"),
                       now=now, filename="gdpr_compliance_report")
+    if pdf is None:
+        return _("PDF generation failed"), 500
+    return pdf
+
+
+@reports_bp.route("/export/pdf/assignments")
+@login_required
+@permission_required("report_export")
+def export_pdf_assignments():
+    status_filter = request.args.get("status")
+    query = AssetAssignment.query
+    if status_filter:
+        query = query.filter(AssetAssignment.status == status_filter)
+    assignments = query.order_by(AssetAssignment.checkout_date.desc()).all()
+
+    checked_out = sum(1 for a in assignments if a.status == "checked_out")
+    returned = sum(1 for a in assignments if a.status == "returned")
+    overdue = sum(1 for a in assignments if a.is_overdue)
+    total = len(assignments)
+
+    pdf = render_pdf("reports/pdf/assignments.html",
+                      assignments=assignments, total=total,
+                      checked_out=checked_out, returned=returned, overdue=overdue,
+                      title=_("Asset Assignment Report"),
+                      now=now, filename="asset_assignments_report")
     if pdf is None:
         return _("PDF generation failed"), 500
     return pdf

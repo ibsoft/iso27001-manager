@@ -15,7 +15,8 @@
           <a href="{{ url_for('audits.new_finding', audit_id=audit.id) }}" class="btn btn-sm btn-warning"><i class="fas fa-plus me-1"></i>{{ _('Add Finding') }}</a>
           <a href="{{ url_for('audits.edit_audit', audit_id=audit.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
           {% if current_user.has_role('admin') %}
-          <form method="POST" action="{{ url_for('audits.delete_audit', audit_id=audit.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this audit?') }}')">
+          <form method="POST" action="{{ url_for('audits.delete_audit', audit_id=audit.id) }}" class="d-inline" data-confirm="{{ _('Delete this audit?') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
           </form>
           {% endif %}
@@ -49,8 +50,9 @@
               <td class="small">{{ f.control.code if f.control else '—' }}</td>
               <td>
                 {% if current_user.has_role('admin') %}
-                <form method="POST" action="{{ url_for('audits.delete_finding', audit_id=audit.id, finding_id=f.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this finding?') }}')">
-                  <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                <form method="POST" action="{{ url_for('audits.delete_finding', audit_id=audit.id, finding_id=f.id) }}" class="d-inline" data-confirm="{{ _('Delete this finding?') }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
                 </form>
                 {% endif %}
               </td>

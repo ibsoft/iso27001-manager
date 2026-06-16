@@ -59,7 +59,7 @@
   </div>
   <div class="card-body p-0">
     <table class="table table-hover mb-0">
-      <thead><tr><th style="width:80px">{{ _('Code') }}</th><th>{{ _('Title') }}</th><th style="width:130px">{{ _('Status') }}</th><th style="width:150px">{{ _('Owner') }}</th><th style="width:110px">{{ _('Target') }}</th><th style="width:60px"></th></tr></thead>
+      <thead><tr><th style="width:80px">{{ _('Code') }}</th><th>{{ _('Title') }}</th><th>{{ _('Description') }}</th><th style="width:130px">{{ _('Status') }}</th><th style="width:150px">{{ _('Owner') }}</th><th style="width:110px">{{ _('Target') }}</th><th style="width:60px"></th></tr></thead>
       <tbody>
         {% for c in domain_controls %}
         <tr>
@@ -68,6 +68,7 @@
             <a href="{{ url_for('controls.view_control', control_id=c.id) }}" class="text-decoration-none fw-medium">{{ c.localized_title(current_lang) }}</a>
             {% if c.is_new_2022 %}<span class="badge bg-info ms-1" style="font-size:0.6rem;">NEW</span>{% endif %}
           </td>
+          <td class="small text-muted">{{ c.localized_description(current_lang)|truncate(120) }}</td>
           <td>
             <span class="{{ c.status_badge_class }}">
               {{ c.implementation_status|replace('_', ' ')|title }}
@@ -77,8 +78,9 @@
           <td class="small">{{ c.target_date.strftime('%Y-%m-%d') if c.target_date else '—' }}</td>
           <td>
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('controls.delete_control', control_id=c.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this control?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('controls.delete_control', control_id=c.id) }}" class="d-inline" data-confirm="{{ _('Delete this control?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </td>

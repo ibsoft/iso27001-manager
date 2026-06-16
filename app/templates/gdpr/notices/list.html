@@ -38,8 +38,9 @@
           </div>
           <div>
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('gdpr.delete_notice', notice_id=n.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this notice?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('gdpr.delete_notice', notice_id=n.id) }}" class="d-inline" data-confirm="{{ _('Delete this notice?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </div>

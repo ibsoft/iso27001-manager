@@ -37,8 +37,9 @@
           <small class="text-muted">{{ _('Residual risk') }}: <span class="badge bg-{{ 'success' if d.residual_risk_level == 'low' else 'warning' if d.residual_risk_level == 'medium' else 'danger' if d.residual_risk_level == 'high' else 'dark' }}">{{ d.residual_risk_level | title }}</span></small>
           <div>
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('gdpr.delete_dpia', dpia_id=d.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this DPIA?') }}')">
-              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            <form method="POST" action="{{ url_for('gdpr.delete_dpia', dpia_id=d.id) }}" class="d-inline" data-confirm="{{ _('Delete this DPIA?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
             {% endif %}
           </div>

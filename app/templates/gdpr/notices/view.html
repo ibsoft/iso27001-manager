@@ -14,7 +14,8 @@
         <div>
           <a href="{{ url_for('gdpr.edit_notice', notice_id=notice.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
           {% if current_user.has_role('admin') %}
-          <form method="POST" action="{{ url_for('gdpr.delete_notice', notice_id=notice.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this notice?') }}')">
+          <form method="POST" action="{{ url_for('gdpr.delete_notice', notice_id=notice.id) }}" class="d-inline" data-confirm="{{ _('Delete this notice?') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
           </form>
           {% endif %}

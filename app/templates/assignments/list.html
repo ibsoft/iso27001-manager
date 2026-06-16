@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('Asset Assignments') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Assignments') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-2">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Statuses') }}</option>
+          <option value="checked_out" {{ 'selected' if request.args.get('status') == 'checked_out' }}>{{ _('Checked Out') }}</option>
+          <option value="returned" {{ 'selected' if request.args.get('status') == 'returned' }}>{{ _('Returned') }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search asset or person...') }}" value="{{ request.args.get('search', '') }}">
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="col-md-2 ms-auto">
+        <a href="{{ url_for('assignments.report') }}" class="btn btn-outline-info w-100"><i class="fas fa-chart-bar me-1"></i>{{ _('Report') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th>{{ _('Asset') }}</th>
+          <th>{{ _('Assignee') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('Checkout') }}</th>
+          <th>{{ _('Expected Return') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in assignments.items %}
+        <tr class="{{ 'table-warning' if a.is_overdue }}">
+          <td><a href="{{ url_for('assets.view_asset', asset_id=a.asset_id) }}" class="text-decoration-none fw-medium">{{ a.asset.name if a.asset else _('Deleted') }}</a></td>
+          <td>{{ a.assignee_name or '—' }}</td>
+          <td><span class="badge bg-{{ 'info' if a.assignee_type == 'internal' else 'secondary' }}">{{ a.assignee_type|title }}</span></td>
+          <td>{{ a.checkout_date.strftime('%Y-%m-%d') if a.checkout_date else '—' }}</td>
+          <td>
+            {{ a.expected_return_date.strftime('%Y-%m-%d') if a.expected_return_date else '—' }}
+            {% if a.is_overdue %}<span class="badge bg-danger ms-1">{{ _('Overdue') }}</span>{% endif %}
+          </td>
+          <td>
+            {% if a.status == 'checked_out' %}
+              <span class="badge bg-warning text-dark">{{ _('Checked Out') }}</span>
+            {% else %}
+              <span class="badge bg-success">{{ _('Returned') }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{{ url_for('assignments.view_assignment', assignment_id=a.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+            {% if current_user.has_role('admin') and a.status == 'returned' %}
+            <form method="POST" action="{{ url_for('assignments.delete_assignment', assignment_id=a.id) }}" class="d-inline" data-confirm="{{ _('Delete this assignment?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-4">{{ _('No assignments found') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{ render_pagination(assignments, 'assignments.list_assignments', kwargs=request.args) }}
+{% endblock %}

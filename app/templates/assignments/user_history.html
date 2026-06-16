@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('Assignment History') }} — {{ user.first_name }} {{ user.last_name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('assignments.list_assignments') }}">{{ _('Assignments') }}</a></li>
+<li class="breadcrumb-item active">{{ user.first_name }} {{ user.last_name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <div>
+      <h5 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h5>
+      <span class="text-muted small">@{{ user.username }} &middot; {{ user.email }}</span>
+      <span class="ms-3 badge bg-{{ 'warning text-dark' if active_count > 0 else 'success' }}">
+        {{ active_count }} {{ _('active') if active_count != 1 else _('active') }}
+      </span>
+    </div>
+    <div>
+      {% if active_count > 0 and current_user.has_role('admin') %}
+      <form method="POST" action="{{ url_for('assignments.offboard_user', user_id=user.id) }}" class="d-inline" data-confirm="{{ _('Return ALL checked-out assets for this user? This action cannot be undone.') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-outline-danger"><i class="fas fa-undo me-1"></i>{{ _('Return All Assets') }}</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th>{{ _('Asset') }}</th>
+          <th>{{ _('Checkout') }}</th>
+          <th>{{ _('Expected Return') }}</th>
+          <th>{{ _('Actual Return') }}</th>
+          <th>{{ _('Duration') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Actions') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in assignments.items %}
+        <tr class="{{ 'table-warning' if a.is_overdue }}">
+          <td><a href="{{ url_for('assets.view_asset', asset_id=a.asset_id) }}" class="text-decoration-none fw-medium">{{ a.asset.name if a.asset else _('Deleted') }}</a></td>
+          <td>{{ a.checkout_date.strftime('%Y-%m-%d') if a.checkout_date else '—' }}</td>
+          <td>{{ a.expected_return_date.strftime('%Y-%m-%d') if a.expected_return_date else '—' }}</td>
+          <td>{{ a.actual_return_date.strftime('%Y-%m-%d') if a.actual_return_date else '—' }}</td>
+          <td>{{ a.duration_days }} {{ _('d') }}</td>
+          <td>
+            {% if a.is_overdue %}<span class="badge bg-danger">{{ _('Overdue') }}</span>
+            {% elif a.status == 'checked_out' %}<span class="badge bg-warning text-dark">{{ _('Checked Out') }}</span>
+            {% else %}<span class="badge bg-success">{{ _('Returned') }}</span>{% endif %}
+          </td>
+          <td><a href="{{ url_for('assignments.view_assignment', assignment_id=a.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted py-4">{{ _('No assignments for this user.') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{ render_pagination(assignments, 'assignments.user_history', kwargs={'user_id': user.id}) }}
+{% endblock %}
