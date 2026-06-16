@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('User Management') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Users') }}</li>{% endblock %}
 
@@ -6,7 +7,7 @@
 <div class="card mb-3">
   <div class="card-body">
     <div class="d-flex justify-content-between mb-3">
-      <h5 class="mb-0"><i class="fas fa-users me-2"></i>{{ users|length }} {{ _('Users') }}</h5>
+      <h5 class="mb-0"><i class="fas fa-users me-2"></i>{{ users.total }} {{ _('Users') }}</h5>
       <a href="{{ url_for('admin.new_user') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New User') }}</a>
     </div>
   </div>
@@ -17,7 +18,7 @@
     <table class="table table-hover mb-0">
       <thead><tr><th>{{ _('Username') }}</th><th>{{ _('Name') }}</th><th>{{ _('Email') }}</th><th>{{ _('Roles') }}</th><th>{{ _('MFA') }}</th><th>{{ _('Status') }}</th><th>{{ _('Last Login') }}</th><th>{{ _('Actions') }}</th></tr></thead>
       <tbody>
-        {% for u in users %}
+        {% for u in users.items %}
         <tr>
           <td class="fw-medium">@{{ u.username }}</td>
           <td>{{ u.first_name }} {{ u.last_name }}</td>
@@ -40,4 +41,5 @@
     </table>
   </div>
 </div>
+{{ render_pagination(users, 'admin.list_users', kwargs=request.args) }}
 {% endblock %}

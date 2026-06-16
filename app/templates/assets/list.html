@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Asset Register') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Assets') }}</li>{% endblock %}
 
@@ -32,7 +33,10 @@
           <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
         </div>
       </form>
-      <div class="ms-3">
+      <div class="ms-2">
+        <a href="{{ url_for('reports.export_pdf_assets') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
+      <div class="ms-2">
         <a href="{{ url_for('assets.new_asset') }}" class="btn btn-success"><i class="fas fa-plus me-1"></i>{{ _('New Asset') }}</a>
       </div>
     </div>
@@ -44,7 +48,7 @@
     <table class="table table-hover mb-0">
       <thead><tr><th>{{ _('Name') }}</th><th>{{ _('Serial Number') }}</th><th>{{ _('Type') }}</th><th>{{ _('Classification') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('Status') }}</th><th>{{ _('Actions') }}</th></tr></thead>
       <tbody>
-        {% for asset in assets %}
+        {% for asset in assets.items %}
         <tr>
           <td><a href="{{ url_for('assets.view_asset', asset_id=asset.id) }}" class="text-decoration-none fw-medium">{{ asset.name }}</a></td>
           <td>{% if asset.serial_number %}<code class="small">{{ asset.serial_number }}</code>{% else %}<span class="text-muted">—</span>{% endif %}</td>
@@ -68,4 +72,5 @@
     </table>
   </div>
 </div>
+{{ render_pagination(assets, 'assets.list_assets', kwargs=request.args) }}
 {% endblock %}

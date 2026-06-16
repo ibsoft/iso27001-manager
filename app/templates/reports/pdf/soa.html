@@ -1,0 +1,24 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total Entries') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.applicable }}</div><div class="lbl">{{ _('Applicable') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.implemented }}</div><div class="lbl">{{ _('Implemented') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.not_applicable }}</div><div class="lbl">{{ _('Not Applicable') }}</div></div>
+</div>
+{% for domain in domains %}
+<h2>{{ domain.code }}. {{ domain.name }}</h2>
+<table>
+  <tr><th>{{ _('Control') }}</th><th>{{ _('Title') }}</th><th>{{ _('Applicable') }}</th><th>{{ _('Status') }}</th><th>{{ _('Justification') }}</th></tr>
+  {% for entry in domain_entries[domain.id] %}
+  <tr>
+    <td>{{ entry.control.code if entry.control else '-' }}</td>
+    <td>{{ (entry.control.title if entry.control else '')[:40] }}</td>
+    <td>{% if entry.applicable %}{{ _('Yes') }}{% else %}{{ _('No') }}{% endif %}</td>
+    <td><span class="badge badge-{{ 'success' if entry.implementation_status == 'implemented' else 'warning' if entry.implementation_status == 'in_progress' else 'secondary' }}">{{ (entry.implementation_status or '').replace('_', ' ') }}</span></td>
+    <td class="note">{{ (entry.justification or '')[:60] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endfor %}
+{% endblock %}

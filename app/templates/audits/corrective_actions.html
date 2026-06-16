@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Corrective Actions') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Corrective Actions') }}</li>{% endblock %}
 
@@ -15,6 +16,9 @@
             <option value="verified_closed" {{ 'selected' if request.args.get('status') == 'verified_closed' }}>{{ _('Verified Closed') }}</option>
         </select>
       </div>
+      <div class="col">
+        <a href="{{ url_for('reports.export_pdf_audits') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
     </form>
   </div>
 </div>
@@ -24,7 +28,7 @@
     <table class="table table-hover mb-0">
       <thead><tr><th>{{ _('Description') }}</th><th>{{ _('Owner') }}</th><th>{{ _('Target Date') }}</th><th>{{ _('Status') }}</th></tr></thead>
       <tbody>
-        {% for a in actions %}
+        {% for a in actions.items %}
         <tr>
           <td class="small">{{ a.description|truncate(80) }}</td>
           <td class="small">{{ a.owner.first_name ~ ' ' ~ a.owner.last_name if a.owner else '—' }}</td>
@@ -38,4 +42,5 @@
     </table>
   </div>
 </div>
+{{ render_pagination(actions, 'audits.list_corrective_actions', kwargs=request.args) }}
 {% endblock %}

@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Clause') }} {{ clause.number }} — {{ clause.localized_title(lang) }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('clauses.list_clauses') }}">{{ _('Clauses') }}</a></li>
+<li class="breadcrumb-item active">{{ clause.localized_title(lang) }}</li>
+{% endblock %}
+
+{% block content %}
+{% set colors = {
+  4: ('#4f46e5', '#818cf8', 'fa-sitemap'),
+  5: ('#0891b2', '#22d3ee', 'fa-crown'),
+  6: ('#7c3aed', '#a78bfa', 'fa-map-signs'),
+  7: ('#059669', '#34d399', 'fa-life-ring'),
+  8: ('#d97706', '#fbbf24', 'fa-play-circle'),
+  9: ('#dc2626', '#f87171', 'fa-chart-line'),
+  10: ('#2563eb', '#60a5fa', 'fa-arrow-up'),
+} %}
+{% set c1, c2, icon = colors[clause.number] %}
+
+<style>
+  .clause-hero {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    position: relative;
+    color: #fff;
+    min-height: 220px;
+  }
+  .clause-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, {{ c1 }}, {{ c2 }});
+  }
+  .clause-hero-bg .bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background-image: radial-gradient(circle at 20% 50%, #fff 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .clause-hero-bg .bg-glow {
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 60%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+  }
+  .clause-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+  }
+  .clause-hero-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1.25rem;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(6px);
+    font-size: 1.75rem;
+    font-weight: 800;
+  }
+  .clause-hero-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1.25rem;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    font-size: 1.5rem;
+  }
+  .clause-hero-title {
+    font-weight: 700;
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+  .clause-hero-sub {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .clause-detail-card {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    background: var(--card-bg);
+    height: 100%;
+  }
+  .clause-detail-card .card-body { padding: 1.5rem; }
+  .clause-detail-card .card-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  .clause-detail-card .card-value {
+    font-size: 0.925rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+  }
+</style>
+
+<div class="clause-hero shadow-lg mb-4">
+  <div class="clause-hero-bg">
+    <div class="bg-pattern"></div>
+    <div class="bg-glow"></div>
+  </div>
+  <div class="clause-hero-content">
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <div class="clause-hero-number">{{ clause.number }}</div>
+      <div class="clause-hero-icon"><i class="fas {{ icon }}"></i></div>
+      <div>
+        <div class="clause-hero-sub">{{ _('Clause') }} {{ clause.number }} — ISO 27001:2022</div>
+        <div class="clause-hero-title">{{ clause.localized_title(lang) }}</div>
+      </div>
+    </div>
+    <div style="max-width: 700px; font-size:0.95rem; line-height:1.7; opacity:0.92;">
+      {{ clause.localized_description(lang) }}
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="clause-detail-card card">
+      <div class="card-body">
+        <div class="card-label">{{ _('Purpose') }}</div>
+        <div class="card-value">{{ clause.localized_description(lang) }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="clause-detail-card card">
+      <div class="card-body">
+        <div class="card-label">{{ _('Implementation Notes') }}</div>
+        <div class="card-value">
+          {% if clause.implementation_notes %}
+            {% if lang == 'el' and clause.implementation_notes_el %}
+              {{ clause.implementation_notes_el }}
+            {% else %}
+              {{ clause.implementation_notes }}
+            {% endif %}
+          {% else %}
+            <span class="text-muted">{{ _('No implementation notes yet.') }}</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="clause-detail-card card">
+      <div class="card-body">
+        <div class="card-label">{{ _('Details') }}</div>
+        <div class="card-value">
+          <div class="row g-3">
+            <div class="col-sm-4">
+              <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-hashtag text-primary" style="width:1.25rem;"></i>
+                <span><strong>{{ _('Clause Number') }}:</strong> {{ clause.number }}</span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-check-circle text-success" style="width:1.25rem;"></i>
+                <span><strong>{{ _('Mandatory') }}:</strong> {{ _('Yes') if clause.is_mandatory else _('No') }}</span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-sort text-muted" style="width:1.25rem;"></i>
+                <span><strong>{{ _('Order') }}:</strong> {{ clause.sort_order }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4">
+  <a href="{{ url_for('clauses.list_clauses') }}" class="btn btn-outline-secondary">
+    <i class="fas fa-arrow-left me-1"></i>{{ _('Back to Clauses') }}
+  </a>
+</div>
+{% endblock %}

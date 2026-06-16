@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Compliance Check') }}: {{ check.measure_display }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.list_compliance') }}">{{ _('Compliance Checks') }}</a></li>
+  <li class="breadcrumb-item active">{{ check.measure_display[:30] }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ check.measure_display }}</span>
+    <div>
+      <a href="{{ url_for('nis2.edit_compliance', check_id=check.id) }}" class="btn btn-sm btn-primary">{{ _('Edit') }}</a>
+      <form method="POST" action="{{ url_for('nis2.delete_compliance', check_id=check.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this check?') }}')">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-sm btn-outline-danger">{{ _('Delete') }}</button>
+      </form>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <h6 class="text-muted mb-3">{{ _('Measure Info') }}</h6>
+        <table class="table table-borderless">
+          <tr><th style="180px;">{{ _('Measure') }}</th><td>{{ check.measure_display }}</td></tr>
+          <tr><th>{{ _('Article Reference') }}</th><td>{{ check.article_ref or '-' }}</td></tr>
+          <tr><th>{{ _('Status') }}</th><td>{% set status_colors = {'not_started': 'secondary', 'in_progress': 'info', 'implemented': 'success', 'not_applicable': 'warning', 'review_required': 'danger'} %}
+            <span class="badge bg-{{ status_colors.get(check.status, 'secondary') }}">{{ _(check.status.replace('_', ' ').title()) }}</span></td></tr>
+          <tr><th>{{ _('Control References') }}</th><td>{{ check.control_references or '-' }}</td></tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h6 class="text-muted mb-3">{{ _('Dates') }}</h6>
+        <table class="table table-borderless">
+          <tr><th style="180px;">{{ _('Target Date') }}</th><td>{{ check.target_date.strftime('%d/%m/%Y') if check.target_date else '-' }}</td></tr>
+          <tr><th>{{ _('Completion Date') }}</th><td>{{ check.completion_date.strftime('%d/%m/%Y') if check.completion_date else '-' }}</td></tr>
+          <tr><th>{{ _('Review Date') }}</th><td>{{ check.review_date.strftime('%d/%m/%Y') if check.review_date else '-' }}</td></tr>
+          <tr><th>{{ _('Responsible Person') }}</th><td>{{ check.responsible_person.first_name + ' ' + check.responsible_person.last_name if check.responsible_person else '-' }}</td></tr>
+        </table>
+      </div>
+    </div>
+    <h6 class="text-muted mb-3">{{ _('Details') }}</h6>
+    <table class="table table-borderless">
+      <tr><th style="180px;">{{ _('Implementation Details') }}</th><td>{{ check.implementation_details or '-' }}</td></tr>
+      <tr><th>{{ _('Evidence Notes') }}</th><td>{{ check.evidence_notes or '-' }}</td></tr>
+      <tr><th>{{ _('Notes') }}</th><td>{{ check.notes or '-' }}</td></tr>
+    </table>
+  </div>
+</div>
+{% endblock %}

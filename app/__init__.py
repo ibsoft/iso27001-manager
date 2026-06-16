@@ -60,15 +60,17 @@ def create_app(config_name=None):
             "'self'",
             "'unsafe-inline'",
             "https://cdn.jsdelivr.net",
+            "https://cdnjs.cloudflare.com",
         ],
         "font-src": [
             "'self'",
+            "data:",
             "https://fonts.gstatic.com",
             "https://cdn.jsdelivr.net",
             "https://cdnjs.cloudflare.com",
         ],
         "img-src": ["'self'", "data:", "https:"],
-        "connect-src": ["'self'"],
+        "connect-src": ["'self'", "https:"],
     }
 
     if not app.config.get("TALISMAN_FORCE_HTTPS"):
@@ -85,12 +87,28 @@ def create_app(config_name=None):
     from datetime import datetime as dt_now
     app.jinja_env.globals.update(now=dt_now.utcnow, LANGUAGES=LANGUAGES)
 
+    def _apply_forced_settings():
+        from flask import session as _session
+        from app.models.user import SystemSetting
+        forced_lang = SystemSetting.get("forced_language")
+        forced_tz = SystemSetting.get("forced_timezone")
+        if forced_lang:
+            _session["lang"] = forced_lang
+        if forced_tz:
+            _session["timezone"] = forced_tz
+
     @app.context_processor
     def inject_globals():
         from flask import session as _session
+        from app.models.user import SystemSetting
+        _apply_forced_settings()
         return {
             "current_lang": _session.get("lang", "en"),
             "LANGUAGES": LANGUAGES,
+            "system_settings": {
+                "forced_language": SystemSetting.get("forced_language"),
+                "forced_timezone": SystemSetting.get("forced_timezone"),
+            },
         }
 
     from app.routes.auth import auth_bp
@@ -107,6 +125,7 @@ def create_app(config_name=None):
     from app.routes.reports import reports_bp
     from app.routes.admin import admin_bp
     from app.routes.gdpr import gdpr_bp
+    from app.routes.nis2 import nis2_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/")
@@ -122,6 +141,7 @@ def create_app(config_name=None):
     app.register_blueprint(reports_bp, url_prefix="/reports")
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(gdpr_bp, url_prefix="/gdpr")
+    app.register_blueprint(nis2_bp, url_prefix="/nis2")
 
     @app.route("/health")
     def health():

@@ -3,28 +3,32 @@
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('SoA') }}</li>{% endblock %}
 
 {% block content %}
-<div class="mb-3">
+<div class="mb-3 d-flex flex-wrap gap-2">
   <a href="{{ url_for('soa.soa_summary') }}" class="btn btn-outline-primary"><i class="fas fa-chart-pie me-1"></i>{{ _('Summary') }}</a>
+  <a href="{{ url_for('reports.export_pdf_soa') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>{{ _('PDF Export') }}</a>
   <a href="{{ url_for('soa.export_soa') }}" class="btn btn-outline-success"><i class="fas fa-download me-1"></i>{{ _('Export') }}</a>
+  <a href="{{ url_for('soa.new_soa') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New SoA Entry') }}</a>
 </div>
 
 {% for domain_id, data in soa_entries.items() %}
 <div class="card mb-4">
-  <div class="card-header">
-    <span>{{ data.domain.code }}. {{ data.domain.name }}</span>
-    <span class="small text-muted ms-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ data.domain.code }}. {{ data.domain.localized_name(lang) }}</span>
+    <span class="small text-muted">
       {% set imp = data.entries|selectattr('implementation_status', 'equalto', 'implemented')|list|length %}
-      {{ imp }}/{{ data.entries|length }} implemented
+      {{ imp }}/{{ data.entries|length }} {{ _('implemented') }}
     </span>
   </div>
   <div class="card-body p-0">
+    <div class="table-responsive-custom">
     <table class="table table-hover mb-0">
-      <thead><tr><th>{{ _('Control') }}</th><th>{{ _('Title') }}</th><th>{{ _('Applicable') }}</th><th>{{ _('Status') }}</th><th>{{ _('Action') }}</th></tr></thead>
+      <thead><tr><th>{{ _('Control') }}</th><th>{{ _('Title') }}</th><th>{{ _('Description') }}</th><th>{{ _('Applicable') }}</th><th>{{ _('Status') }}</th><th>{{ _('Action') }}</th></tr></thead>
       <tbody>
         {% for entry in data.entries %}
         <tr>
           <td><span class="badge bg-secondary">{{ entry.control.code }}</span></td>
-          <td class="small">{{ entry.control.title }}</td>
+          <td class="small">{{ entry.control.localized_title(lang) }}</td>
+          <td class="small text-muted" style="max-width:250px;">{{ (entry.localized_description(lang) or entry.control.localized_purpose(lang) or '')|truncate(100) }}</td>
           <td>
             {% if entry.applicable %}
               <span class="badge bg-success"><i class="fas fa-check me-1"></i>{{ _('Yes') }}</span>
@@ -32,12 +36,13 @@
               <span class="badge bg-secondary"><i class="fas fa-times me-1"></i>{{ _('No') }}</span>
             {% endif %}
           </td>
-          <td><span class="badge bg-{{ 'success' if entry.implementation_status == 'implemented' else 'warning text-dark' if entry.implementation_status == 'in_progress' else 'secondary' }}">{{ entry.implementation_status|replace('_', ' ')|title }}</span></td>
+          <td><span class="badge bg-{{ 'success' if entry.implementation_status == 'implemented' else 'warning text-dark' if entry.implementation_status == 'in_progress' else 'secondary' }}">{{ _(entry.implementation_status|replace('_', ' ')|title) }}</span></td>
           <td><a href="{{ url_for('soa.edit_entry', entry_id=entry.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+    </div>
   </div>
 </div>
 {% endfor %}

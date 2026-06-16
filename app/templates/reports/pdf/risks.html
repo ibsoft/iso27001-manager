@@ -1,0 +1,22 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total Risks') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.critical }}</div><div class="lbl">{{ _('Critical') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.high }}</div><div class="lbl">{{ _('High') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.mitigated }}</div><div class="lbl">{{ _('Mitigated') }}</div></div>
+</div>
+<table>
+  <tr><th>{{ _('Title') }}</th><th>{{ _('Likelihood') }}</th><th>{{ _('Impact') }}</th><th>{{ _('Level') }}</th><th>{{ _('Treatment') }}</th><th>{{ _('Status') }}</th></tr>
+  {% for r in risks %}
+  <tr>
+    <td>{{ r.title }}</td>
+    <td>{{ r.likelihood }}/5</td>
+    <td>{{ r.impact }}/5</td>
+    <td><span class="badge badge-{{ 'danger' if r.risk_level == 'critical' else 'warning' if r.risk_level == 'high' else 'info' }}">{{ r.risk_level or '' }}</span></td>
+    <td>{{ r.treatment_option or '-' }}</td>
+    <td><span class="badge badge-{{ 'success' if r.status == 'closed' else 'warning' }}">{{ (r.status or '').replace('_', ' ') }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

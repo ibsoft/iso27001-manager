@@ -12,7 +12,12 @@ from app.models.dpia import Dpia
 from app.models.data_subject_request import DataSubjectRequest
 from app.models.consent import ConsentRecord
 from app.models.data_breach import DataBreach
-from datetime import datetime
+from app.models.nis2 import (
+    Nis2ComplianceCheck, Nis2IncidentNotification,
+    Nis2SupplyChainAssessment, Nis2ContinuityPlan,
+    Nis2EntityRegistration,
+)
+from datetime import datetime, date
 from sqlalchemy import func
 
 dashboard_bp = Blueprint("dashboard", __name__)
@@ -69,6 +74,17 @@ def index():
     data_breaches = DataBreach.query.count()
     notified_sa = DataBreach.query.filter_by(notified_supervisory_authority=True).count()
 
+    # NIS2
+    entity = Nis2EntityRegistration.query.first()
+    total_compliance = Nis2ComplianceCheck.query.count()
+    implemented_compliance = Nis2ComplianceCheck.query.filter_by(status="implemented").count()
+    compliance_pct = round((implemented_compliance / total_compliance * 100)) if total_compliance else 0
+    pending_notifications = Nis2IncidentNotification.query.filter(
+        Nis2IncidentNotification.notification_status.notin_(["completed", "final_report_submitted"])
+    ).count()
+    active_continuity = Nis2ContinuityPlan.query.filter_by(status="active").count()
+    critical_supply_chain = Nis2SupplyChainAssessment.query.filter_by(supply_chain_risk_level="critical").count()
+
     context = {
         "total_controls": total_controls,
         "implemented_controls": implemented_controls,
@@ -93,6 +109,13 @@ def index():
         "active_consents": active_consents,
         "data_breaches": data_breaches,
         "notified_sa": notified_sa,
+        "entity": entity,
+        "total_compliance": total_compliance,
+        "implemented_compliance": implemented_compliance,
+        "compliance_pct": compliance_pct,
+        "pending_notifications": pending_notifications,
+        "active_continuity": active_continuity,
+        "critical_supply_chain": critical_supply_chain,
     }
 
     return render_template("dashboard/index.html", **context)

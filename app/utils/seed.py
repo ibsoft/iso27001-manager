@@ -85,7 +85,9 @@ def seed_database():
         clause = Clause(
             number=cd["number"],
             title=cd["title"],
+            title_el=cd.get("title_el"),
             description=cd["description"],
+            description_el=cd.get("description_el"),
             sort_order=cd["sort_order"],
         )
         db.session.add(clause)
@@ -103,5 +105,29 @@ def seed_database():
             target=target, unit=unit, frequency=freq, category=cat,
         )
         db.session.add(kpi)
+
+    from app.models.nis2 import Nis2ComplianceCheck, Nis2EntityRegistration, Nis2ContinuityPlan
+
+    if Nis2ComplianceCheck.query.first() is None:
+        nis2_measures = [
+            ("risk_analysis", "Risk Analysis & IS Policies", "Art 21(2)(a)"),
+            ("incident_handling", "Incident Handling", "Art 21(2)(b)"),
+            ("business_continuity", "Business Continuity", "Art 21(2)(g)"),
+            ("supply_chain_security", "Supply Chain Security", "Art 21(2)(d)"),
+            ("network_security", "Network & Information Security", "Art 21(2)(c)"),
+            ("access_control", "Access Control", "Art 21(2)(e)"),
+            ("cryptography", "Cryptography", "Art 21(2)(f)"),
+            ("hr_security", "HR Security", "Art 21(2)(h)"),
+            ("mfa", "Multi-Factor Authentication", "Art 21(2)(i)"),
+            ("security_training", "Security Training", "Art 21(2)(j)"),
+        ]
+        for measure, display, article in nis2_measures:
+            check = Nis2ComplianceCheck(
+                measure=measure,
+                measure_display=display,
+                article_ref=article,
+                status="not_started",
+            )
+            db.session.add(check)
 
     db.session.commit()

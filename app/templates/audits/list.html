@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Internal Audits') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Audits') }}</li>{% endblock %}
 
@@ -17,13 +18,14 @@
           </select>
         </div>
       </form>
+      <a href="{{ url_for('reports.export_pdf_audits') }}" class="btn btn-outline-danger me-2"><i class="fas fa-file-pdf me-1"></i>PDF</a>
       <a href="{{ url_for('audits.new_audit') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Schedule Audit') }}</a>
     </div>
   </div>
 </div>
 
 <div class="row">
-  {% for audit in audits %}
+  {% for audit in audits.items %}
   <div class="col-lg-6">
     <div class="card mb-3">
       <div class="card-body">
@@ -58,4 +60,5 @@
   <div class="col-12"><div class="text-center text-muted py-5"><i class="fas fa-clipboard-check fa-3x mb-3"></i><p>{{ _('No audits scheduled') }}</p></div></div>
   {% endfor %}
 </div>
+{{ render_pagination(audits, 'audits.list_audits', kwargs=request.args) }}
 {% endblock %}

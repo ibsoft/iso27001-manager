@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.list_compliance') }}">{{ _('Compliance Checks') }}</a></li>
+  <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header">{{ title }}</div>
+  <div class="card-body">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <div class="row g-3">
+        <div class="col-lg-6">{{ form.measure.label }}{{ form.measure(class="form-select") }}</div>
+        <div class="col-lg-6">{{ form.measure_display.label }}{{ form.measure_display(class="form-control") }}</div>
+        <div class="col-lg-4">{{ form.article_ref.label }}{{ form.article_ref(class="form-control") }}</div>
+        <div class="col-lg-4">{{ form.status.label }}{{ form.status(class="form-select") }}</div>
+        <div class="col-lg-4">{{ form.responsible_person_id.label }}{{ form.responsible_person_id(class="form-select") }}</div>
+        <div class="col-lg-4">{{ form.target_date.label }}{{ form.target_date(class="form-control", type="date") }}</div>
+        <div class="col-lg-4">{{ form.completion_date.label }}{{ form.completion_date(class="form-control", type="date") }}</div>
+        <div class="col-lg-4">{{ form.review_date.label }}{{ form.review_date(class="form-control", type="date") }}</div>
+        <div class="col-12">{{ form.implementation_details.label }}{{ form.implementation_details(class="form-control", rows=3) }}</div>
+        <div class="col-12">{{ form.evidence_notes.label }}{{ form.evidence_notes(class="form-control", rows=2) }}</div>
+        <div class="col-lg-4">{{ form.control_references.label }}{{ form.control_references(class="form-control") }}</div>
+        <div class="col-12">{{ form.notes.label }}{{ form.notes(class="form-control", rows=2) }}</div>
+      </div>
+      <div class="mt-3">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('nis2.list_compliance') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -6,6 +6,7 @@ from app.models.supplier import Supplier
 from app.models.audit_log import AuditLog
 from app.forms import SupplierForm
 from app.utils.decorators import permission_required, admin_required
+from app.utils.pagination import paginate
 from datetime import datetime
 
 suppliers_bp = Blueprint("suppliers", __name__)
@@ -26,7 +27,7 @@ def list_suppliers():
     if search:
         query = query.filter(Supplier.name.ilike(f"%{search}%"))
 
-    suppliers = query.order_by(Supplier.name).all()
+    suppliers = paginate(query.order_by(Supplier.name))
     return render_template("suppliers/list.html", suppliers=suppliers)
 
 

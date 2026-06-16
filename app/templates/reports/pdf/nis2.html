@@ -1,0 +1,74 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ compliance_pct }}%</div><div class="lbl">{{ _('Compliance') }}</div></div>
+  <div class="stat-box"><div class="num">{{ pending_notifications }}</div><div class="lbl">{{ _('Pending Notifications') }}</div></div>
+  <div class="stat-box"><div class="num">{{ active_continuity }}</div><div class="lbl">{{ _('Active Plans') }}</div></div>
+  <div class="stat-box"><div class="num">{{ critical_supply }}</div><div class="lbl">{{ _('Critical Supply') }}</div></div>
+</div>
+
+{% if entity %}
+<h2>{{ _('Entity Registration') }}</h2>
+<div class="info-grid">
+  <div class="info-row"><div class="info-label">{{ _('Entity Name') }}:</div><div class="info-value">{{ entity.entity_name }}</div></div>
+  <div class="info-row"><div class="info-label">{{ _('Sector') }}:</div><div class="info-value">{{ entity.sector or '-' }}</div></div>
+  <div class="info-row"><div class="info-label">{{ _('Type') }}:</div><div class="info-value">{{ entity.entity_type or '-' }}</div></div>
+  <div class="info-row"><div class="info-label">{{ _('CSIRT') }}:</div><div class="info-value">{{ entity.csirt_name or '-' }}</div></div>
+</div>
+{% endif %}
+
+<h2>{{ _('Compliance Measures') }} (Art 21)</h2>
+<table>
+  <tr><th>{{ _('Measure') }}</th><th>{{ _('Article') }}</th><th>{{ _('Status') }}</th><th>{{ _('Target') }}</th></tr>
+  {% for c in compliance_checks %}
+  <tr>
+    <td>{{ c.measure_display or '' }}</td>
+    <td>{{ c.article_ref or '-' }}</td>
+    <td><span class="badge badge-{{ 'success' if c.status == 'implemented' else 'warning' if c.status == 'in_progress' else 'secondary' }}">{{ (c.status or '').replace('_', ' ') }}</span></td>
+    <td>{{ c.target_date.strftime('%d/%m/%Y') if c.target_date else '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('Incident Notifications') }}</h2>
+<table>
+  <tr><th>{{ _('Incident') }}</th><th>{{ _('CSIRT Ref') }}</th><th>{{ _('EW Status') }}</th><th>{{ _('72h Status') }}</th><th>{{ _('Final Status') }}</th></tr>
+  {% for n in notifications %}
+  <tr>
+    <td>{{ (n.incident_title or '')[:40] }}</td>
+    <td>{{ n.csirt_reference or '-' }}</td>
+    <td>{% if n.early_warning_submitted_at %}{{ _('Done') }}{% else %}{{ _('Pending') }}{% endif %}</td>
+    <td>{% if n.notification_submitted_at %}{{ _('Done') }}{% else %}{{ _('Pending') }}{% endif %}</td>
+    <td>{% if n.final_report_submitted_at %}{{ _('Done') }}{% else %}{{ _('Pending') }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('Supply Chain Assessments') }}</h2>
+<table>
+  <tr><th>{{ _('Supplier') }}</th><th>{{ _('Risk Level') }}</th><th>{{ _('Tier') }}</th><th>{{ _('Status') }}</th><th>{{ _('Next Review') }}</th></tr>
+  {% for a in supply_chain %}
+  <tr>
+    <td>{{ (a.supplier_name or '')[:35] }}</td>
+    <td><span class="badge badge-{{ 'danger' if a.supply_chain_risk_level == 'critical' else 'warning' }}">{{ a.supply_chain_risk_level or '' }}</span></td>
+    <td>{{ _('Tier') }} {{ a.dependency_tier }}</td>
+    <td><span class="badge badge-{{ 'success' if a.status == 'approved' else 'warning' }}">{{ (a.status or '').replace('_', ' ') }}</span></td>
+    <td>{{ a.next_assessment_date.strftime('%d/%m/%Y') if a.next_assessment_date else '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('Continuity Plans') }}</h2>
+<table>
+  <tr><th>{{ _('Title') }}</th><th>{{ _('Type') }}</th><th>{{ _('RTO') }}</th><th>{{ _('Status') }}</th><th>{{ _('Last Test') }}</th></tr>
+  {% for p in continuity_plans %}
+  <tr>
+    <td>{{ (p.title or '')[:40] }}</td>
+    <td>{{ (p.plan_type or '').replace('_', ' ') }}</td>
+    <td>{{ p.rto or '-' }}</td>
+    <td><span class="badge badge-{{ 'success' if p.status == 'active' else 'warning' }}">{{ (p.status or '').replace('_', ' ') }}</span></td>
+    <td>{{ p.last_test_date.strftime('%d/%m/%Y') if p.last_test_date else '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

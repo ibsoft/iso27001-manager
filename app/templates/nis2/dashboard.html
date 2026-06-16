@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('NIS2 Compliance Dashboard') }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item active">{{ _('NIS2 Dashboard') }}</li>
+{% endblock %}
+{% block content %}
+<div class="mb-3">
+  <a href="{{ url_for('reports.export_pdf_nis2') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>{{ _('Export PDF Report') }}</a>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-lg-3 col-6">
+    <div class="small-box" style="background:linear-gradient(135deg,#1a56db,#1e40af);">
+      <div class="inner">
+        <div class="stat-value">{{ implemented_compliance }}/{{ total_compliance or 0 }}</div>
+        <div class="stat-label">{{ _('Compliance Measures') }}</div>
+      </div>
+      <div class="icon"><i class="fas fa-check-double"></i></div>
+      <a href="{{ url_for('nis2.list_compliance') }}" class="small-box-footer">{{ _('View Details') }} <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box" style="background:linear-gradient(135deg,#e67e22,#d35400);">
+      <div class="inner">
+        <div class="stat-value">{{ pending_notifications }}</div>
+        <div class="stat-label">{{ _('Pending Notifications') }}</div>
+      </div>
+      <div class="icon"><i class="fas fa-bell"></i></div>
+      <a href="{{ url_for('nis2.list_notifications') }}" class="small-box-footer">{{ _('View Details') }} <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box" style="background:linear-gradient(135deg,#27ae60,#1e8449);">
+      <div class="inner">
+        <div class="stat-value">{{ active_continuity }}</div>
+        <div class="stat-label">{{ _('Active Continuity Plans') }}</div>
+      </div>
+      <div class="icon"><i class="fas fa-life-ring"></i></div>
+      <a href="{{ url_for('nis2.list_continuity') }}" class="small-box-footer">{{ _('View Details') }} <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box" style="background:linear-gradient(135deg,#8e44ad,#6c3483);">
+      <div class="inner">
+        <div class="stat-value">{{ critical_supply_chain }}/{{ total_supply_chain }}</div>
+        <div class="stat-label">{{ _('Critical Supply Chain') }}</div>
+      </div>
+      <div class="icon"><i class="fas fa-handshake"></i></div>
+      <a href="{{ url_for('nis2.list_supply_chain') }}" class="small-box-footer">{{ _('View Details') }} <i class="fas fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>{{ _('Entity Registration') }}</span>
+        <a href="{{ url_for('nis2.edit_entity') }}" class="btn btn-sm btn-primary">{{ _('Edit') if entity else _('Register') }}</a>
+      </div>
+      <div class="card-body">
+        {% if entity %}
+        <table class="table table-borderless mb-0">
+          <tr><th style="width:180px;">{{ _('Entity Name') }}</th><td>{{ entity.entity_name }}</td></tr>
+          <tr><th>{{ _('Sector') }}</th><td>{{ entity.sector }}</td></tr>
+          <tr><th>{{ _('Entity Type') }}</th><td><span class="badge bg-{{ 'danger' if entity.entity_type == 'essential' else 'warning' }}">{{ entity.entity_type }}</span></td></tr>
+          <tr><th>{{ _('Registration Number') }}</th><td>{{ entity.registration_number or '-' }}</td></tr>
+          <tr><th>{{ _('Status') }}</th><td><span class="badge bg-{{ 'success' if entity.status == 'active' else 'secondary' }}">{{ entity.status }}</span></td></tr>
+        </table>
+        {% else %}
+        <p class="text-muted mb-0">{{ _('No entity registered yet. Click Register to add your NIS2 entity details.') }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>{{ _('Supply Chain Reviews') }}</span>
+        <span class="text-danger small"><i class="fas fa-exclamation-triangle me-1"></i>{{ _('Overdue') }}: {{ overdue_reviews }}</span>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless mb-0">
+          <tr><th>{{ _('Total Assessments') }}</th><td>{{ total_supply_chain }}</td></tr>
+          <tr><th>{{ _('Critical Risk') }}</th><td>{{ critical_supply_chain }}</td></tr>
+          <tr><th>{{ _('Overdue Reviews') }}</th><td>{{ overdue_reviews }}</td></tr>
+          <tr><th>{{ _('Pending') }}</th><td>{{ Nis2SupplyChainAssessment.query.filter_by(status='pending').count() if Nis2SupplyChainAssessment else 0 }}</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">{{ _('Compliance Status') }}</div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead><tr><th>{{ _('Measure') }}</th><th>{{ _('Status') }}</th><th>{{ _('Target') }}</th></tr></thead>
+          <tbody>
+            {% for check in compliance_checks %}
+            <tr>
+              <td><a href="{{ url_for('nis2.view_compliance', check_id=check.id) }}">{{ check.measure_display }}</a></td>
+              <td>{% set status_colors = {'not_started': 'secondary', 'in_progress': 'info', 'implemented': 'success', 'not_applicable': 'warning', 'review_required': 'danger'} %}
+                <span class="badge bg-{{ status_colors.get(check.status, 'secondary') }}">{{ _(check.status.replace('_', ' ').title()) }}</span></td>
+              <td>{{ check.target_date or '-' }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-muted text-center">{{ _('No compliance checks defined.') }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer text-end">
+        <a href="{{ url_for('nis2.list_compliance') }}" class="btn btn-sm btn-outline-primary">{{ _('All Compliance Checks') }}</a>
+        <a href="{{ url_for('nis2.new_compliance') }}" class="btn btn-sm btn-primary">{{ _('Add Check') }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">{{ _('Recent Notifications') }}</div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead><tr><th>{{ _('Incident') }}</th><th>{{ _('CSIRT Ref') }}</th><th>{{ _('Status') }}</th></tr></thead>
+          <tbody>
+            {% for n in recent_notifications %}
+            <tr>
+              <td><a href="{{ url_for('nis2.view_notification', notification_id=n.id) }}">{{ n.incident_title[:40] }}</a></td>
+              <td>{{ n.csirt_reference or '-' }}</td>
+              <td><span class="badge bg-{{ 'success' if n.notification_status == 'completed' else 'warning' }}">{{ _(n.notification_status.replace('_', ' ').title()) }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-muted text-center">{{ _('No notifications yet.') }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer text-end">
+        <a href="{{ url_for('nis2.list_notifications') }}" class="btn btn-sm btn-outline-primary">{{ _('All Notifications') }}</a>
+        <a href="{{ url_for('nis2.new_notification') }}" class="btn btn-sm btn-primary">{{ _('New Notification') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

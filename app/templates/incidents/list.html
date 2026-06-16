@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Incidents') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Incidents') }}</li>{% endblock %}
 
@@ -33,7 +34,10 @@
           <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
         </div>
       </form>
-      <div class="ms-3">
+      <div class="ms-2">
+        <a href="{{ url_for('reports.export_pdf_incidents') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
+      <div class="ms-2">
         <a href="{{ url_for('incidents.new_incident') }}" class="btn btn-warning"><i class="fas fa-plus me-1"></i>{{ _('Report Incident') }}</a>
       </div>
     </div>
@@ -45,7 +49,7 @@
     <table class="table table-hover mb-0">
       <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Severity') }}</th><th>{{ _('Status') }}</th><th>{{ _('Category') }}</th><th>{{ _('Reported By') }}</th><th>{{ _('Date') }}</th><th></th></tr></thead>
       <tbody>
-        {% for inc in incidents %}
+        {% for inc in incidents.items %}
         <tr>
           <td><a href="{{ url_for('incidents.view_incident', incident_id=inc.id) }}" class="text-decoration-none fw-medium">{{ inc.title }}</a></td>
           <td><span class="badge bg-{{ 'dark' if inc.severity == 'critical' else 'danger' if inc.severity == 'high' else 'warning text-dark' if inc.severity == 'medium' else 'success' }}">{{ inc.severity|title }}</span></td>
@@ -68,4 +72,5 @@
     </table>
   </div>
 </div>
+{{ render_pagination(incidents, 'incidents.list_incidents', kwargs=request.args) }}
 {% endblock %}

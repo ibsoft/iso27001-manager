@@ -122,3 +122,34 @@ class Permission(db.Model):
 
     def __repr__(self):
         return f"<Permission {self.codename}>"
+
+
+class SystemSetting(db.Model):
+    __tablename__ = "system_setting"
+
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    value = db.Column(db.String(512), nullable=True)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+
+    updated_by = db.relationship("User", backref="system_settings", foreign_keys=[updated_by_id])
+
+    @classmethod
+    def get(cls, key, default=None):
+        setting = cls.query.filter_by(key=key).first()
+        return setting.value if setting else default
+
+    @classmethod
+    def set(cls, key, value, user_id=None):
+        setting = cls.query.filter_by(key=key).first()
+        if setting:
+            setting.value = value
+            setting.updated_by_id = user_id
+        else:
+            setting = cls(key=key, value=value, updated_by_id=user_id)
+            db.session.add(setting)
+        db.session.commit()
+
+    def __repr__(self):
+        return f"<SystemSetting {self.key}={self.value}>"
