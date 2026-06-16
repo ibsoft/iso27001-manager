@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block page_title %}{{ capa.title }}{% endblock %}
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{{ url_for('capa.list_capas') }}">{{ _('CAPA') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('capa.list_capas') }}">{{ _('Corrective and Preventive Action (CAPA)') }}</a></li>
 <li class="breadcrumb-item active">{{ capa.title }}</li>
 {% endblock %}
 
@@ -93,7 +93,7 @@
       <div class="card-header"><h5 class="mb-0"><i class="fas fa-cog me-2"></i>{{ _('Actions') }}</h5></div>
       <div class="card-body">
         {% if current_user.has_permission('capa_edit') %}
-        <a href="{{ url_for('capa.edit_capa', capa_id=capa.id) }}" class="btn btn-outline-primary w-100 mb-2"><i class="fas fa-edit me-1"></i>{{ _('Edit CAPA') }}</a>
+        <a href="{{ url_for('capa.edit_capa', capa_id=capa.id) }}" class="btn btn-outline-primary w-100 mb-2"><i class="fas fa-edit me-1"></i>{{ _('Edit Corrective and Preventive Action (CAPA)') }}</a>
         {% endif %}
         <div class="btn-group-vertical w-100">
           {% for status, label in [('under_review', _('Under Review')), ('action_planned', _('Action Planned')), ('in_progress', _('In Progress')), ('verified', _('Verified')), ('closed', _('Closed'))] %}
@@ -106,7 +106,7 @@
           {% endfor %}
         </div>
         {% if current_user.has_role('admin') %}
-        <form method="POST" action="{{ url_for('capa.delete_capa', capa_id=capa.id) }}" class="mt-2" data-confirm="{{ _('Delete this CAPA?') }}">
+        <form method="POST" action="{{ url_for('capa.delete_capa', capa_id=capa.id) }}" class="mt-2" data-confirm="{{ _('Delete this Corrective and Preventive Action (CAPA)?') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <button type="submit" class="btn btn-outline-danger w-100"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
         </form>

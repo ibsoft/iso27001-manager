@@ -5579,6 +5579,7 @@ msgid "Return signature is required."
 msgstr "Απαιτείται υπογραφή επιστροφής."
 
 msgid "Please correct the errors below."
+msgstr "Παρακαλώ διορθώστε τα σφάλματα παρακάτω."
 
 #: app/management_review.py
 msgid "Management Reviews"
@@ -5749,16 +5750,32 @@ msgid "CAPA Requests"
 msgstr "Αιτήματα CAPA"
 
 #: app/capa.py
+msgid "Corrective and Preventive Action (CAPA) Requests"
+msgstr "Αιτήματα Διορθωτικής και Προληπτικής Ενέργειας (CAPA)"
+
+#: app/capa.py
 msgid "CAPA"
 msgstr "CAPA"
+
+#: app/capa.py
+msgid "Corrective and Preventive Action (CAPA)"
+msgstr "Διορθωτική και Προληπτική Ενέργεια (CAPA)"
 
 #: app/capa.py
 msgid "New CAPA Request"
 msgstr "Νέο Αίτημα CAPA"
 
 #: app/capa.py
+msgid "New Corrective and Preventive Action (CAPA) Request"
+msgstr "Νέο Αίτημα Διορθωτικής και Προληπτικής Ενέργειας (CAPA)"
+
+#: app/capa.py
 msgid "Edit CAPA Request"
 msgstr "Επεξεργασία Αιτήματος CAPA"
+
+#: app/capa.py
+msgid "Edit Corrective and Preventive Action (CAPA) Request"
+msgstr "Επεξεργασία Αιτήματος Διορθωτικής και Προληπτικής Ενέργειας (CAPA)"
 
 #: app/capa.py
 msgid "CAPA request created successfully."
@@ -5777,8 +5794,28 @@ msgid "New CAPA"
 msgstr "Νέο CAPA"
 
 #: app/capa.py
+msgid "New Corrective and Preventive Action (CAPA)"
+msgstr "Νέα Διορθωτική και Προληπτική Ενέργεια (CAPA)"
+
+#: app/capa.py
 msgid "Source Type"
 msgstr "Τύπος Πηγής"
+
+#: app/capa.py
+msgid "%(count)s open"
+msgstr "%(count)s ανοικτά"
+
+#: app/capa.py
+msgid "%(count)s critical"
+msgstr "%(count)s κρίσιμα"
+
+#: app/capa.py
+msgid "Minor"
+msgstr "Μικρή"
+
+#: app/capa.py
+msgid "Major"
+msgstr "Σημαντική"
 
 #: app/capa.py
 msgid "Source Reference"
@@ -5787,6 +5824,14 @@ msgstr "Αναφορά Πηγής"
 #: app/capa.py
 msgid "Root Cause Analysis"
 msgstr "Ανάλυση Βασικής Αιτίας"
+
+#: app/capa.py
+msgid "Corrective Action Plan"
+msgstr "Σχέδιο Διορθωτικής Ενέργειας"
+
+#: app/capa.py
+msgid "Effectiveness Verification"
+msgstr "Επαλήθευση Αποτελεσματικότητας"
 
 #: app/capa.py
 msgid "Root Cause Category"
@@ -5873,12 +5918,24 @@ msgid "No CAPA requests yet."
 msgstr "Δεν υπάρχουν ακόμη αιτήματα CAPA."
 
 #: app/capa.py
+msgid "No Corrective and Preventive Action (CAPA) requests yet."
+msgstr "Δεν υπάρχουν ακόμη αιτήματα Διορθωτικής και Προληπτικής Ενέργειας (CAPA)."
+
+#: app/capa.py
 msgid "Create your first CAPA"
 msgstr "Δημιουργήστε το πρώτο σας CAPA"
 
 #: app/capa.py
+msgid "Create your first Corrective and Preventive Action (CAPA)"
+msgstr "Δημιουργήστε την πρώτη σας Διορθωτική και Προληπτική Ενέργεια (CAPA)"
+
+#: app/capa.py
 msgid "Delete this CAPA?"
 msgstr "Διαγραφή αυτού του CAPA;"
+
+#: app/capa.py
+msgid "Delete this Corrective and Preventive Action (CAPA)?"
+msgstr "Διαγραφή αυτής της Διορθωτικής και Προληπτικής Ενέργειας (CAPA);"
 
 #: app/capa.py
 msgid "Ref"
@@ -5901,6 +5958,22 @@ msgid "Status updated to %(status)s."
 msgstr "Η κατάσταση ενημερώθηκε σε %(status)s."
 
 #: app/capa.py
+msgid "Invalid status."
+msgstr "Μη έγκυρη κατάσταση."
+
+#: app/capa.py
+msgid "Progress"
+msgstr "Πρόοδος"
+
+#: app/capa.py
+msgid "Confirm"
+msgstr "Επιβεβαίωση"
+
+#: app/capa.py
+msgid "Are you sure?"
+msgstr "Είστε βέβαιοι;"
+
+#: app/capa.py
 msgid "open_uc"
 msgstr "Ανοιχτά"
 
@@ -5912,9 +5985,57 @@ msgstr "Κρίσιμα"
 msgid "View CAPA"
 msgstr "Προβολή CAPA"
 
+#: app/capa.py
+msgid "View Corrective and Preventive Action (CAPA)"
+msgstr "Προβολή Διορθωτικής και Προληπτικής Ενέργειας (CAPA)"
+
+#: app/capa.py
+msgid "Edit Corrective and Preventive Action (CAPA)"
+msgstr "Επεξεργασία Διορθωτικής και Προληπτικής Ενέργειας (CAPA)"
+
+#: app/capa.py
+msgid "Corrective and Preventive Action (CAPA) Report"
+msgstr "Αναφορά Διορθωτικής και Προληπτικής Ενέργειας (CAPA)"
+
+#: app/capa.py
+msgid "No Corrective and Preventive Action (CAPA) requests recorded."
+msgstr "Δεν έχουν καταγραφεί αιτήματα Διορθωτικής και Προληπτικής Ενέργειας (CAPA)."
+
 #: app/training.py
 msgid "Training Courses"
 msgstr "Εκπαιδευτικά Προγράμματα"
+
+#: app/training.py
+msgid "Training Records"
+msgstr "Εκπαιδευτικές Εγγραφές"
+
+#: app/training.py
+msgid "New Course"
+msgstr "Νέο Πρόγραμμα"
+
+#: app/training.py
+msgid "Course"
+msgstr "Πρόγραμμα"
+
+#: app/training.py
+msgid "Edit Training Record"
+msgstr "Επεξεργασία Εκπαιδευτικής Εγγραφής"
+
+#: app/training.py
+msgid "Skill"
+msgstr "Δεξιότητα"
+
+#: app/training.py
+msgid "Expiry"
+msgstr "Λήξη"
+
+#: app/training.py
+msgid "Score"
+msgstr "Βαθμολογία"
+
+#: app/training.py
+msgid "Certificate"
+msgstr "Πιστοποιητικό"
 
 #: app/training.py
 msgid "Training & Competence"
@@ -5983,6 +6104,22 @@ msgstr "Το προφίλ ικανοτήτων δημιουργήθηκε."
 #: app/training.py
 msgid "Competence profile deleted."
 msgstr "Το προφίλ ικανοτήτων διαγράφηκε."
+
+#: app/training.py
+msgid "New Competence"
+msgstr "Νέα Ικανότητα"
+
+#: app/training.py
+msgid "Edit Competence"
+msgstr "Επεξεργασία Ικανότητας"
+
+#: app/training.py
+msgid "Add Competence"
+msgstr "Προσθήκη Ικανότητας"
+
+#: app/training.py
+msgid "Delete this competence?"
+msgstr "Διαγραφή αυτής της ικανότητας;"
 
 #: app/training.py
 msgid "Course Title"
@@ -6227,9 +6364,462 @@ msgstr "Δεν καταγράφηκαν προγράμματα."
 #: app/training.py
 msgid "All Training Records"
 msgstr "Όλες οι Εκπαιδευτικές Εγγραφές"
-msgstr "Παρακαλώ διορθώστε τα σφάλματα παρακάτω."
+
+#: app/business_continuity.py
+msgid "Business Impact Analysis"
+msgstr "Ανάλυση Επιπτώσεων στην Επιχείρηση"
+
+#: app/business_continuity.py
+msgid "Business Impact Analysis (BIA)"
+msgstr "Ανάλυση Επιπτώσεων στην Επιχείρηση (BIA)"
+
+#: app/business_continuity.py
+msgid "BIA Records"
+msgstr "Εγγραφές BIA"
+
+#: app/business_continuity.py
+msgid "Business Impact Analysis (BIA) Records"
+msgstr "Εγγραφές Ανάλυσης Επιπτώσεων στην Επιχείρηση (BIA)"
+
+#: app/business_continuity.py
+msgid "View BIA"
+msgstr "Προβολή BIA"
+
+#: app/business_continuity.py
+msgid "View Business Impact Analysis (BIA)"
+msgstr "Προβολή Ανάλυσης Επιπτώσεων στην Επιχείρηση (BIA)"
+
+#: app/business_continuity.py
+msgid "BIA records"
+msgstr "εγγραφές BIA"
+
+#: app/business_continuity.py
+msgid "Business Impact Analysis (BIA) records"
+msgstr "εγγραφές Ανάλυσης Επιπτώσεων στην Επιχείρηση (BIA)"
+
+#: app/business_continuity.py
+msgid "Tests Due"
+msgstr "Δοκιμές σε Εκκρεμότητα"
+
+#: app/business_continuity.py
+msgid "tests due"
+msgstr "δοκιμές σε εκκρεμότητα"
+
+#: app/business_continuity.py
+msgid "Open Actions"
+msgstr "Ανοικτές Ενέργειες"
+
+#: app/business_continuity.py
+msgid "View continuity"
+msgstr "Προβολή συνέχειας"
+
+#: app/business_continuity.py
+msgid "Business Continuity Lifecycle"
+msgstr "Κύκλος Ζωής Επιχειρησιακής Συνέχειας"
+
+#: app/business_continuity.py
+msgid "Review actions"
+msgstr "Ανασκόπηση ενεργειών"
+
+#: app/business_continuity.py
+msgid "View tests"
+msgstr "Προβολή δοκιμών"
+
+#: app/business_continuity.py
+msgid "New BIA"
+msgstr "Νέα BIA"
+
+#: app/business_continuity.py
+msgid "New Business Impact Analysis (BIA)"
+msgstr "Νέα Ανάλυση Επιπτώσεων στην Επιχείρηση (BIA)"
+
+#: app/business_continuity.py
+msgid "Edit Business Impact Analysis (BIA)"
+msgstr "Επεξεργασία Ανάλυσης Επιπτώσεων στην Επιχείρηση (BIA)"
+
+#: app/business_continuity.py
+msgid "Schedule DRP Test"
+msgstr "Προγραμματισμός Δοκιμής DRP"
+
+#: app/business_continuity.py
+msgid "Schedule Disaster Recovery Plan (DRP) Test"
+msgstr "Προγραμματισμός Δοκιμής Σχεδίου Ανάκαμψης από Καταστροφή (DRP)"
+
+#: app/business_continuity.py
+msgid "PDF Report"
+msgstr "Αναφορά PDF"
+
+#: app/business_continuity.py
+msgid "Recent Tests"
+msgstr "Πρόσφατες Δοκιμές"
+
+#: app/business_continuity.py
+msgid "DRP Tests"
+msgstr "Δοκιμές DRP"
+
+#: app/business_continuity.py
+msgid "Disaster Recovery Plan (DRP) Tests"
+msgstr "Δοκιμές Σχεδίου Ανάκαμψης από Καταστροφή (DRP)"
+
+#: app/business_continuity.py
+msgid "DRP Test"
+msgstr "Δοκιμή DRP"
+
+#: app/business_continuity.py
+msgid "Disaster Recovery Plan (DRP) Test"
+msgstr "Δοκιμή Σχεδίου Ανάκαμψης από Καταστροφή (DRP)"
+
+#: app/business_continuity.py
+msgid "New Disaster Recovery Plan (DRP) Test"
+msgstr "Νέα Δοκιμή Σχεδίου Ανάκαμψης από Καταστροφή (DRP)"
+
+#: app/business_continuity.py
+msgid "Edit Disaster Recovery Plan (DRP) Test"
+msgstr "Επεξεργασία Δοκιμής Σχεδίου Ανάκαμψης από Καταστροφή (DRP)"
+
+#: app/business_continuity.py
+msgid "No DRP tests recorded."
+msgstr "Δεν έχουν καταγραφεί δοκιμές DRP."
+
+#: app/business_continuity.py
+msgid "No Disaster Recovery Plan (DRP) tests recorded."
+msgstr "Δεν έχουν καταγραφεί δοκιμές Σχεδίου Ανάκαμψης από Καταστροφή (DRP)."
+
+#: app/business_continuity.py
+msgid "Process Name"
+msgstr "Όνομα Διαδικασίας"
+
+#: app/business_continuity.py
+msgid "Process Owner"
+msgstr "Υπεύθυνος Διαδικασίας"
+
+#: app/business_continuity.py
+msgid "Dependencies"
+msgstr "Εξαρτήσεις"
+
+#: app/business_continuity.py
+msgid "Financial Impact"
+msgstr "Οικονομική Επίπτωση"
+
+#: app/business_continuity.py
+msgid "Operational Impact"
+msgstr "Λειτουργική Επίπτωση"
+
+#: app/business_continuity.py
+msgid "Legal / Regulatory Impact"
+msgstr "Νομική / Κανονιστική Επίπτωση"
+
+#: app/business_continuity.py
+msgid "Reputation Impact"
+msgstr "Επίπτωση στη Φήμη"
+
+#: app/business_continuity.py
+msgid "MTPD"
+msgstr "MTPD"
+
+#: app/business_continuity.py
+msgid "MTPD (Maximum Tolerable Period of Disruption)"
+msgstr "MTPD (Μέγιστη Ανεκτή Περίοδος Διακοπής)"
+
+#: app/business_continuity.py
+msgid "RTO (Recovery Time Objective)"
+msgstr "RTO (Στόχος Χρόνου Ανάκαμψης)"
+
+#: app/business_continuity.py
+msgid "RPO (Recovery Point Objective)"
+msgstr "RPO (Στόχος Σημείου Ανάκαμψης)"
+
+#: app/business_continuity.py
+msgid "Minimum Resources"
+msgstr "Ελάχιστοι Πόροι"
+
+#: app/business_continuity.py
+msgid "Manual Workaround"
+msgstr "Χειροκίνητη Εναλλακτική Διαδικασία"
+
+#: app/business_continuity.py
+msgid "Linked BIA"
+msgstr "Συνδεδεμένη BIA"
+
+#: app/business_continuity.py
+msgid "Linked Business Impact Analysis (BIA)"
+msgstr "Συνδεδεμένη Ανάλυση Επιπτώσεων στην Επιχείρηση (BIA)"
+
+#: app/business_continuity.py
+msgid "Activation Criteria"
+msgstr "Κριτήρια Ενεργοποίησης"
+
+#: app/business_continuity.py
+msgid "Critical Processes"
+msgstr "Κρίσιμες Διαδικασίες"
+
+#: app/business_continuity.py
+msgid "Recovery Strategy"
+msgstr "Στρατηγική Ανάκαμψης"
+
+#: app/business_continuity.py
+msgid "Communication Plan"
+msgstr "Σχέδιο Επικοινωνίας"
+
+#: app/business_continuity.py
+msgid "Lifecycle Stage"
+msgstr "Στάδιο Κύκλου Ζωής"
+
+#: app/business_continuity.py
+msgid "Test Due"
+msgstr "Απαιτείται Δοκιμή"
+
+#: app/business_continuity.py
+msgid "Improvement"
+msgstr "Βελτίωση"
+
+#: app/business_continuity.py
+msgid "Test Title"
+msgstr "Τίτλος Δοκιμής"
+
+#: app/business_continuity.py
+msgid "Test Type"
+msgstr "Τύπος Δοκιμής"
+
+#: app/business_continuity.py
+msgid "All Test Types"
+msgstr "Όλοι οι Τύποι Δοκιμών"
+
+#: app/business_continuity.py
+msgid "Tabletop"
+msgstr "Άσκηση Επί Χάρτου"
+
+#: app/business_continuity.py
+msgid "Walkthrough"
+msgstr "Δοκιμαστική Διέλευση"
+
+#: app/business_continuity.py
+msgid "Technical Recovery"
+msgstr "Τεχνική Ανάκαμψη"
+
+#: app/business_continuity.py
+msgid "Full Interruption"
+msgstr "Πλήρης Διακοπή"
+
+#: app/business_continuity.py
+msgid "Scheduled Date"
+msgstr "Προγραμματισμένη Ημερομηνία"
+
+#: app/business_continuity.py
+msgid "Schedule"
+msgstr "Πρόγραμμα"
+
+#: app/business_continuity.py
+msgid "Schedule Test"
+msgstr "Προγραμματισμός Δοκιμής"
+
+msgid "Performed Date"
+msgstr "Ημερομηνία Εκτέλεσης"
+
+#: app/business_continuity.py
+msgid "Performed"
+msgstr "Εκτελέστηκε"
+
+#: app/business_continuity.py
+msgid "Facilitator"
+msgstr "Συντονιστής"
+
+#: app/business_continuity.py
+msgid "Participants"
+msgstr "Συμμετέχοντες"
+
+#: app/business_continuity.py
+msgid "Scenario"
+msgstr "Σενάριο"
+
+#: app/business_continuity.py
+msgid "Results"
+msgstr "Αποτελέσματα"
+
+#: app/business_continuity.py
+msgid "Issues Found"
+msgstr "Ευρήματα / Θέματα"
+
+#: app/business_continuity.py
+msgid "RTO Met"
+msgstr "Το RTO επιτεύχθηκε"
+
+#: app/business_continuity.py
+msgid "RTO (Recovery Time Objective) Met"
+msgstr "Το RTO (Στόχος Χρόνου Ανάκαμψης) επιτεύχθηκε"
+
+#: app/business_continuity.py
+msgid "RPO Met"
+msgstr "Το RPO επιτεύχθηκε"
+
+#: app/business_continuity.py
+msgid "RPO (Recovery Point Objective) Met"
+msgstr "Το RPO (Στόχος Σημείου Ανάκαμψης) επιτεύχθηκε"
+
+#: app/business_continuity.py
+msgid "Passed"
+msgstr "Επιτυχής"
+
+#: app/business_continuity.py
+msgid "Partially Passed"
+msgstr "Μερικώς Επιτυχής"
+
+#: app/business_continuity.py
+msgid "Failed"
+msgstr "Αποτυχημένη"
+
+#: app/business_continuity.py
+msgid "Evidence Reference"
+msgstr "Αναφορά Τεκμηρίωσης"
+
+#: app/business_continuity.py
+msgid "Related Test"
+msgstr "Σχετική Δοκιμή"
+
+#: app/business_continuity.py
+msgid "All Criticalities"
+msgstr "Όλες οι Κρισιμότητες"
+
+#: app/business_continuity.py
+msgid "All Stages"
+msgstr "Όλα τα Στάδια"
+
+#: app/business_continuity.py
+msgid "All Outcomes"
+msgstr "Όλα τα Αποτελέσματα"
+
+#: app/business_continuity.py
+msgid "Search processes..."
+msgstr "Αναζήτηση διαδικασιών..."
+
+#: app/business_continuity.py
+msgid "No Business Impact Analysis (BIA) records yet."
+msgstr "Δεν υπάρχουν ακόμη εγγραφές Ανάλυσης Επιπτώσεων στην Επιχείρηση (BIA)."
+
+#: app/business_continuity.py
+msgid "Process Details"
+msgstr "Στοιχεία Διαδικασίας"
+
+#: app/business_continuity.py
+msgid "Recovery Requirements"
+msgstr "Απαιτήσεις Ανάκαμψης"
+
+#: app/business_continuity.py
+msgid "Lifecycle Content"
+msgstr "Περιεχόμενο Κύκλου Ζωής"
+
+#: app/business_continuity.py
+msgid "Improvement Actions"
+msgstr "Ενέργειες Βελτίωσης"
+
+#: app/business_continuity.py
+msgid "Add Action"
+msgstr "Προσθήκη Ενέργειας"
+
+#: app/business_continuity.py
+msgid "Complete"
+msgstr "Ολοκλήρωση"
+
+#: app/business_continuity.py
+msgid "Due"
+msgstr "Προθεσμία"
+
+#: app/business_continuity.py
+msgid "Due Date"
+msgstr "Ημερομηνία Προθεσμίας"
+
+#: app/business_continuity.py
+msgid "No improvement actions yet."
+msgstr "Δεν υπάρχουν ακόμη ενέργειες βελτίωσης."
+
+#: app/business_continuity.py
+msgid "No tests recorded."
+msgstr "Δεν έχουν καταγραφεί δοκιμές."
+
+#: app/business_continuity.py
+msgid "New Test"
+msgstr "Νέα Δοκιμή"
+
+#: app/business_continuity.py
+msgid "Test"
+msgstr "Δοκιμή"
+
+#: app/business_continuity.py
+msgid "Test Details"
+msgstr "Στοιχεία Δοκιμής"
+
+#: app/business_continuity.py
+msgid "Execution"
+msgstr "Εκτέλεση"
+
+#: app/business_continuity.py
+msgid "Create Plan"
+msgstr "Δημιουργία Σχεδίου"
+
+#: app/business_continuity.py
+msgid "Plan"
+msgstr "Σχέδιο"
+
+#: app/business_continuity.py
+msgid "Plans"
+msgstr "Σχέδια"
+
+#: app/business_continuity.py
+msgid "Plan Title"
+msgstr "Τίτλος Σχεδίου"
+
+#: app/business_continuity.py
+msgid "Generated on"
+msgstr "Δημιουργήθηκε στις"
+
+#: app/business_continuity.py
+msgid "Business impact analysis created."
+msgstr "Η ανάλυση επιπτώσεων δημιουργήθηκε."
+
+#: app/business_continuity.py
+msgid "Business impact analysis updated."
+msgstr "Η ανάλυση επιπτώσεων ενημερώθηκε."
+
+#: app/business_continuity.py
+msgid "Business impact analysis deleted."
+msgstr "Η ανάλυση επιπτώσεων διαγράφηκε."
+
+#: app/business_continuity.py
+msgid "Business continuity plan created."
+msgstr "Το σχέδιο επιχειρησιακής συνέχειας δημιουργήθηκε."
+
+#: app/business_continuity.py
+msgid "Business continuity plan updated."
+msgstr "Το σχέδιο επιχειρησιακής συνέχειας ενημερώθηκε."
+
+#: app/business_continuity.py
+msgid "Business continuity plan deleted."
+msgstr "Το σχέδιο επιχειρησιακής συνέχειας διαγράφηκε."
+
+#: app/business_continuity.py
+msgid "Continuity test created."
+msgstr "Η δοκιμή συνέχειας δημιουργήθηκε."
+
+#: app/business_continuity.py
+msgid "Continuity test updated."
+msgstr "Η δοκιμή συνέχειας ενημερώθηκε."
+
+#: app/business_continuity.py
+msgid "Continuity test deleted."
+msgstr "Η δοκιμή συνέχειας διαγράφηκε."
+
+#: app/business_continuity.py
+msgid "Action item completed."
+msgstr "Η ενέργεια ολοκληρώθηκε."
+
+#: app/business_continuity.py
+msgid "Create a continuity plan before scheduling a test."
+msgstr "Δημιουργήστε σχέδιο συνέχειας πριν προγραμματίσετε δοκιμή."
+
+#: app/business_continuity.py
+msgid "Business Continuity Report"
+msgstr "Αναφορά Επιχειρησιακής Συνέχειας"
 
 
 #~ msgid "Reporting"
 #~ msgstr "Αναφορές"
-

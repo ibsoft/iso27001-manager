@@ -1,6 +1,6 @@
 {% extends "reports/pdf/base.html" %}
 {% block content %}
-<h1 style="font-size:20px; margin-bottom:5px;">{{ _('CAPA Requests') }}</h1>
+<h1 style="font-size:20px; margin-bottom:5px;">{{ _('Corrective and Preventive Action (CAPA) Requests') }}</h1>
 <p style="color:#64748b; margin-bottom:20px; font-size:11px;">
   {{ _('Generated on') }} {{ now().strftime('%Y-%m-%d %H:%M') }}
 </p>
@@ -27,7 +27,7 @@
       <td style="padding:4px 6px; border:1px solid #e2e8f0; text-align:right;">{{ capa.target_date.strftime('%Y-%m-%d') if capa.target_date else '' }}</td>
     </tr>
     {% else %}
-    <tr><td colspan="6" style="padding:12px; text-align:center; color:#94a3b8;">{{ _('No CAPA requests recorded.') }}</td></tr>
+    <tr><td colspan="6" style="padding:12px; text-align:center; color:#94a3b8;">{{ _('No Corrective and Preventive Action (CAPA) requests recorded.') }}</td></tr>
     {% endfor %}
   </tbody>
 </table>

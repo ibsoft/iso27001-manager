@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% set plan_type_labels = {
+  'business_continuity': _('Business Continuity'),
+  'disaster_recovery': _('Disaster Recovery'),
+  'crisis_management': _('Crisis Management'),
+  'combined': _('Combined')
+} %}
+{% set test_type_labels = {
+  'tabletop': _('Tabletop'),
+  'walkthrough': _('Walkthrough'),
+  'technical': _('Technical Recovery'),
+  'full_interruption': _('Full Interruption'),
+  'drp': _('Disaster Recovery Plan (DRP) Test')
+} %}
+{% set outcome_labels = {
+  'planned': _('Planned'),
+  'passed': _('Passed'),
+  'partial': _('Partially Passed'),
+  'failed': _('Failed'),
+  'cancelled': _('Cancelled')
+} %}
+{% block page_title %}{{ _('Continuity Plan') }}: {{ plan.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.dashboard') }}">{{ _('Business Continuity') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.list_plans') }}">{{ _('Continuity Plans') }}</a></li>
+<li class="breadcrumb-item active">{{ plan.title[:30] }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ plan.title }}</span>
+    <div>
+      <a href="{{ url_for('business_continuity.new_test') }}?plan_id={{ plan.id }}" class="btn btn-sm btn-outline-primary">{{ _('Schedule Test') }}</a>
+      <a href="{{ url_for('business_continuity.edit_plan', plan_id=plan.id) }}" class="btn btn-sm btn-primary">{{ _('Edit') }}</a>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <h6 class="text-muted">{{ _('Plan Details') }}</h6>
+        <table class="table table-borderless">
+          <tr><th>{{ _('Type') }}</th><td>{{ plan_type_labels.get(plan.plan_type, plan.plan_type) }}</td></tr>
+          <tr><th>{{ _('Lifecycle Stage') }}</th><td>{{ _(plan.lifecycle_stage.replace('_', ' ').title()) }}</td></tr>
+          <tr><th>{{ _('Linked Business Impact Analysis (BIA)') }}</th><td>{{ plan.bia.process_name if plan.bia else '-' }}</td></tr>
+          <tr><th>{{ _('Owner') }}</th><td>{{ plan.owner.first_name ~ ' ' ~ plan.owner.last_name if plan.owner else '-' }}</td></tr>
+          <tr><th>{{ _('Version') }}</th><td>v{{ plan.version }}</td></tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h6 class="text-muted">{{ _('Recovery Objectives') }}</h6>
+        <table class="table table-borderless">
+          <tr><th>{{ _('RTO (Recovery Time Objective)') }}</th><td>{{ plan.rto or '-' }}</td></tr>
+          <tr><th>{{ _('RPO (Recovery Point Objective)') }}</th><td>{{ plan.rpo or '-' }}</td></tr>
+          <tr><th>{{ _('Responsible Team') }}</th><td>{{ plan.responsible_team or '-' }}</td></tr>
+          <tr><th>{{ _('Review Date') }}</th><td>{{ plan.review_date.strftime('%Y-%m-%d') if plan.review_date else '-' }}</td></tr>
+          <tr><th>{{ _('Next Test Date') }}</th><td>{{ plan.next_test_date.strftime('%Y-%m-%d') if plan.next_test_date else '-' }}</td></tr>
+        </table>
+      </div>
+    </div>
+    <h6 class="text-muted mt-3">{{ _('Lifecycle Content') }}</h6>
+    <table class="table table-borderless">
+      <tr><th>{{ _('Scope') }}</th><td>{{ plan.scope or '-' }}</td></tr>
+      <tr><th>{{ _('Objectives') }}</th><td>{{ plan.objectives or '-' }}</td></tr>
+      <tr><th>{{ _('Activation Criteria') }}</th><td>{{ plan.activation_criteria or '-' }}</td></tr>
+      <tr><th>{{ _('Critical Processes') }}</th><td>{{ plan.critical_processes or '-' }}</td></tr>
+      <tr><th>{{ _('Recovery Strategy') }}</th><td>{{ plan.recovery_strategy or '-' }}</td></tr>
+      <tr><th>{{ _('Communication Plan') }}</th><td>{{ plan.communication_plan or '-' }}</td></tr>
+      <tr><th>{{ _('Notes') }}</th><td>{{ plan.notes or '-' }}</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Disaster Recovery Plan (DRP) Tests') }}</div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Type') }}</th><th>{{ _('Outcome') }}</th><th>{{ _('Date') }}</th></tr></thead>
+          <tbody>
+            {% for test in tests %}
+            <tr>
+              <td><a href="{{ url_for('business_continuity.view_test', test_id=test.id) }}">{{ test.title }}</a></td>
+              <td>{{ test_type_labels.get(test.test_type, test.test_type) }}</td>
+              <td>{{ outcome_labels.get(test.outcome, test.outcome) }}</td>
+              <td>{{ test.performed_date.strftime('%Y-%m-%d') if test.performed_date else test.scheduled_date.strftime('%Y-%m-%d') if test.scheduled_date else '-' }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center text-muted">{{ _('No tests recorded.') }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Improvement Actions') }}</div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('business_continuity.new_action', plan_id=plan.id) }}" class="mb-3">
+          {{ action_form.hidden_tag() }}
+          <div class="mb-2">{{ action_form.description(class="form-control", rows=2, placeholder=_('Action Description')) }}</div>
+          <div class="row g-2">
+            <div class="col-md-4">{{ action_form.owner_id(class="form-select") }}</div>
+            <div class="col-md-4">{{ action_form.test_id(class="form-select") }}</div>
+            <div class="col-md-4">{{ action_form.due_date(class="form-control", type="date") }}</div>
+          </div>
+          <button class="btn btn-sm btn-primary mt-2">{{ _('Add Action') }}</button>
+        </form>
+        <table class="table table-sm">
+          <thead><tr><th>{{ _('Action') }}</th><th>{{ _('Owner') }}</th><th>{{ _('Due') }}</th><th>{{ _('Status') }}</th><th></th></tr></thead>
+          <tbody>
+            {% for action in actions %}
+            <tr>
+              <td>{{ action.description }}</td>
+              <td>{{ action.owner.first_name ~ ' ' ~ action.owner.last_name if action.owner else '-' }}</td>
+              <td>{{ action.due_date.strftime('%Y-%m-%d') if action.due_date else '-' }}</td>
+              <td>{{ _(action.status.replace('_', ' ').title()) }}</td>
+              <td class="text-end">
+                {% if action.status not in ['completed', 'closed'] %}
+                <form method="POST" action="{{ url_for('business_continuity.complete_action', plan_id=plan.id, action_id=action.id) }}" class="d-inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="btn btn-sm btn-outline-success">{{ _('Complete') }}</button>
+                </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-center text-muted">{{ _('No improvement actions yet.') }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

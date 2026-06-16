@@ -47,6 +47,7 @@
       <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='incidents') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Incidents') }}</a></div>
       <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='assets') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Assets') }}</a></div>
       <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='soa') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('SoA') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='business_continuity') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Business Continuity') }}</a></div>
     </div>
   </div>
 </div>
@@ -69,8 +70,9 @@
       <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_gdpr') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('GDPR Compliance') }}</a></div>
       <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_assignments') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Assignments') }}</a></div>
       <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_training') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Training') }}</a></div>
-      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_capas') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('CAPA') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_capas') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Corrective and Preventive Action (CAPA)') }}</a></div>
       <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_management_reviews') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Mgmt Reviews') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_business_continuity') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Business Continuity') }}</a></div>
     </div>
   </div>
 </div>

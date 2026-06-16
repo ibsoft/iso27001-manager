@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% set plan_type_labels = {
+  'business_continuity': _('Business Continuity'),
+  'disaster_recovery': _('Disaster Recovery'),
+  'crisis_management': _('Crisis Management'),
+  'combined': _('Combined')
+} %}
+{% block page_title %}{{ _('Continuity Plans') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.dashboard') }}">{{ _('Business Continuity') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Continuity Plans') }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-3">
+        <select name="lifecycle_stage" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Stages') }}</option>
+          {% for stage in ['draft', 'review', 'approved', 'active', 'test_due', 'improvement', 'retired'] %}
+          <option value="{{ stage }}" {{ 'selected' if request.args.get('lifecycle_stage') == stage }}>{{ _(stage.replace('_', ' ').title()) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="plan_type" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Types') }}</option>
+          {% for t in ['business_continuity', 'disaster_recovery', 'crisis_management', 'combined'] %}
+          <option value="{{ t }}" {{ 'selected' if request.args.get('plan_type') == t }}>{{ plan_type_labels.get(t, t) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4"><input name="search" class="form-control" placeholder="{{ _('Search plans...') }}" value="{{ request.args.get('search', '') }}"></div>
+      <div class="col-md-1"><button class="btn btn-outline-secondary w-100">{{ _('Filter') }}</button></div>
+      <div class="col-md-1"><a href="{{ url_for('business_continuity.new_plan') }}" class="btn btn-primary w-100"><i class="fas fa-plus"></i></a></div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Type') }}</th><th>{{ _('Owner') }}</th><th>{{ _('RTO (Recovery Time Objective)') }}</th><th>{{ _('RPO (Recovery Point Objective)') }}</th><th>{{ _('Next Test') }}</th><th>{{ _('Lifecycle Stage') }}</th><th>{{ _('Actions') }}</th></tr></thead>
+        <tbody>
+          {% for plan in plans.items %}
+          <tr>
+            <td><a href="{{ url_for('business_continuity.view_plan', plan_id=plan.id) }}">{{ plan.title }}</a></td>
+            <td>{{ plan_type_labels.get(plan.plan_type, plan.plan_type) }}</td>
+            <td>{{ plan.owner.first_name ~ ' ' ~ plan.owner.last_name if plan.owner else '-' }}</td>
+            <td>{{ plan.rto or '-' }}</td>
+            <td>{{ plan.rpo or '-' }}</td>
+            <td>{% if plan.next_test_date %}{{ plan.next_test_date.strftime('%Y-%m-%d') }}{% if plan.next_test_date < now().date() %} <span class="badge bg-danger">{{ _('Overdue') }}</span>{% endif %}{% else %}-{% endif %}</td>
+            <td><span class="badge bg-{{ 'success' if plan.lifecycle_stage == 'active' else 'primary' if plan.lifecycle_stage in ['approved', 'review'] else 'warning' if plan.lifecycle_stage in ['test_due', 'improvement'] else 'secondary' }}">{{ _(plan.lifecycle_stage.replace('_', ' ').title()) }}</span></td>
+            <td><a href="{{ url_for('business_continuity.edit_plan', plan_id=plan.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="text-center text-muted py-3">{{ _('No continuity plans yet.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ render_pagination(plans, 'business_continuity.list_plans', kwargs=request.args) }}
+{% endblock %}

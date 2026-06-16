@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% set test_type_labels = {
+  'tabletop': _('Tabletop'),
+  'walkthrough': _('Walkthrough'),
+  'technical': _('Technical Recovery'),
+  'full_interruption': _('Full Interruption'),
+  'drp': _('Disaster Recovery Plan (DRP) Test')
+} %}
+{% set outcome_labels = {
+  'planned': _('Planned'),
+  'passed': _('Passed'),
+  'partial': _('Partially Passed'),
+  'failed': _('Failed'),
+  'cancelled': _('Cancelled')
+} %}
+{% block page_title %}{{ _('Business Continuity') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Business Continuity') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-primary">
+      <div class="inner"><div class="stat-value">{{ total_bia }}</div><div class="stat-label">{{ _('Business Impact Analysis (BIA) Records') }}</div></div>
+      <div class="icon"><i class="fas fa-sitemap"></i></div>
+      <a href="{{ url_for('business_continuity.list_bia') }}" class="small-box-footer">{{ _('View Business Impact Analysis (BIA)') }}</a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-success">
+      <div class="inner"><div class="stat-value">{{ active_plans }}/{{ total_plans }}</div><div class="stat-label">{{ _('Active Plans') }}</div></div>
+      <div class="icon"><i class="fas fa-life-ring"></i></div>
+      <a href="{{ url_for('business_continuity.list_plans') }}" class="small-box-footer">{{ _('View plans') }}</a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-warning">
+      <div class="inner"><div class="stat-value">{{ due_tests }}</div><div class="stat-label">{{ _('Tests Due') }}</div></div>
+      <div class="icon"><i class="fas fa-vial"></i></div>
+      <a href="{{ url_for('business_continuity.list_tests') }}" class="small-box-footer">{{ _('View tests') }}</a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="small-box bg-danger">
+      <div class="inner"><div class="stat-value">{{ open_actions }}</div><div class="stat-label">{{ _('Open Actions') }}</div></div>
+      <div class="icon"><i class="fas fa-tasks"></i></div>
+      <a href="{{ url_for('business_continuity.list_plans') }}" class="small-box-footer">{{ _('Review actions') }}</a>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header">{{ _('Business Continuity Lifecycle') }}</div>
+  <div class="card-body">
+    <div class="row g-2">
+      <div class="col-md-3"><a href="{{ url_for('business_continuity.new_bia') }}" class="btn btn-outline-primary w-100"><i class="fas fa-plus me-1"></i>{{ _('New Business Impact Analysis (BIA)') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('business_continuity.new_plan') }}" class="btn btn-outline-primary w-100"><i class="fas fa-plus me-1"></i>{{ _('New Plan') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('business_continuity.new_test') }}" class="btn btn-outline-primary w-100"><i class="fas fa-plus me-1"></i>{{ _('Schedule Disaster Recovery Plan (DRP) Test') }}</a></div>
+      <div class="col-md-3"><a href="{{ url_for('reports.export_pdf_business_continuity') }}" class="btn btn-outline-danger w-100"><i class="fas fa-file-pdf me-1"></i>{{ _('PDF Report') }}</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">{{ _('Recent Tests') }}</div>
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>{{ _('Test') }}</th><th>{{ _('Plan') }}</th><th>{{ _('Type') }}</th><th>{{ _('Outcome') }}</th><th>{{ _('Performed') }}</th></tr></thead>
+        <tbody>
+          {% for test in recent_tests %}
+          <tr>
+            <td><a href="{{ url_for('business_continuity.view_test', test_id=test.id) }}">{{ test.title }}</a></td>
+            <td>{{ test.plan.title if test.plan else '-' }}</td>
+            <td>{{ test_type_labels.get(test.test_type, test.test_type) }}</td>
+            <td><span class="badge bg-{{ 'success' if test.outcome == 'passed' else 'warning' if test.outcome == 'partial' else 'danger' if test.outcome == 'failed' else 'secondary' }}">{{ outcome_labels.get(test.outcome, test.outcome) }}</span></td>
+            <td>{{ test.performed_date.strftime('%Y-%m-%d') if test.performed_date else '-' }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5" class="text-center text-muted py-3">{{ _('No Disaster Recovery Plan (DRP) tests recorded.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

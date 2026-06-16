@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('Business Impact Analysis (BIA)') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.dashboard') }}">{{ _('Business Continuity') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Business Impact Analysis (BIA) Records') }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-3">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Statuses') }}</option>
+          {% for status in ['draft', 'reviewed', 'approved', 'archived'] %}
+          <option value="{{ status }}" {{ 'selected' if request.args.get('status') == status }}>{{ _(status.replace('_', ' ').title()) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="criticality" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Criticalities') }}</option>
+          {% for c in ['low', 'medium', 'high', 'critical'] %}
+          <option value="{{ c }}" {{ 'selected' if request.args.get('criticality') == c }}>{{ _(c.title()) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4"><input name="search" class="form-control" placeholder="{{ _('Search processes...') }}" value="{{ request.args.get('search', '') }}"></div>
+      <div class="col-md-1"><button class="btn btn-outline-secondary w-100">{{ _('Filter') }}</button></div>
+      <div class="col-md-1"><a href="{{ url_for('business_continuity.new_bia') }}" class="btn btn-primary w-100"><i class="fas fa-plus"></i></a></div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>{{ _('Process') }}</th><th>{{ _('Owner') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('RTO (Recovery Time Objective)') }}</th><th>{{ _('RPO (Recovery Point Objective)') }}</th><th>{{ _('Review') }}</th><th>{{ _('Status') }}</th><th>{{ _('Actions') }}</th></tr></thead>
+        <tbody>
+          {% for record in records.items %}
+          <tr>
+            <td><a href="{{ url_for('business_continuity.view_bia', bia_id=record.id) }}">{{ record.process_name }}</a></td>
+            <td>{{ record.process_owner.first_name ~ ' ' ~ record.process_owner.last_name if record.process_owner else '-' }}</td>
+            <td><span class="badge bg-{{ 'danger' if record.criticality == 'critical' else 'warning' if record.criticality == 'high' else 'info' if record.criticality == 'medium' else 'secondary' }}">{{ _(record.criticality.title()) }}</span></td>
+            <td>{{ record.rto or '-' }}</td>
+            <td>{{ record.rpo or '-' }}</td>
+            <td>{{ record.next_review_date.strftime('%Y-%m-%d') if record.next_review_date else '-' }}</td>
+            <td>{{ _(record.status.replace('_', ' ').title()) }}</td>
+            <td>
+              <a href="{{ url_for('business_continuity.edit_bia', bia_id=record.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="text-center text-muted py-3">{{ _('No Business Impact Analysis (BIA) records yet.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ render_pagination(records, 'business_continuity.list_bia', kwargs=request.args) }}
+{% endblock %}

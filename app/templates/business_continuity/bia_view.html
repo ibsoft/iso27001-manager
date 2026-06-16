@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Business Impact Analysis (BIA)') }}: {{ record.process_name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.dashboard') }}">{{ _('Business Continuity') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.list_bia') }}">{{ _('Business Impact Analysis (BIA) Records') }}</a></li>
+<li class="breadcrumb-item active">{{ record.process_name[:30] }}</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ record.process_name }}</span>
+    <div>
+      <a href="{{ url_for('business_continuity.new_plan') }}?bia_id={{ record.id }}" class="btn btn-sm btn-outline-primary">{{ _('Create Plan') }}</a>
+      <a href="{{ url_for('business_continuity.edit_bia', bia_id=record.id) }}" class="btn btn-sm btn-primary">{{ _('Edit') }}</a>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <h6 class="text-muted">{{ _('Process Details') }}</h6>
+        <table class="table table-borderless">
+          <tr><th>{{ _('Owner') }}</th><td>{{ record.process_owner.first_name ~ ' ' ~ record.process_owner.last_name if record.process_owner else '-' }}</td></tr>
+          <tr><th>{{ _('Department') }}</th><td>{{ record.department or '-' }}</td></tr>
+          <tr><th>{{ _('Criticality') }}</th><td>{{ _(record.criticality.title()) }}</td></tr>
+          <tr><th>{{ _('Status') }}</th><td>{{ _(record.status.replace('_', ' ').title()) }}</td></tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h6 class="text-muted">{{ _('Recovery Objectives') }}</h6>
+        <table class="table table-borderless">
+          <tr><th>{{ _('MTPD (Maximum Tolerable Period of Disruption)') }}</th><td>{{ record.mtpd or '-' }}</td></tr>
+          <tr><th>{{ _('RTO (Recovery Time Objective)') }}</th><td>{{ record.rto or '-' }}</td></tr>
+          <tr><th>{{ _('RPO (Recovery Point Objective)') }}</th><td>{{ record.rpo or '-' }}</td></tr>
+          <tr><th>{{ _('Next Review Date') }}</th><td>{{ record.next_review_date.strftime('%Y-%m-%d') if record.next_review_date else '-' }}</td></tr>
+        </table>
+      </div>
+    </div>
+    <h6 class="text-muted mt-3">{{ _('Impact Assessment') }}</h6>
+    <table class="table table-borderless">
+      <tr><th>{{ _('Description') }}</th><td>{{ record.description or '-' }}</td></tr>
+      <tr><th>{{ _('Dependencies') }}</th><td>{{ record.dependencies or '-' }}</td></tr>
+      <tr><th>{{ _('Financial Impact') }}</th><td>{{ record.impact_financial or '-' }}</td></tr>
+      <tr><th>{{ _('Operational Impact') }}</th><td>{{ record.impact_operational or '-' }}</td></tr>
+      <tr><th>{{ _('Legal / Regulatory Impact') }}</th><td>{{ record.impact_legal or '-' }}</td></tr>
+      <tr><th>{{ _('Reputation Impact') }}</th><td>{{ record.impact_reputation or '-' }}</td></tr>
+      <tr><th>{{ _('Minimum Resources') }}</th><td>{{ record.minimum_resources or '-' }}</td></tr>
+      <tr><th>{{ _('Manual Workaround') }}</th><td>{{ record.workaround or '-' }}</td></tr>
+      <tr><th>{{ _('Notes') }}</th><td>{{ record.notes or '-' }}</td></tr>
+    </table>
+  </div>
+</div>
+{% endblock %}
