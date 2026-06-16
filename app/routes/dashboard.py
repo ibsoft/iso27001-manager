@@ -19,6 +19,9 @@ from app.models.nis2 import (
 )
 from app.models.management_review import ManagementReview
 from app.models.capa import CapaRequest
+from app.models.business_continuity import (
+    BusinessImpactAnalysis, BusinessContinuityPlan, BusinessContinuityAction
+)
 from datetime import datetime, date
 from sqlalchemy import func
 
@@ -86,6 +89,19 @@ def index():
         CapaRequest.status.in_(["open", "under_review", "action_planned", "in_progress"])
     ).count()
 
+    # Business Continuity
+    total_bia_records = BusinessImpactAnalysis.query.count()
+    total_bc_plans = BusinessContinuityPlan.query.count()
+    active_bc_plans = BusinessContinuityPlan.query.filter_by(lifecycle_stage="active").count()
+    bc_tests_due = BusinessContinuityPlan.query.filter(
+        BusinessContinuityPlan.next_test_date.isnot(None),
+        BusinessContinuityPlan.next_test_date <= date.today(),
+        BusinessContinuityPlan.lifecycle_stage.notin_(["retired"]),
+    ).count()
+    open_bc_actions = BusinessContinuityAction.query.filter(
+        BusinessContinuityAction.status.in_(["open", "in_progress"])
+    ).count()
+
     # GDPR
     total_activities = ProcessingActivity.query.count()
     active_activities = ProcessingActivity.query.filter_by(status="active").count()
@@ -151,6 +167,11 @@ def index():
         "open_review_actions": open_review_actions,
         "open_capas": open_capas,
         "critical_capas": critical_capas,
+        "total_bia_records": total_bia_records,
+        "total_bc_plans": total_bc_plans,
+        "active_bc_plans": active_bc_plans,
+        "bc_tests_due": bc_tests_due,
+        "open_bc_actions": open_bc_actions,
         "total_courses": total_courses,
         "upcoming_sessions": upcoming_sessions,
         "completed_training": completed_training,

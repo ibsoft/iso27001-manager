@@ -141,6 +141,7 @@ def create_app(config_name=None):
     from app.routes.management_review import mgmt_review_bp
     from app.routes.capa import capa_bp
     from app.routes.training import training_bp
+    from app.routes.business_continuity import business_continuity_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/")
@@ -161,6 +162,7 @@ def create_app(config_name=None):
     app.register_blueprint(mgmt_review_bp, url_prefix="/management-review")
     app.register_blueprint(capa_bp, url_prefix="/capa")
     app.register_blueprint(training_bp, url_prefix="/training")
+    app.register_blueprint(business_continuity_bp, url_prefix="/business-continuity")
 
     @app.route("/health")
     def health():

@@ -56,7 +56,7 @@ def new_capa():
         _log_audit(f"Created CAPA: {capa.title}")
         flash(_("CAPA request created successfully."), "success")
         return redirect(url_for("capa.view_capa", capa_id=capa.id))
-    return render_template("capa/form.html", form=form, title=_("New CAPA Request"))
+    return render_template("capa/form.html", form=form, title=_("New Corrective and Preventive Action (CAPA) Request"))
 
 
 @capa_bp.route("/<int:capa_id>")
@@ -93,7 +93,7 @@ def edit_capa(capa_id):
         val = getattr(capa, fld, None)
         if val is None:
             getattr(form, fld).data = 0
-    return render_template("capa/form.html", form=form, title=_("Edit CAPA Request"), capa=capa)
+    return render_template("capa/form.html", form=form, title=_("Edit Corrective and Preventive Action (CAPA) Request"), capa=capa)
 
 
 @capa_bp.route("/<int:capa_id>/delete", methods=["POST"])

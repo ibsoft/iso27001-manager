@@ -50,6 +50,10 @@
         "management_review_create",
         "management_review_edit",
         "management_review_delete",
+        "business_continuity_view",
+        "business_continuity_create",
+        "business_continuity_edit",
+        "business_continuity_delete",
         "capa_view",
         "capa_create",
         "capa_edit",
@@ -91,6 +95,9 @@
         "management_review_view",
         "management_review_create",
         "management_review_edit",
+        "business_continuity_view",
+        "business_continuity_create",
+        "business_continuity_edit",
         "capa_view",
         "capa_create",
         "capa_edit",
@@ -113,6 +120,7 @@
         "soa_view",
         "report_view",
         "management_review_view",
+        "business_continuity_view",
         "capa_view",
         "training_view"
       ]
@@ -129,6 +137,7 @@
         "policy_view",
         "report_view",
         "management_review_view",
+        "business_continuity_view",
         "capa_view",
         "training_view"
       ]

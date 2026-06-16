@@ -6,33 +6,33 @@
 
 {% block content %}
 <div class="row justify-content-center">
-  <div class="col-lg-6">
+  <div class="col-lg-12">
     <div class="card">
       <div class="card-header"><h5 class="mb-0"><i class="fas fa-{{ 'plus' if 'New' in title else 'edit' }} me-2"></i>{{ title }}</h5></div>
       <div class="card-body">
         <form method="POST">
           {{ form.hidden_tag() }}
-          <div class="mb-3">
-            {{ form.user_id.label(class="form-label") }}
-            {{ form.user_id(class="form-select" + (" is-invalid" if form.user_id.errors else "")) }}
-            {% for e in form.user_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
-          </div>
-          <div class="mb-3">
-            {{ form.skill_name.label(class="form-label") }}
-            {{ form.skill_name(class="form-control" + (" is-invalid" if form.skill_name.errors else "")) }}
-            {% for e in form.skill_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
-          </div>
-          <div class="mb-3">
-            {{ form.category.label(class="form-label") }}
-            {{ form.category(class="form-select" + (" is-invalid" if form.category.errors else "")) }}
-            {% for e in form.category.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
-          </div>
-          <div class="mb-3">
-            {{ form.skill_level.label(class="form-label") }}
-            {{ form.skill_level(class="form-select" + (" is-invalid" if form.skill_level.errors else "")) }}
-            {% for e in form.skill_level.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
-          </div>
-          <div class="row">
+          <div class="row g-3">
+            <div class="col-md-6">
+              {{ form.user_id.label(class="form-label") }}
+              {{ form.user_id(class="form-select" + (" is-invalid" if form.user_id.errors else "")) }}
+              {% for e in form.user_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-6">
+              {{ form.skill_name.label(class="form-label") }}
+              {{ form.skill_name(class="form-control" + (" is-invalid" if form.skill_name.errors else "")) }}
+              {% for e in form.skill_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-6">
+              {{ form.category.label(class="form-label") }}
+              {{ form.category(class="form-select" + (" is-invalid" if form.category.errors else "")) }}
+              {% for e in form.category.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="col-md-6">
+              {{ form.skill_level.label(class="form-label") }}
+              {{ form.skill_level(class="form-select" + (" is-invalid" if form.skill_level.errors else "")) }}
+              {% for e in form.skill_level.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
             <div class="col-md-6 mb-3">
               {{ form.last_assessment_date.label(class="form-label") }}
               {{ form.last_assessment_date(class="form-control" + (" is-invalid" if form.last_assessment_date.errors else ""), type="date") }}
@@ -43,8 +43,13 @@
               {{ form.expiry_date(class="form-control" + (" is-invalid" if form.expiry_date.errors else ""), type="date") }}
               {% for e in form.expiry_date.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
             </div>
+            <div class="col-12">
+              {{ form.notes.label(class="form-label") }}
+              {{ form.notes(class="form-control" + (" is-invalid" if form.notes.errors else ""), rows=4) }}
+              {% for e in form.notes.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
           </div>
-          <div class="d-flex gap-2">
+          <div class="d-flex gap-2 mt-4">
             <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
             <a href="{{ url_for('training.competence_matrix') }}" class="btn btn-outline-secondary">{{ _('Cancel') }}</a>
           </div>

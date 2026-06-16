@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% set test_type_labels = {
+  'tabletop': _('Tabletop'),
+  'walkthrough': _('Walkthrough'),
+  'technical': _('Technical Recovery'),
+  'full_interruption': _('Full Interruption'),
+  'drp': _('Disaster Recovery Plan (DRP) Test')
+} %}
+{% set outcome_labels = {
+  'planned': _('Planned'),
+  'passed': _('Passed'),
+  'partial': _('Partially Passed'),
+  'failed': _('Failed'),
+  'cancelled': _('Cancelled')
+} %}
+{% block page_title %}{{ _('Disaster Recovery Plan (DRP) Tests') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.dashboard') }}">{{ _('Business Continuity') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Disaster Recovery Plan (DRP) Tests') }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-3">
+        <select name="outcome" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Outcomes') }}</option>
+          {% for outcome in ['planned', 'passed', 'partial', 'failed', 'cancelled'] %}
+          <option value="{{ outcome }}" {{ 'selected' if request.args.get('outcome') == outcome }}>{{ outcome_labels.get(outcome, outcome) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="test_type" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Test Types') }}</option>
+          {% for t in ['tabletop', 'walkthrough', 'technical', 'full_interruption', 'drp'] %}
+          <option value="{{ t }}" {{ 'selected' if request.args.get('test_type') == t }}>{{ test_type_labels.get(t, t) }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2"><button class="btn btn-outline-secondary w-100">{{ _('Filter') }}</button></div>
+      <div class="col-md-2"><a href="{{ url_for('reports.export_pdf_business_continuity') }}" class="btn btn-outline-danger w-100"><i class="fas fa-file-pdf me-1"></i>PDF</a></div>
+      <div class="col-md-2"><a href="{{ url_for('business_continuity.new_test') }}" class="btn btn-primary w-100"><i class="fas fa-plus me-1"></i>{{ _('New Test') }}</a></div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Plan') }}</th><th>{{ _('Type') }}</th><th>{{ _('Scheduled') }}</th><th>{{ _('Performed') }}</th><th>{{ _('RTO (Recovery Time Objective)') }}</th><th>{{ _('RPO (Recovery Point Objective)') }}</th><th>{{ _('Outcome') }}</th><th>{{ _('Actions') }}</th></tr></thead>
+        <tbody>
+          {% for test in tests.items %}
+          <tr>
+            <td><a href="{{ url_for('business_continuity.view_test', test_id=test.id) }}">{{ test.title }}</a></td>
+            <td>{{ test.plan.title if test.plan else '-' }}</td>
+            <td>{{ test_type_labels.get(test.test_type, test.test_type) }}</td>
+            <td>{{ test.scheduled_date.strftime('%Y-%m-%d') if test.scheduled_date else '-' }}</td>
+            <td>{{ test.performed_date.strftime('%Y-%m-%d') if test.performed_date else '-' }}</td>
+            <td>{{ _('Yes') if test.rto_met else _('No') }}</td>
+            <td>{{ _('Yes') if test.rpo_met else _('No') }}</td>
+            <td><span class="badge bg-{{ 'success' if test.outcome == 'passed' else 'warning' if test.outcome == 'partial' else 'danger' if test.outcome == 'failed' else 'secondary' }}">{{ outcome_labels.get(test.outcome, test.outcome) }}</span></td>
+            <td><a href="{{ url_for('business_continuity.edit_test', test_id=test.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="9" class="text-center text-muted py-3">{{ _('No Disaster Recovery Plan (DRP) tests recorded.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ render_pagination(tests, 'business_continuity.list_tests', kwargs=request.args) }}
+{% endblock %}

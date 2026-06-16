@@ -19,6 +19,7 @@ from app.models.asset_assignment import AssetAssignment
 from app.models.management_review import ManagementReview
 from app.models.capa import CapaRequest
 from app.models.training import TrainingCourse, TrainingSession, TrainingRecord
+from app.models.business_continuity import BusinessImpactAnalysis, BusinessContinuityPlan, BusinessContinuityTest, BusinessContinuityAction
 from app.models.nis2 import Nis2EntityRegistration, Nis2IncidentNotification, Nis2SupplyChainAssessment, Nis2ContinuityPlan, Nis2ComplianceCheck
 from app.models.processing import ProcessingActivity
 from app.models.dpia import Dpia
@@ -128,6 +129,10 @@ def export_csv(resource):
             writer.writerow([e.control.code + " - " + e.control.title,
                            _("Yes") if e.applicable else _("No"),
                            e.implementation_status, e.justification])
+    elif resource == "business_continuity":
+        writer.writerow([_("Plan"), _("Type"), _("Lifecycle Stage"), _("RTO"), _("RPO"), _("Next Test")])
+        for p in BusinessContinuityPlan.query.order_by(BusinessContinuityPlan.title).all():
+            writer.writerow([p.title, p.plan_type, p.lifecycle_stage, p.rto, p.rpo, p.next_test_date])
     else:
         return _("Unknown resource"), 404
 
@@ -372,7 +377,7 @@ def export_pdf_capas():
     capas = query.order_by(CapaRequest.created_at.desc()).all()
     pdf = render_pdf("reports/pdf/capas.html",
                       capas=capas, now=now,
-                      title=_("CAPA Report"),
+                      title=_("Corrective and Preventive Action (CAPA) Report"),
                       filename="capa_report")
     if pdf is None:
         return _("PDF generation failed"), 500
@@ -406,6 +411,30 @@ def export_pdf_management_reviews():
                       reviews=reviews, now=now,
                       title=_("Management Review Report"),
                       filename="management_reviews_report")
+    if pdf is None:
+        return _("PDF generation failed"), 500
+    return pdf
+
+
+@reports_bp.route("/export/pdf/business-continuity")
+@login_required
+@permission_required("report_export")
+def export_pdf_business_continuity():
+    bia_records = BusinessImpactAnalysis.query.order_by(BusinessImpactAnalysis.criticality.desc()).all()
+    plans = BusinessContinuityPlan.query.order_by(BusinessContinuityPlan.lifecycle_stage, BusinessContinuityPlan.title).all()
+    tests = BusinessContinuityTest.query.order_by(BusinessContinuityTest.scheduled_date.desc()).all()
+    actions = BusinessContinuityAction.query.order_by(BusinessContinuityAction.due_date).all()
+    stats = {
+        "bia": len(bia_records),
+        "plans": len(plans),
+        "active": sum(1 for p in plans if p.lifecycle_stage == "active"),
+        "open_actions": sum(1 for a in actions if a.status in ("open", "in_progress")),
+    }
+    pdf = render_pdf("reports/pdf/business_continuity.html",
+                      bia_records=bia_records, plans=plans, tests=tests,
+                      actions=actions, stats=stats, now=now,
+                      title=_("Business Continuity Report"),
+                      filename="business_continuity_report")
     if pdf is None:
         return _("PDF generation failed"), 500
     return pdf

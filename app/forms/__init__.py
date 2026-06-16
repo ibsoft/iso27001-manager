@@ -847,6 +847,122 @@ class ReviewActionItemForm(BaseForm):
     submit = SubmitField(_l("Save"))
 
 
+class BusinessImpactAnalysisForm(BaseForm):
+    process_name = StringField(_l("Process Name"), validators=[DataRequired(), Length(max=256)])
+    process_owner_id = SelectField(_l("Process Owner"), coerce=int, validators=[Optional()])
+    department = StringField(_l("Department"), validators=[Optional(), Length(max=128)])
+    description = TextAreaField(_l("Description"), validators=[Optional()])
+    dependencies = TextAreaField(_l("Dependencies"), validators=[Optional()])
+    criticality = SelectField(
+        _l("Criticality"),
+        choices=[("low", _l("Low")), ("medium", _l("Medium")),
+                 ("high", _l("High")), ("critical", _l("Critical"))],
+        default="medium",
+    )
+    impact_financial = TextAreaField(_l("Financial Impact"), validators=[Optional()])
+    impact_operational = TextAreaField(_l("Operational Impact"), validators=[Optional()])
+    impact_legal = TextAreaField(_l("Legal / Regulatory Impact"), validators=[Optional()])
+    impact_reputation = TextAreaField(_l("Reputation Impact"), validators=[Optional()])
+    mtpd = StringField(_l("MTPD (Maximum Tolerable Period of Disruption)"), validators=[Optional(), Length(max=32)])
+    rto = StringField(_l("RTO (Recovery Time Objective)"), validators=[Optional(), Length(max=32)])
+    rpo = StringField(_l("RPO (Recovery Point Objective)"), validators=[Optional(), Length(max=32)])
+    minimum_resources = TextAreaField(_l("Minimum Resources"), validators=[Optional()])
+    workaround = TextAreaField(_l("Manual Workaround"), validators=[Optional()])
+    assessment_date = DateField(_l("Assessment Date"), validators=[DataRequired()])
+    next_review_date = DateField(_l("Next Review Date"), validators=[Optional()])
+    status = SelectField(
+        _l("Status"),
+        choices=[("draft", _l("Draft")), ("reviewed", _l("Reviewed")),
+                 ("approved", _l("Approved")), ("archived", _l("Archived"))],
+        default="draft",
+    )
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class BusinessContinuityPlanForm(BaseForm):
+    bia_id = SelectField(_l("Linked Business Impact Analysis (BIA)"), coerce=int, validators=[Optional()])
+    title = StringField(_l("Plan Title"), validators=[DataRequired(), Length(max=256)])
+    plan_type = SelectField(
+        _l("Plan Type"),
+        choices=[("business_continuity", _l("Business Continuity")),
+                 ("disaster_recovery", _l("Disaster Recovery")),
+                 ("crisis_management", _l("Crisis Management")),
+                 ("combined", _l("Combined"))],
+        default="business_continuity",
+    )
+    scope = TextAreaField(_l("Scope"), validators=[Optional()])
+    objectives = TextAreaField(_l("Objectives"), validators=[Optional()])
+    activation_criteria = TextAreaField(_l("Activation Criteria"), validators=[Optional()])
+    critical_processes = TextAreaField(_l("Critical Processes"), validators=[Optional()])
+    recovery_strategy = TextAreaField(_l("Recovery Strategy"), validators=[Optional()])
+    communication_plan = TextAreaField(_l("Communication Plan"), validators=[Optional()])
+    responsible_team = StringField(_l("Responsible Team"), validators=[Optional(), Length(max=256)])
+    owner_id = SelectField(_l("Owner"), coerce=int, validators=[Optional()])
+    rto = StringField(_l("RTO (Recovery Time Objective)"), validators=[Optional(), Length(max=32)])
+    rpo = StringField(_l("RPO (Recovery Point Objective)"), validators=[Optional(), Length(max=32)])
+    version = StringField(_l("Version"), validators=[Optional(), Length(max=16)], default="1.0")
+    lifecycle_stage = SelectField(
+        _l("Lifecycle Stage"),
+        choices=[("draft", _l("Draft")), ("review", _l("Review")),
+                 ("approved", _l("Approved")), ("active", _l("Active")),
+                 ("test_due", _l("Test Due")), ("improvement", _l("Improvement")),
+                 ("retired", _l("Retired"))],
+        default="draft",
+    )
+    review_date = DateField(_l("Review Date"), validators=[Optional()])
+    next_test_date = DateField(_l("Next Test Date"), validators=[Optional()])
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class BusinessContinuityTestForm(BaseForm):
+    plan_id = SelectField(_l("Plan"), coerce=int, validators=[DataRequired()])
+    title = StringField(_l("Test Title"), validators=[DataRequired(), Length(max=256)])
+    test_type = SelectField(
+        _l("Test Type"),
+        choices=[("tabletop", _l("Tabletop")), ("walkthrough", _l("Walkthrough")),
+                 ("technical", _l("Technical Recovery")), ("full_interruption", _l("Full Interruption")),
+                 ("drp", _l("Disaster Recovery Plan (DRP) Test"))],
+        default="tabletop",
+    )
+    scheduled_date = DateField(_l("Scheduled Date"), validators=[Optional()])
+    performed_date = DateField(_l("Performed Date"), validators=[Optional()])
+    facilitator_id = SelectField(_l("Facilitator"), coerce=int, validators=[Optional()])
+    participants = TextAreaField(_l("Participants"), validators=[Optional()])
+    objectives = TextAreaField(_l("Objectives"), validators=[Optional()])
+    scenario = TextAreaField(_l("Scenario"), validators=[Optional()])
+    results = TextAreaField(_l("Results"), validators=[Optional()])
+    issues_found = TextAreaField(_l("Issues Found"), validators=[Optional()])
+    rto_met = BooleanField(_l("RTO (Recovery Time Objective) Met"))
+    rpo_met = BooleanField(_l("RPO (Recovery Point Objective) Met"))
+    outcome = SelectField(
+        _l("Outcome"),
+        choices=[("planned", _l("Planned")), ("passed", _l("Passed")),
+                 ("partial", _l("Partially Passed")), ("failed", _l("Failed")),
+                 ("cancelled", _l("Cancelled"))],
+        default="planned",
+    )
+    next_test_date = DateField(_l("Next Test Date"), validators=[Optional()])
+    evidence_reference = StringField(_l("Evidence Reference"), validators=[Optional(), Length(max=256)])
+    submit = SubmitField(_l("Save"))
+
+
+class BusinessContinuityActionForm(BaseForm):
+    test_id = SelectField(_l("Related Test"), coerce=int, validators=[Optional()])
+    description = TextAreaField(_l("Action Description"), validators=[DataRequired()])
+    owner_id = SelectField(_l("Owner"), coerce=int, validators=[Optional()])
+    due_date = DateField(_l("Due Date"), validators=[Optional()])
+    status = SelectField(
+        _l("Status"),
+        choices=[("open", _l("Open")), ("in_progress", _l("In Progress")),
+                 ("completed", _l("Completed")), ("closed", _l("Closed"))],
+        default="open",
+    )
+    closure_notes = TextAreaField(_l("Closure Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
 class CapaRequestForm(BaseForm):
     title = StringField(_l("Title"), validators=[DataRequired(), Length(max=256)])
     description = TextAreaField(_l("Description"), validators=[DataRequired()])

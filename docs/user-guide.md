@@ -218,6 +218,28 @@ Create and manage information security policies with version control. The editor
 2. Enter title, description, category, status, owner
 3. Write/edit content using the WYSIWYG toolbar
 4. Set effective and review dates
+
+### Business Continuity (`/business-continuity/`)
+
+Manage the full business continuity lifecycle from impact analysis through recovery testing and improvement actions.
+
+| Area | Description |
+|---|---|
+| **Business Impact Analysis (BIA) Records** | Business impact analysis for processes, owners, dependencies, criticality, MTPD (Maximum Tolerable Period of Disruption), RTO (Recovery Time Objective), RPO (Recovery Point Objective), minimum resources, and workaround requirements |
+| **Continuity Plans** | Business continuity, disaster recovery, crisis management, or combined plans linked to Business Impact Analysis (BIA) records |
+| **Lifecycle Stage** | Draft → Review → Approved → Active → Test Due → Improvement → Retired |
+| **Disaster Recovery Plan (DRP) Tests** | Tabletop, walkthrough, technical recovery, full interruption, and Disaster Recovery Plan (DRP) tests with scenarios, results, RTO (Recovery Time Objective) / RPO (Recovery Point Objective) checks, and evidence references |
+| **Improvement Actions** | Action items from plan reviews or tests, assigned to owners with due dates and closure tracking |
+
+Typical workflow:
+
+1. Create a Business Impact Analysis (BIA) record for a critical process.
+2. Define the continuity or disaster recovery plan linked to that Business Impact Analysis (BIA).
+3. Approve and activate the plan.
+4. Schedule and record Disaster Recovery Plan (DRP) tests.
+5. Track issues as improvement actions until closed.
+
+Business continuity reports are available from **Reports → Business Continuity** in CSV and PDF formats.
 5. Click **Save**
 
 **Creating a new version:**

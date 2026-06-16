@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% set test_type_labels = {
+  'tabletop': _('Tabletop'),
+  'walkthrough': _('Walkthrough'),
+  'technical': _('Technical Recovery'),
+  'full_interruption': _('Full Interruption'),
+  'drp': _('Disaster Recovery Plan (DRP) Test')
+} %}
+{% set outcome_labels = {
+  'planned': _('Planned'),
+  'passed': _('Passed'),
+  'partial': _('Partially Passed'),
+  'failed': _('Failed'),
+  'cancelled': _('Cancelled')
+} %}
+{% block page_title %}{{ _('Disaster Recovery Plan (DRP) Test') }}: {{ test.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.dashboard') }}">{{ _('Business Continuity') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('business_continuity.list_tests') }}">{{ _('Disaster Recovery Plan (DRP) Tests') }}</a></li>
+<li class="breadcrumb-item active">{{ test.title[:30] }}</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ test.title }}</span>
+    <a href="{{ url_for('business_continuity.edit_test', test_id=test.id) }}" class="btn btn-sm btn-primary">{{ _('Edit') }}</a>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <h6 class="text-muted">{{ _('Test Details') }}</h6>
+        <table class="table table-borderless">
+          <tr><th>{{ _('Plan') }}</th><td><a href="{{ url_for('business_continuity.view_plan', plan_id=test.plan.id) }}">{{ test.plan.title }}</a></td></tr>
+          <tr><th>{{ _('Test Type') }}</th><td>{{ test_type_labels.get(test.test_type, test.test_type) }}</td></tr>
+          <tr><th>{{ _('Outcome') }}</th><td>{{ outcome_labels.get(test.outcome, test.outcome) }}</td></tr>
+          <tr><th>{{ _('Facilitator') }}</th><td>{{ test.facilitator.first_name ~ ' ' ~ test.facilitator.last_name if test.facilitator else '-' }}</td></tr>
+          <tr><th>{{ _('Evidence Reference') }}</th><td>{{ test.evidence_reference or '-' }}</td></tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h6 class="text-muted">{{ _('Schedule') }}</h6>
+        <table class="table table-borderless">
+          <tr><th>{{ _('Scheduled Date') }}</th><td>{{ test.scheduled_date.strftime('%Y-%m-%d') if test.scheduled_date else '-' }}</td></tr>
+          <tr><th>{{ _('Performed Date') }}</th><td>{{ test.performed_date.strftime('%Y-%m-%d') if test.performed_date else '-' }}</td></tr>
+          <tr><th>{{ _('Next Test Date') }}</th><td>{{ test.next_test_date.strftime('%Y-%m-%d') if test.next_test_date else '-' }}</td></tr>
+          <tr><th>{{ _('RTO (Recovery Time Objective) Met') }}</th><td>{{ _('Yes') if test.rto_met else _('No') }}</td></tr>
+          <tr><th>{{ _('RPO (Recovery Point Objective) Met') }}</th><td>{{ _('Yes') if test.rpo_met else _('No') }}</td></tr>
+        </table>
+      </div>
+    </div>
+    <h6 class="text-muted mt-3">{{ _('Execution') }}</h6>
+    <table class="table table-borderless">
+      <tr><th>{{ _('Participants') }}</th><td>{{ test.participants or '-' }}</td></tr>
+      <tr><th>{{ _('Objectives') }}</th><td>{{ test.objectives or '-' }}</td></tr>
+      <tr><th>{{ _('Scenario') }}</th><td>{{ test.scenario or '-' }}</td></tr>
+      <tr><th>{{ _('Results') }}</th><td>{{ test.results or '-' }}</td></tr>
+      <tr><th>{{ _('Issues Found') }}</th><td>{{ test.issues_found or '-' }}</td></tr>
+    </table>
+  </div>
+</div>
+{% endblock %}
