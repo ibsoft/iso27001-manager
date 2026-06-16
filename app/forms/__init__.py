@@ -3,9 +3,10 @@ from flask_wtf.file import FileField
 from wtforms import (
     StringField, PasswordField, BooleanField, SelectField, TextAreaField,
     IntegerField, DateField, FloatField, HiddenField, SelectMultipleField,
-    SubmitField
+    SubmitField, DateTimeField
 )
 from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange, ValidationError
+from flask_babel import lazy_gettext as _l
 import re
 
 
@@ -64,8 +65,11 @@ class ProfileForm(BaseForm):
     phone_number = StringField("Internal Phone", validators=[Optional(), Length(max=32)])
     mobile_phone = StringField("Mobile Phone", validators=[Optional(), Length(max=32)])
     avatar_url = StringField("Profile Image URL (overrides Gravatar)", validators=[Optional(), Length(max=512)])
+    avatar_file = FileField("Upload Profile Image", validators=[Optional()])
     timezone = SelectField("Timezone", choices=TIMEZONE_CHOICES, validators=[Optional()])
     default_language = SelectField("Default Language", choices=[("", "Browser Default"), ("en", "English"), ("el", "Ελληνικά")], validators=[Optional()])
+    force_language = BooleanField("Enforce language for all users")
+    force_timezone = BooleanField("Enforce timezone for all users")
     submit = SubmitField("Save Profile")
 
 
@@ -234,6 +238,11 @@ class IncidentForm(BaseForm):
     root_cause = TextAreaField("Root Cause", validators=[Optional()])
     impact_description = TextAreaField("Impact Description", validators=[Optional()])
     lessons_learned = TextAreaField("Lessons Learned", validators=[Optional()])
+    nis2_reportable = BooleanField("NIS2 Reportable Incident")
+    nis2_early_warning_submitted_at = DateTimeField("Early Warning Submitted At (24h)", validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    nis2_notification_submitted_at = DateTimeField("Notification Submitted At (72h)", validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    nis2_final_report_submitted_at = DateTimeField("Final Report Submitted At (1 month)", validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    nis2_csirt_reference = StringField("CSIRT Reference", validators=[Optional(), Length(max=128)])
     submit = SubmitField("Save")
 
 
@@ -341,26 +350,46 @@ class SupplierForm(BaseForm):
         choices=[("active", "Active"), ("inactive", "Inactive"), ("terminated", "Terminated")],
         default="active",
     )
+    ict_service_type = SelectField(
+        "ICT Service Type",
+        choices=[("", "Select..."), ("cloud", "Cloud Services"),
+                 ("saas", "SaaS"), ("network", "Network Services"),
+                 ("hardware", "Hardware"), ("software", "Software"),
+                 ("managed_service", "Managed Service"),
+                 ("consulting", "Consulting"), ("other", "Other")],
+        validators=[Optional()],
+    )
+    security_certification = StringField("Security Certifications", validators=[Optional(), Length(max=256)])
+    dependency_tier = SelectField(
+        "Dependency Tier",
+        choices=[("1", "Tier 1 - Direct critical"), ("2", "Tier 2 - Direct non-critical"),
+                 ("3", "Tier 3 - Indirect")],
+        default="3",
+    )
+    nis2_in_scope = BooleanField("In NIS2 Supply Chain Scope")
+    last_supply_chain_review = DateField("Last Supply Chain Review", validators=[Optional()])
     submit = SubmitField("Save")
 
 
 class SoAForm(BaseForm):
     applicable = SelectField(
-        "Applicable",
-        choices=[(1, "Yes - Control is applicable"), (0, "No - Control is not applicable")],
+        _l("Applicable"),
+        choices=[(1, _l("Yes - Control is applicable")), (0, _l("No - Control is not applicable"))],
         coerce=int,
         validators=[DataRequired()],
     )
-    justification = TextAreaField("Justification", validators=[Optional()])
+    justification = TextAreaField(_l("Justification"), validators=[Optional()])
+    justification_el = TextAreaField(_l("Justification (Greek)"), validators=[Optional()])
     implementation_status = SelectField(
-        "Implementation Status",
-        choices=[("not_started", "Not Started"), ("in_progress", "In Progress"),
-                 ("implemented", "Implemented"), ("not_applicable", "Not Applicable")],
+        _l("Implementation Status"),
+        choices=[("not_started", _l("Not Started")), ("in_progress", _l("In Progress")),
+                 ("implemented", _l("Implemented")), ("not_applicable", _l("Not Applicable"))],
         default="not_started",
     )
-    selected_control_description = TextAreaField("Control Description", validators=[Optional()])
-    responsible_person_id = SelectField("Responsible Person", coerce=int, validators=[Optional()])
-    submit = SubmitField("Save")
+    selected_control_description = TextAreaField(_l("Control Description"), validators=[Optional()])
+    selected_control_description_el = TextAreaField(_l("Control Description (Greek)"), validators=[Optional()])
+    responsible_person_id = SelectField(_l("Responsible Person"), coerce=int, validators=[Optional()])
+    submit = SubmitField(_l("Save"))
 
 
 class ProcessingActivityForm(BaseForm):
@@ -554,3 +583,206 @@ class DataBreachForm(BaseForm):
     notification_delay_reason = TextAreaField("Reason for Notification Delay", validators=[Optional()])
     notification_delay_justified = BooleanField("Delay Justified (Art 33(3))")
     submit = SubmitField("Save Breach Details")
+
+
+class Nis2EntityForm(BaseForm):
+    entity_name = StringField(_l("Entity Name"), validators=[DataRequired(), Length(max=256)])
+    sector = SelectField(
+        _l("Sector"),
+        choices=[("", _l("Select...")), ("energy", _l("Energy")), ("transport", _l("Transport")),
+                 ("banking", _l("Banking")), ("health", _l("Health")),
+                 ("digital_infrastructure", _l("Digital Infrastructure")),
+                 ("ict_service", _l("ICT Service")), ("water", _l("Water Supply")),
+                 ("waste", _l("Waste Management")), ("manufacturing", _l("Manufacturing")),
+                 ("food", _l("Food Production")), ("postal", _l("Postal Services")),
+                 ("other", _l("Other"))],
+        validators=[Optional()],
+    )
+    sub_sector = StringField(_l("Sub-Sector"), validators=[Optional(), Length(max=128)])
+    entity_type = SelectField(
+        _l("Entity Type"),
+        choices=[("essential", _l("Essential")), ("important", _l("Important"))],
+        default="essential",
+    )
+    registration_number = StringField(_l("Registration Number"), validators=[Optional(), Length(max=128)])
+    competent_authority = StringField(_l("Competent Authority"), validators=[Optional(), Length(max=256)])
+    csirt_name = StringField(_l("CSIRT Name"), validators=[Optional(), Length(max=256)])
+    csirt_email = StringField(_l("CSIRT Email"), validators=[Optional(), Email(), Length(max=128)])
+    csirt_phone = StringField(_l("CSIRT Phone"), validators=[Optional(), Length(max=64)])
+    headquarters_address = TextAreaField(_l("Headquarters Address"), validators=[Optional()])
+    operates_in_eu = BooleanField(_l("Operates in EU"), default=True)
+    eu_member_states = StringField(_l("EU Member States"), validators=[Optional(), Length(max=256)])
+    employee_count = IntegerField(_l("Employee Count"), validators=[Optional()])
+    annual_turnover = StringField(_l("Annual Turnover"), validators=[Optional(), Length(max=64)])
+    registration_date = DateField(_l("Registration Date"), validators=[Optional()])
+    last_review_date = DateField(_l("Last Review Date"), validators=[Optional()])
+    next_review_date = DateField(_l("Next Review Date"), validators=[Optional()])
+    status = SelectField(
+        _l("Status"),
+        choices=[("active", _l("Active")), ("inactive", _l("Inactive")), ("suspended", _l("Suspended"))],
+        default="active",
+    )
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class Nis2NotificationForm(BaseForm):
+    incident_id = SelectField(_l("Related Incident"), coerce=int, validators=[Optional()])
+    incident_title = StringField(_l("Incident Title"), validators=[DataRequired(), Length(max=256)])
+    reportable_criteria = TextAreaField(_l("Reportable Criteria"), validators=[Optional()])
+    service_disruption = BooleanField(_l("Service Disruption"))
+    data_impact = BooleanField(_l("Data Impact"))
+    financial_loss = BooleanField(_l("Financial Loss"))
+    affected_users_count = IntegerField(_l("Affected Users Count"), validators=[Optional()])
+    incident_detected_at = DateTimeField(_l("Incident Detected At"), validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    early_warning_deadline = DateTimeField(_l("Early Warning Deadline (24h)"), validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    early_warning_submitted_at = DateTimeField(_l("Early Warning Submitted At"), validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    early_warning_details = TextAreaField(_l("Early Warning Details"), validators=[Optional()])
+    notification_deadline = DateTimeField(_l("Notification Deadline (72h)"), validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    notification_submitted_at = DateTimeField(_l("Notification Submitted At"), validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    notification_details = TextAreaField(_l("Notification Details"), validators=[Optional()])
+    final_report_deadline = DateTimeField(_l("Final Report Deadline (1 month)"), validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    final_report_submitted_at = DateTimeField(_l("Final Report Submitted At"), validators=[Optional()], format="%Y-%m-%dT%H:%M")
+    final_report_details = TextAreaField(_l("Final Report Details"), validators=[Optional()])
+    csirt_reference = StringField(_l("CSIRT Reference"), validators=[Optional(), Length(max=128)])
+    csirt_name = StringField(_l("CSIRT Name"), validators=[Optional(), Length(max=256)])
+    notification_status = SelectField(
+        _l("Notification Status"),
+        choices=[("pending", _l("Pending")), ("early_warning_due", _l("Early Warning Due")),
+                 ("early_warning_submitted", _l("Early Warning Submitted")),
+                 ("notification_due", _l("Notification Due")),
+                 ("notification_submitted", _l("Notification Submitted")),
+                 ("final_report_due", _l("Final Report Due")),
+                 ("final_report_submitted", _l("Final Report Submitted")),
+                 ("completed", _l("Completed"))],
+        default="pending",
+    )
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class Nis2SupplyChainForm(BaseForm):
+    supplier_id = SelectField(_l("Related Supplier"), coerce=int, validators=[Optional()])
+    supplier_name = StringField(_l("Supplier Name"), validators=[DataRequired(), Length(max=256)])
+    ict_service_type = SelectField(
+        _l("ICT Service Type"),
+        choices=[("", _l("Select...")), ("cloud", _l("Cloud Services")),
+                 ("saas", _l("SaaS")), ("network", _l("Network Services")),
+                 ("hardware", _l("Hardware")), ("software", _l("Software")),
+                 ("managed_service", _l("Managed Service")),
+                 ("consulting", _l("Consulting")), ("other", _l("Other"))],
+        validators=[Optional()],
+    )
+    service_criticality = SelectField(
+        _l("Service Criticality"),
+        choices=[("low", _l("Low")), ("medium", _l("Medium")), ("high", _l("High")), ("critical", _l("Critical"))],
+        default="medium",
+    )
+    dependency_tier = SelectField(
+        _l("Dependency Tier"),
+        choices=[("1", _l("Tier 1 - Direct critical")), ("2", _l("Tier 2 - Direct non-critical")),
+                 ("3", _l("Tier 3 - Indirect"))],
+        default="3",
+    )
+    security_certifications = StringField(_l("Security Certifications"), validators=[Optional(), Length(max=256)])
+    nis2_in_scope = BooleanField(_l("In NIS2 Scope"))
+    supply_chain_risk_level = SelectField(
+        _l("Supply Chain Risk Level"),
+        choices=[("low", _l("Low")), ("medium", _l("Medium")), ("high", _l("High")), ("critical", _l("Critical"))],
+        default="medium",
+    )
+    last_assessment_date = DateField(_l("Last Assessment Date"), validators=[Optional()])
+    next_assessment_date = DateField(_l("Next Assessment Date"), validators=[Optional()])
+    assessment_findings = TextAreaField(_l("Assessment Findings"), validators=[Optional()])
+    mitigation_actions = TextAreaField(_l("Mitigation Actions"), validators=[Optional()])
+    subcontractors_known = BooleanField(_l("Subcontractors Identified"))
+    subcontractor_details = TextAreaField(_l("Subcontractor Details"), validators=[Optional()])
+    sla_in_place = BooleanField(_l("SLA in Place"))
+    incident_reporting_defined = BooleanField(_l("Incident Reporting Defined"))
+    right_to_audit = BooleanField(_l("Right to Audit"))
+    data_processing_agreement = BooleanField(_l("DPA in Place"))
+    termination_notice_days = IntegerField(_l("Termination Notice (days)"), validators=[Optional()])
+    status = SelectField(
+        _l("Status"),
+        choices=[("pending", _l("Pending")), ("assessed", _l("Assessed")),
+                 ("approved", _l("Approved")), ("review_required", _l("Review Required")),
+                 ("rejected", _l("Rejected"))],
+        default="pending",
+    )
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class Nis2ContinuityForm(BaseForm):
+    title = StringField(_l("Plan Title"), validators=[DataRequired(), Length(max=256)])
+    plan_type = SelectField(
+        _l("Plan Type"),
+        choices=[("business_continuity", _l("Business Continuity")),
+                 ("disaster_recovery", _l("Disaster Recovery")),
+                 ("crisis_management", _l("Crisis Management")),
+                 ("combined", _l("Combined"))],
+        default="business_continuity",
+    )
+    scope = TextAreaField(_l("Scope"), validators=[Optional()])
+    objectives = TextAreaField(_l("Objectives"), validators=[Optional()])
+    critical_services = TextAreaField(_l("Critical Services"), validators=[Optional()])
+    rto = StringField(_l("RTO (Recovery Time Objective)"), validators=[Optional(), Length(max=32)])
+    rpo = StringField(_l("RPO (Recovery Point Objective)"), validators=[Optional(), Length(max=32)])
+    recovery_procedures = TextAreaField(_l("Recovery Procedures"), validators=[Optional()])
+    responsible_team = StringField(_l("Responsible Team"), validators=[Optional(), Length(max=256)])
+    testing_frequency = SelectField(
+        _l("Testing Frequency"),
+        choices=[("monthly", _l("Monthly")), ("quarterly", _l("Quarterly")),
+                 ("semi_annual", _l("Semi-Annual")), ("annual", _l("Annual")),
+                 ("biannual", _l("Biannual"))],
+        default="annual",
+    )
+    last_test_date = DateField(_l("Last Test Date"), validators=[Optional()])
+    last_test_result = TextAreaField(_l("Last Test Result"), validators=[Optional()])
+    next_test_date = DateField(_l("Next Test Date"), validators=[Optional()])
+    maintenance_schedule = TextAreaField(_l("Maintenance Schedule"), validators=[Optional()])
+    version = StringField(_l("Version"), validators=[Optional(), Length(max=16)], default="1.0")
+    status = SelectField(
+        _l("Status"),
+        choices=[("draft", _l("Draft")), ("approved", _l("Approved")),
+                 ("active", _l("Active")), ("review_required", _l("Review Required")),
+                 ("archived", _l("Archived"))],
+        default="draft",
+    )
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class Nis2ComplianceForm(BaseForm):
+    measure = SelectField(
+        _l("NIS2 Measure"),
+        choices=[("risk_analysis", _l("Risk Analysis & IS Policies")),
+                 ("incident_handling", _l("Incident Handling")),
+                 ("business_continuity", _l("Business Continuity")),
+                 ("supply_chain_security", _l("Supply Chain Security")),
+                 ("network_security", _l("Network & Information Security")),
+                 ("access_control", _l("Access Control")),
+                 ("cryptography", _l("Cryptography")),
+                 ("hr_security", _l("HR Security")),
+                 ("mfa", _l("Multi-Factor Authentication")),
+                 ("security_training", _l("Security Training"))],
+        validators=[DataRequired()],
+    )
+    measure_display = StringField(_l("Measure Display Name"), validators=[DataRequired(), Length(max=256)])
+    article_ref = StringField(_l("Article Reference"), validators=[Optional(), Length(max=16)])
+    status = SelectField(
+        _l("Status"),
+        choices=[("not_started", _l("Not Started")), ("in_progress", _l("In Progress")),
+                 ("implemented", _l("Implemented")), ("not_applicable", _l("Not Applicable")),
+                 ("review_required", _l("Review Required"))],
+        default="not_started",
+    )
+    implementation_details = TextAreaField(_l("Implementation Details"), validators=[Optional()])
+    evidence_notes = TextAreaField(_l("Evidence Notes"), validators=[Optional()])
+    control_references = StringField(_l("Control References"), validators=[Optional(), Length(max=256)])
+    target_date = DateField(_l("Target Date"), validators=[Optional()])
+    completion_date = DateField(_l("Completion Date"), validators=[Optional()])
+    review_date = DateField(_l("Review Date"), validators=[Optional()])
+    responsible_person_id = SelectField(_l("Responsible Person"), coerce=int, validators=[Optional()])
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))

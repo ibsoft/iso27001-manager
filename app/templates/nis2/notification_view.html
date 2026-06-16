@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('NIS2 Incident Notification') }}: {{ notification.incident_title[:40] }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.list_notifications') }}">{{ _('Notifications') }}</a></li>
+  <li class="breadcrumb-item active">{{ notification.incident_title[:30] }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ notification.incident_title }}</span>
+    <div>
+      <a href="{{ url_for('nis2.edit_notification', notification_id=notification.id) }}" class="btn btn-sm btn-primary">{{ _('Edit') }}</a>
+      <form method="POST" action="{{ url_for('nis2.delete_notification', notification_id=notification.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this notification?') }}')">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-sm btn-outline-danger">{{ _('Delete') }}</button>
+      </form>
+    </div>
+  </div>
+  <div class="card-body">
+    <h6 class="text-muted mb-3">{{ _('Incident Information') }}</h6>
+    <table class="table table-borderless mb-4">
+      <tr><th style="width:200px;">{{ _('Related Incident') }}</th><td>{% if notification.incident %}<a href="{{ url_for('incidents.view_incident', incident_id=notification.incident.id) }}">{{ notification.incident.title }}</a>{% else %}-{% endif %}</td></tr>
+      <tr><th>{{ _('Detected At') }}</th><td>{{ notification.incident_detected_at.strftime('%d/%m/%Y %H:%M') if notification.incident_detected_at else '-' }}</td></tr>
+      <tr><th>{{ _('Status') }}</th><td><span class="badge bg-{{ 'success' if notification.notification_status == 'completed' else 'warning' }}">{{ _(notification.notification_status.replace('_', ' ').title()) }}</span></td></tr>
+      <tr><th>{{ _('CSIRT Reference') }}</th><td>{{ notification.csirt_reference or '-' }}</td></tr>
+      <tr><th>{{ _('CSIRT Name') }}</th><td>{{ notification.csirt_name or '-' }}</td></tr>
+    </table>
+
+    <h6 class="text-muted mb-3">{{ _('Reportable Criteria') }}</h6>
+    <table class="table table-borderless mb-4">
+      <tr><th style="width:200px;">{{ _('Service Disruption') }}</th><td>{% if notification.service_disruption %}<span class="badge bg-danger">{{ _('Yes') }}</span>{% else %}<span class="badge bg-secondary">{{ _('No') }}</span>{% endif %}</td></tr>
+      <tr><th>{{ _('Data Impact') }}</th><td>{% if notification.data_impact %}<span class="badge bg-danger">{{ _('Yes') }}</span>{% else %}<span class="badge bg-secondary">{{ _('No') }}</span>{% endif %}</td></tr>
+      <tr><th>{{ _('Financial Loss') }}</th><td>{% if notification.financial_loss %}<span class="badge bg-danger">{{ _('Yes') }}</span>{% else %}<span class="badge bg-secondary">{{ _('No') }}</span>{% endif %}</td></tr>
+      <tr><th>{{ _('Affected Users') }}</th><td>{{ notification.affected_users_count or '-' }}</td></tr>
+    </table>
+
+    <h6 class="text-muted mb-3">{{ _('Notification Timeline') }}</h6>
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="card border-{{ 'success' if notification.early_warning_submitted_at else 'danger' }} h-100">
+          <div class="card-body text-center">
+            <h5 class="text-muted mb-2">{{ _('Early Warning') }} <small class="text-muted">(24h)</small></h5>
+            <div class="mb-2">
+              {% if notification.early_warning_submitted_at %}
+                <i class="fas fa-check-circle text-success fa-2x"></i>
+              {% else %}
+                <i class="fas fa-clock text-danger fa-2x"></i>
+              {% endif %}
+            </div>
+            <small>{{ _('Deadline') }}: {{ notification.early_warning_deadline.strftime('%d/%m/%Y %H:%M') if notification.early_warning_deadline else '-' }}</small><br>
+            <small>{{ _('Submitted') }}: {{ notification.early_warning_submitted_at.strftime('%d/%m/%Y %H:%M') if notification.early_warning_submitted_at else '-' }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-{{ 'success' if notification.notification_submitted_at else 'warning' }} h-100">
+          <div class="card-body text-center">
+            <h5 class="text-muted mb-2">{{ _('Notification') }} <small class="text-muted">(72h)</small></h5>
+            <div class="mb-2">
+              {% if notification.notification_submitted_at %}
+                <i class="fas fa-check-circle text-success fa-2x"></i>
+              {% else %}
+                <i class="fas fa-clock text-warning fa-2x"></i>
+              {% endif %}
+            </div>
+            <small>{{ _('Deadline') }}: {{ notification.notification_deadline.strftime('%d/%m/%Y %H:%M') if notification.notification_deadline else '-' }}</small><br>
+            <small>{{ _('Submitted') }}: {{ notification.notification_submitted_at.strftime('%d/%m/%Y %H:%M') if notification.notification_submitted_at else '-' }}</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-{{ 'success' if notification.final_report_submitted_at else 'secondary' }} h-100">
+          <div class="card-body text-center">
+            <h5 class="text-muted mb-2">{{ _('Final Report') }} <small class="text-muted">(1mo)</small></h5>
+            <div class="mb-2">
+              {% if notification.final_report_submitted_at %}
+                <i class="fas fa-check-circle text-success fa-2x"></i>
+              {% else %}
+                <i class="fas fa-hourglass text-secondary fa-2x"></i>
+              {% endif %}
+            </div>
+            <small>{{ _('Deadline') }}: {{ notification.final_report_deadline.strftime('%d/%m/%Y %H:%M') if notification.final_report_deadline else '-' }}</small><br>
+            <small>{{ _('Submitted') }}: {{ notification.final_report_submitted_at.strftime('%d/%m/%Y %H:%M') if notification.final_report_submitted_at else '-' }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h6 class="text-muted mb-3">{{ _('Details') }}</h6>
+    <table class="table table-borderless">
+      <tr><th style="width:200px;">{{ _('Reportable Criteria') }}</th><td>{{ notification.reportable_criteria or '-' }}</td></tr>
+      <tr><th>{{ _('Early Warning Details') }}</th><td>{{ notification.early_warning_details or '-' }}</td></tr>
+      <tr><th>{{ _('Notification Details') }}</th><td>{{ notification.notification_details or '-' }}</td></tr>
+      <tr><th>{{ _('Final Report Details') }}</th><td>{{ notification.final_report_details or '-' }}</td></tr>
+      <tr><th>{{ _('Notes') }}</th><td>{{ notification.notes or '-' }}</td></tr>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -4,13 +4,18 @@
 
 {% block content %}
 <div class="d-flex align-items-center gap-3 mb-4">
-  <div class="bg-gradient-primary text-white rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;">
+  <div class="rounded-3 p-3 d-flex align-items-center justify-content-center" style="width:56px;height:56px;background:var(--header-border);color:var(--text-primary);">
     <i class="fas fa-shield-alt fa-xl"></i>
   </div>
   <div>
-    <h4 class="mb-0 fw-bold">{{ _('ISMS & GDPR Dashboard') }}</h4>
-    <small class="text-muted">{{ _('Consolidated view of your information security and privacy compliance posture') }}</small>
+    <h4 class="mb-0 fw-bold">{{ _('ISO-27001 · NIS2 · GDPR Dashboard') }}</h4>
+    <small class="text-muted">{{ _('Consolidated view of ISMS, NIS2 compliance, and privacy posture') }}</small>
   </div>
+</div>
+
+<div class="d-flex align-items-center gap-3 mb-3 mt-3">
+  <div style="width:4px;height:28px;background:linear-gradient(180deg,#1a56db,#1e40af);border-radius:2px;"></div>
+  <h5 class="mb-0 fw-bold"><i class="fas fa-shield-alt me-2 text-primary"></i>{{ _('ISO-27001 ISMS') }}</h5>
 </div>
 
 <div class="row g-3 mb-4">
@@ -22,7 +27,7 @@
             <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Controls') }}</h6>
             <h2 class="mb-0 fw-bold">{{ implemented_controls }}<small class="fw-normal fs-6">/{{ total_controls }}</small></h2>
           </div>
-          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-sliders-h fa-lg"></i></div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-sliders-h fa-lg text-white"></i></div>
         </div>
         <div class="progress mt-3 bg-white bg-opacity-25" style="height:4px;">
           <div class="progress-bar bg-white" style="width:{{ implementation_pct }}%"></div>
@@ -41,7 +46,7 @@
             <h2 class="mb-0 fw-bold">{{ critical_risks + high_risks }}</h2>
             <small class="text-white-50">{{ _('critical') }}/{{ _('high') }}</small>
           </div>
-          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-exclamation-triangle fa-lg"></i></div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-exclamation-triangle fa-lg text-white"></i></div>
         </div>
         <div class="mt-3"><small class="text-white-50">{{ total_risks }} {{ _('total risks') }}</small></div>
       </div>
@@ -57,7 +62,7 @@
             <h2 class="mb-0 fw-bold">{{ open_incidents }}</h2>
             <small class="text-white-50">{{ _('open') }}</small>
           </div>
-          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-bolt fa-lg"></i></div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-bolt fa-lg text-white"></i></div>
         </div>
         <div class="mt-3"><small class="text-white-50">{{ total_incidents }} {{ _('total incidents') }}</small></div>
       </div>
@@ -73,7 +78,7 @@
             <h2 class="mb-0 fw-bold">{{ open_non_conformities }}</h2>
             <small class="text-white-50">{{ _('open NCs') }}</small>
           </div>
-          <div class="bg-white bg-opacity-25 rounded-2 p-2"><i class="fas fa-clipboard-check fa-lg"></i></div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-clipboard-check fa-lg text-white"></i></div>
         </div>
         <div class="mt-3"><small class="text-white-50">{{ policies_needing_review }} {{ _('policies need review') }}</small></div>
       </div>
@@ -82,9 +87,83 @@
   </div>
 </div>
 
-<div class="d-flex align-items-center gap-3 mb-3 mt-5">
+<div class="d-flex align-items-center gap-3 mb-3 mt-4">
+  <div style="width:4px;height:28px;background:linear-gradient(180deg,#8e44ad,#6c3483);border-radius:2px;"></div>
+  <h5 class="mb-0 fw-bold"><i class="fas fa-gavel me-2 text-purple"></i>{{ _('NIS2 Compliance') }}</h5>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#8e44ad 0%,#6c3483 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Compliance') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ implemented_compliance }}<small class="fw-normal fs-6">/{{ total_compliance }}</small></h2>
+          </div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-clipboard-list fa-lg text-white"></i></div>
+        </div>
+        <div class="progress mt-3 bg-white bg-opacity-25" style="height:4px;">
+          <div class="progress-bar bg-white" style="width:{{ compliance_pct }}%"></div>
+        </div>
+        <div class="d-flex justify-content-between mt-1"><small class="text-white-50">{{ _('Implemented') }}</small><small class="text-white-50">{{ compliance_pct }}%</small></div>
+      </div>
+      <a href="{{ url_for('nis2.list_compliance') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('View compliance') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#e67e22 0%,#d35400 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Notifications') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ pending_notifications }}</h2>
+            <small class="text-white-50">{{ _('pending') }}</small>
+          </div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-bell fa-lg text-white"></i></div>
+        </div>
+        <div class="mt-3"><small class="text-white-50">{{ _('Incident notifications requiring action') }}</small></div>
+      </div>
+      <a href="{{ url_for('nis2.list_notifications') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('View notifications') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#27ae60 0%,#1e8449 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Continuity') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ active_continuity }}</h2>
+            <small class="text-white-50">{{ _('active plans') }}</small>
+          </div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-life-ring fa-lg text-white"></i></div>
+        </div>
+        <div class="mt-3"><small class="text-white-50">{{ _('Business continuity & DR plans') }}</small></div>
+      </div>
+      <a href="{{ url_for('nis2.list_continuity') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('View plans') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-6">
+    <div class="card border-0 h-100" style="background:linear-gradient(135deg,#c0392b 0%,#96281b 100%);">
+      <div class="card-body text-white">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="text-white-50 mb-1 small text-uppercase fw-semibold">{{ _('Supply Chain') }}</h6>
+            <h2 class="mb-0 fw-bold">{{ critical_supply_chain }}</h2>
+            <small class="text-white-50">{{ _('critical risk') }}</small>
+          </div>
+          <div class="bg-black bg-opacity-20 rounded-2 p-2"><i class="fas fa-handshake fa-lg text-white"></i></div>
+        </div>
+        <div class="mt-3"><small class="text-white-50">{{ _('Suppliers with critical NIS2 risk') }}</small></div>
+      </div>
+      <a href="{{ url_for('nis2.list_supply_chain') }}" class="text-white text-decoration-none small d-block text-center py-1" style="background:rgba(0,0,0,0.15);">{{ _('View supply chain') }} <i class="fas fa-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex align-items-center gap-3 mb-3 mt-4">
   <div style="width:4px;height:28px;background:linear-gradient(180deg,#1a56db,#7c3aed);border-radius:2px;"></div>
-  <h5 class="mb-0 fw-bold">{{ _('GDPR Compliance Overview') }}</h5>
+  <h5 class="mb-0 fw-bold"><i class="fas fa-shield-alt me-2 text-primary"></i>{{ _('GDPR Compliance') }}</h5>
 </div>
 
 <div class="row g-3 mb-4">
@@ -189,13 +268,17 @@
       </div>
       <div class="card-body">
         <div class="d-grid gap-2">
+          <strong class="small text-muted text-uppercase mt-1">{{ _('ISO-27001') }}</strong>
           <a href="{{ url_for('controls.list_controls') }}" class="btn btn-outline-primary btn-sm text-start"><i class="fas fa-sliders-h me-2"></i>{{ _('Browse Annex A Controls') }}</a>
           <a href="{{ url_for('risks.new_risk') }}" class="btn btn-outline-danger btn-sm text-start"><i class="fas fa-plus-circle me-2"></i>{{ _('New Risk Assessment') }}</a>
           <a href="{{ url_for('incidents.new_incident') }}" class="btn btn-outline-warning btn-sm text-start"><i class="fas fa-bolt me-2"></i>{{ _('Report Incident') }}</a>
           <a href="{{ url_for('audits.new_audit') }}" class="btn btn-outline-info btn-sm text-start"><i class="fas fa-clipboard-check me-2"></i>{{ _('Schedule Internal Audit') }}</a>
-          <a href="{{ url_for('policies.new_policy') }}" class="btn btn-outline-secondary btn-sm text-start"><i class="fas fa-file-alt me-2"></i>{{ _('Create Policy') }}</a>
           <a href="{{ url_for('soa.soa_summary') }}" class="btn btn-outline-success btn-sm text-start"><i class="fas fa-file-signature me-2"></i>{{ _('View SoA Summary') }}</a>
-          <hr class="my-1">
+          <strong class="small text-muted text-uppercase mt-2">{{ _('NIS2') }}</strong>
+          <a href="{{ url_for('nis2.dashboard') }}" class="btn btn-outline-secondary btn-sm text-start" style="border-color:#8e44ad;color:#8e44ad;"><i class="fas fa-gavel me-2"></i>{{ _('NIS2 Dashboard') }}</a>
+          <a href="{{ url_for('nis2.new_notification') }}" class="btn btn-outline-warning btn-sm text-start"><i class="fas fa-bell me-2"></i>{{ _('Report NIS2 Incident') }}</a>
+          <a href="{{ url_for('nis2.new_compliance') }}" class="btn btn-outline-info btn-sm text-start"><i class="fas fa-clipboard-list me-2"></i>{{ _('Add Compliance Check') }}</a>
+          <strong class="small text-muted text-uppercase mt-2">{{ _('GDPR') }}</strong>
           <a href="{{ url_for('gdpr.list_processing') }}" class="btn btn-outline-primary btn-sm text-start"><i class="fas fa-tasks me-2"></i>{{ _('Processing Activities') }}</a>
           <a href="{{ url_for('gdpr.list_dsar') }}" class="btn btn-outline-warning btn-sm text-start"><i class="fas fa-user-check me-2"></i>{{ _('DSARs') }}</a>
           <a href="{{ url_for('gdpr.list_consent') }}" class="btn btn-outline-success btn-sm text-start"><i class="fas fa-check-double me-2"></i>{{ _('Consent Records') }}</a>

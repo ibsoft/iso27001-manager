@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app.utils.decorators import admin_required
+from app.utils.pagination import paginate
 from app.extensions import db
 from app.models.processing import ProcessingActivity
 from app.models.dpia import Dpia
@@ -58,7 +59,7 @@ def list_processing():
         query = query.filter_by(status=status)
     if search:
         query = query.filter(ProcessingActivity.name.ilike(f"%{search}%"))
-    activities = query.order_by(ProcessingActivity.name).all()
+    activities = paginate(query.order_by(ProcessingActivity.name))
     return render_template("gdpr/processing/list.html", activities=activities)
 
 
@@ -121,7 +122,7 @@ def list_dpia():
     query = Dpia.query
     if status:
         query = query.filter_by(status=status)
-    dpias = query.order_by(Dpia.created_at.desc()).all()
+    dpias = paginate(query.order_by(Dpia.created_at.desc()))
     return render_template("gdpr/dpia/list.html", dpias=dpias)
 
 
@@ -195,7 +196,7 @@ def list_dsar():
                 DataSubjectRequest.requester_email.ilike(f"%{search}%"),
             )
         )
-    requests = query.order_by(DataSubjectRequest.received_date.desc()).all()
+    requests = paginate(query.order_by(DataSubjectRequest.received_date.desc()))
     return render_template("gdpr/dsar/list.html", requests=requests)
 
 
@@ -281,7 +282,7 @@ def list_consent():
                 ConsentRecord.processing_purpose.ilike(f"%{search}%"),
             )
         )
-    records = query.order_by(ConsentRecord.consent_given_at.desc()).all()
+    records = paginate(query.order_by(ConsentRecord.consent_given_at.desc()))
     return render_template("gdpr/consent/list.html", records=records)
 
 
@@ -353,7 +354,7 @@ def list_controllers():
         query = query.filter_by(role=role_filter)
     if search:
         query = query.filter(DataControllerProcessor.name.ilike(f"%{search}%"))
-    entities = query.order_by(DataControllerProcessor.name).all()
+    entities = paginate(query.order_by(DataControllerProcessor.name))
     return render_template("gdpr/controllers/list.html", entities=entities)
 
 
@@ -416,7 +417,7 @@ def list_notices():
     query = PrivacyNotice.query
     if status:
         query = query.filter_by(status=status)
-    notices = query.order_by(PrivacyNotice.created_at.desc()).all()
+    notices = paginate(query.order_by(PrivacyNotice.created_at.desc()))
     return render_template("gdpr/notices/list.html", notices=notices)
 
 

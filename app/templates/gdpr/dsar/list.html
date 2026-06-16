@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Data Subject Access Requests (DSAR)') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('DSARs') }}</li>{% endblock %}
 
@@ -34,7 +35,8 @@
         <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
       </div>
     </form>
-    <a href="{{ url_for('gdpr.new_dsar') }}" class="btn btn-primary ms-3"><i class="fas fa-plus me-1"></i>{{ _('New Request') }}</a>
+    <a href="{{ url_for('reports.export_pdf_gdpr') }}" class="btn btn-outline-danger ms-3"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+    <a href="{{ url_for('gdpr.new_dsar') }}" class="btn btn-primary ms-2"><i class="fas fa-plus me-1"></i>{{ _('New Request') }}</a>
   </div>
 </div>
 
@@ -53,7 +55,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for r in requests %}
+        {% for r in requests.items %}
         <tr>
           <td>
             <a href="{{ url_for('gdpr.view_dsar', dsar_id=r.id) }}" class="text-decoration-none fw-medium">{{ r.requester_name }}</a>
@@ -89,4 +91,5 @@
     </table>
   </div>
 </div>
+{{ render_pagination(requests, 'gdpr.list_dsar', kwargs=request.args) }}
 {% endblock %}

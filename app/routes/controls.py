@@ -11,6 +11,7 @@ from app.models.risk import risk_controls
 from app.models.audit import AuditFinding
 from app.forms import ControlForm
 from app.utils.decorators import permission_required, admin_required
+from app.utils.pagination import paginate
 from datetime import datetime
 
 controls_bp = Blueprint("controls", __name__)
@@ -38,7 +39,7 @@ def list_controls():
             )
         )
 
-    controls = query.order_by(Control.code).all()
+    controls = paginate(query.order_by(Control.code))
     domains = Domain.query.order_by(Domain.code).all()
     return render_template("controls/list.html", controls=controls, domains=domains,
                            selected_domain=domain_id, selected_status=status, search=search)

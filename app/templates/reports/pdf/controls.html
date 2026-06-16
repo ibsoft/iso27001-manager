@@ -1,0 +1,18 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+{% for domain in domains %}
+<h2>{{ domain.code }}. {{ domain.name }}</h2>
+<table>
+  <tr><th>{{ _('Code') }}</th><th>{{ _('Title') }}</th><th>{{ _('Status') }}</th><th>{{ _('Owner') }}</th><th>{{ _('Target') }}</th></tr>
+  {% for c in domain.controls %}
+  <tr>
+    <td>{{ c.code }}</td>
+    <td>{{ c.title }}</td>
+    <td><span class="badge badge-{{ 'success' if c.implementation_status == 'implemented' else 'warning' if c.implementation_status == 'in_progress' else 'secondary' }}">{{ (c.implementation_status or '').replace('_', ' ') }}</span></td>
+    <td>{{ c.owner.first_name + ' ' + c.owner.last_name if c.owner else '-' }}</td>
+    <td>{{ c.target_date.strftime('%d/%m/%Y') if c.target_date else '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endfor %}
+{% endblock %}

@@ -9,6 +9,7 @@ from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import RiskForm
 from app.utils.decorators import permission_required, admin_required
+from app.utils.pagination import paginate
 from datetime import datetime
 
 risks_bp = Blueprint("risks", __name__)
@@ -29,7 +30,7 @@ def list_risks():
     if search:
         query = query.filter(Risk.title.ilike(f"%{search}%"))
 
-    risks = query.order_by(Risk.created_at.desc()).all()
+    risks = paginate(query.order_by(Risk.created_at.desc()))
     return render_template("risks/list.html", risks=risks)
 
 

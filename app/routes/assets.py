@@ -7,6 +7,7 @@ from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import AssetForm
 from app.utils.decorators import permission_required, admin_required
+from app.utils.pagination import paginate
 from datetime import datetime
 
 assets_bp = Blueprint("assets", __name__)
@@ -30,7 +31,7 @@ def list_assets():
     if search:
         query = query.filter(Asset.name.ilike(f"%{search}%"))
 
-    assets = query.order_by(Asset.name).all()
+    assets = paginate(query.order_by(Asset.name))
     return render_template("assets/list.html", assets=assets)
 
 

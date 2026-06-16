@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, session
+import os
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db, bcrypt, limiter
@@ -6,10 +7,16 @@ from app.models.user import User, Role
 from app.models.audit_log import AuditLog
 from app.forms import LoginForm, ChangePasswordForm, ProfileForm
 from datetime import datetime
+
 import pyotp
 import qrcode
 import io
 import base64
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp", "svg"}
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -17,6 +24,11 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route("/language/<lang>")
 def set_language(lang):
     from flask import session
+    from app.models.user import SystemSetting
+    forced_lang = SystemSetting.get("forced_language")
+    if forced_lang:
+        flash(_("Language is enforced by administrator"), "warning")
+        return redirect(request.referrer or url_for("dashboard.index"))
     if lang in ("en", "el"):
         session["lang"] = lang
     return redirect(request.referrer or url_for("dashboard.index"))
@@ -68,6 +80,10 @@ def login():
             session["lang"] = user.default_language
         elif "lang" not in session:
             session["lang"] = "en"
+        from app.models.user import SystemSetting
+        forced_lang = SystemSetting.get("forced_language")
+        if forced_lang:
+            session["lang"] = forced_lang
 
         _log_audit(user.id, "LOGIN", "User", user.id, f"User {user.username} logged in")
 
@@ -146,13 +162,37 @@ def profile():
         current_user.email = form.email.data
         current_user.phone_number = form.phone_number.data or None
         current_user.mobile_phone = form.mobile_phone.data or None
-        current_user.avatar_url = form.avatar_url.data or None
+
+        if form.avatar_file.data:
+            file = form.avatar_file.data
+            if allowed_file(file.filename):
+                upload_dir = os.path.join(current_app.root_path, "static", "uploads", "avatars")
+                os.makedirs(upload_dir, exist_ok=True)
+                ext = file.filename.rsplit(".", 1)[1].lower()
+                filename = f"user_{current_user.id}_{int(datetime.utcnow().timestamp())}.{ext}"
+                file.save(os.path.join(upload_dir, filename))
+                current_user.avatar_url = url_for("static", filename=f"uploads/avatars/{filename}")
+            else:
+                flash(_("Invalid image format. Allowed: PNG, JPG, GIF, WebP, SVG"), "warning")
+        elif form.avatar_url.data:
+            current_user.avatar_url = form.avatar_url.data
+        else:
+            current_user.avatar_url = None
 
         if current_user.has_role("admin"):
             current_user.timezone = form.timezone.data
             current_user.default_language = form.default_language.data or None
             if current_user.default_language:
                 session["lang"] = current_user.default_language
+            from app.models.user import SystemSetting
+            if form.force_language.data and form.default_language.data:
+                SystemSetting.set("forced_language", form.default_language.data, current_user.id)
+            elif not form.force_language.data:
+                SystemSetting.set("forced_language", "", current_user.id)
+            if form.force_timezone.data and form.timezone.data:
+                SystemSetting.set("forced_timezone", form.timezone.data, current_user.id)
+            elif not form.force_timezone.data:
+                SystemSetting.set("forced_timezone", "", current_user.id)
 
         current_user.updated_at = datetime.utcnow()
         db.session.commit()

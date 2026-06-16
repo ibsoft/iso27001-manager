@@ -1,0 +1,22 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.open }}</div><div class="lbl">{{ _('Open') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.critical }}</div><div class="lbl">{{ _('Critical') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.this_month }}</div><div class="lbl">{{ _('This Month') }}</div></div>
+</div>
+<table>
+  <tr><th>{{ _('Title') }}</th><th>{{ _('Severity') }}</th><th>{{ _('Category') }}</th><th>{{ _('Status') }}</th><th>{{ _('Detected') }}</th><th>{{ _('NIS2') }}</th></tr>
+  {% for i in incidents %}
+  <tr>
+    <td>{{ (i.title or '')[:60] }}</td>
+    <td><span class="badge badge-{{ 'danger' if i.severity == 'critical' else 'warning' if i.severity == 'high' else 'info' }}">{{ i.severity }}</span></td>
+    <td>{{ i.category or '-' }}</td>
+    <td><span class="badge badge-{{ 'warning' if i.status in ('reported','investigating') else 'success' if i.status == 'resolved' else 'secondary' }}">{{ i.status }}</span></td>
+    <td>{{ i.detected_at.strftime('%d/%m/%Y') if i.detected_at else '-' }}</td>
+    <td>{% if i.nis2_reportable %}{{ _('Yes') }}{% else %}{{ _('No') }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -19,6 +19,16 @@ class Incident(db.Model):
     root_cause = db.Column(db.Text, nullable=True)
     impact_description = db.Column(db.Text, nullable=True)
     lessons_learned = db.Column(db.Text, nullable=True)
+    nis2_reportable = db.Column(db.Boolean, default=False, comment="Whether this incident is NIS2-reportable")
+    nis2_early_warning_deadline = db.Column(db.DateTime, nullable=True)
+    nis2_early_warning_submitted_at = db.Column(db.DateTime, nullable=True)
+    nis2_notification_deadline = db.Column(db.DateTime, nullable=True)
+    nis2_notification_submitted_at = db.Column(db.DateTime, nullable=True)
+    nis2_final_report_deadline = db.Column(db.DateTime, nullable=True)
+    nis2_final_report_submitted_at = db.Column(db.DateTime, nullable=True)
+    nis2_csirt_reference = db.Column(db.String(128), nullable=True)
+    nis2_status = db.Column(db.String(32), default="not_applicable",
+                            comment="not_applicable|pending_early_warning|pending_notification|pending_final_report|completed")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

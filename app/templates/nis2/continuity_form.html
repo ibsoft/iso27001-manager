@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.list_continuity') }}">{{ _('Continuity Plans') }}</a></li>
+  <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header">{{ title }}</div>
+  <div class="card-body">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <div class="row g-3">
+        <div class="col-lg-6">{{ form.title.label }}{{ form.title(class="form-control") }}</div>
+        <div class="col-lg-3">{{ form.plan_type.label }}{{ form.plan_type(class="form-select") }}</div>
+        <div class="col-lg-3">{{ form.status.label }}{{ form.status(class="form-select") }}</div>
+        <div class="col-12">{{ form.scope.label }}{{ form.scope(class="form-control", rows=2) }}</div>
+        <div class="col-12">{{ form.objectives.label }}{{ form.objectives(class="form-control", rows=2) }}</div>
+        <div class="col-12">{{ form.critical_services.label }}{{ form.critical_services(class="form-control", rows=2) }}</div>
+        <div class="col-12"><hr><h6>{{ _('Recovery Objectives') }}</h6></div>
+        <div class="col-lg-4">{{ form.rto.label }}{{ form.rto(class="form-control") }}</div>
+        <div class="col-lg-4">{{ form.rpo.label }}{{ form.rpo(class="form-control") }}</div>
+        <div class="col-lg-4">{{ form.responsible_team.label }}{{ form.responsible_team(class="form-control") }}</div>
+        <div class="col-12">{{ form.recovery_procedures.label }}{{ form.recovery_procedures(class="form-control", rows=3) }}</div>
+        <div class="col-12"><hr><h6>{{ _('Testing & Maintenance') }}</h6></div>
+        <div class="col-lg-4">{{ form.testing_frequency.label }}{{ form.testing_frequency(class="form-select") }}</div>
+        <div class="col-lg-4">{{ form.last_test_date.label }}{{ form.last_test_date(class="form-control", type="date") }}</div>
+        <div class="col-lg-4">{{ form.next_test_date.label }}{{ form.next_test_date(class="form-control", type="date") }}</div>
+        <div class="col-12">{{ form.last_test_result.label }}{{ form.last_test_result(class="form-control", rows=2) }}</div>
+        <div class="col-12">{{ form.maintenance_schedule.label }}{{ form.maintenance_schedule(class="form-control", rows=2) }}</div>
+        <div class="col-lg-4">{{ form.version.label }}{{ form.version(class="form-control") }}</div>
+        <div class="col-12">{{ form.notes.label }}{{ form.notes(class="form-control", rows=2) }}</div>
+      </div>
+      <div class="mt-3">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('nis2.list_continuity') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

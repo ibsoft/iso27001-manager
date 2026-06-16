@@ -37,7 +37,9 @@
 </div>
 
 <div class="card mt-3">
-  <div class="card-header">{{ _('CSV Exports') }}</div>
+  <div class="card-header">
+    <i class="fas fa-file-excel me-1"></i> {{ _('CSV Exports') }}
+  </div>
   <div class="card-body">
     <div class="row">
       <div class="col-md-3"><a href="{{ url_for('reports.export_csv', resource='controls') }}" class="btn btn-outline-success w-100 mb-2"><i class="fas fa-download me-1"></i>{{ _('Controls') }}</a></div>
@@ -49,9 +51,31 @@
   </div>
 </div>
 
+<div class="card mt-3">
+  <div class="card-header">
+    <i class="fas fa-file-pdf me-1"></i> {{ _('PDF Exports') }} — {{ _('Detailed Reports for External Assessment') }}
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_controls') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Controls') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_risks') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Risks') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_incidents') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Incidents') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_assets') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Assets') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_policies') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Policies') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_audits') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Audits & NCs') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_soa') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('SoA') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_suppliers') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('Suppliers') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_nis2') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('NIS2 Compliance') }}</a></div>
+      <div class="col-md-3 col-6"><a href="{{ url_for('reports.export_pdf_gdpr') }}" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-file-pdf me-1"></i>{{ _('GDPR Compliance') }}</a></div>
+    </div>
+  </div>
+</div>
+
 {% if current_user.has_role('admin') %}
 <div class="card mt-3">
-  <div class="card-header">{{ _('Audit Trail') }}</div>
+  <div class="card-header">
+    <i class="fas fa-history me-1"></i> {{ _('Audit Trail') }}
+  </div>
   <div class="card-body">
     <a href="{{ url_for('reports.view_audit_log') }}" class="btn btn-outline-dark"><i class="fas fa-history me-1"></i>{{ _('View Audit Log') }}</a>
   </div>

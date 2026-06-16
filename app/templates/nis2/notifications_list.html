@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('NIS2 Incident Notifications') }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item active">{{ _('Incident Notifications') }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-3">
+        <select name="notification_status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Statuses') }}</option>
+          <option value="pending" {{ 'selected' if request.args.get('notification_status') == 'pending' }}>{{ _('Pending') }}</option>
+          <option value="early_warning_due" {{ 'selected' if request.args.get('notification_status') == 'early_warning_due' }}>{{ _('Early Warning Due') }}</option>
+          <option value="early_warning_submitted" {{ 'selected' if request.args.get('notification_status') == 'early_warning_submitted' }}>{{ _('Early Warning Submitted') }}</option>
+          <option value="notification_due" {{ 'selected' if request.args.get('notification_status') == 'notification_due' }}>{{ _('Notification Due') }}</option>
+          <option value="notification_submitted" {{ 'selected' if request.args.get('notification_status') == 'notification_submitted' }}>{{ _('Notification Submitted') }}</option>
+          <option value="final_report_due" {{ 'selected' if request.args.get('notification_status') == 'final_report_due' }}>{{ _('Final Report Due') }}</option>
+          <option value="final_report_submitted" {{ 'selected' if request.args.get('notification_status') == 'final_report_submitted' }}>{{ _('Final Report Submitted') }}</option>
+          <option value="completed" {{ 'selected' if request.args.get('notification_status') == 'completed' }}>{{ _('Completed') }}</option>
+        </select>
+      </div>
+      <div class="col-md-5">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search incidents...') }}" value="{{ request.args.get('search', '') }}">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-secondary w-100">{{ _('Filter') }}</button>
+      </div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('reports.export_pdf_nis2') }}" class="btn btn-outline-danger w-100"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('nis2.new_notification') }}" class="btn btn-primary w-100">{{ _('New') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr>
+          <th>{{ _('Incident') }}</th>
+          <th>{{ _('CSIRT Ref') }}</th>
+          <th>{{ _('Early Warning') }}</th>
+          <th>{{ _('72h Notification') }}</th>
+          <th>{{ _('Final Report') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Created') }}</th>
+          <th>{{ _('Actions') }}</th>
+        </tr></thead>
+        <tbody>
+          {% for n in notifications.items %}
+          <tr>
+            <td><a href="{{ url_for('nis2.view_notification', notification_id=n.id) }}">{{ n.incident_title[:50] }}</a></td>
+            <td>{{ n.csirt_reference or '-' }}</td>
+            <td>{% if n.early_warning_submitted_at %}<span class="text-success"><i class="fas fa-check-circle"></i> {{ n.early_warning_submitted_at.strftime('%d/%m/%Y %H:%M') }}</span>{% else %}<span class="text-danger">{{ _('Missing') }}</span>{% endif %}</td>
+            <td>{% if n.notification_submitted_at %}<span class="text-success"><i class="fas fa-check-circle"></i> {{ n.notification_submitted_at.strftime('%d/%m/%Y %H:%M') }}</span>{% else %}<span class="text-warning">{{ _('Pending') }}</span>{% endif %}</td>
+            <td>{% if n.final_report_submitted_at %}<span class="text-success"><i class="fas fa-check-circle"></i> {{ n.final_report_submitted_at.strftime('%d/%m/%Y %H:%M') }}</span>{% else %}<span class="text-secondary">{{ _('Pending') }}</span>{% endif %}</td>
+            <td><span class="badge bg-{{ 'success' if n.notification_status == 'completed' else 'warning' }}">{{ _(n.notification_status.replace('_', ' ').title()) }}</span></td>
+            <td>{{ n.created_at.strftime('%d/%m/%Y') }}</td>
+            <td>
+              <a href="{{ url_for('nis2.edit_notification', notification_id=n.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Edit') }}"><i class="fas fa-edit"></i></a>
+              <form method="POST" action="{{ url_for('nis2.delete_notification', notification_id=n.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this notification?') }}')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="text-muted text-center">{{ _('No NIS2 incident notifications yet.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ render_pagination(notifications, 'nis2.list_notifications') }}
+{% endblock %}

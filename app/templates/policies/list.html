@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Policies & Documents') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Policies & Documents') }}</li>{% endblock %}
 
@@ -46,6 +47,7 @@
         </div>
       </form>
       <div class="ms-3 d-flex gap-2">
+        <a href="{{ url_for('reports.export_pdf_policies') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
         <a href="{{ url_for('policies.new_policy') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New') }}</a>
       </div>
     </div>
@@ -53,7 +55,7 @@
 </div>
 
 <div class="row">
-  {% for policy in policies %}
+  {% for policy in policies.items %}
   <div class="col-lg-6">
     <div class="card mb-3">
       <div class="card-body">
@@ -103,4 +105,5 @@
   </div>
   {% endfor %}
 </div>
+{{ render_pagination(policies, 'policies.list_policies', kwargs=request.args) }}
 {% endblock %}

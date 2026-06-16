@@ -6,6 +6,7 @@ from app.models.user import User, Role, Permission
 from app.models.audit_log import AuditLog
 from app.forms import UserForm
 from app.utils.decorators import admin_required
+from app.utils.pagination import paginate
 from datetime import datetime
 
 admin_bp = Blueprint("admin", __name__)
@@ -15,7 +16,7 @@ admin_bp = Blueprint("admin", __name__)
 @login_required
 @admin_required
 def list_users():
-    users = User.query.order_by(User.username).all()
+    users = paginate(User.query.order_by(User.username))
     return render_template("admin/users.html", users=users)
 
 

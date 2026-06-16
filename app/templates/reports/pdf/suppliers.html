@@ -1,0 +1,23 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.active }}</div><div class="lbl">{{ _('Active') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.assessed }}</div><div class="lbl">{{ _('Assessed') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.nis2_scope }}</div><div class="lbl">{{ _('NIS2 Scope') }}</div></div>
+</div>
+<table>
+  <tr><th>{{ _('Name') }}</th><th>{{ _('Service') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('Assessment') }}</th><th>{{ _('ICT Type') }}</th><th>{{ _('Tier') }}</th><th>{{ _('NIS2') }}</th></tr>
+  {% for s in suppliers %}
+  <tr>
+    <td>{{ (s.name or '')[:35] }}</td>
+    <td>{{ (s.service_description or '')[:40] }}</td>
+    <td><span class="badge badge-{{ 'danger' if s.criticality == 'critical' else 'warning' if s.criticality == 'high' else 'info' }}">{{ s.criticality or '' }}</span></td>
+    <td><span class="badge badge-{{ 'success' if s.assessment_status == 'approved' else 'warning' }}">{{ (s.assessment_status or '').replace('_', ' ') }}</span></td>
+    <td>{{ s.ict_service_type or '-' }}</td>
+    <td>{{ _('Tier') }} {{ s.dependency_tier }}</td>
+    <td>{% if s.nis2_in_scope %}{{ _('Yes') }}{% else %}{{ _('No') }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
