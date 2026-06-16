@@ -35,7 +35,8 @@ def create_app(config_name=None):
     session_ext.init_app(app)
     mail.init_app(app)
     limiter.init_app(app)
-    from flask import request, session
+    from flask import request, session, flash, redirect, url_for, jsonify
+    from flask_babel import gettext as _
 
     LANGUAGES = {"en": "English", "el": "Ελληνικά"}
 
@@ -121,6 +122,17 @@ def create_app(config_name=None):
                 "forced_timezone": SystemSetting.get("forced_timezone"),
             },
         }
+
+    @app.errorhandler(403)
+    def forbidden(error):
+        message = _("You do not have permission to access this resource.")
+        if request.accept_mimetypes.best == "application/json":
+            return jsonify({"error": _("Forbidden"), "message": message}), 403
+        flash(message, "forbidden")
+        fallback = url_for("dashboard.index")
+        if request.referrer and request.referrer != request.url:
+            return redirect(request.referrer)
+        return redirect(fallback)
 
     from app.routes.auth import auth_bp
     from app.routes.dashboard import dashboard_bp
