@@ -1,0 +1,110 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+{% set plan_type_labels = {
+  'business_continuity': _('Business Continuity'),
+  'disaster_recovery': _('Disaster Recovery'),
+  'crisis_management': _('Crisis Management'),
+  'combined': _('Combined')
+} %}
+{% set test_type_labels = {
+  'tabletop': _('Tabletop'),
+  'walkthrough': _('Walkthrough'),
+  'technical': _('Technical Recovery'),
+  'full_interruption': _('Full Interruption'),
+  'drp': _('Disaster Recovery Plan (DRP) Test')
+} %}
+{% set outcome_labels = {
+  'planned': _('Planned'),
+  'passed': _('Passed'),
+  'partial': _('Partially Passed'),
+  'failed': _('Failed'),
+  'cancelled': _('Cancelled')
+} %}
+<h1 style="font-size:20px; margin-bottom:5px;">{{ _('Business Continuity Report') }}</h1>
+<p style="color:#64748b; margin-bottom:20px; font-size:11px;">
+  {{ _('Generated on') }} {{ now().strftime('%Y-%m-%d %H:%M') }}
+</p>
+
+<table style="width:100%; border-collapse:collapse; font-size:10px; margin-bottom:18px;">
+  <tr style="background:#f1f5f9;">
+    <td style="padding:8px; border:1px solid #e2e8f0;">{{ _('Business Impact Analysis (BIA) Records') }}: {{ stats.bia }}</td>
+    <td style="padding:8px; border:1px solid #e2e8f0;">{{ _('Plans') }}: {{ stats.plans }}</td>
+    <td style="padding:8px; border:1px solid #e2e8f0;">{{ _('Active Plans') }}: {{ stats.active }}</td>
+    <td style="padding:8px; border:1px solid #e2e8f0;">{{ _('Open Actions') }}: {{ stats.open_actions }}</td>
+  </tr>
+</table>
+
+<h2 style="font-size:14px;">{{ _('Business Impact Analysis (BIA)') }}</h2>
+<table style="width:100%; border-collapse:collapse; font-size:9px; margin-bottom:16px;">
+  <thead><tr style="background:#1e293b; color:#fff;">
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Process') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Criticality') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('MTPD (Maximum Tolerable Period of Disruption)') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('RTO (Recovery Time Objective)') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('RPO (Recovery Point Objective)') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Status') }}</th>
+  </tr></thead>
+  <tbody>
+    {% for record in bia_records %}
+    <tr>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ record.process_name }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ record.criticality|title }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ record.mtpd or '' }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ record.rto or '' }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ record.rpo or '' }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ record.status|replace('_', ' ')|title }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" style="padding:10px; text-align:center;">{{ _('No Business Impact Analysis (BIA) records yet.') }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2 style="font-size:14px;">{{ _('Continuity Plans') }}</h2>
+<table style="width:100%; border-collapse:collapse; font-size:9px; margin-bottom:16px;">
+  <thead><tr style="background:#1e293b; color:#fff;">
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Plan') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Type') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Lifecycle Stage') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Next Test') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Actions') }}</th>
+  </tr></thead>
+  <tbody>
+    {% for plan in plans %}
+    <tr>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ plan.title }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ plan_type_labels.get(plan.plan_type, plan.plan_type) }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ plan.lifecycle_stage|replace('_', ' ')|title }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ plan.next_test_date.strftime('%Y-%m-%d') if plan.next_test_date else '' }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ plan.open_action_count }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" style="padding:10px; text-align:center;">{{ _('No continuity plans yet.') }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2 style="font-size:14px;">{{ _('Disaster Recovery Plan (DRP) Tests') }}</h2>
+<table style="width:100%; border-collapse:collapse; font-size:9px;">
+  <thead><tr style="background:#1e293b; color:#fff;">
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Test') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Plan') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Type') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Performed') }}</th>
+    <th style="padding:6px; border:1px solid #334155;">{{ _('Outcome') }}</th>
+  </tr></thead>
+  <tbody>
+    {% for test in tests %}
+    <tr>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ test.title }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ test.plan.title if test.plan else '' }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ test_type_labels.get(test.test_type, test.test_type) }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ test.performed_date.strftime('%Y-%m-%d') if test.performed_date else '' }}</td>
+      <td style="padding:5px; border:1px solid #e2e8f0;">{{ outcome_labels.get(test.outcome, test.outcome) }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" style="padding:10px; text-align:center;">{{ _('No Disaster Recovery Plan (DRP) tests recorded.') }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

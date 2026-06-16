@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_pagination.html" import render_pagination %}
-{% block page_title %}{{ _('CAPA Requests') }}{% endblock %}
-{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('CAPA') }}</li>{% endblock %}
+{% block page_title %}{{ _('Corrective and Preventive Action (CAPA) Requests') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Corrective and Preventive Action (CAPA)') }}</li>{% endblock %}
 
 {% block content %}
 <div class="card mb-4">
@@ -37,7 +37,7 @@
       </div>
       <div class="d-flex gap-2">
         <a href="{{ url_for('reports.export_pdf_capas') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
-        <a href="{{ url_for('capa.new_capa') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New CAPA') }}</a>
+        <a href="{{ url_for('capa.new_capa') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New Corrective and Preventive Action (CAPA)') }}</a>
       </div>
     </div>
   </div>
@@ -67,7 +67,7 @@
           <div>
             <small><i class="far fa-calendar me-1"></i>{{ capa.created_at.strftime('%Y-%m-%d') }}</small>
             {% if current_user.has_role('admin') %}
-            <form method="POST" action="{{ url_for('capa.delete_capa', capa_id=capa.id) }}" class="d-inline ms-2" data-confirm="{{ _('Delete this CAPA?') }}">
+            <form method="POST" action="{{ url_for('capa.delete_capa', capa_id=capa.id) }}" class="d-inline ms-2" data-confirm="{{ _('Delete this Corrective and Preventive Action (CAPA)?') }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
             </form>
@@ -81,8 +81,8 @@
   <div class="col-12">
     <div class="text-center text-muted py-5">
       <i class="fas fa-clipboard-check fa-3x mb-3"></i>
-      <p>{{ _('No CAPA requests yet.') }}</p>
-      <a href="{{ url_for('capa.new_capa') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Create your first CAPA') }}</a>
+      <p>{{ _('No Corrective and Preventive Action (CAPA) requests yet.') }}</p>
+      <a href="{{ url_for('capa.new_capa') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Create your first Corrective and Preventive Action (CAPA)') }}</a>
     </div>
   </div>
   {% endfor %}
