@@ -262,6 +262,29 @@ def download_version_file(policy_id, version_id):
     return send_file(path, as_attachment=True, download_name=version.original_filename)
 
 
+@policies_bp.route("/<int:policy_id>/preview")
+@login_required
+def preview_policy_file(policy_id):
+    policy = Policy.query.get_or_404(policy_id)
+    if policy.is_document and policy.filename:
+        path = os.path.join(current_app.config["UPLOAD_FOLDER"], policy.filename)
+        if os.path.exists(path):
+            ext = os.path.splitext(policy.original_filename or "")[1].lower()
+            mimetypes = {
+                ".pdf": "application/pdf",
+                ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+                ".gif": "image/gif", ".svg": "image/svg+xml",
+                ".txt": "text/plain", ".md": "text/markdown",
+                ".csv": "text/csv", ".rtf": "text/rtf",
+            }
+            mime = mimetypes.get(ext, "application/octet-stream")
+            return send_file(path, mimetype=mime, as_attachment=False)
+        flash(_("File not found on disk."), "danger")
+        return redirect(url_for("policies.view_policy", policy_id=policy.id))
+    flash(_("No file to preview."), "warning")
+    return redirect(url_for("policies.view_policy", policy_id=policy.id))
+
+
 @policies_bp.route("/<int:policy_id>/delete", methods=["POST"])
 @login_required
 @admin_required

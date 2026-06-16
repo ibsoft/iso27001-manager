@@ -67,6 +67,13 @@ def new_soa():
         form.populate_obj(entry)
         if form.responsible_person_id.data == 0:
             entry.responsible_person_id = None
+        # Auto-populate descriptions from control if not provided
+        control = Control.query.get(form.control_id.data)
+        if control:
+            if not entry.selected_control_description and control.description:
+                entry.selected_control_description = control.description
+            if not entry.selected_control_description_el and control.description_el:
+                entry.selected_control_description_el = control.description_el
         entry.version = "1.0"
         db.session.add(entry)
         db.session.commit()

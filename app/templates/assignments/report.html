@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Asset Assignment Report') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('assignments.list_assignments') }}">{{ _('Assignments') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Report') }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm bg-primary bg-opacity-10">
+      <div class="card-body text-center">
+        <h3 class="mb-0 fw-bold">{{ total }}</h3>
+        <small class="text-muted">{{ _('Total Assignments') }}</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm bg-warning bg-opacity-10">
+      <div class="card-body text-center">
+        <h3 class="mb-0 fw-bold text-warning">{{ active }}</h3>
+        <small class="text-muted">{{ _('Currently Checked Out') }}</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm bg-success bg-opacity-10">
+      <div class="card-body text-center">
+        <h3 class="mb-0 fw-bold text-success">{{ returned }}</h3>
+        <small class="text-muted">{{ _('Returned') }}</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-0 shadow-sm bg-danger bg-opacity-10">
+      <div class="card-body text-center">
+        <h3 class="mb-0 fw-bold text-danger">{{ overdue }}</h3>
+        <small class="text-muted">{{ _('Overdue') }}</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 mb-4">
+    <div class="card">
+      <div class="card-header">{{ _('Per User / Department') }}</div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0 small">
+          <thead><tr><th>{{ _('User') }}</th><th class="text-center">{{ _('Total') }}</th><th class="text-center">{{ _('Active') }}</th><th class="text-center">{{ _('Returned') }}</th></tr></thead>
+          <tbody>
+            {% for u in by_user %}
+            <tr>
+              <td>
+                {% if u.id %}
+                <a href="{{ url_for('assignments.user_history', user_id=u.id) }}">{{ u.first_name }} {{ u.last_name }}</a>
+                {% else %}
+                <span class="text-muted">{{ _('External / Unknown') }}</span>
+                {% endif %}
+              </td>
+              <td class="text-center">{{ u.total }}</td>
+              <td class="text-center"><span class="badge bg-warning text-dark">{{ u.active_count }}</span></td>
+              <td class="text-center"><span class="badge bg-success">{{ u.returned_count }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center text-muted py-3">{{ _('No data') }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 mb-4">
+    <div class="card">
+      <div class="card-header">{{ _('Recent Assignments') }}</div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0 small">
+          <thead><tr><th>{{ _('Asset') }}</th><th>{{ _('Person') }}</th><th>{{ _('Date') }}</th><th>{{ _('Status') }}</th></tr></thead>
+          <tbody>
+            {% for a in recent %}
+            <tr>
+              <td><a href="{{ url_for('assets.view_asset', asset_id=a.asset_id) }}">{{ a.asset.name[:25] if a.asset else '—' }}</a></td>
+              <td>{{ a.assignee_name[:20] or '—' }}</td>
+              <td>{{ a.checkout_date.strftime('%Y-%m-%d') }}</td>
+              <td>
+                {% if a.is_overdue %}<span class="badge bg-danger">{{ _('Overdue') }}</span>
+                {% elif a.status == 'checked_out' %}<span class="badge bg-warning text-dark">{{ _('Out') }}</span>
+                {% else %}<span class="badge bg-success">{{ _('Back') }}</span>{% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

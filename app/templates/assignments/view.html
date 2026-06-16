@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Assignment') }} #{{ assignment.id }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('assignments.list_assignments') }}">{{ _('Assignments') }}</a></li>
+<li class="breadcrumb-item active">#{{ assignment.id }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>{{ _('Assignment Details') }}</span>
+        <div>
+          <a href="{{ url_for('assignments.receipt', assignment_id=assignment.id) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+            <i class="fas fa-receipt me-1"></i>{{ _('Receipt') }}
+          </a>
+          {% if assignment.status == 'checked_out' %}
+          <a href="{{ url_for('assignments.checkin_assignment', assignment_id=assignment.id) }}" class="btn btn-sm btn-success">
+            <i class="fas fa-undo me-1"></i>{{ _('Check In') }}
+          </a>
+          {% endif %}
+          {% if current_user.has_role('admin') and assignment.status == 'returned' %}
+          <form method="POST" action="{{ url_for('assignments.delete_assignment', assignment_id=assignment.id) }}" class="d-inline" data-confirm="{{ _('Delete this assignment?') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <tr><td class="text-muted" style="width:180px">{{ _('Asset') }}</td>
+            <td><a href="{{ url_for('assets.view_asset', asset_id=assignment.asset_id) }}" class="fw-bold">{{ assignment.asset.name if assignment.asset else _('Deleted') }}</a>
+            {% if assignment.asset and assignment.asset.serial_number %}<code class="ms-2 small">{{ assignment.asset.serial_number }}</code>{% endif %}
+          </td></tr>
+          <tr><td class="text-muted">{{ _('Assignee') }}</td><td class="fw-bold">{{ assignment.assignee_name or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Type') }}</td><td><span class="badge bg-{{ 'info' if assignment.assignee_type == 'internal' else 'secondary' }}">{{ assignment.assignee_type|title }}</span></td></tr>
+          <tr><td class="text-muted">{{ _('Department') }}</td><td>{{ assignment.department or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Contact') }}</td><td>{% if assignment.contact_email %}<a href="mailto:{{ assignment.contact_email }}">{{ assignment.contact_email }}</a>{% else %}—{% endif %}
+            {% if assignment.contact_phone %} &middot; {{ assignment.contact_phone }}{% endif %}</td></tr>
+          <tr><td class="text-muted">{{ _('Checkout Date') }}</td><td>{{ assignment.checkout_date.strftime('%Y-%m-%d %H:%M') if assignment.checkout_date else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Expected Return') }}</td><td>{{ assignment.expected_return_date.strftime('%Y-%m-%d') if assignment.expected_return_date else '—' }}
+            {% if assignment.is_overdue %}<span class="badge bg-danger ms-2">{{ _('Overdue') }}</span>{% endif %}
+          </td></tr>
+          <tr><td class="text-muted">{{ _('Actual Return') }}</td><td>{{ assignment.actual_return_date.strftime('%Y-%m-%d %H:%M') if assignment.actual_return_date else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Duration') }}</td><td>{{ assignment.duration_days }} {{ _('days') }}</td></tr>
+          <tr><td class="text-muted">{{ _('Status') }}</td>
+            <td>{% if assignment.status == 'checked_out' %}<span class="badge bg-warning text-dark">{{ _('Checked Out') }}</span>
+              {% else %}<span class="badge bg-success">{{ _('Returned') }}</span>{% endif %}
+            </td></tr>
+          <tr><td class="text-muted">{{ _('Purpose') }}</td><td>{{ assignment.purpose or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Notes') }}</td><td>{{ assignment.notes or '—' }}</td></tr>
+          {% if assignment.condition_notes %}
+          <tr><td class="text-muted">{{ _('Condition on Return') }}</td><td>{{ assignment.condition_notes }}</td></tr>
+          {% endif %}
+          {% if assignment.released_by %}
+          <tr><td class="text-muted">{{ _('Released By') }}</td><td>{{ assignment.released_by.first_name }} {{ assignment.released_by.last_name }}</td></tr>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+
+    {% if assignment.signature_data or assignment.checkin_signature_data %}
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Signatures') }}</div>
+      <div class="card-body">
+        <div class="row">
+          {% if assignment.signature_data %}
+          <div class="col-md-6 text-center">
+            <h6 class="text-muted small text-uppercase">{{ _('Checkout Signature') }}</h6>
+            <img src="{{ assignment.signature_data }}" alt="Checkout signature" class="img-fluid border rounded" style="max-height:120px">
+            <p class="small text-muted mt-1">{{ _('Signed:') }} {{ assignment.signed_at.strftime('%Y-%m-%d %H:%M') if assignment.signed_at else '' }}</p>
+          </div>
+          {% endif %}
+          {% if assignment.checkin_signature_data %}
+          <div class="col-md-6 text-center">
+            <h6 class="text-muted small text-uppercase">{{ _('Check-in Signature') }}</h6>
+            <img src="{{ assignment.checkin_signature_data }}" alt="Check-in signature" class="img-fluid border rounded" style="max-height:120px">
+            <p class="small text-muted mt-1">{{ _('Signed:') }} {{ assignment.checkin_signed_at.strftime('%Y-%m-%d %H:%M') if assignment.checkin_signed_at else '' }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">{{ _('Asset Info') }}</div>
+      <div class="card-body small">
+        {% if assignment.asset %}
+        <div class="mb-2"><span class="text-muted">{{ _('Name') }}:</span> <strong>{{ assignment.asset.name }}</strong></div>
+        <div class="mb-2"><span class="text-muted">{{ _('Type') }}:</span> {{ assignment.asset.asset_type|title if assignment.asset.asset_type else '—' }}</div>
+        <div class="mb-2"><span class="text-muted">{{ _('Criticality') }}:</span>
+          <span class="badge bg-{{ 'dark' if assignment.asset.criticality == 'critical' else 'danger' if assignment.asset.criticality == 'high' else 'warning text-dark' }}">{{ assignment.asset.criticality|title }}</span>
+        </div>
+        <div class="mb-2"><span class="text-muted">{{ _('Location') }}:</span> {{ assignment.asset.location or '—' }}</div>
+        <hr>
+        <a href="{{ url_for('assets.view_asset', asset_id=assignment.asset.id) }}" class="btn btn-outline-primary btn-sm w-100">
+          <i class="fas fa-external-link-alt me-1"></i>{{ _('View Asset') }}
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if assignment.user %}
+    <div class="card mt-3">
+      <div class="card-header">{{ _('User Info') }}</div>
+      <div class="card-body small">
+        <div class="mb-2">{{ assignment.user.first_name }} {{ assignment.user.last_name }}</div>
+        <div class="mb-2"><span class="text-muted">{{ _('Email') }}:</span> {{ assignment.user.email }}</div>
+        <hr>
+        <a href="{{ url_for('assignments.user_history', user_id=assignment.user.id) }}" class="btn btn-outline-info btn-sm w-100">
+          <i class="fas fa-history me-1"></i>{{ _('View History') }}
+        </a>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

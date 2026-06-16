@@ -97,6 +97,10 @@ def create_app(config_name=None):
         if forced_tz:
             _session["timezone"] = forced_tz
 
+    @app.template_filter()
+    def without_page(params):
+        return {k: v for k, v in params.items() if k != "page"}
+
     @app.context_processor
     def inject_globals():
         from flask import session as _session
@@ -126,6 +130,7 @@ def create_app(config_name=None):
     from app.routes.admin import admin_bp
     from app.routes.gdpr import gdpr_bp
     from app.routes.nis2 import nis2_bp
+    from app.routes.assignments import assignments_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/")
@@ -142,6 +147,7 @@ def create_app(config_name=None):
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(gdpr_bp, url_prefix="/gdpr")
     app.register_blueprint(nis2_bp, url_prefix="/nis2")
+    app.register_blueprint(assignments_bp, url_prefix="/assignments")
 
     @app.route("/health")
     def health():

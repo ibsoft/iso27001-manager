@@ -30,7 +30,8 @@
           <td>
             <a href="{{ url_for('admin.edit_user', user_id=u.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
             {% if u.id != current_user.id %}
-            <form method="POST" action="{{ url_for('admin.toggle_user_active', user_id=u.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Deactivate this user?') if u.is_active else _('Activate this user?') }}')">
+            <form method="POST" action="{{ url_for('admin.toggle_user_active', user_id=u.id) }}" class="d-inline" data-confirm="{{ _('Deactivate this user?') if u.is_active else _('Activate this user?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button type="submit" class="btn btn-sm btn-outline-{{ 'danger' if u.is_active else 'success' }}"><i class="fas {{ 'fa-ban' if u.is_active else 'fa-check' }}"></i></button>
             </form>
             {% endif %}

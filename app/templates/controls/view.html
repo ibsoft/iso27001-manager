@@ -14,7 +14,8 @@
         <div>
           <a href="{{ url_for('controls.edit_control', control_id=control.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
           {% if current_user.has_role('admin') %}
-          <form method="POST" action="{{ url_for('controls.delete_control', control_id=control.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this control?') }}')">
+          <form method="POST" action="{{ url_for('controls.delete_control', control_id=control.id) }}" class="d-inline" data-confirm="{{ _('Delete this control?') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
           </form>
           {% endif %}
@@ -26,9 +27,9 @@
           <tr><td class="text-muted">{{ _('Title') }}</td><td class="fw-bold">{{ control.localized_title(current_lang) }}</td></tr>
           <tr><td class="text-muted">{{ _('Domain') }}</td><td>{{ control.domain.localized_name(current_lang) if control.domain else '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Description') }}</td><td>{{ control.localized_description(current_lang) or '—' }}</td></tr>
-          <tr><td class="text-muted">{{ _('Detailed Description') }}</td><td>{{ control.detailed_description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Detailed Description') }}</td><td>{{ control.localized_detailed_description(current_lang) or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Purpose') }}</td><td>{{ control.localized_purpose(current_lang) or '—' }}</td></tr>
-          <tr><td class="text-muted">{{ _('Guidance') }}</td><td>{{ control.guidance or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Guidance') }}</td><td>{{ control.localized_guidance(current_lang) or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Implementation Status') }}</td><td><span class="{{ control.status_badge_class }} fs-6">{{ control.implementation_status|replace('_', ' ')|title }}</span></td></tr>
           <tr><td class="text-muted">{{ _('Owner') }}</td><td>{{ control.owner.first_name ~ ' ' ~ control.owner.last_name if control.owner else _('Unassigned') }}</td></tr>
           <tr><td class="text-muted">{{ _('Target Date') }}</td><td>{{ control.target_date.strftime('%Y-%m-%d') if control.target_date else _('Not set') }}</td></tr>

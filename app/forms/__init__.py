@@ -753,6 +753,31 @@ class Nis2ContinuityForm(BaseForm):
     submit = SubmitField(_l("Save"))
 
 
+class AssetCheckoutForm(BaseForm):
+    assignee_type = SelectField(
+        _l("Assignee Type"),
+        choices=[("internal", _l("Internal User")), ("external", _l("External Person"))],
+        default="internal",
+    )
+    user_id = SelectField(_l("Internal User"), coerce=int, validators=[Optional()])
+    assignee_name = StringField(_l("Full Name"), validators=[Optional(), Length(max=256)])
+    department = StringField(_l("Department / Team"), validators=[Optional(), Length(max=128)])
+    contact_email = StringField(_l("Contact Email"), validators=[Optional(), Email(), Length(max=120)])
+    contact_phone = StringField(_l("Contact Phone"), validators=[Optional(), Length(max=64)])
+    expected_return_date = DateField(_l("Expected Return Date"), validators=[Optional()])
+    purpose = TextAreaField(_l("Purpose / Reason"), validators=[Optional()])
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    signature_data = HiddenField(_l("Signature"))
+    submit = SubmitField(_l("Check Out Asset"))
+
+
+class AssetCheckinForm(BaseForm):
+    actual_return_date = DateField(_l("Actual Return Date"), validators=[Optional()])
+    condition_notes = TextAreaField(_l("Condition on Return"), validators=[Optional()])
+    checkin_signature_data = HiddenField(_l("Return Signature"))
+    submit = SubmitField(_l("Check In Asset"))
+
+
 class Nis2ComplianceForm(BaseForm):
     measure = SelectField(
         _l("NIS2 Measure"),
