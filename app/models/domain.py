@@ -8,12 +8,20 @@ class Domain(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.Integer, unique=True, nullable=False, comment="5=Organizational, 6=People, 7=Physical, 8=Technological")
     name = db.Column(db.String(64), nullable=False)
+    name_el = db.Column(db.String(64), nullable=True)
     description = db.Column(db.Text, nullable=True)
+    description_el = db.Column(db.Text, nullable=True)
     sort_order = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     controls = db.relationship("Control", backref="domain", lazy="dynamic",
                                order_by="Control.code")
+
+    def localized_name(self, lang="en"):
+        return self.name_el if lang == "el" and self.name_el else self.name
+
+    def localized_description(self, lang="en"):
+        return self.description_el if lang == "el" and self.description_el else self.description
 
     def __repr__(self):
         return f"<Domain {self.code}: {self.name}>"

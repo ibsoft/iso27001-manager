@@ -1,0 +1,45 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total Audits') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.completed }}</div><div class="lbl">{{ _('Completed') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.nc_open }}</div><div class="lbl">{{ _('Open NCs') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.ca_open }}</div><div class="lbl">{{ _('Open CAs') }}</div></div>
+</div>
+<h2>{{ _('Internal Audits') }}</h2>
+<table>
+  <tr><th>{{ _('Title') }}</th><th>{{ _('Date') }}</th><th>{{ _('Auditor') }}</th><th>{{ _('Status') }}</th></tr>
+  {% for a in audits %}
+  <tr>
+    <td>{{ (a.title or '')[:50] }}</td>
+    <td>{{ a.audit_date.strftime('%d/%m/%Y') if a.audit_date else '-' }}</td>
+    <td>{{ a.lead_auditor.first_name + ' ' + a.lead_auditor.last_name if a.lead_auditor else '-' }}</td>
+    <td><span class="badge badge-{{ 'success' if a.status == 'completed' else 'info' if a.status == 'in_progress' else 'secondary' }}">{{ (a.status or '').replace('_', ' ') }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('Non-Conformities') }}</h2>
+<table>
+  <tr><th>{{ _('Description') }}</th><th>{{ _('Severity') }}</th><th>{{ _('Status') }}</th></tr>
+  {% for nc in non_conformities %}
+  <tr>
+    <td>{{ (nc.description or '')[:80] }}</td>
+    <td><span class="badge badge-{{ 'danger' if nc.severity == 'critical' else 'warning' }}">{{ nc.severity or '' }}</span></td>
+    <td><span class="badge badge-{{ 'warning' if nc.status in ('open','in_progress') else 'success' }}">{{ (nc.status or '').replace('_', ' ') }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('Corrective Actions') }}</h2>
+<table>
+  <tr><th>{{ _('Description') }}</th><th>{{ _('Target') }}</th><th>{{ _('Status') }}</th></tr>
+  {% for ca in corrective_actions %}
+  <tr>
+    <td>{{ (ca.description or '')[:80] }}</td>
+    <td>{{ ca.target_date.strftime('%d/%m/%Y') if ca.target_date else '-' }}</td>
+    <td><span class="badge badge-{{ 'warning' if ca.status in ('open','in_progress') else 'success' }}">{{ (ca.status or '').replace('_', ' ') }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

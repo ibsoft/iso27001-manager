@@ -1,0 +1,21 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.approved }}</div><div class="lbl">{{ _('Approved') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.review_needed }}</div><div class="lbl">{{ _('Review Needed') }}</div></div>
+</div>
+<table>
+  <tr><th>{{ _('Title') }}</th><th>{{ _('Category') }}</th><th>{{ _('Status') }}</th><th>{{ _('Effective') }}</th><th>{{ _('Review') }}</th><th>{{ _('Owner') }}</th></tr>
+  {% for p in policies %}
+  <tr>
+    <td>{{ (p.title or '')[:50] }}</td>
+    <td>{{ p.category or '-' }}</td>
+    <td><span class="badge badge-{{ 'success' if p.status == 'published' else 'warning' if p.status == 'draft' else 'secondary' }}">{{ p.status }}</span></td>
+    <td>{{ p.effective_date.strftime('%d/%m/%Y') if p.effective_date else '-' }}</td>
+    <td>{{ p.review_date.strftime('%d/%m/%Y') if p.review_date else '-' }}</td>
+    <td>{{ p.owner.first_name + ' ' + p.owner.last_name if p.owner else '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

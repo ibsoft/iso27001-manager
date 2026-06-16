@@ -30,9 +30,9 @@
 new Chart(document.getElementById('soaChart'), {
   type: 'bar',
   data: {
-    labels: ['Implemented', 'In Progress', 'Not Started', 'Not Applicable'],
+    labels: ['{{ _("Implemented") }}', '{{ _("In Progress") }}', '{{ _("Not Started") }}', '{{ _("Not Applicable") }}'],
     datasets: [{
-      label: 'Controls',
+      label: '{{ _("Controls") }}',
       data: [{{ implemented }}, {{ in_progress }}, {{ not_started }}, {{ not_applicable }}],
       backgroundColor: ['#10b981', '#f59e0b', '#6b7280', '#3b82f6'],
       borderRadius: 6

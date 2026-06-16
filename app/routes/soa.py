@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
+from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, session
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext as _l
 from app.extensions import db
 from app.models.soa import SoAEntry
 from app.models.control import Control
@@ -9,6 +10,8 @@ from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import SoAForm
 from app.utils.decorators import permission_required
+from wtforms import SelectField
+from wtforms.validators import DataRequired
 from datetime import datetime
 
 soa_bp = Blueprint("soa", __name__)
@@ -17,6 +20,7 @@ soa_bp = Blueprint("soa", __name__)
 @soa_bp.route("/")
 @login_required
 def list_soa():
+    lang = session.get("lang", "en")
     domains = Domain.query.order_by(Domain.code).all()
     soa_entries = {}
     for domain in domains:
@@ -39,13 +43,45 @@ def list_soa():
             ).order_by(Control.code).all()
         }
 
-    return render_template("soa/list.html", soa_entries=soa_entries)
+    return render_template("soa/list.html", soa_entries=soa_entries, lang=lang)
+
+
+@soa_bp.route("/new", methods=["GET", "POST"])
+@login_required
+@permission_required("soa_edit")
+def new_soa():
+    lang = session.get("lang", "en")
+    form = SoAForm()
+    form.responsible_person_id.choices = [(0, _("Unassigned"))] + [
+        (u.id, f"{u.first_name} {u.last_name}") for u in User.query.filter_by(is_active=True).all()
+    ]
+    control_choices = [(c.id, f"{c.code} - {c.localized_title(lang)}") for c in Control.query.order_by(Control.code).all()]
+    form.control_id = SelectField(_l("Control"), coerce=int, choices=control_choices, validators=[DataRequired()])
+
+    if form.validate_on_submit():
+        existing = SoAEntry.query.filter_by(control_id=form.control_id.data).first()
+        if existing:
+            flash(_("SoA entry already exists for this control."), "warning")
+            return redirect(url_for("soa.edit_entry", entry_id=existing.id))
+        entry = SoAEntry()
+        form.populate_obj(entry)
+        if form.responsible_person_id.data == 0:
+            entry.responsible_person_id = None
+        entry.version = "1.0"
+        db.session.add(entry)
+        db.session.commit()
+        _log_audit(f"Created SoA entry for control {entry.control.code}")
+        flash(_("SoA entry created."), "success")
+        return redirect(url_for("soa.list_soa"))
+
+    return render_template("soa/form.html", form=form, lang=lang)
 
 
 @soa_bp.route("/<int:entry_id>/edit", methods=["GET", "POST"])
 @login_required
 @permission_required("soa_edit")
 def edit_entry(entry_id):
+    lang = session.get("lang", "en")
     entry = SoAEntry.query.get_or_404(entry_id)
     form = SoAForm(obj=entry)
     form.responsible_person_id.choices = [(0, _("Unassigned"))] + [
@@ -63,7 +99,7 @@ def edit_entry(entry_id):
         return redirect(url_for("soa.list_soa"))
 
     form.responsible_person_id.data = entry.responsible_person_id or 0
-    return render_template("soa/edit.html", form=form, entry=entry)
+    return render_template("soa/edit.html", form=form, entry=entry, lang=lang)
 
 
 @soa_bp.route("/summary")

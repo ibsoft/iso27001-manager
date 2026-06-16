@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Processing Activities (ROPA)') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Processing Activities') }}</li>{% endblock %}
 
@@ -21,12 +22,13 @@
         <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
       </div>
     </form>
-    <a href="{{ url_for('gdpr.new_processing') }}" class="btn btn-primary ms-3"><i class="fas fa-plus me-1"></i>{{ _('New Activity') }}</a>
+    <a href="{{ url_for('reports.export_pdf_gdpr') }}" class="btn btn-outline-danger ms-3"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+    <a href="{{ url_for('gdpr.new_processing') }}" class="btn btn-primary ms-2"><i class="fas fa-plus me-1"></i>{{ _('New Activity') }}</a>
   </div>
 </div>
 
 <div class="row">
-  {% for a in activities %}
+  {% for a in activities.items %}
   <div class="col-lg-6">
     <div class="card mb-3">
       <div class="card-body">
@@ -58,4 +60,5 @@
   </div>
   {% endfor %}
 </div>
+{{ render_pagination(activities, 'gdpr.list_processing', kwargs=request.args) }}
 {% endblock %}

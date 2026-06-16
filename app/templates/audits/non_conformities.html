@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Non-Conformities') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('NCs') }}</li>{% endblock %}
 
@@ -15,6 +16,9 @@
             <option value="closed" {{ 'selected' if request.args.get('status') == 'closed' }}>{{ _('Closed') }}</option>
         </select>
       </div>
+      <div class="col">
+        <a href="{{ url_for('reports.export_pdf_audits') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
     </form>
   </div>
 </div>
@@ -24,7 +28,7 @@
     <table class="table table-hover mb-0">
       <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Severity') }}</th><th>{{ _('Status') }}</th><th>{{ _('Audit') }}</th><th>{{ _('Created') }}</th></tr></thead>
       <tbody>
-        {% for nc in non_conformities %}
+        {% for nc in non_conformities.items %}
         <tr>
           <td class="fw-medium">{{ nc.title }}</td>
           <td><span class="badge bg-{{ 'danger' if nc.severity == 'major' or nc.severity == 'critical' else 'warning text-dark' }}">{{ nc.severity|title }}</span></td>
@@ -39,4 +43,5 @@
     </table>
   </div>
 </div>
+{{ render_pagination(non_conformities, 'audits.list_non_conformities', kwargs=request.args) }}
 {% endblock %}

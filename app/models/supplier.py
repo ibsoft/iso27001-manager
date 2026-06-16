@@ -21,6 +21,11 @@ class Supplier(db.Model):
     data_processing_agreement = db.Column(db.Boolean, default=False)
     criticality = db.Column(db.String(16), default="medium", comment="low|medium|high|critical")
     status = db.Column(db.String(16), default="active", comment="active|inactive|terminated")
+    ict_service_type = db.Column(db.String(64), nullable=True, comment="cloud|saas|network|hardware|software|managed_service|consulting|other")
+    security_certification = db.Column(db.String(256), nullable=True)
+    dependency_tier = db.Column(db.String(8), default="3", comment="1|2|3")
+    nis2_in_scope = db.Column(db.Boolean, default=False)
+    last_supply_chain_review = db.Column(db.Date, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

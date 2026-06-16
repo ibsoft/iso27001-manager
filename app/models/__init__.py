@@ -18,3 +18,5 @@ from app.models.data_subject_request import DataSubjectRequest
 from app.models.consent import ConsentRecord
 from app.models.data_controller import DataControllerProcessor
 from app.models.privacy_notice import PrivacyNotice
+from app.models.nis2 import Nis2EntityRegistration, Nis2IncidentNotification, Nis2SupplyChainAssessment, Nis2ContinuityPlan, Nis2ComplianceCheck
+from app.models.user import SystemSetting

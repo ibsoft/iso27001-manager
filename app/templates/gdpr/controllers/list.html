@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Data Controllers & Processors') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Controllers / Processors') }}</li>{% endblock %}
 
@@ -21,12 +22,13 @@
         <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
       </div>
     </form>
-    <a href="{{ url_for('gdpr.new_controller') }}" class="btn btn-primary ms-3"><i class="fas fa-plus me-1"></i>{{ _('New Entity') }}</a>
+    <a href="{{ url_for('reports.export_pdf_gdpr') }}" class="btn btn-outline-danger ms-3"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+    <a href="{{ url_for('gdpr.new_controller') }}" class="btn btn-primary ms-2"><i class="fas fa-plus me-1"></i>{{ _('New Entity') }}</a>
   </div>
 </div>
 
 <div class="row">
-  {% for e in entities %}
+  {% for e in entities.items %}
   <div class="col-lg-4">
     <div class="card mb-3">
       <div class="card-body">
@@ -55,4 +57,5 @@
   </div>
   {% endfor %}
 </div>
+{{ render_pagination(entities, 'gdpr.list_controllers', kwargs=request.args) }}
 {% endblock %}

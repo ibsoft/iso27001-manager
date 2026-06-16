@@ -7,6 +7,7 @@ from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import IncidentForm
 from app.utils.decorators import permission_required, admin_required
+from app.utils.pagination import paginate
 from datetime import datetime
 
 incidents_bp = Blueprint("incidents", __name__)
@@ -27,7 +28,7 @@ def list_incidents():
     if search:
         query = query.filter(Incident.title.ilike(f"%{search}%"))
 
-    incidents = query.order_by(Incident.created_at.desc()).all()
+    incidents = paginate(query.order_by(Incident.created_at.desc()))
     return render_template("incidents/list.html", incidents=incidents)
 
 

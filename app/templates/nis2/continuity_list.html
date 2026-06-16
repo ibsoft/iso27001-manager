@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('NIS2 Continuity Plans') }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item active">{{ _('Continuity Plans') }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-3">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Statuses') }}</option>
+          <option value="draft" {{ 'selected' if request.args.get('status') == 'draft' }}>{{ _('Draft') }}</option>
+          <option value="approved" {{ 'selected' if request.args.get('status') == 'approved' }}>{{ _('Approved') }}</option>
+          <option value="active" {{ 'selected' if request.args.get('status') == 'active' }}>{{ _('Active') }}</option>
+          <option value="review_required" {{ 'selected' if request.args.get('status') == 'review_required' }}>{{ _('Review Required') }}</option>
+          <option value="archived" {{ 'selected' if request.args.get('status') == 'archived' }}>{{ _('Archived') }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select name="plan_type" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Types') }}</option>
+          <option value="business_continuity" {{ 'selected' if request.args.get('plan_type') == 'business_continuity' }}>{{ _('Business Continuity') }}</option>
+          <option value="disaster_recovery" {{ 'selected' if request.args.get('plan_type') == 'disaster_recovery' }}>{{ _('Disaster Recovery') }}</option>
+          <option value="crisis_management" {{ 'selected' if request.args.get('plan_type') == 'crisis_management' }}>{{ _('Crisis Management') }}</option>
+          <option value="combined" {{ 'selected' if request.args.get('plan_type') == 'combined' }}>{{ _('Combined') }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search plans...') }}" value="{{ request.args.get('search', '') }}">
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-outline-secondary w-100">{{ _('Filter') }}</button>
+      </div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('reports.export_pdf_nis2') }}" class="btn btn-outline-danger w-100"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('nis2.new_continuity') }}" class="btn btn-primary w-100">{{ _('New Plan') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr>
+          <th>{{ _('Title') }}</th>
+          <th>{{ _('Type') }}</th>
+          <th>{{ _('RTO') }}</th>
+          <th>{{ _('RPO') }}</th>
+          <th>{{ _('Last Test') }}</th>
+          <th>{{ _('Next Test') }}</th>
+          <th>{{ _('Version') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Actions') }}</th>
+        </tr></thead>
+        <tbody>
+          {% for p in plans.items %}
+          <tr>
+            <td><a href="{{ url_for('nis2.view_continuity', plan_id=p.id) }}">{{ p.title[:40] }}</a></td>
+            <td><span class="badge bg-info">{{ _(p.plan_type.replace('_', ' ').title()) }}</span></td>
+            <td>{{ p.rto or '-' }}</td>
+            <td>{{ p.rpo or '-' }}</td>
+            <td>{{ p.last_test_date.strftime('%d/%m/%Y') if p.last_test_date else '-' }}</td>
+            <td>{% if p.next_test_date %}{{ p.next_test_date.strftime('%d/%m/%Y') }}{% if p.next_test_date < now().date() %} <span class="badge bg-danger">{{ _('Overdue') }}</span>{% endif %}{% else %}-{% endif %}</td>
+            <td>v{{ p.version }}</td>
+            <td><span class="badge bg-{{ 'success' if p.status == 'active' else 'primary' if p.status == 'approved' else 'warning' if p.status == 'review_required' else 'secondary' if p.status == 'draft' else 'dark' }}">{{ _(p.status.replace('_', ' ').title()) }}</span></td>
+            <td>
+              <a href="{{ url_for('nis2.edit_continuity', plan_id=p.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Edit') }}"><i class="fas fa-edit"></i></a>
+              <form method="POST" action="{{ url_for('nis2.delete_continuity', plan_id=p.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this plan?') }}')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="9" class="text-muted text-center">{{ _('No continuity plans yet.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ render_pagination(plans, 'nis2.list_continuity') }}
+{% endblock %}

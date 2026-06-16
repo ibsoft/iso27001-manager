@@ -11,6 +11,7 @@ from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import PolicyForm
 from app.utils.decorators import permission_required, admin_required
+from app.utils.pagination import paginate
 
 policies_bp = Blueprint("policies", __name__)
 
@@ -63,7 +64,7 @@ def list_policies():
             )
         )
 
-    policies = query.order_by(Policy.updated_at.desc()).all()
+    policies = paginate(query.order_by(Policy.updated_at.desc()))
     return render_template("policies/list.html", policies=policies)
 
 

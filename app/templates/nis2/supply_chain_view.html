@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Supply Chain Assessment') }}: {{ assessment.supplier_name }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.list_supply_chain') }}">{{ _('Supply Chain') }}</a></li>
+  <li class="breadcrumb-item active">{{ assessment.supplier_name[:30] }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ assessment.supplier_name }}</span>
+    <div>
+      <a href="{{ url_for('nis2.edit_supply_chain', assessment_id=assessment.id) }}" class="btn btn-sm btn-primary">{{ _('Edit') }}</a>
+      <form method="POST" action="{{ url_for('nis2.delete_supply_chain', assessment_id=assessment.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this assessment?') }}')">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-sm btn-outline-danger">{{ _('Delete') }}</button>
+      </form>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <h6 class="text-muted mb-3">{{ _('Service Details') }}</h6>
+        <table class="table table-borderless">
+          <tr><th style="width:180px;">{{ _('Related Supplier') }}</th><td>{% if assessment.supplier %}<a href="{{ url_for('suppliers.view_supplier', supplier_id=assessment.supplier.id) }}">{{ assessment.supplier.name }}</a>{% else %}-{% endif %}</td></tr>
+          <tr><th>{{ _('ICT Service Type') }}</th><td>{{ assessment.ict_service_type or '-' }}</td></tr>
+          <tr><th>{{ _('Service Criticality') }}</th><td><span class="badge bg-{{ 'danger' if assessment.service_criticality == 'critical' else 'warning' if assessment.service_criticality == 'high' else 'info' }}">{{ _(assessment.service_criticality.title()) }}</span></td></tr>
+          <tr><th>{{ _('Dependency Tier') }}</th><td>{{ _('Tier') }} {{ assessment.dependency_tier }}</td></tr>
+          <tr><th>{{ _('In NIS2 Scope') }}</th><td>{% if assessment.nis2_in_scope %}<span class="badge bg-danger">{{ _('Yes') }}</span>{% else %}<span class="badge bg-secondary">{{ _('No') }}</span>{% endif %}</td></tr>
+          <tr><th>{{ _('Security Certifications') }}</th><td>{{ assessment.security_certifications or '-' }}</td></tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h6 class="text-muted mb-3">{{ _('Assessment Info') }}</h6>
+        <table class="table table-borderless">
+          <tr><th style="width:180px;">{{ _('Risk Level') }}</th><td><span class="badge bg-{{ 'danger' if assessment.supply_chain_risk_level == 'critical' else 'warning' if assessment.supply_chain_risk_level == 'high' else 'info' }}">{{ _(assessment.supply_chain_risk_level.title()) }}</span></td></tr>
+          <tr><th>{{ _('Status') }}</th><td><span class="badge bg-{{ 'success' if assessment.status == 'approved' else 'warning' if assessment.status == 'review_required' or assessment.status == 'pending' else 'danger' }}">{{ _(assessment.status.replace('_', ' ').title()) }}</span></td></tr>
+          <tr><th>{{ _('Last Assessment') }}</th><td>{{ assessment.last_assessment_date.strftime('%d/%m/%Y') if assessment.last_assessment_date else '-' }}</td></tr>
+          <tr><th>{{ _('Next Assessment') }}</th><td>{% if assessment.next_assessment_date %}{{ assessment.next_assessment_date.strftime('%d/%m/%Y') }}{% if assessment.next_assessment_date < now().date() %} <span class="badge bg-danger">{{ _('Overdue') }}</span>{% endif %}{% else %}-{% endif %}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <h6 class="text-muted mb-3">{{ _('Contractual Safeguards') }}</h6>
+        <table class="table table-borderless">
+          <tr><th style="220px;">{{ _('SLA in Place') }}</th><td>{% if assessment.sla_in_place %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-danger"></i>{% endif %}</td></tr>
+          <tr><th>{{ _('Incident Reporting Defined') }}</th><td>{% if assessment.incident_reporting_defined %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-danger"></i>{% endif %}</td></tr>
+          <tr><th>{{ _('Right to Audit') }}</th><td>{% if assessment.right_to_audit %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-danger"></i>{% endif %}</td></tr>
+          <tr><th>{{ _('DPA in Place') }}</th><td>{% if assessment.data_processing_agreement %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-danger"></i>{% endif %}</td></tr>
+          <tr><th>{{ _('Termination Notice') }}</th><td>{{ assessment.termination_notice_days or '-' }} {{ _('days') }}</td></tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <h6 class="text-muted mb-3">{{ _('Subcontractors') }}</h6>
+        <table class="table table-borderless">
+          <tr><th style="220px;">{{ _('Subcontractors Known') }}</th><td>{% if assessment.subcontractors_known %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-danger"></i>{% endif %}</td></tr>
+          {% if assessment.subcontractor_details %}<tr><th>{{ _('Details') }}</th><td>{{ assessment.subcontractor_details }}</td></tr>{% endif %}
+        </table>
+      </div>
+    </div>
+
+    <h6 class="text-muted mb-3">{{ _('Detailed Findings') }}</h6>
+    <table class="table table-borderless">
+      <tr><th style="200px;">{{ _('Assessment Findings') }}</th><td>{{ assessment.assessment_findings or '-' }}</td></tr>
+      <tr><th>{{ _('Mitigation Actions') }}</th><td>{{ assessment.mitigation_actions or '-' }}</td></tr>
+      <tr><th>{{ _('Notes') }}</th><td>{{ assessment.notes or '-' }}</td></tr>
+    </table>
+  </div>
+</div>
+{% endblock %}

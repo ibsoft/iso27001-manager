@@ -1,0 +1,26 @@
+{% macro render_pagination(pagination, endpoint, kwargs={}) %}
+{% if pagination.pages > 1 %}
+<nav aria-label="Pagination" class="mt-3">
+  <ul class="pagination pagination-sm justify-content-center flex-wrap mb-0">
+    <li class="page-item {{ 'disabled' if not pagination.has_prev }}">
+      <a class="page-link" href="{{ url_for(endpoint, page=pagination.prev_num, **kwargs) if pagination.has_prev else '#' }}" tabindex="-1">&laquo;</a>
+    </li>
+    {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+      {% if page_num %}
+        <li class="page-item {{ 'active' if page_num == pagination.page }}">
+          <a class="page-link" href="{{ url_for(endpoint, page=page_num, **kwargs) }}">{{ page_num }}</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">…</span></li>
+      {% endif %}
+    {% endfor %}
+    <li class="page-item {{ 'disabled' if not pagination.has_next }}">
+      <a class="page-link" href="{{ url_for(endpoint, page=pagination.next_num, **kwargs) if pagination.has_next else '#' }}">&raquo;</a>
+    </li>
+  </ul>
+  <div class="text-center text-muted mt-1" style="font-size:0.75rem;">
+    {{ pagination.first }}–{{ pagination.last }} / {{ pagination.total }}
+  </div>
+</nav>
+{% endif %}
+{% endmacro %}

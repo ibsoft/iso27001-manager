@@ -202,7 +202,7 @@
 
       {# --- Edit Tab --- #}
       <div class="tab-pane fade" id="edit" role="tabpanel">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
           {{ form.hidden_tag() }}
           <div class="row">
             <div class="col-md-6 mb-3">
@@ -233,14 +233,24 @@
               {% for e in form.mobile_phone.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
             </div>
           </div>
-          <div class="mb-3">
-            <label class="form-label small">{{ _('Profile Image URL') }}</label>
-            {{ form.avatar_url(class="form-control" + (" is-invalid" if form.avatar_url.errors else ""), placeholder=_("https://example.com/avatar.jpg or leave blank for Gravatar")) }}
-            <div class="form-text">
-              <i class="fas fa-info-circle me-1"></i>{{ _('Leave empty to use Gravatar based on your email.') }}
-              <a href="https://gravatar.com" target="_blank" class="text-decoration-none">{{ _('Set up Gravatar') }}</a>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Upload Profile Image') }}</label>
+              {{ form.avatar_file(class="form-control" + (" is-invalid" if form.avatar_file.errors else ""), accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml") }}
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>{{ _('Upload from disk. Allowed: PNG, JPG, GIF, WebP, SVG.') }}
+              </div>
+              {% for e in form.avatar_file.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
             </div>
-            {% for e in form.avatar_url.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            <div class="col-md-6 mb-3">
+              <label class="form-label small">{{ _('Profile Image URL') }}</label>
+              {{ form.avatar_url(class="form-control" + (" is-invalid" if form.avatar_url.errors else ""), placeholder=_("https://example.com/avatar.jpg or leave blank for Gravatar")) }}
+              <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>{{ _('Leave empty to use Gravatar based on your email.') }}
+                <a href="https://gravatar.com" target="_blank" class="text-decoration-none">{{ _('Set up Gravatar') }}</a>
+              </div>
+              {% for e in form.avatar_url.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
           </div>
 
           {% if current_user.has_role('admin') %}
@@ -256,6 +266,22 @@
               <label class="form-label small">{{ _('Default Language') }}</label>
               {{ form.default_language(class="form-select" + (" is-invalid" if form.default_language.errors else "")) }}
               {% for e in form.default_language.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="form-check">
+                {{ form.force_language(class="form-check-input") }}
+                <label class="form-check-label small">{{ _('Enforce language for all users') }}</label>
+                <div class="form-text"><i class="fas fa-info-circle me-1"></i>{{ _('When enabled, all users will use this language and cannot change it.') }}</div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-check">
+                {{ form.force_timezone(class="form-check-input") }}
+                <label class="form-check-label small">{{ _('Enforce timezone for all users') }}</label>
+                <div class="form-text"><i class="fas fa-info-circle me-1"></i>{{ _('When enabled, all users will use this timezone.') }}</div>
+              </div>
             </div>
           </div>
           {% endif %}
@@ -309,6 +335,7 @@
       <div class="tab-pane fade" id="prefs" role="tabpanel">
         <div class="row g-4">
           <div class="col-md-6">
+            <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('Your Preferences') }}</h6>
             <div class="info-row">
               <div class="info-label">{{ _('Timezone') }}</div>
               <div class="info-value"><strong>{{ current_user.timezone or _('Not set') }}</strong></div>
@@ -325,10 +352,27 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="card bg-light border-0">
-              <div class="card-body text-center py-4">
+            <h6 class="text-muted text-uppercase small fw-semibold mb-3">{{ _('System-Wide Settings') }}</h6>
+            {% set forced_lang = system_settings.forced_language %}
+            {% set forced_tz = system_settings.forced_timezone %}
+            <div class="info-row">
+              <div class="info-label">{{ _('Forced Language') }}</div>
+              <div class="info-value">
+                {% if forced_lang %}<span class="badge bg-warning text-dark">{{ forced_lang | upper }}</span>
+                {% else %}<span class="text-muted">{{ _('Not enforced') }}</span>{% endif %}
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-label">{{ _('Forced Timezone') }}</div>
+              <div class="info-value">
+                {% if forced_tz %}<span class="badge bg-warning text-dark">{{ forced_tz }}</span>
+                {% else %}<span class="text-muted">{{ _('Not enforced') }}</span>{% endif %}
+              </div>
+            </div>
+            <div class="card bg-light border-0 mt-3">
+              <div class="card-body text-center py-3">
                 <i class="fas fa-info-circle fa-2x text-muted mb-2"></i>
-                <p class="small text-muted mb-0">{{ _('Timezone and language preferences can be edited in the Edit Profile tab.') }}</p>
+                <p class="small text-muted mb-0">{{ _('Set enforced values in the Edit Profile tab. When enforced, all users must use the selected language/timezone.') }}</p>
               </div>
             </div>
           </div>

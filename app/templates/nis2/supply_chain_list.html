@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('NIS2 Supply Chain Assessments') }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item active">{{ _('Supply Chain') }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-3">
+        <select name="supply_chain_risk_level" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Risk Levels') }}</option>
+          <option value="low" {{ 'selected' if request.args.get('supply_chain_risk_level') == 'low' }}>{{ _('Low') }}</option>
+          <option value="medium" {{ 'selected' if request.args.get('supply_chain_risk_level') == 'medium' }}>{{ _('Medium') }}</option>
+          <option value="high" {{ 'selected' if request.args.get('supply_chain_risk_level') == 'high' }}>{{ _('High') }}</option>
+          <option value="critical" {{ 'selected' if request.args.get('supply_chain_risk_level') == 'critical' }}>{{ _('Critical') }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Statuses') }}</option>
+          <option value="pending" {{ 'selected' if request.args.get('status') == 'pending' }}>{{ _('Pending') }}</option>
+          <option value="assessed" {{ 'selected' if request.args.get('status') == 'assessed' }}>{{ _('Assessed') }}</option>
+          <option value="approved" {{ 'selected' if request.args.get('status') == 'approved' }}>{{ _('Approved') }}</option>
+          <option value="review_required" {{ 'selected' if request.args.get('status') == 'review_required' }}>{{ _('Review Required') }}</option>
+          <option value="rejected" {{ 'selected' if request.args.get('status') == 'rejected' }}>{{ _('Rejected') }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search suppliers...') }}" value="{{ request.args.get('search', '') }}">
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-outline-secondary w-100">{{ _('Filter') }}</button>
+      </div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('reports.export_pdf_nis2') }}" class="btn btn-outline-danger w-100"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('nis2.new_supply_chain') }}" class="btn btn-primary w-100">{{ _('New Assessment') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr>
+          <th>{{ _('Supplier') }}</th>
+          <th>{{ _('ICT Service') }}</th>
+          <th>{{ _('Tier') }}</th>
+          <th>{{ _('Risk Level') }}</th>
+          <th>{{ _('Last Assessment') }}</th>
+          <th>{{ _('Next Assessment') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Actions') }}</th>
+        </tr></thead>
+        <tbody>
+          {% for a in assessments.items %}
+          <tr>
+            <td><a href="{{ url_for('nis2.view_supply_chain', assessment_id=a.id) }}">{{ a.supplier_name[:40] }}</a></td>
+            <td>{{ a.ict_service_type or '-' }}</td>
+            <td>{{ _('Tier') }} {{ a.dependency_tier }}</td>
+            <td><span class="badge bg-{{ 'danger' if a.supply_chain_risk_level == 'critical' else 'warning' if a.supply_chain_risk_level == 'high' else 'info' if a.supply_chain_risk_level == 'medium' else 'secondary' }}">{{ _(a.supply_chain_risk_level.title()) }}</span></td>
+            <td>{{ a.last_assessment_date.strftime('%d/%m/%Y') if a.last_assessment_date else '-' }}</td>
+            <td>{% if a.next_assessment_date %}{{ a.next_assessment_date.strftime('%d/%m/%Y') }}{% if a.next_assessment_date < now().date() %} <span class="badge bg-danger">{{ _('Overdue') }}</span>{% endif %}{% else %}-{% endif %}</td>
+            <td><span class="badge bg-{{ 'success' if a.status == 'approved' else 'warning' if a.status == 'review_required' or a.status == 'pending' else 'danger' if a.status == 'rejected' else 'info' }}">{{ _(a.status.replace('_', ' ').title()) }}</span></td>
+            <td>
+              <a href="{{ url_for('nis2.edit_supply_chain', assessment_id=a.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Edit') }}"><i class="fas fa-edit"></i></a>
+              <form method="POST" action="{{ url_for('nis2.delete_supply_chain', assessment_id=a.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this assessment?') }}')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="text-muted text-center">{{ _('No supply chain assessments yet.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ render_pagination(assessments, 'nis2.list_supply_chain') }}
+{% endblock %}

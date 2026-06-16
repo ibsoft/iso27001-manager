@@ -1,0 +1,21 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ stats.total }}</div><div class="lbl">{{ _('Total Assets') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.active }}</div><div class="lbl">{{ _('Active') }}</div></div>
+  <div class="stat-box"><div class="num">{{ stats.critical }}</div><div class="lbl">{{ _('Critical') }}</div></div>
+</div>
+<table>
+  <tr><th>{{ _('Name') }}</th><th>{{ _('Type') }}</th><th>{{ _('Classification') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('Location') }}</th><th>{{ _('Status') }}</th></tr>
+  {% for a in assets %}
+  <tr>
+    <td>{{ a.name }}</td>
+    <td>{{ a.asset_type or '-' }}</td>
+    <td>{{ a.classification }}</td>
+    <td><span class="badge badge-{{ 'danger' if a.criticality == 'critical' else 'warning' if a.criticality == 'high' else 'info' }}">{{ a.criticality }}</span></td>
+    <td>{{ a.location or '-' }}</td>
+    <td>{{ a.status }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

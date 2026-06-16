@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('NIS2 Compliance Checks') }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item active">{{ _('Compliance Checks') }}</li>
+{% endblock %}
+{% block content %}
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2">
+      <div class="col-md-4">
+        <select name="measure" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Measures') }}</option>
+          <option value="risk_analysis" {{ 'selected' if request.args.get('measure') == 'risk_analysis' }}>{{ _('Risk Analysis & IS Policies') }}</option>
+          <option value="incident_handling" {{ 'selected' if request.args.get('measure') == 'incident_handling' }}>{{ _('Incident Handling') }}</option>
+          <option value="business_continuity" {{ 'selected' if request.args.get('measure') == 'business_continuity' }}>{{ _('Business Continuity') }}</option>
+          <option value="supply_chain_security" {{ 'selected' if request.args.get('measure') == 'supply_chain_security' }}>{{ _('Supply Chain Security') }}</option>
+          <option value="network_security" {{ 'selected' if request.args.get('measure') == 'network_security' }}>{{ _('Network & Information Security') }}</option>
+          <option value="access_control" {{ 'selected' if request.args.get('measure') == 'access_control' }}>{{ _('Access Control') }}</option>
+          <option value="cryptography" {{ 'selected' if request.args.get('measure') == 'cryptography' }}>{{ _('Cryptography') }}</option>
+          <option value="hr_security" {{ 'selected' if request.args.get('measure') == 'hr_security' }}>{{ _('HR Security') }}</option>
+          <option value="mfa" {{ 'selected' if request.args.get('measure') == 'mfa' }}>{{ _('Multi-Factor Authentication') }}</option>
+          <option value="security_training" {{ 'selected' if request.args.get('measure') == 'security_training' }}>{{ _('Security Training') }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Statuses') }}</option>
+          <option value="not_started" {{ 'selected' if request.args.get('status') == 'not_started' }}>{{ _('Not Started') }}</option>
+          <option value="in_progress" {{ 'selected' if request.args.get('status') == 'in_progress' }}>{{ _('In Progress') }}</option>
+          <option value="implemented" {{ 'selected' if request.args.get('status') == 'implemented' }}>{{ _('Implemented') }}</option>
+          <option value="not_applicable" {{ 'selected' if request.args.get('status') == 'not_applicable' }}>{{ _('Not Applicable') }}</option>
+          <option value="review_required" {{ 'selected' if request.args.get('status') == 'review_required' }}>{{ _('Review Required') }}</option>
+        </select>
+      </div>
+      <div class="col-md-4"></div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('reports.export_pdf_nis2') }}" class="btn btn-outline-danger w-100"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
+      <div class="col-md-2 text-end">
+        <a href="{{ url_for('nis2.new_compliance') }}" class="btn btn-primary w-100">{{ _('New Check') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive-custom">
+      <table class="table table-hover mb-0">
+        <thead><tr>
+          <th>{{ _('Measure') }}</th>
+          <th>{{ _('Article') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th>{{ _('Target Date') }}</th>
+          <th>{{ _('Completion Date') }}</th>
+          <th>{{ _('Review Date') }}</th>
+          <th>{{ _('Responsible') }}</th>
+          <th>{{ _('Actions') }}</th>
+        </tr></thead>
+        <tbody>
+          {% for c in checks.items %}
+          <tr>
+            <td><a href="{{ url_for('nis2.view_compliance', check_id=c.id) }}">{{ c.measure_display }}</a></td>
+            <td>{{ c.article_ref or '-' }}</td>
+            <td>{% set status_colors = {'not_started': 'secondary', 'in_progress': 'info', 'implemented': 'success', 'not_applicable': 'warning', 'review_required': 'danger'} %}
+              <span class="badge bg-{{ status_colors.get(c.status, 'secondary') }}">{{ _(c.status.replace('_', ' ').title()) }}</span></td>
+            <td>{{ c.target_date.strftime('%d/%m/%Y') if c.target_date else '-' }}</td>
+            <td>{{ c.completion_date.strftime('%d/%m/%Y') if c.completion_date else '-' }}</td>
+            <td>{{ c.review_date.strftime('%d/%m/%Y') if c.review_date else '-' }}</td>
+            <td>{{ c.responsible_person.first_name + ' ' + c.responsible_person.last_name if c.responsible_person else '-' }}</td>
+            <td>
+              <a href="{{ url_for('nis2.edit_compliance', check_id=c.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Edit') }}"><i class="fas fa-edit"></i></a>
+              <form method="POST" action="{{ url_for('nis2.delete_compliance', check_id=c.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this check?') }}')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="text-muted text-center">{{ _('No compliance checks defined.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{ render_pagination(checks, 'nis2.list_compliance') }}
+{% endblock %}

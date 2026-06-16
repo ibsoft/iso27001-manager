@@ -8,6 +8,7 @@ from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import AuditForm, AuditFindingForm, CorrectiveActionForm
 from app.utils.decorators import permission_required, admin_required
+from app.utils.pagination import paginate
 from datetime import datetime
 
 audits_bp = Blueprint("audits", __name__)
@@ -20,7 +21,7 @@ def list_audits():
     query = InternalAudit.query
     if status:
         query = query.filter_by(status=status)
-    audits = query.order_by(InternalAudit.audit_date.desc()).all()
+    audits = paginate(query.order_by(InternalAudit.audit_date.desc()))
     return render_template("audits/list.html", audits=audits)
 
 
@@ -103,7 +104,7 @@ def list_non_conformities():
     query = NonConformity.query
     if status:
         query = query.filter_by(status=status)
-    ncs = query.order_by(NonConformity.created_at.desc()).all()
+    ncs = paginate(query.order_by(NonConformity.created_at.desc()))
     return render_template("audits/non_conformities.html", non_conformities=ncs)
 
 
@@ -114,7 +115,7 @@ def list_corrective_actions():
     query = CorrectiveAction.query
     if status:
         query = query.filter_by(status=status)
-    actions = query.order_by(CorrectiveAction.created_at.desc()).all()
+    actions = paginate(query.order_by(CorrectiveAction.created_at.desc()))
     return render_template("audits/corrective_actions.html", actions=actions)
 
 

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{{ url_for('dashboard.index') }}">{{ _('Home') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.dashboard') }}">{{ _('NIS2 Dashboard') }}</a></li>
+  <li class="breadcrumb-item"><a href="{{ url_for('nis2.list_notifications') }}">{{ _('Notifications') }}</a></li>
+  <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-header">{{ title }}</div>
+  <div class="card-body">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <div class="row g-3">
+        <div class="col-lg-6">{{ form.incident_id.label }}{{ form.incident_id(class="form-select") }}</div>
+        <div class="col-lg-6">{{ form.incident_title.label }}{{ form.incident_title(class="form-control") }}</div>
+        <div class="col-12">{{ form.reportable_criteria.label }}{{ form.reportable_criteria(class="form-control", rows=2) }}</div>
+        <div class="col-lg-4">{{ form.service_disruption() }} {{ form.service_disruption.label }}</div>
+        <div class="col-lg-4">{{ form.data_impact() }} {{ form.data_impact.label }}</div>
+        <div class="col-lg-4">{{ form.financial_loss() }} {{ form.financial_loss.label }}</div>
+        <div class="col-lg-4">{{ form.affected_users_count.label }}{{ form.affected_users_count(class="form-control") }}</div>
+        <div class="col-lg-4">{{ form.incident_detected_at.label }}{{ form.incident_detected_at(class="form-control", type="datetime-local") }}</div>
+        <div class="col-lg-4">{{ form.notification_status.label }}{{ form.notification_status(class="form-select") }}</div>
+        <div class="col-12"><hr><h6>{{ _('Early Warning') }} ({{ _('24 hours') }})</h6></div>
+        <div class="col-lg-4">{{ form.early_warning_deadline.label }}{{ form.early_warning_deadline(class="form-control", type="datetime-local") }}</div>
+        <div class="col-lg-4">{{ form.early_warning_submitted_at.label }}{{ form.early_warning_submitted_at(class="form-control", type="datetime-local") }}</div>
+        <div class="col-lg-4"></div>
+        <div class="col-12">{{ form.early_warning_details.label }}{{ form.early_warning_details(class="form-control", rows=2) }}</div>
+        <div class="col-12"><hr><h6>{{ _('Notification') }} ({{ _('72 hours') }})</h6></div>
+        <div class="col-lg-4">{{ form.notification_deadline.label }}{{ form.notification_deadline(class="form-control", type="datetime-local") }}</div>
+        <div class="col-lg-4">{{ form.notification_submitted_at.label }}{{ form.notification_submitted_at(class="form-control", type="datetime-local") }}</div>
+        <div class="col-lg-4"></div>
+        <div class="col-12">{{ form.notification_details.label }}{{ form.notification_details(class="form-control", rows=2) }}</div>
+        <div class="col-12"><hr><h6>{{ _('Final Report') }} ({{ _('1 month') }})</h6></div>
+        <div class="col-lg-4">{{ form.final_report_deadline.label }}{{ form.final_report_deadline(class="form-control", type="datetime-local") }}</div>
+        <div class="col-lg-4">{{ form.final_report_submitted_at.label }}{{ form.final_report_submitted_at(class="form-control", type="datetime-local") }}</div>
+        <div class="col-lg-4"></div>
+        <div class="col-12">{{ form.final_report_details.label }}{{ form.final_report_details(class="form-control", rows=2) }}</div>
+        <div class="col-12"><hr><h6>{{ _('CSIRT Information') }}</h6></div>
+        <div class="col-lg-4">{{ form.csirt_reference.label }}{{ form.csirt_reference(class="form-control") }}</div>
+        <div class="col-lg-4">{{ form.csirt_name.label }}{{ form.csirt_name(class="form-control") }}</div>
+        <div class="col-lg-4"></div>
+        <div class="col-12">{{ form.notes.label }}{{ form.notes(class="form-control", rows=2) }}</div>
+      </div>
+      <div class="mt-3">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('nis2.list_notifications') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

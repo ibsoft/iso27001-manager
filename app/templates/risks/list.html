@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
 {% block page_title %}{{ _('Risk Management') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Risks') }}</li>{% endblock %}
 
@@ -33,7 +34,10 @@
           <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
         </div>
       </form>
-      <div class="ms-3">
+      <div class="ms-2">
+        <a href="{{ url_for('reports.export_pdf_risks') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      </div>
+      <div class="ms-2">
         <a href="{{ url_for('risks.new_risk') }}" class="btn btn-danger"><i class="fas fa-plus me-1"></i>{{ _('New Risk') }}</a>
       </div>
     </div>
@@ -45,7 +49,7 @@
     <table class="table table-hover mb-0">
       <thead><tr><th>{{ _('Title') }}</th><th>{{ _('Likelihood') }}</th><th>{{ _('Impact') }}</th><th>{{ _('Risk Level') }}</th><th>{{ _('Treatment') }}</th><th>{{ _('Status') }}</th><th>{{ _('Actions') }}</th></tr></thead>
       <tbody>
-        {% for risk in risks %}
+        {% for risk in risks.items %}
         <tr>
           <td><a href="{{ url_for('risks.view_risk', risk_id=risk.id) }}" class="text-decoration-none fw-medium">{{ risk.title }}</a></td>
           <td>{{ risk.likelihood }}/5</td>
@@ -69,4 +73,5 @@
     </table>
   </div>
 </div>
+{{ render_pagination(risks, 'risks.list_risks', kwargs=request.args) }}
 {% endblock %}

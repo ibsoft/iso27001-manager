@@ -8,10 +8,15 @@ class Control(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(8), unique=True, nullable=False, index=True, comment="e.g. 5.1, 5.2, ... 8.34")
     title = db.Column(db.String(256), nullable=False)
+    title_el = db.Column(db.String(256), nullable=True)
     description = db.Column(db.Text, nullable=True)
+    description_el = db.Column(db.Text, nullable=True)
     detailed_description = db.Column(db.Text, nullable=True)
+    detailed_description_el = db.Column(db.Text, nullable=True)
     purpose = db.Column(db.Text, nullable=True)
+    purpose_el = db.Column(db.Text, nullable=True)
     guidance = db.Column(db.Text, nullable=True)
+    guidance_el = db.Column(db.Text, nullable=True)
     domain_id = db.Column(db.Integer, db.ForeignKey("domain.id"), nullable=False)
     implementation_status = db.Column(
         db.String(32),
@@ -28,6 +33,15 @@ class Control(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     owner = db.relationship("User", backref="owned_controls", foreign_keys=[owner_id])
+
+    def localized_title(self, lang="en"):
+        return self.title_el if lang == "el" and self.title_el else self.title
+
+    def localized_description(self, lang="en"):
+        return self.description_el if lang == "el" and self.description_el else self.description
+
+    def localized_purpose(self, lang="en"):
+        return self.purpose_el if lang == "el" and self.purpose_el else self.purpose
 
     def __repr__(self):
         return f"<Control {self.code}: {self.title}>"

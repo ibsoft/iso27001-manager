@@ -1,0 +1,74 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<div class="stat-row">
+  <div class="stat-box"><div class="num">{{ activities|length }}</div><div class="lbl">{{ _('Processing') }}</div></div>
+  <div class="stat-box"><div class="num">{{ dpias|length }}</div><div class="lbl">{{ _('DPIAs') }}</div></div>
+  <div class="stat-box"><div class="num">{{ dsars|length }}</div><div class="lbl">{{ _('DSARs') }}</div></div>
+  <div class="stat-box"><div class="num">{{ data_breaches|length }}</div><div class="lbl">{{ _('Breaches') }}</div></div>
+</div>
+
+<h2>{{ _('Processing Activities') }}</h2>
+<table>
+  <tr><th>{{ _('Name') }}</th><th>{{ _('Legal Basis') }}</th><th>{{ _('Controller') }}</th><th>{{ _('Status') }}</th></tr>
+  {% for a in activities %}
+  <tr>
+    <td>{{ (a.name or '')[:45] }}</td>
+    <td>{{ a.legal_basis or '-' }}</td>
+    <td>{{ (a.controller_name or '')[:30] }}</td>
+    <td><span class="badge badge-{{ 'success' if a.status == 'active' else 'secondary' }}">{{ a.status or '' }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('DPIAs') }}</h2>
+<table>
+  <tr><th>{{ _('Project') }}</th><th>{{ _('Residual Risk') }}</th><th>{{ _('Status') }}</th></tr>
+  {% for d in dpias %}
+  <tr>
+    <td>{{ (d.project_name or '')[:50] }}</td>
+    <td><span class="badge badge-{{ 'danger' if d.residual_risk_level in ('high','critical') else 'warning' if d.residual_risk_level == 'medium' else 'success' }}">{{ d.residual_risk_level or '' }}</span></td>
+    <td><span class="badge badge-{{ 'success' if d.status == 'approved' else 'warning' }}">{{ d.status or '' }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('DSARs') }}</h2>
+<table>
+  <tr><th>{{ _('Requester') }}</th><th>{{ _('Type') }}</th><th>{{ _('Received') }}</th><th>{{ _('Status') }}</th><th>{{ _('Outcome') }}</th></tr>
+  {% for d in dsars %}
+  <tr>
+    <td>{{ (d.requester_name or '')[:30] }}</td>
+    <td>{{ d.request_type or '-' }}</td>
+    <td>{{ d.received_date.strftime('%d/%m/%Y') if d.received_date else '-' }}</td>
+    <td><span class="badge badge-{{ 'success' if d.status == 'completed' else 'warning' if d.status in ('open','in_progress') else 'secondary' }}">{{ (d.status or '').replace('_', ' ') }}</span></td>
+    <td>{{ d.outcome or '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('Data Breaches') }}</h2>
+<table>
+  <tr><th>{{ _('Type') }}</th><th>{{ _('Notified SA') }}</th><th>{{ _('Notified DS') }}</th><th>{{ _('Affected') }}</th></tr>
+  {% for b in data_breaches %}
+  <tr>
+    <td>{{ b.breach_type or '-' }}</td>
+    <td>{% if b.notified_supervisory_authority %}{{ _('Yes') }}{% else %}{{ _('No') }}{% endif %}</td>
+    <td>{% if b.notified_data_subjects %}{{ _('Yes') }}{% else %}{{ _('No') }}{% endif %}</td>
+    <td>{{ b.ds_affected_count or '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>{{ _('Consent Records') }}</h2>
+<table>
+  <tr><th>{{ _('Subject') }}</th><th>{{ _('Purpose') }}</th><th>{{ _('Granted') }}</th><th>{{ _('Source') }}</th></tr>
+  {% for c in consents %}
+  <tr>
+    <td>{{ (c.data_subject_identifier or '')[:30] }}</td>
+    <td>{{ (c.processing_purpose or '')[:40] }}</td>
+    <td>{% if c.granted %}{{ _('Yes') }}{% else %}{{ _('No') }}{% endif %}</td>
+    <td>{{ c.consent_source or '-' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

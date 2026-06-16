@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <style>
+    @font-face { font-family: 'DejaVuSans'; src: url('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'); }
+    @font-face { font-family: 'DejaVuSans-Bold'; src: url('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'); }
+    @font-face { font-family: 'DejaVuSansMono'; src: url('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'); }
+    @page {
+      size: a4;
+      margin: 2cm 1.5cm;
+      @frame footer {
+        -pdf-frame-content: footer;
+        bottom: 1cm;
+        margin-left: 1.5cm;
+        margin-right: 1.5cm;
+        height: 1cm;
+      }
+    }
+    body {
+      font-family: 'DejaVuSans', 'DejaVu Sans', sans-serif;
+      font-size: 10pt;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+    h1 { font-size: 18pt; color: #1a56db; margin-bottom: 0.25cm; }
+    h2 { font-size: 14pt; color: #1e293b; border-bottom: 2px solid #1a56db; padding-bottom: 0.15cm; margin-top: 0.6cm; }
+    h3 { font-size: 11pt; color: #334155; margin-top: 0.4cm; }
+    h4 { font-size: 10pt; color: #475569; }
+    .header { text-align: center; margin-bottom: 0.5cm; padding-bottom: 0.3cm; border-bottom: 3px solid #1a56db; }
+    .header h1 { margin-bottom: 0.1cm; }
+    .header .subtitle { font-size: 9pt; color: #64748b; }
+    .header .meta { font-size: 8pt; color: #94a3b8; margin-top: 0.15cm; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.3cm 0;
+      font-size: 9pt;
+    }
+    th {
+      background: #1a56db;
+      color: #fff;
+      padding: 0.2cm 0.3cm;
+      text-align: left;
+      font-weight: 600;
+      font-size: 8pt;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 0.15cm 0.3cm;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .section { margin-bottom: 0.4cm; }
+    .badge {
+      display: inline-block;
+      padding: 0.05cm 0.2cm;
+      font-size: 7.5pt;
+      font-weight: 600;
+      border-radius: 0.1cm;
+    }
+    .badge-success { background: #dcfce7; color: #166534; }
+    .badge-warning { background: #fef3c7; color: #92400e; }
+    .badge-danger { background: #fee2e2; color: #991b1b; }
+    .badge-info { background: #dbeafe; color: #1e40af; }
+    .badge-secondary { background: #f1f5f9; color: #475569; }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.3cm 0;
+    }
+    .stat-box {
+      flex: 1;
+      text-align: center;
+      padding: 0.2cm;
+      margin: 0 0.1cm;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+    .stat-box .num { font-size: 16pt; font-weight: 700; color: #1a56db; }
+    .stat-box .lbl { font-size: 7pt; color: #64748b; text-transform: uppercase; }
+    .footer-text { font-size: 7pt; color: #94a3b8; text-align: center; }
+    .page-break { page-break-before: always; }
+    .info-grid { margin: 0.2cm 0; }
+    .info-row { display: flex; padding: 0.1cm 0; border-bottom: 1px solid #f1f5f9; }
+    .info-label { width: 5cm; font-weight: 600; color: #475569; font-size: 9pt; }
+    .info-value { flex: 1; font-size: 9pt; }
+    .note { font-size: 8pt; color: #64748b; font-style: italic; }
+    ul { margin: 0.1cm 0; padding-left: 0.5cm; }
+    li { font-size: 9pt; margin-bottom: 0.05cm; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>{{ title }}</h1>
+    <div class="subtitle">ISO-27001 · NIS2 · GDPR — {{ _('Detailed Compliance Report') }}</div>
+    <div class="meta">{{ _('Generated') }}: {{ now().strftime('%d %B %Y %H:%M') }}</div>
+  </div>
+  {% block content %}{% endblock %}
+  <div id="footer" class="footer-text">
+    ISO-27001 · NIS2 · GDPR — {{ _('Page') }} <pdf:pagenumber> / <pdf:pagecount>
+  </div>
+</body>
+</html>

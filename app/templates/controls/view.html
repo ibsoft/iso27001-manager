@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block page_title %}Control {{ control.code }}: {{ control.title }}{% endblock %}
+{% block page_title %}{{ _('Control') }} {{ control.code }}: {{ control.localized_title(current_lang) }}{% endblock %}
 {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{{ url_for('controls.list_controls') }}">{{ _('Controls') }}</a></li>
 <li class="breadcrumb-item active">{{ control.code }}</li>
@@ -23,11 +23,11 @@
       <div class="card-body">
         <table class="table table-borderless">
           <tr><td class="text-muted" style="width:160px">{{ _('Code') }}</td><td><span class="badge bg-secondary fs-6">{{ control.code }}</span></td></tr>
-          <tr><td class="text-muted">{{ _('Title') }}</td><td class="fw-bold">{{ control.title }}</td></tr>
-          <tr><td class="text-muted">{{ _('Domain') }}</td><td>{{ control.domain.name if control.domain else '—' }}</td></tr>
-          <tr><td class="text-muted">{{ _('Description') }}</td><td>{{ control.description or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Title') }}</td><td class="fw-bold">{{ control.localized_title(current_lang) }}</td></tr>
+          <tr><td class="text-muted">{{ _('Domain') }}</td><td>{{ control.domain.localized_name(current_lang) if control.domain else '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Description') }}</td><td>{{ control.localized_description(current_lang) or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Detailed Description') }}</td><td>{{ control.detailed_description or '—' }}</td></tr>
-          <tr><td class="text-muted">{{ _('Purpose') }}</td><td>{{ control.purpose or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Purpose') }}</td><td>{{ control.localized_purpose(current_lang) or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Guidance') }}</td><td>{{ control.guidance or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Implementation Status') }}</td><td><span class="{{ control.status_badge_class }} fs-6">{{ control.implementation_status|replace('_', ' ')|title }}</span></td></tr>
           <tr><td class="text-muted">{{ _('Owner') }}</td><td>{{ control.owner.first_name ~ ' ' ~ control.owner.last_name if control.owner else _('Unassigned') }}</td></tr>
