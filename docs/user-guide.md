@@ -1,4 +1,4 @@
-# ISO 27001 Manager — User Guide
+# ISO 27001 - NIS2 - GDPR — User Guide
 
 ## Table of Contents
 
@@ -61,10 +61,10 @@ The following accounts are created automatically. **Change these passwords immed
 
 | Role | Capabilities |
 |---|---|
-| **admin** | Full access: user management, all modules, system configuration, audit log |
-| **manager** | Create and edit: controls, risks, assets, incidents, policies, audits, suppliers, SoA |
-| **auditor** | Read-only access across all modules, can create audits and findings |
-| **user** | Read-only access, can report incidents |
+| **admin** | Full access to all modules, user/role administration, system configuration, audit log, exports, and delete actions |
+| **manager** | Create and edit operational records: controls, risks, assets, incidents, policies, audits, suppliers, SoA, NIS2, management reviews, business continuity, CAPA, training, and reports/exports |
+| **auditor** | Read-only access to core ISMS records, suppliers, SoA, reports, management reviews, business continuity, CAPA, and training; can create audits and findings |
+| **user** | Basic read-only access to controls, risks, assets, incidents, policies, reports, management reviews, business continuity, CAPA, and training; can report incidents |
 
 ### Changing Your Password
 
