@@ -101,6 +101,13 @@ def create_app(config_name=None):
     def without_page(params):
         return {k: v for k, v in params.items() if k != "page"}
 
+    @app.template_filter()
+    def nl2br(s):
+        from markupsafe import Markup, escape
+        if s is None:
+            return ""
+        return Markup(escape(s).replace("\n", "<br>\n"))
+
     @app.context_processor
     def inject_globals():
         from flask import session as _session
@@ -131,6 +138,9 @@ def create_app(config_name=None):
     from app.routes.gdpr import gdpr_bp
     from app.routes.nis2 import nis2_bp
     from app.routes.assignments import assignments_bp
+    from app.routes.management_review import mgmt_review_bp
+    from app.routes.capa import capa_bp
+    from app.routes.training import training_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/")
@@ -148,6 +158,9 @@ def create_app(config_name=None):
     app.register_blueprint(gdpr_bp, url_prefix="/gdpr")
     app.register_blueprint(nis2_bp, url_prefix="/nis2")
     app.register_blueprint(assignments_bp, url_prefix="/assignments")
+    app.register_blueprint(mgmt_review_bp, url_prefix="/management-review")
+    app.register_blueprint(capa_bp, url_prefix="/capa")
+    app.register_blueprint(training_bp, url_prefix="/training")
 
     @app.route("/health")
     def health():

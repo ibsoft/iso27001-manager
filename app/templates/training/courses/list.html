@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('Training Courses') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Training') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <form method="GET" class="d-flex gap-2">
+      <select name="category" class="form-select" onchange="this.form.submit()" style="min-width:140px">
+        <option value="">{{ _('All Categories') }}</option>
+        <option value="awareness" {{ 'selected' if request.args.get('category') == 'awareness' }}>{{ _('Awareness') }}</option>
+        <option value="technical" {{ 'selected' if request.args.get('category') == 'technical' }}>{{ _('Technical') }}</option>
+        <option value="compliance" {{ 'selected' if request.args.get('category') == 'compliance' }}>{{ _('Compliance') }}</option>
+        <option value="management" {{ 'selected' if request.args.get('category') == 'management' }}>{{ _('Management') }}</option>
+        <option value="process" {{ 'selected' if request.args.get('category') == 'process' }}>{{ _('Process') }}</option>
+      </select>
+    </form>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('training.my_training') }}" class="btn btn-outline-info"><i class="fas fa-user-graduate me-1"></i>{{ _('My Training') }}</a>
+      <a href="{{ url_for('training.competence_matrix') }}" class="btn btn-outline-secondary"><i class="fas fa-chart-bar me-1"></i>{{ _('Competence') }}</a>
+      <a href="{{ url_for('reports.export_pdf_training') }}" class="btn btn-outline-danger"><i class="fas fa-file-pdf me-1"></i>PDF</a>
+      {% if current_user.has_permission('training_edit') %}
+      <a href="{{ url_for('training.new_course') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New Course') }}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  {% for course in courses.items %}
+  <div class="col-lg-4 d-flex align-items-stretch">
+    <div class="card mb-3 w-100">
+      <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="mb-0">
+            <a href="{{ url_for('training.view_course', course_id=course.id) }}" class="text-decoration-none">{{ course.title }}</a>
+          </h5>
+          <span class="badge bg-{{ 'success' if course.is_mandatory else 'secondary' }} flex-shrink-0 ms-1">{{ _('Mandatory') if course.is_mandatory else '' }}</span>
+        </div>
+        <p class="text-muted small mb-2">{{ course.description|truncate(100) if course.description else '' }}</p>
+        <div class="mt-auto d-flex justify-content-between small text-muted pt-2">
+          <div>
+            <span class="badge bg-light text-dark me-1">{{ _(course.category|replace('_', ' ')|title) }}</span>
+            <span><i class="fas fa-clock me-1"></i>{{ course.duration_hours or '—' }}h</span>
+          </div>
+          <div>
+            <span><i class="fas fa-users me-1"></i>{{ course.sessions.count() }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12">
+    <div class="text-center text-muted py-5">
+      <i class="fas fa-graduation-cap fa-3x mb-3"></i>
+      <p>{{ _('No training courses yet.') }}</p>
+      <a href="{{ url_for('training.new_course') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Create your first course') }}</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{{ render_pagination(courses, 'training.list_courses', kwargs=request.args) }}
+{% endblock %}

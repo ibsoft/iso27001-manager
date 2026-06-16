@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block page_title %}{{ course.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('training.list_courses') }}">{{ _('Training') }}</a></li>
+<li class="breadcrumb-item active">{{ course.title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{ course.title }}</h5>
+        <div class="d-flex gap-2">
+          {% if current_user.has_permission('training_edit') %}
+          <a href="{{ url_for('training.edit_course', course_id=course.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          {% endif %}
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('training.delete_course', course_id=course.id) }}" class="d-inline" data-confirm="{{ _('Delete this course?') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Category') }}</small>
+            <strong>{{ _(course.category|replace('_', ' ')|title) }}</strong>
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Provider') }}</small>
+            <strong>{{ course.provider or '—' }}</strong>
+          </div>
+          <div class="col-md-2">
+            <small class="text-muted d-block">{{ _('Duration') }}</small>
+            <strong>{{ course.duration_hours or '—' }}h</strong>
+          </div>
+          <div class="col-md-2">
+            <small class="text-muted d-block">{{ _('Validity') }}</small>
+            <strong>{{ course.validity_days ~ ' days' if course.validity_days else '—' }}</strong>
+          </div>
+          <div class="col-md-2">
+            <small class="text-muted d-block">{{ _('Status') }}</small>
+            <span class="badge bg-{{ 'success' if course.status == 'active' else 'secondary' }}">{{ course.status|title }}</span>
+          </div>
+        </div>
+        {% if course.is_mandatory %}<span class="badge bg-warning text-dark mb-3"><i class="fas fa-exclamation-triangle me-1"></i>{{ _('Mandatory Course') }}</span>{% endif %}
+        {% if course.description %}
+        <div class="mb-3">
+          <h6 class="text-muted mb-2">{{ _('Description') }}</h6>
+          <div class="p-3 bg-light rounded">{{ course.description|nl2br }}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-calendar me-2"></i>{{ _('Upcoming Sessions') }}</h5>
+        {% if current_user.has_permission('training_edit') %}
+        <a href="{{ url_for('training.new_session', course_id=course.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Schedule Session') }}</a>
+        {% endif %}
+      </div>
+      <div class="card-body p-0">
+        {% if upcoming %}
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr><th>{{ _('Date') }}</th><th>{{ _('Title') }}</th><th>{{ _('Trainer') }}</th><th>{{ _('Enrolled') }}</th><th>{{ _('Status') }}</th><th class="text-end">{{ _('Actions') }}</th></tr>
+            </thead>
+            <tbody>
+              {% for s in upcoming %}
+              <tr>
+                <td><small>{{ s.session_date.strftime('%Y-%m-%d') }}</small></td>
+                <td><a href="{{ url_for('training.view_session', session_id=s.id) }}" class="text-decoration-none"><small>{{ s.title }}</small></a></td>
+                <td><small>{{ s.trainer or '—' }}</small></td>
+                <td><small>{{ s.enrolled_count }}{% if s.max_attendees %}/{{ s.max_attendees }}{% endif %}</small></td>
+                <td><span class="badge bg-{{ 'success' if s.status == 'completed' else 'primary' if s.status == 'scheduled' else 'warning' if s.status == 'in_progress' else 'secondary' }}">{{ s.status|replace('_', ' ')|title }}</span></td>
+                <td class="text-end">
+                  <a href="{{ url_for('training.view_session', session_id=s.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-3"><small>{{ _('No upcoming sessions.') }}</small></div>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if past %}
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-history me-2"></i>{{ _('Past Sessions') }}</h5></div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr><th>{{ _('Date') }}</th><th>{{ _('Title') }}</th><th>{{ _('Trained') }}</th><th>{{ _('Status') }}</th><th class="text-end">{{ _('Actions') }}</th></tr>
+            </thead>
+            <tbody>
+              {% for s in past %}
+              <tr>
+                <td><small>{{ s.session_date.strftime('%Y-%m-%d') }}</small></td>
+                <td><a href="{{ url_for('training.view_session', session_id=s.id) }}" class="text-decoration-none"><small>{{ s.title }}</small></a></td>
+                <td><small>{{ s.enrolled_count }}</small></td>
+                <td><span class="badge bg-secondary">{{ s.status|replace('_', ' ')|title }}</span></td>
+                <td class="text-end"><a href="{{ url_for('training.view_session', session_id=s.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card mb-4">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-chart-simple me-2"></i>{{ _('Statistics') }}</h5></div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ _('Total Sessions') }}</span><strong>{{ course.sessions.count() }}</strong></div>
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ _('People Trained') }}</span><strong>{{ total_trained }}</strong></div>
+        <div class="d-flex justify-content-between"><span class="text-muted">{{ _('Upcoming') }}</span><strong>{{ upcoming|length }}</strong></div>
+      </div>
+    </div>
+
+    {% if course.validity_days %}
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>{{ _('Refresher') }}</h5></div>
+      <div class="card-body small">
+        {{ _('This course requires retraining every %(days)d days.', days=course.validity_days) }}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
