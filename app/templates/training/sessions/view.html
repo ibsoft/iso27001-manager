@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block page_title %}{{ session.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('training.list_courses') }}">{{ _('Training') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('training.view_course', course_id=session.course.id) }}">{{ session.course.title }}</a></li>
+<li class="breadcrumb-item active">{{ session.title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{ session.title }}</h5>
+        <div class="d-flex gap-2">
+          {% if current_user.has_permission('training_edit') %}
+          <a href="{{ url_for('training.edit_session', session_id=session.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+          {% endif %}
+          {% if current_user.has_role('admin') %}
+          <form method="POST" action="{{ url_for('training.delete_session', session_id=session.id) }}" class="d-inline" data-confirm="{{ _('Delete this session?') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Date') }}</small>
+            <strong>{{ session.session_date.strftime('%Y-%m-%d') }}</strong>
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Trainer') }}</small>
+            <strong>{{ session.trainer or '—' }}</strong>
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Location') }}</small>
+            <strong>{{ session.location or '—' }}</strong>
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Status') }}</small>
+            <span class="badge bg-{{ 'success' if session.status == 'completed' else 'primary' if session.status == 'scheduled' else 'warning' if session.status == 'in_progress' else 'secondary' }}">{{ session.status|replace('_', ' ')|title }}</span>
+          </div>
+        </div>
+        {% if session.notes %}<div class="p-3 bg-light rounded mb-3">{{ session.notes|nl2br }}</div>{% endif %}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-users me-2"></i>{{ _('Attendees') }}</h5>
+        {% if session.status != 'cancelled' %}
+        <form method="POST" action="{{ url_for('training.enroll_user', session_id=session.id) }}" class="d-inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fas fa-user-plus me-1"></i>{{ _('Enroll Me') }}</button>
+        </form>
+        {% endif %}
+      </div>
+      <div class="card-body p-0">
+        {% if session.records.count() > 0 %}
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr><th>{{ _('User') }}</th><th>{{ _('Status') }}</th><th>{{ _('Score') }}</th><th>{{ _('Certificate') }}</th><th class="text-end">{{ _('Actions') }}</th></tr>
+            </thead>
+            <tbody>
+              {% for r in session.records %}
+              <tr>
+                <td><small>{{ r.user.first_name }} {{ r.user.last_name }}</small></td>
+                <td>
+                  <span class="badge bg-{{ 'success' if r.status == 'completed' else 'primary' if r.status == 'enrolled' else 'secondary' if r.status == 'expired' else 'danger' }}">
+                    {{ r.status|replace('_', ' ')|title }}
+                  </span>
+                </td>
+                <td><small>{{ r.score ~ '%' if r.score else '—' }}</small></td>
+                <td><small>{{ r.certificate_ref or '—' }}</small></td>
+                <td class="text-end">
+                  {% if current_user.has_permission('training_edit') %}
+                  <a href="{{ url_for('training.edit_record', session_id=session.id, user_id=r.user.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="{{ url_for('training.remove_record', session_id=session.id, user_id=r.user.id) }}" class="d-inline" data-confirm="{{ _('Remove this record?') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-user-minus"></i></button>
+                  </form>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-4">
+          <i class="fas fa-users fa-2x mb-2"></i>
+          <p class="mb-0">{{ _('No attendees yet.') }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card mb-4">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-chart-simple me-2"></i>{{ _('Session Info') }}</h5></div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ _('Course') }}</span><a href="{{ url_for('training.view_course', course_id=session.course.id) }}" class="text-decoration-none small">{{ session.course.title }}</a></div>
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ _('Enrolled') }}</span><strong>{{ session.enrolled_count }}{% if session.max_attendees %}/{{ session.max_attendees }}{% endif %}</strong></div>
+        <div class="d-flex justify-content-between mb-2"><span class="text-muted">{{ _('Completed') }}</span><strong>{{ session.records.filter_by(status='completed').count() }}</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<h1 style="font-size:20px; margin-bottom:5px;">{{ _('Training & Competence Report') }}</h1>
+<p style="color:#64748b; margin-bottom:20px; font-size:11px;">
+  {{ _('Generated on') }} {{ now().strftime('%Y-%m-%d %H:%M') }}
+</p>
+
+<h2 style="font-size:14px; margin-bottom:10px;">{{ _('Courses') }}</h2>
+<table style="width:100%; border-collapse:collapse; font-size:9px;">
+  <thead>
+    <tr style="background:#1e293b; color:#fff;">
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Title') }}</th>
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Category') }}</th>
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Provider') }}</th>
+      <th style="padding:6px; text-align:right; border:1px solid #334155;">{{ _('Duration') }}</th>
+      <th style="padding:6px; text-align:right; border:1px solid #334155;">{{ _('Sessions') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in courses %}
+    <tr>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ c.title or '' }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ (c.category or '')|replace('_', ' ')|title }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ c.provider or '—' }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0; text-align:right;">{{ c.duration_hours or '—' }}h</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0; text-align:right;">{{ c.sessions.count() }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" style="padding:12px; text-align:center; color:#94a3b8;">{{ _('No courses recorded.') }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

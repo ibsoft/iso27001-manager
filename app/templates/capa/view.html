@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block page_title %}{{ capa.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('capa.list_capas') }}">{{ _('CAPA') }}</a></li>
+<li class="breadcrumb-item active">{{ capa.title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{ capa.title }}</h5>
+        <div class="d-flex gap-2">
+          <span class="badge bg-{{ capa.severity_class }} fs-6">{{ capa.severity|title }}</span>
+          <span class="badge bg-{{ capa.status_class }} fs-6">{{ capa.status|replace('_', ' ')|title }}</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Source') }}</small>
+            <strong>{{ capa.source_type|title }}</strong>
+            {% if capa.source_reference %}<br><small class="text-muted">{{ _('Ref') }}: {{ capa.source_reference }}</small>{% endif %}
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Created By') }}</small>
+            <strong>{{ capa.created_by.first_name ~ ' ' ~ capa.created_by.last_name if capa.created_by else '—' }}</strong>
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Assigned To') }}</small>
+            <strong>{{ capa.assigned_to.first_name ~ ' ' ~ capa.assigned_to.last_name if capa.assigned_to else '—' }}</strong>
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted d-block">{{ _('Target Date') }}</small>
+            <strong class="{{ 'text-danger' if capa.target_date and capa.target_date < now().date() and capa.status not in ('closed','verified') else '' }}">{{ capa.target_date.strftime('%Y-%m-%d') if capa.target_date else '—' }}</strong>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h6 class="text-muted mb-2">{{ _('Description') }}</h6>
+          <div class="p-3 bg-light rounded">{{ capa.description|nl2br }}</div>
+        </div>
+
+        {% if capa.root_cause %}
+        <div class="mb-4">
+          <h6 class="text-muted mb-2"><i class="fas fa-search me-1"></i>{{ _('Root Cause Analysis') }}</h6>
+          <div class="p-3 bg-light rounded">
+            {% if capa.root_cause_category %}<span class="badge bg-info me-2 mb-2">{{ capa.root_cause_category|title }}</span>{% endif %}
+            {{ capa.root_cause|nl2br }}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if capa.proposed_action %}
+        <div class="mb-4">
+          <h6 class="text-muted mb-2"><i class="fas fa-tasks me-1"></i>{{ _('Corrective Action Plan') }}</h6>
+          <div class="p-3 bg-light rounded">
+            {{ capa.proposed_action|nl2br }}
+            {% if capa.action_owner %}<div class="mt-2"><small class="text-muted">{{ _('Owner') }}: {{ capa.action_owner.first_name ~ ' ' ~ capa.action_owner.last_name }}</small></div>{% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if capa.effectiveness_review %}
+        <div class="mb-4">
+          <h6 class="text-muted mb-2"><i class="fas fa-check-circle me-1"></i>{{ _('Effectiveness Review') }}</h6>
+          <div class="p-3 bg-light rounded">
+            {{ capa.effectiveness_review|nl2br }}
+            {% if capa.effectiveness_rating %}<div class="mt-2"><span class="badge bg-{{ 'success' if capa.effectiveness_rating == 'effective' else 'warning' if capa.effectiveness_rating == 'partially_effective' else 'danger' }}">{{ capa.effectiveness_rating|replace('_', ' ')|title }}</span></div>{% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if capa.closure_notes %}
+        <div class="mb-3">
+          <h6 class="text-muted mb-2"><i class="fas fa-clipboard-check me-1"></i>{{ _('Closure Notes') }}</h6>
+          <div class="p-3 bg-light rounded">{{ capa.closure_notes|nl2br }}</div>
+        </div>
+        {% endif %}
+
+        <div class="small text-muted mt-3">
+          {{ _('Created') }}: {{ capa.created_at.strftime('%Y-%m-%d %H:%M') }}
+          {% if capa.completed_date %}&middot; {{ _('Completed') }}: {{ capa.completed_date.strftime('%Y-%m-%d') }}{% endif %}
+          {% if capa.updated_at and capa.updated_at != capa.created_at %}&middot; {{ _('Updated') }}: {{ capa.updated_at.strftime('%Y-%m-%d %H:%M') }}{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card mb-4">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-cog me-2"></i>{{ _('Actions') }}</h5></div>
+      <div class="card-body">
+        {% if current_user.has_permission('capa_edit') %}
+        <a href="{{ url_for('capa.edit_capa', capa_id=capa.id) }}" class="btn btn-outline-primary w-100 mb-2"><i class="fas fa-edit me-1"></i>{{ _('Edit CAPA') }}</a>
+        {% endif %}
+        <div class="btn-group-vertical w-100">
+          {% for status, label in [('under_review', _('Under Review')), ('action_planned', _('Action Planned')), ('in_progress', _('In Progress')), ('verified', _('Verified')), ('closed', _('Closed'))] %}
+          {% if capa.status != status %}
+          <form method="POST" action="{{ url_for('capa.update_status', capa_id=capa.id, new_status=status) }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-outline-{{ 'secondary' if status == 'closed' else 'primary' }} w-100 mb-1">{{ _('Mark as') }} {{ label }}</button>
+          </form>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% if current_user.has_role('admin') %}
+        <form method="POST" action="{{ url_for('capa.delete_capa', capa_id=capa.id) }}" class="mt-2" data-confirm="{{ _('Delete this CAPA?') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-outline-danger w-100"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>{{ _('Progress') }}</h5></div>
+      <div class="card-body">
+        {% set days = ((now() - capa.created_at).days) if capa.created_at else 0 %}
+        <div class="d-flex justify-content-between mb-2">
+          <span class="text-muted">{{ _('Age') }}</span>
+          <strong>{{ days }} {{ _('days') }}</strong>
+        </div>
+        {% if capa.target_date %}
+        {% set remaining = (capa.target_date - now().date()).days %}
+        <div class="d-flex justify-content-between mb-2">
+          <span class="text-muted">{{ _('Remaining') }}</span>
+          <strong class="{{ 'text-danger' if remaining < 0 else 'text-success' }}">{{ remaining }} {{ _('days') }}</strong>
+        </div>
+        {% endif %}
+        {% if capa.root_cause_category %}
+        <div class="d-flex justify-content-between">
+          <span class="text-muted">{{ _('Root Cause') }}</span>
+          <strong>{{ capa.root_cause_category|title }}</strong>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

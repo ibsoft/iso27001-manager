@@ -811,3 +811,163 @@ class Nis2ComplianceForm(BaseForm):
     responsible_person_id = SelectField(_l("Responsible Person"), coerce=int, validators=[Optional()])
     notes = TextAreaField(_l("Notes"), validators=[Optional()])
     submit = SubmitField(_l("Save"))
+
+
+class ManagementReviewForm(BaseForm):
+    title = StringField(_l("Review Title"), validators=[DataRequired(), Length(max=256)])
+    review_date = DateField(_l("Review Date"), validators=[DataRequired()])
+    conducted_by_id = SelectField(_l("Conducted By"), coerce=int, validators=[Optional()])
+    agenda = TextAreaField(_l("Agenda"), validators=[Optional()])
+    minutes = TextAreaField(_l("Minutes / Notes"), validators=[Optional()])
+    attendees = TextAreaField(_l("Attendees"), validators=[Optional()],
+                              description=_l("Comma-separated list of names"))
+    status = SelectField(
+        _l("Status"),
+        choices=[("planned", _l("Planned")), ("in_progress", _l("In Progress")),
+                 ("completed", _l("Completed"))],
+        default="planned",
+    )
+    recommendations = TextAreaField(_l("Recommendations"), validators=[Optional()])
+    next_review_date = DateField(_l("Next Review Date"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class ReviewActionItemForm(BaseForm):
+    description = TextAreaField(_l("Action Description"), validators=[DataRequired()])
+    owner_id = SelectField(_l("Owner"), coerce=int, validators=[Optional()])
+    deadline = DateField(_l("Deadline"), validators=[Optional()])
+    status = SelectField(
+        _l("Status"),
+        choices=[("open", _l("Open")), ("in_progress", _l("In Progress")),
+                 ("completed", _l("Completed")), ("closed", _l("Closed"))],
+        default="open",
+    )
+    completed_at = DateField(_l("Completed Date"), validators=[Optional()])
+    closure_notes = TextAreaField(_l("Closure Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class CapaRequestForm(BaseForm):
+    title = StringField(_l("Title"), validators=[DataRequired(), Length(max=256)])
+    description = TextAreaField(_l("Description"), validators=[DataRequired()])
+    source_type = SelectField(
+        _l("Source Type"),
+        choices=[("internal", _l("Internal")), ("audit", _l("Audit")),
+                 ("incident", _l("Incident")), ("complaint", _l("Complaint")),
+                 ("supplier", _l("Supplier")), ("regulatory", _l("Regulatory")),
+                 ("other", _l("Other"))],
+        default="internal",
+    )
+    source_reference = StringField(_l("Source Reference"), validators=[Optional(), Length(max=128)])
+    severity = SelectField(
+        _l("Severity"),
+        choices=[("minor", _l("Minor")), ("major", _l("Major")), ("critical", _l("Critical"))],
+        default="medium",
+    )
+    status = SelectField(
+        _l("Status"),
+        choices=[("open", _l("Open")), ("under_review", _l("Under Review")),
+                 ("action_planned", _l("Action Planned")),
+                 ("in_progress", _l("In Progress")),
+                 ("verified", _l("Verified")), ("closed", _l("Closed"))],
+        default="open",
+    )
+    root_cause = TextAreaField(_l("Root Cause Analysis"), validators=[Optional()])
+    root_cause_category = SelectField(
+        _l("Root Cause Category"),
+        choices=[("", _l("Select...")), ("people", _l("People")),
+                 ("process", _l("Process")), ("technology", _l("Technology")),
+                 ("external", _l("External")), ("other", _l("Other"))],
+        validators=[Optional()],
+    )
+    proposed_action = TextAreaField(_l("Proposed Action / Corrective Plan"), validators=[Optional()])
+    action_owner_id = SelectField(_l("Action Owner"), coerce=int, validators=[Optional()])
+    target_date = DateField(_l("Target Completion Date"), validators=[Optional()])
+    effectiveness_review = TextAreaField(_l("Effectiveness Review"), validators=[Optional()])
+    effectiveness_rating = SelectField(
+        _l("Effectiveness Rating"),
+        choices=[("", _l("Select...")),
+                 ("effective", _l("Effective")),
+                 ("partially_effective", _l("Partially Effective")),
+                 ("ineffective", _l("Ineffective"))],
+        validators=[Optional()],
+    )
+    closure_notes = TextAreaField(_l("Closure Notes"), validators=[Optional()])
+    created_by_id = SelectField(_l("Created By"), coerce=int, validators=[Optional()])
+    assigned_to_id = SelectField(_l("Assigned To"), coerce=int, validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class TrainingCourseForm(BaseForm):
+    title = StringField(_l("Course Title"), validators=[DataRequired(), Length(max=256)])
+    description = TextAreaField(_l("Description"), validators=[Optional()])
+    category = SelectField(
+        _l("Category"),
+        choices=[("awareness", _l("Awareness")), ("technical", _l("Technical")),
+                 ("process", _l("Process")), ("compliance", _l("Compliance")),
+                 ("management", _l("Management")), ("other", _l("Other"))],
+        default="awareness",
+    )
+    provider = StringField(_l("Provider"), validators=[Optional(), Length(max=256)])
+    duration_hours = FloatField(_l("Duration (hours)"), validators=[Optional()])
+    validity_days = IntegerField(_l("Validity (days)"), validators=[Optional()])
+    is_mandatory = BooleanField(_l("Mandatory"))
+    status = SelectField(
+        _l("Status"),
+        choices=[("active", _l("Active")), ("inactive", _l("Inactive")),
+                 ("archived", _l("Archived"))],
+        default="active",
+    )
+    submit = SubmitField(_l("Save"))
+
+
+class TrainingSessionForm(BaseForm):
+    title = StringField(_l("Session Title"), validators=[Optional(), Length(max=256)])
+    session_date = DateField(_l("Date"), validators=[DataRequired()])
+    trainer = StringField(_l("Trainer"), validators=[Optional(), Length(max=256)])
+    location = StringField(_l("Location / Platform"), validators=[Optional(), Length(max=256)])
+    max_attendees = IntegerField(_l("Max Attendees"), validators=[Optional()])
+    status = SelectField(
+        _l("Status"),
+        choices=[("scheduled", _l("Scheduled")), ("in_progress", _l("In Progress")),
+                 ("completed", _l("Completed")), ("cancelled", _l("Cancelled"))],
+        default="scheduled",
+    )
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))
+
+
+class TrainingRecordForm(BaseForm):
+    status = SelectField(
+        _l("Status"),
+        choices=[("enrolled", _l("Enrolled")), ("completed", _l("Completed")),
+                 ("no_show", _l("No Show")), ("expired", _l("Expired"))],
+        default="enrolled",
+    )
+    completed_date = DateField(_l("Completed Date"), validators=[Optional()])
+    score = FloatField(_l("Score (%)"), validators=[Optional()])
+    feedback = TextAreaField(_l("Feedback"), validators=[Optional()])
+    certificate_ref = StringField(_l("Certificate Ref"), validators=[Optional(), Length(max=128)])
+    submit = SubmitField(_l("Save"))
+
+
+class CompetenceProfileForm(BaseForm):
+    user_id = SelectField(_l("User"), coerce=int, choices=[])
+    skill_name = StringField(_l("Skill / Competence"), validators=[DataRequired(), Length(max=128)])
+    skill_level = SelectField(
+        _l("Skill Level"),
+        choices=[("beginner", _l("Beginner")), ("intermediate", _l("Intermediate")),
+                 ("advanced", _l("Advanced")), ("expert", _l("Expert"))],
+        default="beginner",
+    )
+    category = SelectField(
+        _l("Category"),
+        choices=[("technical", _l("Technical")), ("security", _l("Security")),
+                 ("compliance", _l("Compliance")), ("management", _l("Management")),
+                 ("soft_skill", _l("Soft Skill")), ("other", _l("Other"))],
+        default="technical",
+    )
+    last_assessment_date = DateField(_l("Last Assessment Date"), validators=[Optional()])
+    expiry_date = DateField(_l("Expiry Date"), validators=[Optional()])
+    notes = TextAreaField(_l("Notes"), validators=[Optional()])
+    submit = SubmitField(_l("Save"))

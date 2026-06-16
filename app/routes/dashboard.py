@@ -17,6 +17,8 @@ from app.models.nis2 import (
     Nis2SupplyChainAssessment, Nis2ContinuityPlan,
     Nis2EntityRegistration,
 )
+from app.models.management_review import ManagementReview
+from app.models.capa import CapaRequest
 from datetime import datetime, date
 from sqlalchemy import func
 
@@ -55,6 +57,34 @@ def index():
     ).count()
 
     recent_incidents = Incident.query.order_by(Incident.created_at.desc()).limit(5).all()
+
+    # Training
+    from app.models.training import TrainingCourse, TrainingSession, TrainingRecord as TrainingRec
+    total_courses = TrainingCourse.query.filter_by(status="active").count()
+    upcoming_sessions = TrainingSession.query.filter(
+        TrainingSession.session_date >= date.today(),
+        TrainingSession.status == "scheduled",
+    ).count()
+    completed_training = TrainingRec.query.filter_by(status="completed").count()
+
+    # Management Reviews
+    from app.models.management_review import ReviewActionItem
+    total_reviews = ManagementReview.query.count()
+    overdue_reviews = ManagementReview.query.filter(
+        ManagementReview.status.in_(["planned", "in_progress"]),
+        ManagementReview.review_date < date.today(),
+    ).count()
+    open_review_actions = ReviewActionItem.query.filter(
+        ReviewActionItem.status.in_(["open", "in_progress"])
+    ).count()
+
+    # CAPA
+    open_capas = CapaRequest.query.filter(
+        CapaRequest.status.in_(["open", "under_review", "action_planned", "in_progress"])
+    ).count()
+    critical_capas = CapaRequest.query.filter_by(severity="critical").filter(
+        CapaRequest.status.in_(["open", "under_review", "action_planned", "in_progress"])
+    ).count()
 
     # GDPR
     total_activities = ProcessingActivity.query.count()
@@ -116,6 +146,14 @@ def index():
         "pending_notifications": pending_notifications,
         "active_continuity": active_continuity,
         "critical_supply_chain": critical_supply_chain,
+        "total_reviews": total_reviews,
+        "overdue_reviews": overdue_reviews,
+        "open_review_actions": open_review_actions,
+        "open_capas": open_capas,
+        "critical_capas": critical_capas,
+        "total_courses": total_courses,
+        "upcoming_sessions": upcoming_sessions,
+        "completed_training": completed_training,
     }
 
     return render_template("dashboard/index.html", **context)

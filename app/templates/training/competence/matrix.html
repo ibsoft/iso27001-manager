@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Competence Matrix') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item"><a href="{{ url_for('training.list_courses') }}">{{ _('Training') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Competence') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body d-flex justify-content-between align-items-center">
+    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>{{ _('Competence Matrix') }}</h5>
+    {% if current_user.has_permission('training_edit') %}
+    <a href="{{ url_for('training.new_competence') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Add Competence') }}</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body p-0">
+    {% if competence %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>{{ _('User') }}</th>
+            <th>{{ _('Skill') }}</th>
+            <th>{{ _('Level') }}</th>
+            <th>{{ _('Category') }}</th>
+            <th>{{ _('Last Assessment') }}</th>
+            <th>{{ _('Expiry') }}</th>
+            <th class="text-end">{{ _('Actions') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in competence %}
+          <tr>
+            <td><small>{{ c.user.first_name }} {{ c.user.last_name }}</small></td>
+            <td><strong class="small">{{ c.skill_name }}</strong></td>
+            <td><span class="badge bg-{{ 'success' if c.skill_level == 'expert' else 'primary' if c.skill_level == 'advanced' else 'warning' if c.skill_level == 'intermediate' else 'secondary' }}">{{ c.skill_level|title }}</span></td>
+            <td><small>{{ _(c.category|replace('_', ' ')|title) }}</small></td>
+            <td><small>{{ c.last_assessment_date.strftime('%Y-%m-%d') if c.last_assessment_date else '—' }}</small></td>
+            <td><small class="{{ 'text-danger' if c.expiry_date and c.expiry_date < now().date() else '' }}">{{ c.expiry_date.strftime('%Y-%m-%d') if c.expiry_date else '—' }}</small></td>
+            <td class="text-end">
+              {% if current_user.has_permission('training_edit') %}
+              <a href="{{ url_for('training.edit_competence', profile_id=c.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+              {% endif %}
+              {% if current_user.has_role('admin') %}
+              <form method="POST" action="{{ url_for('training.delete_competence', profile_id=c.id) }}" class="d-inline" data-confirm="{{ _('Delete this competence?') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center text-muted py-4"><p class="mb-0">{{ _('No competence records yet.') }}</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

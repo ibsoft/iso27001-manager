@@ -1,0 +1,34 @@
+{% extends "reports/pdf/base.html" %}
+{% block content %}
+<h1 style="font-size:20px; margin-bottom:5px;">{{ _('CAPA Requests') }}</h1>
+<p style="color:#64748b; margin-bottom:20px; font-size:11px;">
+  {{ _('Generated on') }} {{ now().strftime('%Y-%m-%d %H:%M') }}
+</p>
+
+<table style="width:100%; border-collapse:collapse; font-size:9px;">
+  <thead>
+    <tr style="background:#1e293b; color:#fff;">
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Title') }}</th>
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Source') }}</th>
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Severity') }}</th>
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Status') }}</th>
+      <th style="padding:6px; text-align:left; border:1px solid #334155;">{{ _('Owner') }}</th>
+      <th style="padding:6px; text-align:right; border:1px solid #334155;">{{ _('Target') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for capa in capas %}
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ capa.title or '' }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ (capa.source_type or '')|title }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ (capa.severity or '')|title }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ (capa.status or '')|replace('_', ' ')|title }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0;">{{ capa.action_owner.first_name ~ ' ' ~ capa.action_owner.last_name if capa.action_owner else '—' }}</td>
+      <td style="padding:4px 6px; border:1px solid #e2e8f0; text-align:right;">{{ capa.target_date.strftime('%Y-%m-%d') if capa.target_date else '' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" style="padding:12px; text-align:center; color:#94a3b8;">{{ _('No CAPA requests recorded.') }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
