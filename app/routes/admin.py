@@ -1,4 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+import io
+import os
+import zipfile
+import shutil
+from datetime import datetime
+from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, current_app
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db
@@ -7,7 +12,6 @@ from app.models.audit_log import AuditLog
 from app.forms import UserForm
 from app.utils.decorators import admin_required
 from app.utils.pagination import paginate
-from datetime import datetime
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -153,3 +157,173 @@ def _log_audit(details):
         db.session.commit()
     except Exception:
         pass
+
+
+def _get_db_path():
+    import re
+    uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+    m = re.match(r"sqlite:///(.*)", uri)
+    if m:
+        return os.path.normpath(os.path.join(current_app.root_path, m.group(1)))
+    return None
+
+
+def _get_backup_dir():
+    backup_dir = os.path.join(current_app.root_path, "..", "backups")
+    os.makedirs(backup_dir, exist_ok=True)
+    return backup_dir
+
+
+@admin_bp.route("/backup")
+@login_required
+@admin_required
+def list_backups():
+    backup_dir = _get_backup_dir()
+    backups = []
+    if os.path.exists(backup_dir):
+        for f in sorted(os.listdir(backup_dir), reverse=True):
+            if f.endswith(".zip"):
+                path = os.path.join(backup_dir, f)
+                size = os.path.getsize(path)
+                mod = datetime.fromtimestamp(os.path.getmtime(path))
+                backups.append({"filename": f, "size": size, "modified": mod})
+    return render_template("admin/backup.html", backups=backups)
+
+
+@admin_bp.route("/backup/create", methods=["POST"])
+@login_required
+@admin_required
+def create_backup():
+    notes = request.form.get("notes", "").strip()
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    backup_filename = f"backup_{timestamp}.zip"
+    backup_dir = _get_backup_dir()
+    backup_path = os.path.join(backup_dir, backup_filename)
+
+    db_path = _get_db_path()
+    upload_folder = current_app.config["UPLOAD_FOLDER"]
+
+    try:
+        with zipfile.ZipFile(backup_path, "w", zipfile.ZIP_DEFLATED) as zf:
+            if db_path and os.path.exists(db_path):
+                zf.write(db_path, "database/isms.db")
+
+            if notes:
+                zf.writestr("notes.txt", notes)
+
+            if os.path.exists(upload_folder):
+                for root, dirs, files in os.walk(upload_folder):
+                    for f in files:
+                        full = os.path.join(root, f)
+                        arcname = os.path.relpath(full, os.path.dirname(upload_folder))
+                        zf.write(full, arcname)
+
+        try:
+            log = AuditLog(
+                user_id=current_user.id,
+                action="CREATE",
+                resource_type="Backup",
+                details=f"Created backup: {backup_filename}",
+                ip_address=request.remote_addr,
+                user_agent=request.headers.get("User-Agent", "")[:256],
+            )
+            db.session.add(log)
+            db.session.commit()
+        except Exception:
+            pass
+
+        flash(_("Backup created successfully."), "success")
+    except Exception as e:
+        flash(_("Database backup failed: ") + str(e), "danger")
+
+    return redirect(url_for("admin.list_backups"))
+
+
+@admin_bp.route("/backup/<filename>/download")
+@login_required
+@admin_required
+def download_backup(filename):
+    backup_dir = _get_backup_dir()
+    path = os.path.join(backup_dir, filename)
+    if not os.path.exists(path):
+        flash(_("Backup file not found on disk."), "danger")
+        return redirect(url_for("admin.list_backups"))
+    return send_file(path, as_attachment=True, download_name=filename)
+
+
+@admin_bp.route("/backup/<filename>/delete", methods=["POST"])
+@login_required
+@admin_required
+def delete_backup(filename):
+    backup_dir = _get_backup_dir()
+    path = os.path.join(backup_dir, filename)
+    if os.path.exists(path):
+        os.remove(path)
+        try:
+            log = AuditLog(
+                user_id=current_user.id,
+                action="DELETE",
+                resource_type="Backup",
+                details=f"Deleted backup: {filename}",
+                ip_address=request.remote_addr,
+                user_agent=request.headers.get("User-Agent", "")[:256],
+            )
+            db.session.add(log)
+            db.session.commit()
+        except Exception:
+            pass
+        flash(_("Backup deleted."), "success")
+    return redirect(url_for("admin.list_backups"))
+
+
+@admin_bp.route("/backup/restore", methods=["POST"])
+@login_required
+@admin_required
+def restore_backup():
+    file = request.files.get("backup_file")
+    if not file or not file.filename:
+        flash(_("No file uploaded."), "danger")
+        return redirect(url_for("admin.list_backups"))
+
+    if not file.filename.endswith(".zip"):
+        flash(_("Invalid backup file."), "danger")
+        return redirect(url_for("admin.list_backups"))
+
+    zip_data = file.read()
+    db_path = _get_db_path()
+    upload_folder = current_app.config["UPLOAD_FOLDER"]
+
+    try:
+        with zipfile.ZipFile(io.BytesIO(zip_data), "r") as zf:
+            if "database/isms.db" in zf.namelist():
+                if db_path and os.path.exists(db_path):
+                    os.replace(db_path, db_path + ".bak")
+                zf.extract("database/isms.db", os.path.dirname(db_path))
+                restored_db = os.path.join(os.path.dirname(db_path), "database", "isms.db")
+                if os.path.exists(restored_db):
+                    os.replace(restored_db, db_path)
+                    shutil.rmtree(os.path.join(os.path.dirname(db_path), "database"), ignore_errors=True)
+
+            for name in zf.namelist():
+                if name.startswith("static/uploads/"):
+                    zf.extract(name, os.path.dirname(upload_folder))
+
+        try:
+            log = AuditLog(
+                user_id=current_user.id,
+                action="RESTORE",
+                resource_type="Backup",
+                details="Restored from backup",
+                ip_address=request.remote_addr,
+                user_agent=request.headers.get("User-Agent", "")[:256],
+            )
+            db.session.add(log)
+            db.session.commit()
+        except Exception:
+            pass
+
+        flash(_("Backup restored successfully."), "success")
+    except Exception as e:
+        flash(_("Database restore failed: ") + str(e), "danger")
+
+    return redirect(url_for("admin.list_backups"))

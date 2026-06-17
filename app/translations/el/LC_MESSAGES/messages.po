@@ -7476,5 +7476,141 @@ msgstr "Παρακαλώ επιλέξτε έναν χρήστη."
 msgid "Checked-out Assets"
 msgstr "Περιουσιακά Στοιχεία σε Δανεισμό"
 
+#: app/routes/kpi.py app/templates/kpi/dashboard.html
+msgid "Metrics & KPIs Dashboard"
+msgstr "Πίνακας Μετρήσεων & KPI"
+
+#: app/routes/kpi.py
+msgid "Value is required."
+msgstr "Απαιτείται τιμή."
+
+#: app/routes/kpi.py
+msgid "Invalid date format."
+msgstr "Μη έγκυρη μορφή ημερομηνίας."
+
+#: app/routes/kpi.py
+msgid "Measurement recorded."
+msgstr "Η μέτρηση καταγράφηκε."
+
+#: app/routes/kpi.py
+msgid "Measurement deleted."
+msgstr "Η μέτρηση διαγράφηκε."
+
+#: app/templates/kpi/dashboard.html
+msgid "Current"
+msgstr "Τρέχουσα"
+
+#: app/templates/kpi/dashboard.html
+msgid "Trend"
+msgstr "Τάση"
+
+#: app/templates/kpi/dashboard.html
+msgid "No measurements yet."
+msgstr "Δεν υπάρχουν ακόμα μετρήσεις."
+
+#: app/templates/kpi/dashboard.html
+msgid "Record Measurement"
+msgstr "Καταγραφή Μέτρησης"
+
+#: app/templates/kpi/dashboard.html
+msgid "No KPIs configured."
+msgstr "Δεν έχουν ρυθμιστεί KPI."
+
+#: app/templates/kpi/dashboard.html
+msgid "Value"
+msgstr "Τιμή"
+
+#: app/templates/kpi/dashboard.html
+msgid "Notes (optional)"
+msgstr "Σημειώσεις (προαιρετικά)"
+
+#: app/templates/kpi/dashboard.html app/templates/base.html
+msgid "Metrics & KPIs"
+msgstr "Μετρήσεις & KPI"
+
+#: app/routes/admin.py app/templates/admin/backup.html
+msgid "Backup & Restore"
+msgstr "Αντίγραφο Ασφαλείας & Επαναφορά"
+
+#: app/routes/admin.py
+msgid "Backup created successfully."
+msgstr "Το αντίγραφο ασφαλείας δημιουργήθηκε επιτυχώς."
+
+#: app/routes/admin.py
+msgid "Database backup failed: "
+msgstr "Η δημιουργία αντιγράφου ασφαλείας απέτυχε: "
+
+#: app/routes/admin.py
+msgid "Backup file not found on disk."
+msgstr "Το αρχείο αντιγράφου ασφαλείας δεν βρέθηκε στο δίσκο."
+
+#: app/routes/admin.py
+msgid "Backup deleted."
+msgstr "Το αντίγραφο ασφαλείας διαγράφηκε."
+
+#: app/routes/admin.py
+msgid "No file uploaded."
+msgstr "Δεν μεταφορτώθηκε αρχείο."
+
+#: app/routes/admin.py
+msgid "Invalid backup file."
+msgstr "Μη έγκυρο αρχείο αντιγράφου ασφαλείας."
+
+#: app/routes/admin.py
+msgid "Backup restored successfully."
+msgstr "Η επαναφορά αντιγράφου ασφαλείας ολοκληρώθηκε επιτυχώς."
+
+#: app/routes/admin.py
+msgid "Database restore failed: "
+msgstr "Η επαναφορά βάσης δεδομένων απέτυχε: "
+
+#: app/templates/admin/backup.html
+msgid "Create Backup"
+msgstr "Δημιουργία Αντιγράφου Ασφαλείας"
+
+#: app/templates/admin/backup.html
+msgid "Create a full backup of the database and all uploaded files."
+msgstr "Δημιουργήστε ένα πλήρες αντίγραφο ασφαλείας της βάσης δεδομένων και όλων των ανεβασμένων αρχείων."
+
+#: app/templates/admin/backup.html
+msgid "e.g. Before upgrade to v2.0"
+msgstr "π.χ. Πριν από αναβάθμιση σε v2.0"
+
+#: app/templates/admin/backup.html
+msgid "Restore Backup"
+msgstr "Επαναφορά Αντιγράφου Ασφαλείας"
+
+#: app/templates/admin/backup.html
+msgid "Restore from a previously created backup .zip file."
+msgstr "Επαναφορά από ένα προηγουμένως δημιουργημένο αρχείο .zip αντιγράφου ασφαλείας."
+
+#: app/templates/admin/backup.html
+msgid "This will overwrite all current data and files."
+msgstr "Αυτό θα αντικαταστήσει όλα τα τρέχοντα δεδομένα και αρχεία."
+
+#: app/templates/admin/backup.html
+msgid "Backup file (.zip)"
+msgstr "Αρχείο αντιγράφου ασφαλείας (.zip)"
+
+#: app/templates/admin/backup.html
+msgid "This will overwrite all current data. Are you sure?"
+msgstr "Αυτό θα αντικαταστήσει όλα τα τρέχοντα δεδομένα. Είστε σίγουροι;"
+
+#: app/templates/admin/backup.html
+msgid "Backup History"
+msgstr "Ιστορικό Αντιγράφων Ασφαλείας"
+
+#: app/templates/admin/backup.html
+msgid "No backups yet."
+msgstr "Δεν υπάρχουν ακόμα αντίγραφα ασφαλείας."
+
+#: app/templates/admin/backup.html
+msgid "Delete this backup?"
+msgstr "Διαγραφή αυτού του αντιγράφου ασφαλείας;"
+
+#: app/templates/admin/backup.html
+msgid "Restore"
+msgstr "Επαναφορά"
+
 
 #~ msgid "Reporting"
