@@ -9,10 +9,10 @@
     <div class="card h-100">
       <div class="card-header d-flex justify-content-between align-items-center">
         <span>
-          <strong>{{ d.kpi.name }}</strong>
-          <span class="badge bg-secondary ms-2">{{ d.kpi.category }}</span>
+          <strong>{{ _(d.kpi.name) }}</strong>
+          <span class="badge bg-secondary ms-2">{{ _(d.kpi.category) }}</span>
         </span>
-        <span class="small text-muted">{{ d.kpi.frequency|title }}</span>
+        <span class="small text-muted">{{ _(d.kpi.frequency) }}</span>
       </div>
       <div class="card-body">
         <div class="row mb-3">
@@ -43,7 +43,7 @@
         </div>
 
         {% if d.labels %}
-        <canvas id="chart_{{ d.kpi.id }}" height="120"></canvas>
+        <div style="position:relative;height:180px"><canvas id="chart_{{ d.kpi.id }}"></canvas></div>
         {% else %}
         <div class="text-center text-muted py-4">
           <i class="fas fa-chart-line fa-2x mb-2"></i>
@@ -102,8 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
     data: {
       labels: {{ d.labels|tojson }},
       datasets: [{
-        label: '{{ d.kpi.name }}',
-        data: {{ d.values|tojson }},
+        label: '{{ _(d.kpi.name) }}',
+        data: {{ d.chart_values|tojson }},
         borderColor: '#3b82f6',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         fill: true,
