@@ -11,6 +11,11 @@
     .error-card { background: #fff; border-radius: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.06); padding: 3rem; text-align: center; max-width: 480px; width: 100%; }
     .error-card h1 { font-size: 5rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem; }
     .error-card p { color: #6b7280; font-size: 1.1rem; margin-bottom: 2rem; }
+    @media (prefers-color-scheme: dark) {
+      body { background: #0f172a; }
+      .error-card { background: #1e293b; box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
+      .error-card p { color: #94a3b8; }
+    }
   </style>
 </head>
 <body>

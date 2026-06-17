@@ -10,21 +10,21 @@
 <link href="https://cdn.jsdelivr.net/npm/tinymce@7.7.2/skins/ui/oxide/skin.min.css" rel="stylesheet">
 <style>
   .upload-area {
-    border: 2px dashed #cbd5e1;
+    border: 2px dashed var(--input-border);
     border-radius: 0.5rem;
     padding: 2rem;
     text-align: center;
-    background: #f8fafc;
+    background: var(--card-bg);
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s;
   }
   .upload-area:hover, .upload-area.dragover {
     border-color: #1a56db;
-    background: #eff6ff;
+    background: var(--input-bg);
   }
   .upload-area.has-file {
     border-color: #22c55e;
-    background: #f0fdf4;
+    background: var(--input-bg);
   }
   .upload-area .file-info { display: none; }
   .upload-area.has-file .file-info { display: block; }
