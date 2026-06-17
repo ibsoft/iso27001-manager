@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Upload Filled-out Form') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('filled_forms.list_filled_forms') }}">{{ _('Filled-out Forms') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Upload') }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-upload me-2"></i>{{ _('Upload Filled-out Form') }}</h5></div>
+      <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3">
+            <label class="form-label">{{ _('Title') }} <span class="text-danger">*</span></label>
+            <input type="text" name="title" class="form-control" required maxlength="256">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ _('Concerns User') }} <span class="text-danger">*</span></label>
+            <select name="user_id" class="form-select" required>
+              <option value="">{{ _('Select user...') }}</option>
+              {% for u in users %}
+              <option value="{{ u.id }}">{{ u.first_name ~ ' ' ~ u.last_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ _('Year') }} <span class="text-danger">*</span></label>
+            <select name="year" class="form-select" required>
+              {% for y in range(now().year, now().year - 10, -1) %}
+              <option value="{{ y }}">{{ y }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ _('Description') }}</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ _('File') }} <span class="text-danger">*</span></label>
+            <input type="file" name="file" class="form-control" required>
+            <div class="form-text text-muted">{{ _('Allowed: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, TXT, RTF, CSV, PNG, JPG, GIF, SVG') }}</div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <a href="{{ url_for('filled_forms.list_filled_forms') }}" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i>{{ _('Back') }}</a>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-upload me-1"></i>{{ _('Upload') }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

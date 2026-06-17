@@ -44,6 +44,7 @@
       <div class="card-header">{{ _('Quick Status Update') }}</div>
       <div class="card-body">
         <form method="POST" action="{{ url_for('controls.update_status', control_id=control.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="mb-3">
             <select name="implementation_status" class="form-select">
               <option value="not_started" {{ 'selected' if control.implementation_status == 'not_started' }}>{{ _('Not Started') }}</option>
