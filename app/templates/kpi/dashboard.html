@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Metrics & KPIs') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Metrics & KPIs Dashboard') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  {% for d in kpi_data %}
+  <div class="col-lg-6 mb-4">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>
+          <strong>{{ d.kpi.name }}</strong>
+          <span class="badge bg-secondary ms-2">{{ d.kpi.category }}</span>
+        </span>
+        <span class="small text-muted">{{ d.kpi.frequency|title }}</span>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-4 text-center">
+            <div class="text-muted small">{{ _('Current') }}</div>
+            <div class="fs-4 fw-bold {% if d.current_value is not none and d.target and d.current_value >= d.target %}text-success{% elif d.current_value is not none and d.target %}text-warning{% endif %}">
+              {{ d.current_value|round(1) if d.current_value is not none else '—' }}
+              {% if d.kpi.unit == 'percent' %}<span class="fs-6">%</span>{% endif %}
+            </div>
+          </div>
+          <div class="col-4 text-center">
+            <div class="text-muted small">{{ _('Target') }}</div>
+            <div class="fs-4 fw-bold text-info">
+              {{ d.target|round(1) if d.target is not none else '—' }}
+              {% if d.kpi.unit == 'percent' %}<span class="fs-6">%</span>{% endif %}
+            </div>
+          </div>
+          <div class="col-4 text-center">
+            <div class="text-muted small">{{ _('Trend') }}</div>
+            <div class="fs-4 fw-bold {% if d.trend is not none and d.trend >= 0 %}text-success{% elif d.trend is not none %}text-danger{% endif %}">
+              {% if d.trend is not none %}
+              {{ '+' if d.trend >= 0 }}{{ d.trend|round(2) }}
+              {% else %}
+              —
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {% if d.labels %}
+        <canvas id="chart_{{ d.kpi.id }}" height="120"></canvas>
+        {% else %}
+        <div class="text-center text-muted py-4">
+          <i class="fas fa-chart-line fa-2x mb-2"></i>
+          <p class="small mb-0">{{ _('No measurements yet.') }}</p>
+        </div>
+        {% endif %}
+
+        {% if d.kpi.description %}
+        <p class="text-muted small mt-2 mb-0">{{ d.kpi.description }}</p>
+        {% endif %}
+      </div>
+      {% if current_user.has_role('admin') or current_user.has_role('manager') %}
+      <div class="card-footer">
+        <button class="btn btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#recordForm{{ d.kpi.id }}">
+          <i class="fas fa-plus me-1"></i>{{ _('Record Measurement') }}
+        </button>
+        <div class="collapse mt-2" id="recordForm{{ d.kpi.id }}">
+          <form method="POST" action="{{ url_for('kpi.record_measurement', kpi_id=d.kpi.id) }}" class="row g-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="col-md-4">
+              <input type="number" step="any" name="value" class="form-control form-control-sm" placeholder="{{ _('Value') }}" required>
+            </div>
+            <div class="col-md-4">
+              <input type="date" name="measured_at" class="form-control form-control-sm" value="{{ now().strftime('%Y-%m-%d') }}">
+            </div>
+            <div class="col-md-4">
+              <input type="text" name="notes" class="form-control form-control-sm" placeholder="{{ _('Notes (optional)') }}">
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12">
+    <div class="text-center text-muted py-5">
+      <i class="fas fa-chart-bar fa-3x mb-3"></i>
+      <p>{{ _('No KPIs configured.') }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  {% for d in kpi_data %}
+  {% if d.labels %}
+  new Chart(document.getElementById('chart_{{ d.kpi.id }}'), {
+    type: 'line',
+    data: {
+      labels: {{ d.labels|tojson }},
+      datasets: [{
+        label: '{{ d.kpi.name }}',
+        data: {{ d.values|tojson }},
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        spanGaps: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              var val = ctx.parsed.y;
+              return val{% if d.kpi.unit == 'percent' %} + '%'{% endif %};
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { maxTicksLimit: 8, font: { size: 10 } },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { font: { size: 10 } },
+          grid: { color: 'rgba(0,0,0,0.06)' }
+        }
+      }
+    }
+  });
+  {% endif %}
+  {% endfor %}
+});
+</script>
+{% endblock %}

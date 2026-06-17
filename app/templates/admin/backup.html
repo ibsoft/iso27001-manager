@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Backup & Restore') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Backup & Restore') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <div class="card h-100">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-download me-2"></i>{{ _('Create Backup') }}</h5></div>
+      <div class="card-body">
+        <p class="text-muted">{{ _('Create a full backup of the database and all uploaded files.') }}</p>
+        <form method="POST" action="{{ url_for('admin.create_backup') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3">
+            <label class="form-label">{{ _('Notes (optional)') }}</label>
+            <textarea name="notes" class="form-control" rows="2" placeholder="{{ _('e.g. Before upgrade to v2.0') }}"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-download me-1"></i>{{ _('Create Backup') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-upload me-2"></i>{{ _('Restore Backup') }}</h5></div>
+      <div class="card-body">
+        <p class="text-muted">{{ _('Restore from a previously created backup .zip file.') }}</p>
+        <p class="small text-danger"><i class="fas fa-exclamation-triangle me-1"></i>{{ _('This will overwrite all current data and files.') }}</p>
+        <form method="POST" action="{{ url_for('admin.restore_backup') }}" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3">
+            <label class="form-label">{{ _('Backup file (.zip)') }}</label>
+            <input type="file" name="backup_file" class="form-control" accept=".zip" required>
+          </div>
+          <button type="submit" class="btn btn-warning" data-confirm="{{ _('This will overwrite all current data. Are you sure?') }}"><i class="fas fa-upload me-1"></i>{{ _('Restore') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header"><h5 class="mb-0"><i class="fas fa-history me-2"></i>{{ _('Backup History') }}</h5></div>
+  <div class="card-body p-0">
+    {% if backups %}
+    <div class="table-responsive">
+      <table class="table table-striped mb-0">
+        <thead>
+          <tr>
+            <th>{{ _('File') }}</th>
+            <th>{{ _('Size') }}</th>
+            <th>{{ _('Created') }}</th>
+            <th>{{ _('Actions') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in backups %}
+          <tr>
+            <td><code>{{ b.filename }}</code></td>
+            <td>
+              {% if b.size < 1024 %}
+                {{ b.size }} B
+              {% elif b.size < 1024 * 1024 %}
+                {{ (b.size / 1024)|round(1) }} KB
+              {% else %}
+                {{ (b.size / (1024 * 1024))|round(1) }} MB
+              {% endif %}
+            </td>
+            <td>{{ b.modified.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              <a href="{{ url_for('admin.download_backup', filename=b.filename) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></a>
+              <form method="POST" action="{{ url_for('admin.delete_backup', filename=b.filename) }}" class="d-inline" data-confirm="{{ _('Delete this backup?') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center text-muted py-5">
+      <i class="fas fa-database fa-3x mb-3"></i>
+      <p>{{ _('No backups yet.') }}</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
