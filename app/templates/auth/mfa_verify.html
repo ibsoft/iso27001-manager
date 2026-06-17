@@ -30,6 +30,7 @@
           {% endfor %}{% endif %}
         {% endwith %}
         <form method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="mb-4">
             <label class="form-label fw-medium small text-muted">{{ _('Authentication Code') }}</label>
             <input type="text" name="totp_code" class="form-control form-control-lg text-center" placeholder="000000" inputmode="numeric" maxlength="6" autocomplete="off" style="font-size: 1.5rem; letter-spacing: 0.5rem;" required>

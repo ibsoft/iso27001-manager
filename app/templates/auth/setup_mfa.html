@@ -22,6 +22,7 @@
         <hr>
         <h5 class="mb-3">{{ _('Verify Setup') }}</h5>
         <form method="POST" class="row g-2 justify-content-center">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="col-md-6">
             <input type="text" name="verification_code" class="form-control text-center" placeholder="000000" maxlength="6" inputmode="numeric" required>
           </div>

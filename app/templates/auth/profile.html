@@ -320,6 +320,7 @@
                 {% if current_user.is_mfa_enabled %}
                   <span class="badge bg-success mb-2"><i class="fas fa-check me-1"></i>{{ _('Enabled') }}</span>
                   <form method="POST" action="{{ url_for('auth.disable_mfa') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-outline-danger btn-sm" data-confirm-click="{{ _('Disable MFA?') }}">
                       <i class="fas fa-times me-1"></i>{{ _('Disable') }}
                     </button>
