@@ -54,7 +54,7 @@ TIMEZONE_CHOICES = [
 
 class LoginForm(BaseForm):
     username = StringField("Username", validators=[DataRequired(), Length(min=3, max=80)])
-    password = PasswordField("Password", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired(), Length(max=72)])
     submit = SubmitField("Sign In")
 
 
@@ -78,7 +78,7 @@ class UserForm(BaseForm):
     email = StringField("Email", validators=[DataRequired(), Email(), Length(max=120)])
     first_name = StringField("First Name", validators=[DataRequired(), Length(max=64)])
     last_name = StringField("Last Name", validators=[DataRequired(), Length(max=64)])
-    password = PasswordField("Password", validators=[Optional(), Length(min=12)])
+    password = PasswordField("Password", validators=[Optional(), Length(min=12, max=72)])
     is_active = BooleanField("Active")
     roles = SelectMultipleField("Roles", coerce=int)
     submit = SubmitField("Save")
@@ -97,11 +97,13 @@ class UserForm(BaseForm):
 
 class ChangePasswordForm(BaseForm):
     current_password = PasswordField("Current Password", validators=[DataRequired()])
-    new_password = PasswordField("New Password", validators=[DataRequired(), Length(min=12)])
+    new_password = PasswordField("New Password", validators=[DataRequired(), Length(min=12, max=72)])
     confirm_password = PasswordField("Confirm Password", validators=[DataRequired()])
     submit = SubmitField("Change Password")
 
     def validate_new_password(form, field):
+        if len(field.data.encode("utf-8")) > 72:
+            raise ValidationError("Password too long (max 72 bytes)")
         if not re.search(r'[A-Z]', field.data):
             raise ValidationError("Must contain uppercase letter")
         if not re.search(r'[a-z]', field.data):
