@@ -17,8 +17,10 @@ class Config:
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = 3600
 
-    SESSION_TYPE = os.getenv("SESSION_TYPE", "filesystem")
     SESSION_REDIS = os.getenv("SESSION_REDIS")
+    SESSION_TYPE = os.getenv("SESSION_TYPE", "filesystem")
+    if SESSION_TYPE == "redis" and not SESSION_REDIS:
+        SESSION_TYPE = "filesystem"
     SESSION_PERMANENT = False
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"

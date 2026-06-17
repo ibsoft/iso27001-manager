@@ -83,31 +83,40 @@ SESSION_TYPE=redis
 SESSION_REDIS=redis://localhost:6379/0
 ```
 
-### 4. Initialize the Database
+### 4. Initialize & Seed the Database
+
+The database is automatically created and seeded with initial data (roles, users, ISO clauses, Annex A controls with Greek translations) on first app startup. No manual steps required.
+
+To manually initialize (if auto-init is disabled):
 
 ```bash
 source venv/bin/activate
 flask shell
 >>> from app import db
 >>> db.create_all()
+>>> from app.utils.seed import seed_database
+>>> seed_database()
 >>> exit()
 ```
 
-### 5. Seed Initial Data
+To update Greek translations on an existing database:
 
 ```bash
 source venv/bin/activate
 flask shell
->>> from seed_data.seed import seed_all
->>> seed_all()
+>>> from app import create_app
+>>> app = create_app()
+>>> with app.app_context():
+>>>     from app.utils.seed import seed_translations
+>>>     seed_translations()
 >>> exit()
 ```
 
-### 6. Compile Translations
+### 5. Compile Translations
 
 ```bash
 source venv/bin/activate
-pybabel compile -d translations
+pybabel compile -d app/translations
 ```
 
 ### 7. Run
@@ -148,16 +157,16 @@ export DB_PASSWORD=your-strong-password
 export SECRET_KEY=$(python3 -c "import secrets; print(secrets.token_hex(32))")
 docker compose up -d
 
-# 4. Initialize and seed the database
+# 4. Initialize and seed the database (auto on first startup, or manually:)
 docker compose exec app flask shell
 >>> from app import db
 >>> db.create_all()
->>> from seed_data.seed import seed_all
->>> seed_all()
+>>> from app.utils.seed import seed_database
+>>> seed_database()
 >>> exit()
 
 # 5. Compile translations
-docker compose exec app pybabel compile -d translations
+docker compose exec app pybabel compile -d app/translations
 ```
 
 The app will be available at http://localhost:80 (HTTP redirects to HTTPS by default) and https://localhost:443.

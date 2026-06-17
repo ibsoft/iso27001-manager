@@ -110,6 +110,8 @@ def seed_database():
                 title_el=cd.get("title_el"),
                 description=cd["description"],
                 description_el=cd.get("description_el"),
+                implementation_notes=cd.get("implementation_notes"),
+                implementation_notes_el=cd.get("implementation_notes_el"),
                 sort_order=cd["sort_order"],
             )
             db.session.add(clause)
@@ -154,5 +156,46 @@ def seed_database():
                 status="not_started",
             )
             db.session.add(check)
+
+    db.session.commit()
+
+
+def seed_translations():
+    """Update Greek translations on existing records (safe to re-run)."""
+    from app.models.domain import Domain
+    from app.models.control import Control
+    from app.models.clause import Clause
+
+    seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+
+    # ── Domains & Controls ────────────────────────────────────
+    with open(os.path.join(seed_dir, "annex_a_controls.json")) as f:
+        annex_data = json.load(f)
+
+    for dd in annex_data["domains"]:
+        domain = Domain.query.filter_by(code=dd["code"]).first()
+        if domain:
+            domain.name_el = dd.get("name_el")
+            domain.description_el = dd.get("description_el")
+        for cd in dd["controls"]:
+            control = Control.query.filter_by(code=cd["code"]).first()
+            if control:
+                control.title_el = cd.get("title_el")
+                control.description_el = cd.get("description_el")
+                control.detailed_description_el = cd.get("detailed_description_el")
+                control.purpose_el = cd.get("purpose_el")
+                control.guidance_el = cd.get("guidance_el")
+
+    # ── Clauses ────────────────────────────────────────────────
+    with open(os.path.join(seed_dir, "clauses.json")) as f:
+        clauses_data = json.load(f)
+
+    for cd in clauses_data:
+        clause = Clause.query.filter_by(number=cd["number"]).first()
+        if clause:
+            clause.title_el = cd.get("title_el")
+            clause.description_el = cd.get("description_el")
+            clause.implementation_notes = cd.get("implementation_notes")
+            clause.implementation_notes_el = cd.get("implementation_notes_el")
 
     db.session.commit()

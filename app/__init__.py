@@ -35,7 +35,7 @@ def create_app(config_name=None):
     session_ext.init_app(app)
     mail.init_app(app)
     limiter.init_app(app)
-    from flask import request, session, flash, redirect, url_for, jsonify
+    from flask import request, session, flash, redirect, url_for, jsonify, render_template
     from flask_babel import gettext as _
 
     LANGUAGES = {"en": "English", "el": "Ελληνικά"}
@@ -85,8 +85,8 @@ def create_app(config_name=None):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    from datetime import datetime as dt_now
-    app.jinja_env.globals.update(now=dt_now.utcnow, LANGUAGES=LANGUAGES)
+    from datetime import datetime, timezone
+    app.jinja_env.globals.update(now=lambda: datetime.now(timezone.utc), LANGUAGES=LANGUAGES)
 
     def _apply_forced_settings():
         from flask import session as _session
@@ -129,10 +129,15 @@ def create_app(config_name=None):
         if request.accept_mimetypes.best == "application/json":
             return jsonify({"error": _("Forbidden"), "message": message}), 403
         flash(message, "forbidden")
-        fallback = url_for("dashboard.index")
-        if request.referrer and request.referrer != request.url:
-            return redirect(request.referrer)
-        return redirect(fallback)
+        return render_template("errors/403.html"), 403
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return render_template("errors/404.html"), 404
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return render_template("errors/500.html"), 500
 
     from app.routes.auth import auth_bp
     from app.routes.dashboard import dashboard_bp
@@ -153,8 +158,10 @@ def create_app(config_name=None):
     from app.routes.management_review import mgmt_review_bp
     from app.routes.capa import capa_bp
     from app.routes.training import training_bp
+    from app.routes.kpi import kpi_bp
     from app.routes.business_continuity import business_continuity_bp
 
+    app.register_blueprint(kpi_bp, url_prefix="/kpi")
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/")
     app.register_blueprint(controls_bp, url_prefix="/controls")

@@ -1,15 +1,23 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+import io
+import os
+import json
+import subprocess
+import zipfile
+from datetime import datetime
+from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, current_app
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db
 from app.models.user import User, Role, Permission
 from app.models.audit_log import AuditLog
+from app.models.backup import BackupRecord
 from app.forms import UserForm
 from app.utils.decorators import admin_required
 from app.utils.pagination import paginate
-from datetime import datetime
 
 admin_bp = Blueprint("admin", __name__)
+
+BACKUP_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "backups")
 
 
 @admin_bp.route("/users")
@@ -137,6 +145,203 @@ def view_audit_log():
         page=page, per_page=50, error_out=False
     )
     return render_template("admin/audit_log.html", logs=logs)
+
+
+@admin_bp.route("/backups")
+@login_required
+@admin_required
+def backup_list():
+    backups = BackupRecord.query.order_by(BackupRecord.created_at.desc()).paginate(
+        page=request.args.get("page", 1, type=int), per_page=20, error_out=False
+    )
+    total_size = sum(b.file_size or 0 for b in BackupRecord.query.all())
+    if total_size > 1024 * 1024:
+        total_display = f"{total_size / (1024 * 1024):.1f} MB"
+    else:
+        total_display = f"{total_size / 1024:.1f} KB"
+    return render_template("admin/backups.html", backups=backups, total_size=total_display)
+
+
+@admin_bp.route("/backups/create", methods=["POST"])
+@login_required
+@admin_required
+def create_backup():
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    db_uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+    db_type = "sqlite"
+    db_dump = None
+
+    if "postgresql" in db_uri:
+        db_type = "postgresql"
+        parts = db_uri.replace("postgresql://", "").split("@")
+        user_pass, host_part = parts[0], parts[1] if len(parts) > 1 else ""
+        user, pw = user_pass.split(":") if ":" in user_pass else (user_pass, "")
+        host_port, db_name = host_part.split("/") if "/" in host_part else ("", host_part)
+        host = host_port.split(":")[0] if ":" in host_port else host_port
+        port = host_port.split(":")[1] if ":" in host_port else "5432"
+        dump_file = os.path.join(BACKUP_DIR, f"db_{timestamp}.sql")
+        env = os.environ.copy()
+        if pw:
+            env["PGPASSWORD"] = pw
+        try:
+            subprocess.run(
+                ["pg_dump", "-h", host, "-p", port, "-U", user, "-d", db_name,
+                 "-f", dump_file, "--no-owner", "--no-acl"],
+                env=env, capture_output=True, text=True, check=True, timeout=120,
+            )
+            db_dump = dump_file
+        except subprocess.CalledProcessError as e:
+            flash(_("Database backup failed: ") + e.stderr, "danger")
+            return redirect(url_for("admin.backup_list"))
+    else:
+        db_path = db_uri.replace("sqlite:///", "")
+        if not os.path.isabs(db_path):
+            db_path = os.path.join(os.path.dirname(current_app.instance_path), db_path)
+        dump_file = os.path.join(BACKUP_DIR, f"db_{timestamp}.sql")
+        try:
+            subprocess.run(
+                ["sqlite3", db_path, ".dump"],
+                capture_output=True, text=True, check=True, timeout=60,
+            )
+            with open(dump_file, "w") as f:
+                result = subprocess.run(
+                    ["sqlite3", db_path, ".dump"],
+                    capture_output=True, text=True, check=True, timeout=60,
+                )
+                f.write(result.stdout)
+            db_dump = dump_file
+        except subprocess.CalledProcessError as e:
+            flash(_("Database backup failed."), "danger")
+            return redirect(url_for("admin.backup_list"))
+
+    zip_filename = f"backup_{timestamp}.zip"
+    zip_path = os.path.join(BACKUP_DIR, zip_filename)
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+        if db_dump and os.path.exists(db_dump):
+            zf.write(db_dump, f"database/{os.path.basename(db_dump)}")
+        app_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)))
+        for root, _dirs, files in os.walk(app_dir):
+            rel = os.path.relpath(root, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+            for f in files:
+                fpath = os.path.join(root, f)
+                zf.write(fpath, os.path.join(rel, f))
+        meta = {
+            "created_at": timestamp,
+            "db_type": db_type,
+            "app_version": "1.0",
+        }
+        zf.writestr("backup_meta.json", json.dumps(meta, indent=2))
+
+    if db_dump and os.path.exists(db_dump):
+        os.remove(db_dump)
+
+    notes = request.form.get("notes", "")
+    record = BackupRecord(
+        filename=zip_filename,
+        filepath=zip_path,
+        file_size=os.path.getsize(zip_path),
+        db_type=db_type,
+        notes=notes,
+        created_by_id=current_user.id,
+    )
+    db.session.add(record)
+    _log_audit(f"Created backup: {zip_filename}")
+    db.session.commit()
+    flash(_("Backup created successfully."), "success")
+    return redirect(url_for("admin.backup_list"))
+
+
+@admin_bp.route("/backups/<int:backup_id>/download")
+@login_required
+@admin_required
+def download_backup(backup_id):
+    rec = BackupRecord.query.get_or_404(backup_id)
+    if not os.path.exists(rec.filepath):
+        flash(_("Backup file not found on disk."), "danger")
+        return redirect(url_for("admin.backup_list"))
+    return send_file(rec.filepath, as_attachment=True, download_name=rec.filename)
+
+
+@admin_bp.route("/backups/<int:backup_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def delete_backup(backup_id):
+    rec = BackupRecord.query.get_or_404(backup_id)
+    if os.path.exists(rec.filepath):
+        os.remove(rec.filepath)
+    db.session.delete(rec)
+    _log_audit(f"Deleted backup: {rec.filename}")
+    db.session.commit()
+    flash(_("Backup deleted."), "success")
+    return redirect(url_for("admin.backup_list"))
+
+
+@admin_bp.route("/backups/restore", methods=["POST"])
+@login_required
+@admin_required
+def restore_backup():
+    file = request.files.get("backup_file")
+    if not file or not file.filename:
+        flash(_("No file uploaded."), "danger")
+        return redirect(url_for("admin.backup_list"))
+
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    restore_path = os.path.join(BACKUP_DIR, f"restore_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.zip")
+    file.save(restore_path)
+
+    extract_dir = restore_path.replace(".zip", "")
+    os.makedirs(extract_dir, exist_ok=True)
+
+    try:
+        with zipfile.ZipFile(restore_path, "r") as zf:
+            zf.extractall(extract_dir)
+    except zipfile.BadZipFile:
+        flash(_("Invalid backup file."), "danger")
+        return redirect(url_for("admin.backup_list"))
+
+    db_uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+    sql_dir = os.path.join(extract_dir, "database")
+    if os.path.isdir(sql_dir):
+        for fname in sorted(os.listdir(sql_dir)):
+            if fname.endswith(".sql"):
+                sql_path = os.path.join(sql_dir, fname)
+                if "postgresql" in db_uri:
+                    parts = db_uri.replace("postgresql://", "").split("@")
+                    user_pass, host_part = parts[0], parts[1] if len(parts) > 1 else ""
+                    user, pw = user_pass.split(":") if ":" in user_pass else (user_pass, "")
+                    host_port, db_name = host_part.split("/") if "/" in host_part else ("", host_part)
+                    host = host_port.split(":")[0] if ":" in host_port else host_port
+                    port = host_port.split(":")[1] if ":" in host_port else "5432"
+                    env = os.environ.copy()
+                    if pw:
+                        env["PGPASSWORD"] = pw
+                    try:
+                        subprocess.run(
+                            ["psql", "-h", host, "-p", port, "-U", user, "-d", db_name,
+                             "-f", sql_path],
+                            env=env, capture_output=True, text=True, check=True, timeout=300,
+                        )
+                    except subprocess.CalledProcessError as e:
+                        flash(_("Database restore failed: ") + e.stderr[-200:], "danger")
+                        return redirect(url_for("admin.backup_list"))
+                else:
+                    db_path = db_uri.replace("sqlite:///", "")
+                    if not os.path.isabs(db_path):
+                        db_path = os.path.join(os.path.dirname(current_app.instance_path), db_path)
+                    try:
+                        subprocess.run(
+                            ["sqlite3", db_path, f".read {sql_path}"],
+                            capture_output=True, text=True, check=True, timeout=120,
+                        )
+                    except subprocess.CalledProcessError:
+                        flash(_("Database restore failed."), "danger")
+                        return redirect(url_for("admin.backup_list"))
+                break
+
+    _log_audit("Restored from backup")
+    flash(_("Backup restored successfully. Please restart the application."), "success")
+    return redirect(url_for("admin.backup_list"))
 
 
 def _log_audit(details):

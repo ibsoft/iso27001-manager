@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('Backup & Restore') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Backup & Restore') }}</li>{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-header"><h6 class="mb-0">{{ _('Create Backup') }}</h6></div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('admin.create_backup') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3">
+            <label class="form-label">{{ _('Notes (optional)') }}</label>
+            <textarea name="notes" class="form-control" rows="2" placeholder="{{ _('e.g. Before upgrade to v2.0') }}"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-database me-1"></i>{{ _('Create Backup') }}</button>
+        </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h6 class="mb-0">{{ _('Restore Backup') }}</h6></div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('admin.restore_backup') }}" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3">
+            <label class="form-label">{{ _('Backup file (.zip)') }}</label>
+            <input type="file" name="backup_file" class="form-control" accept=".zip" required>
+          </div>
+          <div class="alert alert-warning py-2 small">
+            <i class="fas fa-exclamation-triangle me-1"></i>{{ _('Restore will overwrite current data and files.') }}
+          </div>
+          <button type="submit" class="btn btn-danger w-100" onclick="return confirm('{{ _('This will overwrite all current data. Are you sure?') }}')">
+            <i class="fas fa-upload me-1"></i>{{ _('Restore') }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">{{ _('Backup History') }}</h6>
+        <small class="text-muted">{{ _('Total') }}: {{ total_size }}</small>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>{{ _('Date') }}</th>
+                <th>{{ _('File') }}</th>
+                <th>{{ _('Size') }}</th>
+                <th>{{ _('DB') }}</th>
+                <th>{{ _('Notes') }}</th>
+                <th>{{ _('Actions') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for b in backups.items %}
+              <tr>
+                <td class="text-nowrap">{{ b.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td><code>{{ b.filename }}</code></td>
+                <td>{{ (b.file_size / 1024)|round(1) if b.file_size else '?' }} KB</td>
+                <td><span class="badge bg-info">{{ b.db_type or '—' }}</span></td>
+                <td class="text-muted small">{{ b.notes or '' }}</td>
+                <td class="text-nowrap">
+                  <a href="{{ url_for('admin.download_backup', backup_id=b.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Download') }}">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <form method="POST" action="{{ url_for('admin.delete_backup', backup_id=b.id) }}" class="d-inline" data-confirm="{{ _('Delete this backup?') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% else %}
+              <tr><td colspan="6" class="text-center text-muted py-4">{{ _('No backups yet.') }}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% if backups.pages > 1 %}
+      <div class="card-footer">
+        {{ render_pagination(backups, 'admin.backup_list') }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

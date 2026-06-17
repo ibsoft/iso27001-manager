@@ -383,10 +383,30 @@
       .main-footer .float-end { display: none !important; }
       .mobile-brand-text { font-size: 0.78rem; }
     }
+
+    /* ── Loading spinner overlay ──────────────────────────────── */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+    .dark-theme .loading-overlay { background: rgba(15,23,42,0.7); }
+    .loading-overlay.hide { opacity: 0; pointer-events: none; }
+    .loading-overlay .spinner-border { width: 3rem; height: 3rem; }
   </style>
   {% block extra_css %}{% endblock %}
 </head>
 <body>
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">{{ _('Loading...') }}</span>
+  </div>
+</div>
 <div class="wrapper">
 
   <header class="main-header">
@@ -484,6 +504,9 @@
             ('gdpr.list_controllers', 'fas fa-building', _('Controllers')),
             ('gdpr.list_notices', 'fas fa-file-alt', _('Privacy Notices')),
           ]),
+          ('Monitoring', [
+            ('kpi.dashboard', 'fas fa-chart-line', _('Metrics & KPI Dashboard')),
+          ]),
           ('Reporting', [
             ('reports.index', 'fas fa-chart-bar', _('Reports')),
           ]),
@@ -514,6 +537,7 @@
           <ul class="nav-sidebar" style="list-style:none;padding:0;margin:0;">
             <li class="nav-item"><a href="{{ url_for('admin.list_users') }}" class="nav-link {{ 'active' if request.endpoint and 'admin' in request.endpoint and 'admin.list_users' in request.endpoint else '' }}"><i class="fas fa-users-cog"></i><p>{{ _('User Management') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('reports.view_audit_log') }}" class="nav-link"><i class="fas fa-history"></i><p>{{ _('Audit Trail') }}</p></a></li>
+            <li class="nav-item"><a href="{{ url_for('admin.backup_list') }}" class="nav-link {{ 'active' if request.endpoint and 'backup' in request.endpoint else '' }}"><i class="fas fa-database"></i><p>{{ _('Backup & Restore') }}</p></a></li>
           </ul>
         </li>
         {% endif %}
@@ -554,6 +578,38 @@
   </footer>
 </div>
 
+<script>
+  var lo = document.getElementById('loadingOverlay');
+  function showLoading() { if (lo) lo.classList.remove('hide'); }
+  function hideLoading() { if (lo) lo.classList.add('hide'); }
+
+  function isDownloadLink(href) {
+    return !href || href.indexOf('#') > -1 || href.indexOf('javascript:') > -1 ||
+      href.indexOf('/download') > -1 || href.indexOf('/export-') > -1 ||
+      href.indexOf('/export_csv') > -1 || href.indexOf('?export=') > -1;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(hideLoading, 100);
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a[href]');
+      if (a && !a.target && !a.hasAttribute('download') && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+        var href = a.href;
+        if (isDownloadLink(href)) return;
+        if (href.indexOf('javascript') === -1) {
+          e.preventDefault();
+          showLoading();
+          setTimeout(function() { window.location.href = href; }, 100);
+        }
+      }
+    });
+    document.addEventListener('submit', function(e) {
+      if (!e.target.getAttribute('data-confirm')) showLoading();
+    });
+  });
+  window.addEventListener('pageshow', hideLoading);
+  setTimeout(hideLoading, 5000);
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0/dist/js/adminlte.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>

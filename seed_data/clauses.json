@@ -5,6 +5,8 @@
     "title_el": "Πλαίσιο του Οργανισμού",
     "description": "The company must understand itself before building security. It must know what it does, what internal and external issues affect it, who the interested parties are, what legal or business requirements exist, and what the scope of the ISMS is. For example, the ISMS may cover the whole company, or only specific services, departments, systems, or locations.",
     "description_el": "Η εταιρεία πρέπει να κατανοήσει τον εαυτό της πριν χτίσει την ασφάλεια. Πρέπει να γνωρίζει τι κάνει, ποια εσωτερικά και εξωτερικά θέματα την επηρεάζουν, ποιοι είναι οι ενδιαφερόμενοι φορείς, ποιες νομικές ή επιχειρηματικές απαιτήσεις υπάρχουν και ποιο είναι το πεδίο εφαρμογής του ΣΔΑΠ. Για παράδειγμα, το ΣΔΑΠ μπορεί να καλύπτει ολόκληρη την εταιρεία ή μόνο συγκεκριμένες υπηρεσίες, τμήματα, συστήματα ή τοποθεσίες.",
+    "implementation_notes": "Define the organization's context by documenting external and internal issues, interested parties, and the ISMS scope. Maintain a documented scope statement.",
+    "implementation_notes_el": "Καθορίστε το πλαίσιο του οργανισμού τεκμηριώνοντας εξωτερικά και εσωτερικά θέματα, ενδιαφερόμενους φορείς και το πεδίο εφαρμογής του ΣΔΑΠ. Διατηρήστε τεκμηριωμένη δήλωση πεδίου εφαρμογής.",
     "sort_order": 1
   },
   {
@@ -13,6 +15,8 @@
     "title_el": "Ηγεσία",
     "description": "Top management must actively support information security. This is not only an IT responsibility. Management must approve the security policy, assign roles and responsibilities, provide direction, and make sure security aligns with business objectives. Without leadership involvement, ISO 27001 becomes paperwork.",
     "description_el": "Η ανώτατη διοίκηση πρέπει να υποστηρίζει ενεργά την ασφάλεια πληροφοριών. Αυτή δεν είναι μόνο ευθύνη του Τμήματος Πληροφορικής. Η διοίκηση πρέπει να εγκρίνει την πολιτική ασφάλειας, να αναθέτει ρόλους και αρμοδιότητες, να παρέχει κατεύθυνση και να διασφαλίζει ότι η ασφάλεια ευθυγραμμίζεται με τους επιχειρηματικούς στόχους. Χωρίς τη συμμετοχή της ηγεσίας, το ISO 27001 γίνεται γραφειοκρατία.",
+    "implementation_notes": "Top management must demonstrate leadership by approving the ISMS policy, ensuring resources, and integrating ISMS into business processes. Document management's commitment through signed policy statements.",
+    "implementation_notes_el": "Η ανώτατη διοίκηση πρέπει να επιδεικνύει ηγεσία εγκρίνοντας την πολιτική ΣΔΑΠ, διασφαλίζοντας πόρους και ενσωματώνοντας το ΣΔΑΠ στις επιχειρηματικές διαδικασίες. Τεκμηριώστε τη δέσμευση της διοίκησης μέσω υπογεγραμμένων δηλώσεων πολιτικής.",
     "sort_order": 2
   },
   {
@@ -21,6 +25,8 @@
     "title_el": "Σχεδιασμός",
     "description": "Planning is about risk-based thinking. The organization must identify risks and opportunities, define information security objectives, and plan how to treat risks. This is where the risk assessment and risk treatment approach becomes central. In practice, this clause connects business risks with security controls.",
     "description_el": "Ο σχεδιασμός βασίζεται στη σκέψη βάσει κινδύνου. Ο οργανισμός πρέπει να εντοπίζει κινδύνους και ευκαιρίες, να ορίζει στόχους ασφάλειας πληροφοριών και να σχεδιάζει τον τρόπο αντιμετώπισης των κινδύνων. Εδώ η εκτίμηση κινδύνου και η προσέγγιση διαχείρισης κινδύνου γίνονται κεντρικές. Στην πράξη, αυτή η ρήτρα συνδέει τους επιχειρηματικούς κινδύνους με τους ελέγχους ασφάλειας.",
+    "implementation_notes": "Conduct a risk assessment using a defined methodology, identify risk owners, evaluate risks, and create a risk treatment plan. Define information security objectives with measurable KPIs.",
+    "implementation_notes_el": "Διεξάγετε εκτίμηση κινδύνου με καθορισμένη μεθοδολογία, εντοπίστε ιδιοκτήτες κινδύνων, αξιολογήστε κινδύνους και δημιουργήστε σχέδιο αντιμετώπισης κινδύνων. Καθορίστε στόχους ασφάλειας πληροφοριών με μετρήσιμους ΔΕΑ.",
     "sort_order": 3
   },
   {
@@ -29,6 +35,8 @@
     "title_el": "Υποστήριξη",
     "description": "Support covers the resources needed to make the ISMS work. This includes people, competence, awareness, communication, and documented information. In plain language, the company must make sure people know their responsibilities, are trained where needed, and that important ISMS documents are controlled and maintained.",
     "description_el": "Η υποστήριξη καλύπτει τους πόρους που χρειάζονται για να λειτουργήσει το ΣΔΑΠ. Αυτό περιλαμβάνει ανθρώπους, ικανότητες, ευαισθητοποίηση, επικοινωνία και τεκμηριωμένες πληροφορίες. Με απλά λόγια, η εταιρεία πρέπει να διασφαλίσει ότι οι άνθρωποι γνωρίζουν τις ευθύνες τους, εκπαιδεύονται όπου χρειάζεται και ότι τα σημαντικά έγγραφα του ΣΔΑΠ ελέγχονται και συντηρούνται.",
+    "implementation_notes": "Identify resource requirements, provide security awareness training, establish communication processes, and implement document control. Maintain evidence of competence and training records.",
+    "implementation_notes_el": "Προσδιορίστε απαιτήσεις πόρων, παρέχετε εκπαίδευση ευαισθητοποίησης ασφάλειας, καθιερώστε διαδικασίες επικοινωνίας και εφαρμόστε έλεγχο εγγράφων. Διατηρήστε αποδεικτικά ικανότητας και αρχεία εκπαίδευσης.",
     "sort_order": 4
   },
   {
@@ -37,6 +45,8 @@
     "title_el": "Λειτουργία",
     "description": "Operation is where the planned security processes are actually executed. The organization must perform risk assessments, apply risk treatment plans, manage changes, and control outsourced or operational processes. This is the \"do the work\" part of ISO 27001.",
     "description_el": "Η λειτουργία είναι εκεί όπου εκτελούνται στην πράξη οι προγραμματισμένες διαδικασίες ασφάλειας. Ο οργανισμός πρέπει να διεξάγει εκτιμήσεις κινδύνου, να εφαρμόζει σχέδια αντιμετώπισης κινδύνων, να διαχειρίζεται αλλαγές και να ελέγχει εξωτερικές ή λειτουργικές διαδικασίες. Αυτό είναι το κομμάτι \"κάνω τη δουλειά\" του ISO 27001.",
+    "implementation_notes": "Execute the risk treatment plan, implement controls, manage changes, and oversee outsourced processes. Document operational procedures and maintain evidence of control implementation.",
+    "implementation_notes_el": "Εκτελέστε το σχέδιο αντιμετώπισης κινδύνων, εφαρμόστε ελέγχους, διαχειριστείτε αλλαγές και επιβλέψτε εξωτερικές διαδικασίες. Τεκμηριώστε επιχειρησιακές διαδικασίες και διατηρήστε αποδεικτικά εφαρμογής ελέγχων.",
     "sort_order": 5
   },
   {
@@ -45,6 +55,8 @@
     "title_el": "Αξιολόγηση Απόδοσης",
     "description": "Performance Evaluation means the company must check whether the ISMS is working. This includes monitoring, measurement, analysis, internal audits, and management reviews. It is not enough to say \"we have security\"; the organization must prove that the ISMS is being measured and reviewed.",
     "description_el": "Η αξιολόγηση απόδοσης σημαίνει ότι η εταιρεία πρέπει να ελέγχει αν το ΣΔΑΠ λειτουργεί. Αυτό περιλαμβάνει παρακολούθηση, μέτρηση, ανάλυση, εσωτερικούς ελέγχους και ανασκοπήσεις διοίκησης. Δεν αρκεί να λέμε \"έχουμε ασφάλεια\"· ο οργανισμός πρέπει να αποδεικνύει ότι το ΣΔΑΠ μετράται και ανασκοπείται.",
+    "implementation_notes": "Monitor and measure ISMS performance, conduct internal audits at planned intervals, and perform management reviews. Document audit programs, audit reports, and management review minutes.",
+    "implementation_notes_el": "Παρακολουθήστε και μετρήστε την απόδοση του ΣΔΑΠ, διεξάγετε εσωτερικούς ελέγχους σε προγραμματισμένα διαστήματα και εκτελέστε ανασκοπήσεις διοίκησης. Τεκμηριώστε προγράμματα ελέγχων, εκθέσεις ελέγχων και πρακτικά ανασκόπησης διοίκησης.",
     "sort_order": 6
   },
   {
@@ -53,6 +65,8 @@
     "title_el": "Βελτίωση",
     "description": "Improvement is about fixing problems and improving over time. When nonconformities, incidents, audit findings, or weaknesses appear, the organization must take corrective action and improve the ISMS. This clause prevents ISO 27001 from being a one-time certification exercise.",
     "description_el": "Η βελτίωση αφορά την επίλυση προβλημάτων και τη συνεχή εξέλιξη. Όταν εμφανίζονται μη συμμορφώσεις, περιστατικά, ευρήματα ελέγχου ή αδυναμίες, ο οργανισμός πρέπει να λαμβάνει διορθωτικά μέτρα και να βελτιώνει το ΣΔΑΠ. Αυτή η ρήτρα αποτρέπει το ISO 27001 από το να είναι μια εφάπαξ άσκηση πιστοποίησης.",
+    "implementation_notes": "Address nonconformities through corrective actions, continually improve ISMS suitability, adequacy and effectiveness. Document nonconformities, root cause analyses, and corrective action plans.",
+    "implementation_notes_el": "Αντιμετωπίστε μη συμμορφώσεις μέσω διορθωτικών ενεργειών, βελτιώνετε συνεχώς την καταλληλότητα, επάρκεια και αποτελεσματικότητα του ΣΔΑΠ. Τεκμηριώστε μη συμμορφώσεις, αναλύσεις ριζικών αιτιών και σχέδια διορθωτικών ενεργειών.",
     "sort_order": 7
   }
 ]

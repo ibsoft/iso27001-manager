@@ -61,7 +61,8 @@
         "capa_delete",
         "training_view",
         "training_edit",
-        "training_delete"
+        "training_delete",
+        "kpi_record"
       ]
     },
     {
@@ -104,7 +105,8 @@
         "capa_create",
         "capa_edit",
         "training_view",
-        "training_edit"
+        "training_edit",
+        "kpi_record"
       ]
     },
     {

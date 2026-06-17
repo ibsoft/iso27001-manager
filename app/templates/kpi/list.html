@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('Manage KPIs') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Manage KPIs') }}</li>{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between mb-3">
+      <div>
+        <a href="{{ url_for('kpi.dashboard') }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-chart-line me-1"></i>{{ _('Dashboard') }}</a>
+      </div>
+      <div class="btn-group btn-group-sm">
+        <a href="{{ url_for('kpi.list_kpis', active='1') }}" class="btn {{ 'btn-primary' if request.args.get('active','1') == '1' else 'btn-outline-secondary' }}">{{ _('Active') }}</a>
+        <a href="{{ url_for('kpi.list_kpis', active='0') }}" class="btn {{ 'btn-primary' if request.args.get('active') == '0' else 'btn-outline-secondary' }}">{{ _('Inactive') }}</a>
+        <a href="{{ url_for('kpi.list_kpis', active='') }}" class="btn {{ 'btn-primary' if request.args.get('active') == '' else 'btn-outline-secondary' }}">{{ _('All') }}</a>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>{{ _('Name') }}</th>
+            <th>{{ _('Category') }}</th>
+            <th>{{ _('Target') }}</th>
+            <th>{{ _('Frequency') }}</th>
+            <th>{{ _('Latest Value') }}</th>
+            <th>{{ _('Status') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for kpi in kpis.items %}
+          <tr>
+            <td>{{ kpi.name }}</td>
+            <td>{{ kpi.category }}</td>
+            <td>{{ kpi.target }} {{ kpi.unit }}</td>
+            <td>{{ kpi.frequency }}</td>
+            <td>
+              {% set last = kpi.measurements.first() %}
+              {{ last.value if last else '—' }}
+            </td>
+            <td>
+              <span class="badge bg-{{ 'success' if kpi.is_active else 'secondary' }}">
+                {{ _('Active') if kpi.is_active else _('Inactive') }}
+              </span>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted">{{ _('No KPIs defined.') }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {{ render_pagination(kpis, 'kpi.list_kpis') }}
+  </div>
+</div>
+{% endblock %}

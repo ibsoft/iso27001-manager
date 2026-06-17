@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Metrics & KPI Dashboard') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Metrics & KPI Dashboard') }}</li>{% endblock %}
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <h4 class="mb-0"><i class="fas fa-chart-line text-primary me-2"></i>{{ _('Key Performance Indicators') }}</h4>
+    <div>
+      <a href="{{ url_for('kpi.export_csv') }}" class="btn btn-outline-success btn-sm me-2"><i class="fas fa-download me-1"></i>CSV</a>
+      <a href="{{ url_for('kpi.list_kpis') }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-list me-1"></i>{{ _('Manage KPIs') }}</a>
+    </div>
+  </div>
+</div>
+
+{% if kpi_data %}
+<div class="row">
+  {% for d in kpi_data %}
+  <div class="col-lg-6 mb-4">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+          <h6 class="mb-0">{{ d.kpi_name }}</h6>
+          <small class="text-muted">{{ d.kpi_category }} &middot; {{ _('Target') }}: {{ d.kpi_target }} {{ d.kpi_unit }}</small>
+        </div>
+        <div class="text-end">
+          {% if d.latest_value is not none %}
+          <span class="h5 mb-0 me-2">{{ d.latest_value }} <small class="text-muted">{{ d.kpi_unit }}</small></span>
+          <span class="badge bg-{{ 'success' if d.trend == 'up' else 'danger' if d.trend == 'down' else 'secondary' }}">
+            <i class="fas fa-{{ 'arrow-up' if d.trend == 'up' else 'arrow-down' if d.trend == 'down' else 'minus' }}"></i>
+          </span>
+          {% else %}
+          <span class="text-muted">{{ _('No data') }}</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <canvas id="kpiChart{{ d.kpi_id }}" height="180"></canvas>
+      </div>
+      <div class="card-footer d-flex justify-content-between">
+        <small class="text-muted">{{ d.kpi_desc }}</small>
+        <a href="{{ url_for('kpi.record_measurement', kpi_id=d.kpi_id) }}" class="btn btn-sm btn-primary">
+          <i class="fas fa-plus me-1"></i>{{ _('Record') }}
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% block chart_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  {% for d in kpi_data %}
+  (function() {
+    var ctx = document.getElementById('kpiChart{{ d.kpi_id }}').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: {{ d.chart_labels | tojson }},
+        datasets: [{
+          label: {{ d.kpi_name | tojson }},
+          data: {{ d.chart_values | tojson }},
+          borderColor: '#1a56db',
+          backgroundColor: 'rgba(26,86,219,0.08)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, ticks: { maxTicksLimit: 6 } },
+          x: { ticks: { maxTicksLimit: 8, maxRotation: 0 } }
+        }
+      }
+    });
+  })();
+  {% endfor %}
+});
+</script>
+{% endblock %}
+{% else %}
+<div class="text-center py-5 text-muted">
+  <i class="fas fa-chart-line fa-3x mb-3"></i>
+  <p>{{ _('No KPIs configured.') }}</p>
+</div>
+{% endif %}
+{% endblock %}
