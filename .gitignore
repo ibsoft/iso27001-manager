@@ -217,3 +217,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 flask_session/
+
+# User uploaded files
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+!app/static/uploads/avatars/
+!app/static/uploads/avatars/.gitkeep
