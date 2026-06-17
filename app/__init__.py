@@ -205,5 +205,12 @@ def create_app(config_name=None):
         ensure_supplier_risk_columns()
         from app.utils.seed import seed_database
         seed_database()
+        try:
+            import subprocess
+            subprocess.run(["pybabel", "compile", "-d",
+                            os.path.join(app.root_path, "translations")],
+                           capture_output=True)
+        except Exception:
+            app.logger.warning("Translation compilation failed")
 
     return app

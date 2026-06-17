@@ -7612,5 +7612,83 @@ msgstr "Διαγραφή αυτού του αντιγράφου ασφαλεία
 msgid "Restore"
 msgstr "Επαναφορά"
 
+msgid "Reporting"
+msgstr "Αναφορές"
 
-#~ msgid "Reporting"
+#: app/utils/seed.py
+msgid "Controls Implementation"
+msgstr "Υλοποίηση Ελέγχων"
+
+#: app/utils/seed.py
+msgid "Percentage of controls implemented"
+msgstr "Ποσοστό ελέγχων που έχουν υλοποιηθεί"
+
+#: app/utils/seed.py
+msgid "Risk Treatment Progress"
+msgstr "Πρόοδος Αντιμετώπισης Κινδύνων"
+
+#: app/utils/seed.py
+msgid "Percentage of risks with treatment plans completed"
+msgstr "Ποσοστό κινδύνων με ολοκληρωμένα σχέδια αντιμετώπισης"
+
+#: app/utils/seed.py
+msgid "Incident Resolution Time"
+msgstr "Χρόνος Επίλυσης Περιστατικών"
+
+#: app/utils/seed.py
+msgid "Average time to resolve incidents"
+msgstr "Μέσος χρόνος επίλυσης περιστατικών"
+
+#: app/utils/seed.py
+msgid "Audit Finding Closure"
+msgstr "Κλείσιμο Ευρημάτων Ελέγχου"
+
+#: app/utils/seed.py
+msgid "Percentage of audit findings closed within target"
+msgstr "Ποσοστό ευρημάτων ελέγχου που έκλεισαν εντός στόχου"
+
+#: app/utils/seed.py
+msgid "Policy Review Currency"
+msgstr "Επικαιρότητα Αναθεώρησης Πολιτικών"
+
+#: app/utils/seed.py
+msgid "Percentage of policies reviewed on time"
+msgstr "Ποσοστό πολιτικών που αναθεωρήθηκαν εγκαίρως"
+
+#: app/utils/seed.py
+msgid "Implementation"
+msgstr "Υλοποίηση"
+
+#: app/utils/seed.py
+msgid "Risk Management"
+msgstr "Διαχείριση Κινδύνων"
+
+#: app/utils/seed.py
+msgid "Incident Management"
+msgstr "Διαχείριση Περιστατικών"
+
+#: app/utils/seed.py
+msgid "Audit"
+msgstr "Έλεγχος"
+
+#: app/utils/seed.py
+msgid "Governance"
+msgstr "Διακυβέρνηση"
+
+#: app/utils/seed.py
+msgid "monthly"
+msgstr "μηνιαία"
+
+#: app/utils/seed.py
+msgid "quarterly"
+msgstr "τριμηνιαία"
+
+#: app/utils/seed.py
+msgid "hours"
+msgstr "ώρες"
+
+#: app/utils/seed.py
+msgid "percent"
+msgstr "ποσοστό"
+
+

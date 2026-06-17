@@ -29,7 +29,7 @@ def dashboard():
         kpi_data.append({
             "kpi": k,
             "labels": labels,
-            "values": values,
+            "chart_values": values,
             "current_value": current_value,
             "target": k.target,
             "trend": trend,

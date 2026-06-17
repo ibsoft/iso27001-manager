@@ -780,8 +780,17 @@
   (function() {
     var lo = document.getElementById('loadingOverlay');
     var loadTime = Date.now();
-    function showSpinner() { if (lo) { lo.classList.remove('hidden'); lo.style.opacity = '1'; } }
+    var hideTimer = null;
+    function showSpinner() {
+      if (lo) {
+        lo.classList.remove('hidden');
+        lo.style.opacity = '1';
+        if (hideTimer) clearTimeout(hideTimer);
+        hideTimer = setTimeout(function() { if (lo) { lo.classList.add('hidden'); lo.style.opacity = ''; } }, 5000);
+      }
+    }
     function hideSpinner() {
+      if (hideTimer) clearTimeout(hideTimer);
       var elapsed = Date.now() - loadTime;
       setTimeout(function() {
         if (lo) { lo.classList.add('hidden'); lo.style.opacity = ''; }
@@ -790,15 +799,31 @@
     if (lo) {
       showSpinner();
       document.querySelectorAll('form').forEach(function(f) {
-        f.addEventListener('submit', function() { showSpinner(); });
+        f.addEventListener('submit', function(e) {
+          var btn = f.querySelector('[type=submit]');
+          if (btn && btn.hasAttribute('data-no-spinner')) return;
+          showSpinner();
+        });
       });
       document.querySelectorAll('a').forEach(function(a) {
-        if (a.getAttribute('href') && a.href.indexOf('#') === -1 && !a.hasAttribute('data-no-spinner')) {
-          a.addEventListener('click', function() { showSpinner(); });
+        if (a.getAttribute('href') && a.href.indexOf('#') === -1 && !a.hasAttribute('data-no-spinner') && a.href.indexOf('/download') === -1 && a.href.indexOf('/preview') === -1 && a.href.indexOf('export') === -1) {
+          a.addEventListener('click', function() {
+            var sb = document.getElementById('sidebar');
+            if (sb) sessionStorage.setItem('sidebarScroll', sb.scrollTop);
+            showSpinner();
+          });
         }
       });
       window.addEventListener('pageshow', hideSpinner);
-      document.addEventListener('DOMContentLoaded', hideSpinner);
+      document.addEventListener('DOMContentLoaded', function() {
+        hideSpinner();
+        var scrollPos = sessionStorage.getItem('sidebarScroll');
+        if (scrollPos) {
+          var sb = document.getElementById('sidebar');
+          if (sb) { sb.scrollTop = parseInt(scrollPos, 10); }
+          sessionStorage.removeItem('sidebarScroll');
+        }
+      });
     }
   })();
 </script>
