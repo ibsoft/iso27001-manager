@@ -7348,6 +7348,133 @@ msgstr "Σχόλια"
 msgid "Management Review Report"
 msgstr "Αναφορά Ανασκόπησης Διοίκησης"
 
+#: app/routes/filled_forms.py app/templates/filled_forms/list.html
+msgid "Title is required."
+msgstr "Απαιτείται τίτλος."
+
+#: app/routes/filled_forms.py
+msgid "Valid year is required."
+msgstr "Απαιτείται έγκυρο έτος."
+
+#: app/routes/filled_forms.py
+msgid "File is required."
+msgstr "Απαιτείται αρχείο."
+
+#: app/routes/filled_forms.py
+msgid "File type not allowed."
+msgstr "Ο τύπος αρχείου δεν επιτρέπεται."
+
+#: app/routes/filled_forms.py
+msgid "Form uploaded successfully."
+msgstr "Η φόρμα μεταφορτώθηκε επιτυχώς."
+
+#: app/routes/filled_forms.py
+msgid "Form deleted."
+msgstr "Η φόρμα διαγράφηκε."
+
+#: app/templates/filled_forms/list.html
+msgid "Filled-out Forms"
+msgstr "Συμπληρωμένες Φόρμες"
+
+#: app/templates/filled_forms/list.html
+msgid "All Years"
+msgstr "Όλα τα Έτη"
+
+#: app/templates/filled_forms/list.html
+msgid "Search by title, description or filename..."
+msgstr "Αναζήτηση με τίτλο, περιγραφή ή όνομα αρχείου..."
+
+#: app/templates/filled_forms/list.html
+msgid "Upload Form"
+msgstr "Μεταφόρτωση Φόρμας"
+
+#: app/templates/filled_forms/list.html
+msgid "No filled-out forms yet."
+msgstr "Δεν υπάρχουν ακόμα συμπληρωμένες φόρμες."
+
+#: app/templates/filled_forms/list.html
+msgid "Upload your first"
+msgstr "Μεταφόρτωσε την πρώτη σου"
+
+#: app/templates/filled_forms/list.html
+msgid "Delete this form?"
+msgstr "Διαγραφή αυτής της φόρμας;"
+
+#: app/templates/filled_forms/upload.html
+msgid "Upload Filled-out Form"
+msgstr "Μεταφόρτωση Συμπληρωμένης Φόρμας"
+
+#: app/templates/filled_forms/upload.html
+msgid "Upload"
+msgstr "Μεταφόρτωση"
+
+#: app/templates/base.html
+msgid "Made by"
+msgstr "Δημιουργήθηκε από"
+
+#: app/templates/base.html
+msgid "License"
+msgstr "Άδεια Χρήσης"
+
+#: app/templates/base.html
+msgid "Software License"
+msgstr "Άδεια Χρήσης Λογισμικού"
+
+#: app/templates/base.html
+msgid "This software is licensed under the PolyForm Noncommercial License 1.0.0."
+msgstr "Αυτό το λογισμικό παρέχεται υπό την PolyForm Noncommercial License 1.0.0."
+
+#: app/templates/base.html
+msgid "You may use, copy, modify, and study this software only for non-commercial purposes."
+msgstr "Μπορείτε να χρησιμοποιείτε, αντιγράφετε, τροποποιείτε και μελετάτε αυτό το λογισμικό μόνο για μη εμπορικούς σκοπούς."
+
+#: app/templates/base.html
+msgid "Any use by a company, organization, government body, contractor, employee, or commercial project requires a separate written commercial license from the author."
+msgstr "Οποιαδήποτε χρήση από εταιρεία, οργανισμό, κρατικό φορέα, ανάδοχο, υπάλληλο ή εμπορικό έργο απαιτεί ξεχωριστή γραπτή εμπορική άδεια από τον δημιουργό."
+
+#: app/templates/base.html
+msgid "For commercial licensing, contact:"
+msgstr "Για εμπορική άδεια, επικοινωνήστε:"
+
+#: app/templates/base.html
+msgid "In some cases, permission is granted to a company only for the duration of an active business relationship with the author. After the business relationship ends, the license terminates and a corporate license must be purchased."
+msgstr "Σε ορισμένες περιπτώσεις, παραχωρείται άδεια σε μια εταιρεία μόνο για τη διάρκεια μιας ενεργής επαγγελματικής σχέσης με τον δημιουργό. Μετά τη λήξη της επαγγελματικής σχέσης, η άδεια τερματίζεται και πρέπει να αγοραστεί εταιρική άδεια."
+
+#: app/templates/base.html
+msgid "Unauthorized copying, distribution, or commercial use of this software without a valid license is strictly prohibited and may result in legal action."
+msgstr "Η μη εξουσιοδοτημένη αντιγραφή, διανομή ή εμπορική χρήση αυτού του λογισμικού χωρίς έγκυρη άδεια απαγορεύεται αυστηρά και μπορεί να οδηγήσει σε νομική δίωξη."
+
+#: app/templates/filled_forms/upload.html
+msgid "Year"
+msgstr "Έτος"
+
+#: app/templates/filled_forms/upload.html
+msgid "File"
+msgstr "Αρχείο"
+
+#: app/templates/filled_forms/upload.html
+msgid "Allowed: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, TXT, RTF, CSV, PNG, JPG, GIF, SVG"
+msgstr "Επιτρέπονται: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, TXT, RTF, CSV, PNG, JPG, GIF, SVG"
+
+#: app/templates/filled_forms/list.html
+msgid "All Users"
+msgstr "Όλοι οι Χρήστες"
+
+#: app/templates/filled_forms/upload.html
+msgid "Concerns User"
+msgstr "Αφορά Χρήστη"
+
+#: app/templates/filled_forms/upload.html
+msgid "Select user..."
+msgstr "Επιλέξτε χρήστη..."
+
+#: app/routes/filled_forms.py
+msgid "Please select a user."
+msgstr "Παρακαλώ επιλέξτε έναν χρήστη."
+
+#: app/templates/filled_forms/list.html
+msgid "Checked-out Assets"
+msgstr "Περιουσιακά Στοιχεία σε Δανεισμό"
+
 
 #~ msgid "Reporting"
-#~ msgstr "Αναφορές"

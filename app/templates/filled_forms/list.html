@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% from "_pagination.html" import render_pagination %}
+{% block page_title %}{{ _('Filled-out Forms') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Filled-out Forms') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <form method="GET" class="row g-2 flex-grow-1">
+        <div class="col-md-2">
+          <select name="year" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Years') }}</option>
+            {% for y in years %}
+            <option value="{{ y }}" {{ 'selected' if request.args.get('year')|int == y }}>{{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% if current_user.has_role('admin') %}
+        <div class="col-md-3">
+          <select name="user_id" class="form-select" onchange="this.form.submit()">
+            <option value="">{{ _('All Users') }}</option>
+            {% for u in users %}
+            <option value="{{ u.id }}" {{ 'selected' if request.args.get('user_id')|int == u.id }}>{{ u.first_name ~ ' ' ~ u.last_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+        <div class="col-md-3">
+          <input type="text" name="search" class="form-control" placeholder="{{ _('Search by title, description or filename...') }}" value="{{ request.args.get('search', '') }}">
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+      {% if current_user.has_role('admin') or current_user.has_role('manager') %}
+      <div class="ms-3">
+        <a href="{{ url_for('filled_forms.upload_filled_form') }}" class="btn btn-primary"><i class="fas fa-upload me-1"></i>{{ _('Upload Form') }}</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% if checked_out_assets %}
+<div class="card mb-4 border-warning">
+  <div class="card-header bg-warning bg-opacity-10">
+    <h6 class="mb-0"><i class="fas fa-box-open me-2"></i>{{ _('Checked-out Assets') }}</h6>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-sm mb-0">
+        <thead>
+          <tr>
+            <th>{{ _('Asset') }}</th>
+            <th>{{ _('Serial') }}</th>
+            <th>{{ _('Checked Out') }}</th>
+            <th>{{ _('Expected Return') }}</th>
+            <th>{{ _('Status') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in checked_out_assets %}
+          <tr>
+            <td><a href="{{ url_for('assets.view_asset', asset_id=a.asset.id) }}">{{ a.asset.name }}</a></td>
+            <td>{{ a.asset.serial_number or '—' }}</td>
+            <td>{{ a.checkout_date.strftime('%Y-%m-%d') }}</td>
+            <td>{{ a.expected_return_date.strftime('%Y-%m-%d') if a.expected_return_date else '—' }}</td>
+            <td>
+              {% if a.is_overdue %}
+              <span class="badge bg-danger">{{ _('Overdue') }}</span>
+              {% else %}
+              <span class="badge bg-success">{{ _('Active') }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="row">
+  {% for form in forms.items %}
+  <div class="col-lg-6 d-flex align-items-stretch">
+    <div class="card mb-3 w-100 d-flex flex-column">
+      <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h5 class="mb-1">
+              <i class="fas fa-file-alt text-primary me-1"></i>
+              {{ form.title }}
+            </h5>
+            <p class="text-muted small mb-2">{{ form.description|truncate(100) if form.description else '' }}</p>
+            <div>
+              <span class="badge bg-info me-1">{{ form.year }}</span>
+              <span class="badge bg-light text-dark me-1">{{ form.file_extension }}</span>
+              <span class="badge bg-light text-dark">{{ form.file_size_display }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-auto d-flex justify-content-between small text-muted pt-2">
+          <span>
+            <i class="far fa-user me-1"></i>{{ form.user.first_name ~ ' ' ~ form.user.last_name if form.user else '—' }}
+            &middot; <i class="fas fa-paperclip me-1"></i>{{ form.original_filename }}
+          </span>
+          <span>
+            <span class="me-2"><i class="far fa-calendar me-1"></i>{{ form.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            {% if form.user_id == current_user.id or current_user.has_role('admin') %}
+            <a href="{{ url_for('filled_forms.download_filled_form', form_id=form.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></a>
+            <form method="POST" action="{{ url_for('filled_forms.delete_filled_form', form_id=form.id) }}" class="d-inline" data-confirm="{{ _('Delete this form?') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+            </form>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12">
+    <div class="text-center text-muted py-5">
+      <i class="fas fa-file-upload fa-3x mb-3"></i>
+      <p>{{ _('No filled-out forms yet.') }}</p>
+      {% if current_user.has_role('admin') or current_user.has_role('manager') %}
+      <a href="{{ url_for('filled_forms.upload_filled_form') }}" class="btn btn-primary"><i class="fas fa-upload me-1"></i>{{ _('Upload your first') }}</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{{ render_pagination(forms, 'filled_forms.list_filled_forms', kwargs=request.args) }}
+{% endblock %}
