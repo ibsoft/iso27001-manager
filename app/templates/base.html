@@ -548,10 +548,37 @@
 
   <footer class="main-footer">
     <div class="float-end d-none d-sm-inline">
-      <strong>ISO 27001:2022</strong>
+      <strong>ISO 27001:2022</strong> &middot;
+      <a href="#" data-bs-toggle="modal" data-bs-target="#licenseModal" class="text-muted">{{ _('License') }}</a>
     </div>
-    &copy; {{ now().year }} {{ _('ISMS Manager. All rights reserved.') }}
+    &copy; {{ now().year }} {{ _('ISMS Manager. All rights reserved.') }} &middot;
+    {{ _('Made by') }} <a href="https://github.com/ibsoft" target="_blank" rel="noopener">ibsoft</a>
   </footer>
+</div>
+
+<div class="modal fade" id="licenseModal" tabindex="-1" aria-labelledby="licenseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="licenseModalLabel">{{ _('Software License') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>PolyForm Noncommercial License 1.0.0</h6>
+        <hr>
+        <p><strong>{{ _('This software is licensed under the PolyForm Noncommercial License 1.0.0.') }}</strong></p>
+        <p>{{ _('You may use, copy, modify, and study this software only for non-commercial purposes.') }}</p>
+        <p>{{ _('Any use by a company, organization, government body, contractor, employee, or commercial project requires a separate written commercial license from the author.') }}</p>
+        <p>{{ _('For commercial licensing, contact:') }} <a href="mailto:ioannis.bouhras@gmail.com">ioannis.bouhras@gmail.com</a></p>
+        <p>{{ _('In some cases, permission is granted to a company only for the duration of an active business relationship with the author. After the business relationship ends, the license terminates and a corporate license must be purchased.') }}</p>
+        <hr>
+        <p class="small text-muted">{{ _('Unauthorized copying, distribution, or commercial use of this software without a valid license is strictly prohibited and may result in legal action.') }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Close') }}</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
