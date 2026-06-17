@@ -36,6 +36,7 @@
             <option value="physical_security" {{ 'selected' if request.args.get('category') == 'physical_security' }}>{{ _('Physical Security') }}</option>
             <option value="hr_security" {{ 'selected' if request.args.get('category') == 'hr_security' }}>{{ _('HR Security') }}</option>
             <option value="supplier_security" {{ 'selected' if request.args.get('category') == 'supplier_security' }}>{{ _('Supplier Security') }}</option>
+            <option value="forms" {{ 'selected' if request.args.get('category') == 'forms' }}>{{ _('Forms') }}</option>
             <option value="other" {{ 'selected' if request.args.get('category') == 'other' }}>{{ _('Other') }}</option>
           </select>
         </div>

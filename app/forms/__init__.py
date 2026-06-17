@@ -256,7 +256,8 @@ class PolicyForm(BaseForm):
                  ("access_control", "Access Control"), ("incident_response", "Incident Response"),
                  ("risk_management", "Risk Management"), ("data_protection", "Data Protection"),
                  ("physical_security", "Physical Security"), ("hr_security", "HR Security"),
-                 ("supplier_security", "Supplier Security"), ("other", "Other")],
+                 ("supplier_security", "Supplier Security"),
+                 ("forms", "Forms"), ("other", "Other")],
         validators=[Optional()],
     )
     owner_id = SelectField("Policy Owner", coerce=int, validators=[Optional()])

@@ -3,7 +3,9 @@
     {
       "code": 5,
       "name": "Organizational Controls",
+      "name_el": "Οργανωτικοί Έλεγχοι",
       "description": "Controls related to the overall organizational governance and management of information security.",
+      "description_el": "Έλεγχοι που σχετίζονται με τη συνολική οργανωτική διακυβέρνηση και διαχείριση της ασφάλειας πληροφοριών.",
       "sort_order": 1,
       "controls": [
         {
@@ -13,7 +15,9 @@
           "is_new_2022": false,
           "description": "Management shall define, approve and publish an information security policy document that establishes the organization's approach to managing information security.",
           "detailed_description": "The information security policy is a foundational document that communicates management's commitment to information security. It should align with business objectives, legal and regulatory requirements, and contractual obligations. The policy must be reviewed at planned intervals or when significant changes occur to ensure its continuing suitability, adequacy and effectiveness. It should be communicated throughout the organization and made available to all relevant internal and external parties.",
-          "guidance": "Develop the policy through consultation with relevant stakeholders. Ensure it is approved by top management. Use a document control system to manage versions and reviews. Consider integrating the policy with other management system policies. Communicate the policy during induction and through regular awareness campaigns. Review at least annually or after major incidents."
+          "guidance": "Develop the policy through consultation with relevant stakeholders. Ensure it is approved by top management. Use a document control system to manage versions and reviews. Consider integrating the policy with other management system policies. Communicate the policy during induction and through regular awareness campaigns. Review at least annually or after major incidents.",
+          "title_el": "Πολιτικές για την ασφάλεια πληροφοριών",
+          "purpose_el": "Καθορισμός και έγκριση της κατεύθυνσης της διοίκησης για την ασφάλεια πληροφοριών."
         },
         {
           "code": "5.2",
@@ -22,7 +26,9 @@
           "is_new_2022": false,
           "description": "Information security roles and responsibilities shall be defined and assigned according to the organization's needs.",
           "detailed_description": "Clear assignment of information security roles and responsibilities ensures accountability across the organization. This includes defining the information security manager, asset owners, system administrators, and other security-related roles. Each role should have documented responsibilities, authority levels, and reporting lines. The RACI matrix approach is recommended to clarify who is responsible, accountable, consulted and informed for each security process.",
-          "guidance": "Document all security roles in a RACI matrix. Review roles annually or when organizational changes occur. Ensure role definitions include backup arrangements. Include security responsibilities in job descriptions. Conduct induction briefings on security roles for new starters."
+          "guidance": "Document all security roles in a RACI matrix. Review roles annually or when organizational changes occur. Ensure role definitions include backup arrangements. Include security responsibilities in job descriptions. Conduct induction briefings on security roles for new starters.",
+          "title_el": "Ρόλοι και ευθύνες ασφάλειας πληροφοριών",
+          "purpose_el": "Ανάθεση ρόλων και ευθυνών ασφάλειας πληροφοριών."
         },
         {
           "code": "5.3",
@@ -31,7 +37,9 @@
           "is_new_2022": false,
           "description": "Conflicting duties and areas of responsibility shall be segregated to reduce opportunities for unauthorized or unintentional modification or misuse of the organization's assets.",
           "detailed_description": "Segregation of duties is a fundamental internal control principle that prevents any single individual from having control over all phases of a critical process. This reduces the risk of fraud, error, and circumvention of security controls. Examples include separating the roles of system development and production access, or separating authorization from execution of financial transactions. Compensating controls should be implemented where full segregation is not operationally feasible.",
-          "guidance": "Identify critical processes where segregation is required. Map current duties against segregation requirements. Implement compensating controls (e.g., dual approval, audit trails) where segregation is impractical. Regularly audit compliance with segregation policies."
+          "guidance": "Identify critical processes where segregation is required. Map current duties against segregation requirements. Implement compensating controls (e.g., dual approval, audit trails) where segregation is impractical. Regularly audit compliance with segregation policies.",
+          "title_el": "Διαχωρισμός καθηκόντων",
+          "purpose_el": "Μείωση του κινδύνου απάτης, σφάλματος και καταστρατήγησης των ελέγχων ασφάλειας."
         },
         {
           "code": "5.4",
@@ -40,7 +48,9 @@
           "is_new_2022": false,
           "description": "Management shall require all employees and contractors to apply information security in accordance with the established policies and procedures.",
           "detailed_description": "Management responsibilities for information security extend beyond policy approval to active oversight and enforcement. Managers at all levels must ensure their teams understand and comply with security requirements. This includes ensuring security is considered in performance reviews, project planning, and resource allocation. Management must also respond to security incidents and ensure corrective actions are implemented.",
-          "guidance": "Include security compliance as a performance objective for managers. Provide management with security dashboards and reports. Conduct regular management reviews of security posture. Ensure managers have authority to enforce security requirements."
+          "guidance": "Include security compliance as a performance objective for managers. Provide management with security dashboards and reports. Conduct regular management reviews of security posture. Ensure managers have authority to enforce security requirements.",
+          "title_el": "Ευθύνες διοίκησης",
+          "purpose_el": "Διασφάλιση ότι η διοίκηση γνωρίζει και εκπληρώνει τις ευθύνες της για την ασφάλεια πληροφοριών."
         },
         {
           "code": "5.5",
@@ -49,7 +59,9 @@
           "is_new_2022": false,
           "description": "The organization shall establish and maintain contact with relevant authorities regarding information security.",
           "detailed_description": "Maintaining contact with relevant authorities such as law enforcement, regulatory bodies, and national cybersecurity agencies is essential for incident response and regulatory compliance. The organization should know when and how to report security incidents, data breaches, and other security events. Pre-established contacts enable faster response during incidents. This also includes monitoring regulatory changes that may affect the organization's security obligations.",
-          "guidance": "Maintain a contact list of relevant authorities including law enforcement, data protection authorities, and sector-specific regulators. Define escalation procedures for different types of incidents. Test communication channels regularly. Stay informed about regulatory changes."
+          "guidance": "Maintain a contact list of relevant authorities including law enforcement, data protection authorities, and sector-specific regulators. Define escalation procedures for different types of incidents. Test communication channels regularly. Stay informed about regulatory changes.",
+          "title_el": "Επικοινωνία με αρχές",
+          "purpose_el": "Διασφάλιση κατάλληλης επικοινωνίας με τις αρμόδιες αρχές."
         },
         {
           "code": "5.6",
@@ -58,7 +70,9 @@
           "is_new_2022": false,
           "description": "The organization shall establish and maintain contact with special interest groups and professional forums related to information security.",
           "detailed_description": "Participation in information security special interest groups, such as industry ISACs (Information Sharing and Analysis Centers), professional bodies (e.g., ISACA, ISC2), and sector-specific forums provides access to threat intelligence, best practices, and emerging trends. These contacts enable the organization to benefit from collective industry knowledge and improve its security posture. Care should be taken to limit information sharing to what is appropriate and authorized.",
-          "guidance": "Identify relevant industry groups and forums. Establish membership and participation arrangements. Define what information can be shared externally. Encourage staff participation in professional security communities."
+          "guidance": "Identify relevant industry groups and forums. Establish membership and participation arrangements. Define what information can be shared externally. Encourage staff participation in professional security communities.",
+          "title_el": "Επικοινωνία με ειδικές ομάδες ενδιαφέροντος",
+          "purpose_el": "Διασφάλιση κατάλληλης επικοινωνίας με ειδικές ομάδες ενδιαφέροντος."
         },
         {
           "code": "5.7",
@@ -67,7 +81,9 @@
           "is_new_2022": true,
           "description": "The organization shall collect and analyze threat intelligence to inform and guide its information security decisions.",
           "detailed_description": "Threat intelligence involves collecting, processing, and analyzing information about current and emerging threats to the organization. This includes tracking threat actor tactics, techniques and procedures (TTPs), vulnerability disclosures, and indicators of compromise (IoCs). Threat intelligence should be integrated into risk management, security monitoring, and incident response processes. A structured approach using frameworks such as MITRE ATT&CK can enhance intelligence analysis.",
-          "guidance": "Subscribe to threat intelligence feeds relevant to your industry. Establish a process for analyzing and disseminating intelligence. Integrate intelligence into security operations and risk assessments. Review intelligence sources regularly for relevance and quality."
+          "guidance": "Subscribe to threat intelligence feeds relevant to your industry. Establish a process for analyzing and disseminating intelligence. Integrate intelligence into security operations and risk assessments. Review intelligence sources regularly for relevance and quality.",
+          "title_el": "Πληροφορίες επαφής για περιστατικά ασφάλειας",
+          "purpose_el": "Διασφάλιση ύπαρξης και προσβασιμότητας πληροφοριών επαφής για αναφορά περιστατικών ασφάλειας."
         },
         {
           "code": "5.8",
@@ -76,7 +92,9 @@
           "is_new_2022": false,
           "description": "Information security shall be integrated into project management throughout the project lifecycle.",
           "detailed_description": "Projects introduce new or changed information processing systems, assets, and processes. Security requirements must be considered from project initiation through planning, execution, monitoring, and closure. This includes conducting security assessments for new projects, ensuring secure design principles are applied, and verifying security requirements are met before go-live. Project managers should have access to security expertise and tools to assess and address project-specific risks.",
-          "guidance": "Include security checkpoints in project stage-gate processes. Provide project managers with security assessment templates. Ensure security representatives are assigned to major projects. Review security outcomes in project closure reports."
+          "guidance": "Include security checkpoints in project stage-gate processes. Provide project managers with security assessment templates. Ensure security representatives are assigned to major projects. Review security outcomes in project closure reports.",
+          "title_el": "Ασφάλεια πληροφοριών στη διαχείριση έργων",
+          "purpose_el": "Ενσωμάτωση της ασφάλειας πληροφοριών στη διαχείριση έργων."
         },
         {
           "code": "5.9",
@@ -85,7 +103,9 @@
           "is_new_2022": false,
           "description": "The organization shall identify and maintain an inventory of information and other associated assets.",
           "detailed_description": "An accurate and up-to-date asset inventory is the foundation of effective information security management. The inventory should cover all information assets (data, databases, files) and associated assets (hardware, software, services, personnel, facilities). Each asset should be identified with a unique identifier, classified, and assigned an owner. The inventory should be maintained through regular reviews and automated discovery tools where possible.",
-          "guidance": "Use automated discovery tools to identify assets. Establish a process for asset registration during procurement and decommissioning. Assign asset owners and ensure they understand their responsibilities. Conduct regular inventory reconciliation. Include cloud and virtual assets in scope."
+          "guidance": "Use automated discovery tools to identify assets. Establish a process for asset registration during procurement and decommissioning. Assign asset owners and ensure they understand their responsibilities. Conduct regular inventory reconciliation. Include cloud and virtual assets in scope.",
+          "title_el": "Μητρώο πληροφοριακών πόρων",
+          "purpose_el": "Δημιουργία και διατήρηση μητρώου πληροφοριακών πόρων."
         },
         {
           "code": "5.10",
@@ -94,7 +114,9 @@
           "is_new_2022": false,
           "description": "Rules for the acceptable use of information and other associated assets shall be identified, documented and implemented.",
           "detailed_description": "Acceptable use rules define how employees and contractors may use organizational information assets, including computers, networks, email, internet access, software, and data. These rules should cover personal use, data handling, password management, mobile device usage, and social media guidelines. The rules must balance security requirements with operational needs. Clear communication and consistent enforcement are essential.",
-          "guidance": "Develop an Acceptable Use Policy covering all asset types. Communicate the policy during induction and annually. Use technical controls (web filtering, DLP) to enforce rules. Monitor compliance and take disciplinary action for violations. Review and update the policy regularly."
+          "guidance": "Develop an Acceptable Use Policy covering all asset types. Communicate the policy during induction and annually. Use technical controls (web filtering, DLP) to enforce rules. Monitor compliance and take disciplinary action for violations. Review and update the policy regularly.",
+          "title_el": "Αποδεκτή χρήση πληροφοριακών πόρων",
+          "purpose_el": "Διασφάλιση αποδεκτής χρήσης των πληροφοριακών πόρων σύμφωνα με τις πολιτικές ασφάλειας."
         },
         {
           "code": "5.11",
@@ -103,7 +125,9 @@
           "is_new_2022": false,
           "description": "The organization shall establish processes to ensure the return of organizational assets upon termination of employment, contract or agreement.",
           "detailed_description": "When employees leave the organization or contractors complete their engagements, all organizational assets in their possession must be returned. This includes physical assets (laptops, phones, access cards, documents) and digital assets (data, credentials). The process should be integrated with the offboarding workflow and include verification that all assets are accounted for. Failure to recover assets can lead to data breaches and loss of intellectual property.",
-          "guidance": "Maintain a checklist of assets to recover during offboarding. Coordinate between HR, IT, and facility management. Verify asset return before final settlement. Ensure remote wiping capability for mobile devices. Document and investigate missing assets."
+          "guidance": "Maintain a checklist of assets to recover during offboarding. Coordinate between HR, IT, and facility management. Verify asset return before final settlement. Ensure remote wiping capability for mobile devices. Document and investigate missing assets.",
+          "title_el": "Επιστροφή περιουσιακών στοιχείων",
+          "purpose_el": "Διασφάλιση επιστροφής των περιουσιακών στοιχείων του οργανισμού από τους εργαζομένους κατά τη λήξη της απασχόλησης."
         },
         {
           "code": "5.12",
@@ -112,7 +136,9 @@
           "is_new_2022": false,
           "description": "Information shall be classified according to its sensitivity, criticality and legal requirements.",
           "detailed_description": "Information classification ensures that data receives an appropriate level of protection based on its value, sensitivity, and regulatory requirements. A classification scheme should define clear categories (e.g., Public, Internal, Confidential, Restricted) with corresponding handling requirements. Classification decisions should be made by information owners and applied consistently. Labels should be applied in accordance with the classification standard.",
-          "guidance": "Develop a classification policy with clear criteria for each level. Train staff on classification requirements. Implement automated classification tools where possible. Include classification in data creation workflows. Review classifications periodically."
+          "guidance": "Develop a classification policy with clear criteria for each level. Train staff on classification requirements. Implement automated classification tools where possible. Include classification in data creation workflows. Review classifications periodically.",
+          "title_el": "Ταξινόμηση πληροφοριών",
+          "purpose_el": "Διασφάλιση κατάλληλης ταξινόμησης των πληροφοριών βάσει των απαιτήσεων ασφάλειας."
         },
         {
           "code": "5.13",
@@ -121,7 +147,9 @@
           "is_new_2022": false,
           "description": "An appropriate set of procedures for information labelling shall be developed and implemented.",
           "detailed_description": "Information labelling ensures that the classification of information is clearly and consistently indicated. Labels can be applied in various forms including document headers/footers, metadata tags, watermarks, and system labels. Labelling procedures should cover both digital and physical information assets. Automated labelling tools can reduce the burden on users and improve consistency.",
-          "guidance": "Define labelling requirements for each classification level. Use automated labelling tools (e.g., Microsoft Information Protection). Include labelling in document templates. Provide user guidance on manual labelling. Verify labelling compliance through audits."
+          "guidance": "Define labelling requirements for each classification level. Use automated labelling tools (e.g., Microsoft Information Protection). Include labelling in document templates. Provide user guidance on manual labelling. Verify labelling compliance through audits.",
+          "title_el": "Επισήμανση πληροφοριών",
+          "purpose_el": "Διασφάλιση κατάλληλης επισήμανσης των πληροφοριών για διευκόλυνση της επεξεργασίας τους."
         },
         {
           "code": "5.14",
@@ -130,7 +158,9 @@
           "is_new_2022": false,
           "description": "Rules, procedures, or agreements shall be in place for the secure transfer of information.",
           "detailed_description": "Information transfer security covers all methods of transmitting information both internally and externally. This includes email, file transfer, APIs, physical media, and messaging applications. Transfer controls should ensure confidentiality, integrity, and availability during transmission. Agreements with external parties should specify security requirements and responsibilities.",
-          "guidance": "Implement secure file transfer protocols (SFTP, HTTPS). Encrypt sensitive data in transit. Use data loss prevention (DLP) solutions for email. Establish secure messaging policies. Include security clauses in data transfer agreements."
+          "guidance": "Implement secure file transfer protocols (SFTP, HTTPS). Encrypt sensitive data in transit. Use data loss prevention (DLP) solutions for email. Establish secure messaging policies. Include security clauses in data transfer agreements.",
+          "title_el": "Μεταφορά πληροφοριών",
+          "purpose_el": "Διασφάλιση ασφάλειας κατά τη μεταφορά πληροφοριών εντός και εκτός του οργανισμού."
         },
         {
           "code": "5.15",
@@ -139,7 +169,9 @@
           "is_new_2022": false,
           "description": "Access to information and other associated assets shall be controlled based on business and security requirements.",
           "detailed_description": "Access control ensures that only authorized individuals can access information and systems. This covers the entire access lifecycle: provisioning, authentication, authorization, and de-provisioning. Access should be granted based on the principle of least privilege and need-to-know. Controls should be applied consistently across all systems and networks. Regular access reviews are essential to maintain appropriate access.",
-          "guidance": "Implement role-based access control (RBAC). Establish access request and approval processes. Conduct quarterly access reviews. Remove access promptly upon role change or termination. Use privileged access management (PAM) for administrative accounts."
+          "guidance": "Implement role-based access control (RBAC). Establish access request and approval processes. Conduct quarterly access reviews. Remove access promptly upon role change or termination. Use privileged access management (PAM) for administrative accounts.",
+          "title_el": "Έλεγχος πρόσβασης",
+          "purpose_el": "Καθιέρωση κανόνων και δικαιωμάτων ελέγχου πρόσβασης για την προστασία των πληροφοριακών πόρων."
         },
         {
           "code": "5.16",
@@ -148,7 +180,9 @@
           "is_new_2022": false,
           "description": "The organization shall manage the identities of users throughout their lifecycle.",
           "detailed_description": "Identity management covers the creation, maintenance, and deactivation of user identities across all systems. This includes establishing a unique identifier for each user, linking identity attributes from authoritative sources (e.g., HR system), and ensuring timely de-provisioning when users leave. A centralized identity management system (such as Active Directory, LDAP, or IDaaS) should be used to manage identities consistently.",
-          "guidance": "Use an identity provider (IdP) for centralized management. Automate identity lifecycle with HR system integration. Implement just-in-time (JIT) access for temporary users. Conduct regular identity audits. Use strong authentication for identity management operations."
+          "guidance": "Use an identity provider (IdP) for centralized management. Automate identity lifecycle with HR system integration. Implement just-in-time (JIT) access for temporary users. Conduct regular identity audits. Use strong authentication for identity management operations.",
+          "title_el": "Διαχείριση ταυτοτήτων",
+          "purpose_el": "Διασφάλιση διαχείρισης των ταυτοτήτων των χρηστών καθ' όλη τη διάρκεια του κύκλου ζωής τους."
         },
         {
           "code": "5.17",
@@ -157,7 +191,9 @@
           "is_new_2022": false,
           "description": "Authentication information shall be securely managed throughout its lifecycle.",
           "detailed_description": "Authentication information includes passwords, PINs, cryptographic keys, biometric data, and tokens. Secure management covers generation, distribution, storage, use, change, and destruction of authentication information. Password policies should require complexity, length, and rotation. Multi-factor authentication should be implemented for sensitive systems. Authentication information must be stored using strong cryptographic hashing.",
-          "guidance": "Enforce strong password policies (min 12 chars, complexity). Implement MFA for all remote access and privileged accounts. Use password managers for service accounts. Never store passwords in plaintext. Implement self-service password reset (SSPR)."
+          "guidance": "Enforce strong password policies (min 12 chars, complexity). Implement MFA for all remote access and privileged accounts. Use password managers for service accounts. Never store passwords in plaintext. Implement self-service password reset (SSPR).",
+          "title_el": "Πιστοποίηση ταυτότητας",
+          "purpose_el": "Διασφάλιση ασφαλούς πιστοποίησης ταυτότητας των χρηστών για πρόσβαση σε συστήματα και δεδομένα."
         },
         {
           "code": "5.18",
@@ -166,7 +202,9 @@
           "is_new_2022": false,
           "description": "Access rights shall be reviewed, reconciled and managed regularly.",
           "detailed_description": "Regular review of access rights ensures that access remains appropriate as users change roles, projects, or employment status. Reviews should cover all systems and applications, including privileged access. The review process should involve both system owners and data owners. Findings from access reviews should be tracked and remediated within defined timeframes. Automated access certification tools can streamline the review process.",
-          "guidance": "Schedule quarterly access reviews for critical systems. Use automated access certification tools. Document review outcomes and remediation actions. Implement segregation of duties in review processes. Report access review metrics to management."
+          "guidance": "Schedule quarterly access reviews for critical systems. Use automated access certification tools. Document review outcomes and remediation actions. Implement segregation of duties in review processes. Report access review metrics to management.",
+          "title_el": "Δικαιώματα πρόσβασης",
+          "purpose_el": "Διασφάλιση κατάλληλης παροχής, αναθεώρησης και ανάκλησης δικαιωμάτων πρόσβασης."
         },
         {
           "code": "5.19",
@@ -175,7 +213,9 @@
           "is_new_2022": false,
           "description": "The organization shall establish processes to manage and protect information shared with suppliers.",
           "detailed_description": "Supplier relationships introduce information security risks that must be managed throughout the supplier lifecycle. This includes assessing supplier security capabilities before engagement, defining security requirements in contracts, monitoring supplier performance, and ensuring secure termination. The approach should be proportionate to the risk posed by the supplier, with higher-risk suppliers subject to more rigorous controls.",
-          "guidance": "Classify suppliers by risk level. Conduct security assessments for high-risk suppliers. Include security clauses in supplier contracts. Monitor supplier security through reporting and audits. Establish termination procedures for information return or destruction."
+          "guidance": "Classify suppliers by risk level. Conduct security assessments for high-risk suppliers. Include security clauses in supplier contracts. Monitor supplier security through reporting and audits. Establish termination procedures for information return or destruction.",
+          "title_el": "Ασφάλεια πληροφοριών στις σχέσεις με προμηθευτές",
+          "purpose_el": "Διασφάλιση προστασίας των πληροφοριών του οργανισμού που είναι προσβάσιμες από προμηθευτές."
         },
         {
           "code": "5.20",
@@ -184,7 +224,9 @@
           "is_new_2022": false,
           "description": "The organization shall define, document and agree information security requirements in supplier agreements.",
           "detailed_description": "Supplier agreements must clearly specify information security requirements to protect the organization's information assets. These requirements should cover confidentiality, integrity, availability, incident management, data protection, and compliance with applicable laws. Agreements should specify service level targets, reporting obligations, audit rights, and remedies for security failures. Requirements should be proportionate to the sensitivity of information involved.",
-          "guidance": "Develop supplier security requirement templates. Include right-to-audit clauses. Define security SLAs with measurable targets. Specify data handling and breach notification requirements. Review and update agreements regularly."
+          "guidance": "Develop supplier security requirement templates. Include right-to-audit clauses. Define security SLAs with measurable targets. Specify data handling and breach notification requirements. Review and update agreements regularly.",
+          "title_el": "Αντιμετώπιση της ασφάλειας πληροφοριών στις συμφωνίες με προμηθευτές",
+          "purpose_el": "Ενσωμάτωση απαιτήσεων ασφάλειας πληροφοριών σε συμφωνίες με προμηθευτές."
         },
         {
           "code": "5.21",
@@ -193,7 +235,9 @@
           "is_new_2022": false,
           "description": "The organization shall manage information security risks associated with the ICT supply chain.",
           "detailed_description": "ICT supply chain security addresses risks from third-party products and services integrated into the organization's systems. This includes hardware, software, cloud services, and managed services. Supply chain risks include compromised components, counterfeit products, and vulnerabilities in third-party code. A supply chain risk management program should assess suppliers, verify product integrity, and monitor supply chain threats.",
-          "guidance": "Map your ICT supply chain and identify critical dependencies. Assess supplier security practices. Implement software supply chain security measures (e.g., SBOM). Monitor supply chain threat intelligence. Plan for supply chain disruptions."
+          "guidance": "Map your ICT supply chain and identify critical dependencies. Assess supplier security practices. Implement software supply chain security measures (e.g., SBOM). Monitor supply chain threat intelligence. Plan for supply chain disruptions.",
+          "title_el": "Διαχείριση ασφάλειας πληροφοριών στην αλυσίδα εφοδιασμού ΤΠΕ",
+          "purpose_el": "Προστασία των πληροφοριών που διαχειρίζονται προμηθευτές στην αλυσίδα εφοδιασμού ΤΠΕ."
         },
         {
           "code": "5.22",
@@ -202,7 +246,9 @@
           "is_new_2022": false,
           "description": "The organization shall monitor, review and manage changes to supplier services.",
           "detailed_description": "Supplier services change over time through updates, new versions, and changes in business arrangements. These changes can introduce new risks that must be managed. Monitoring should cover service levels, security incidents, and compliance with contractual requirements. Changes to supplier services should trigger a risk reassessment. Effective supplier management requires regular communication and relationship management.",
-          "guidance": "Establish supplier management review cadence. Monitor supplier security metrics and SLAs. Require suppliers to notify changes in advance. Conduct periodic supplier security assessments. Maintain escalation procedures for supplier issues."
+          "guidance": "Establish supplier management review cadence. Monitor supplier security metrics and SLAs. Require suppliers to notify changes in advance. Conduct periodic supplier security assessments. Maintain escalation procedures for supplier issues.",
+          "title_el": "Παρακολούθηση, αναθεώρηση και διαχείριση αλλαγών υπηρεσιών προμηθευτών",
+          "purpose_el": "Διασφάλιση συνεχούς συμμόρφωσης των προμηθευτών με τις απαιτήσεις ασφάλειας."
         },
         {
           "code": "5.23",
@@ -211,7 +257,9 @@
           "is_new_2022": true,
           "description": "The organization shall establish and maintain security measures for the use of cloud services.",
           "detailed_description": "Cloud services present unique security considerations including shared responsibility models, data residency, multi-tenancy, and dependency on cloud provider security. The organization must understand its responsibilities under the shared responsibility model and implement appropriate controls. Cloud security assessment should cover data protection, access management, encryption, incident response, and compliance with regulatory requirements.",
-          "guidance": "Use a Cloud Security Posture Management (CSPM) tool. Implement cloud access security broker (CASB) controls. Encrypt data at rest and in transit in cloud. Assess cloud provider against standards (ISO 27001, SOC 2). Define cloud governance policies."
+          "guidance": "Use a Cloud Security Posture Management (CSPM) tool. Implement cloud access security broker (CASB) controls. Encrypt data at rest and in transit in cloud. Assess cloud provider against standards (ISO 27001, SOC 2). Define cloud governance policies.",
+          "title_el": "Ασφάλεια πληροφοριών για χρήση υπηρεσιών νέφους",
+          "purpose_el": "Καθορισμός κανόνων για την ασφαλή χρήση υπηρεσιών νέφους."
         },
         {
           "code": "5.24",
@@ -220,7 +268,9 @@
           "is_new_2022": false,
           "description": "The organization shall plan and prepare for information security incidents by defining processes and allocating resources.",
           "detailed_description": "Information security incident management requires advance planning to ensure effective response. This includes developing incident response plans, establishing an incident response team, defining communication protocols, and ensuring necessary tools and resources are available. Plans should cover detection, analysis, containment, eradication, recovery, and post-incident review. Regular testing of incident response capabilities is essential.",
-          "guidance": "Establish a Computer Security Incident Response Team (CSIRT). Develop incident response playbooks for common scenarios. Conduct tabletop exercises and simulations. Ensure 24/7 contact and escalation capabilities. Maintain relationships with external incident response resources."
+          "guidance": "Establish a Computer Security Incident Response Team (CSIRT). Develop incident response playbooks for common scenarios. Conduct tabletop exercises and simulations. Ensure 24/7 contact and escalation capabilities. Maintain relationships with external incident response resources.",
+          "title_el": "Σχεδιασμός και προετοιμασία διαχείρισης περιστατικών ασφάλειας πληροφοριών",
+          "purpose_el": "Προετοιμασία για αποτελεσματική αντιμετώπιση περιστατικών ασφάλειας πληροφοριών."
         },
         {
           "code": "5.25",
@@ -229,7 +279,9 @@
           "is_new_2022": false,
           "description": "The organization shall assess information security events and decide whether they should be classified as incidents.",
           "detailed_description": "Not every security event becomes an incident. A structured assessment process is needed to evaluate events based on severity, impact, and likelihood. This includes initial triage, evidence collection, and escalation criteria. The assessment should consider the potential impact on confidentiality, integrity, and availability of information. Clear criteria for incident classification help ensure consistent decision-making.",
-          "guidance": "Define incident classification criteria (e.g., severity levels). Establish a triage process with defined SLAs. Train staff on event reporting and triage. Use a ticketing system for event tracking. Document assessment decisions for audit purposes."
+          "guidance": "Define incident classification criteria (e.g., severity levels). Establish a triage process with defined SLAs. Train staff on event reporting and triage. Use a ticketing system for event tracking. Document assessment decisions for audit purposes.",
+          "title_el": "Αξιολόγηση και απόφαση για περιστατικά ασφάλειας πληροφοριών",
+          "purpose_el": "Διασφάλιση αξιολόγησης και λήψης απόφασης για περιστατικά ασφάλειας."
         },
         {
           "code": "5.26",
@@ -238,7 +290,9 @@
           "is_new_2022": false,
           "description": "The organization shall respond to information security incidents in accordance with the incident response plan.",
           "detailed_description": "Effective incident response follows a structured process to contain, eradicate, and recover from security incidents while minimizing impact. The response should be coordinated by the incident response team and follow established playbooks. All actions should be documented for post-incident review and potential legal proceedings. Communication to stakeholders, regulators, and affected parties should follow predefined protocols.",
-          "guidance": "Follow NIST 800-61 incident response framework. Document all actions during response. Preserve evidence for forensic analysis. Communicate with stakeholders per plan. Activate escalation procedures when needed."
+          "guidance": "Follow NIST 800-61 incident response framework. Document all actions during response. Preserve evidence for forensic analysis. Communicate with stakeholders per plan. Activate escalation procedures when needed.",
+          "title_el": "Αντιμετώπιση περιστατικών ασφάλειας πληροφοριών",
+          "purpose_el": "Αποτελεσματική αντιμετώπιση περιστατικών ασφάλειας σύμφωνα με καθιερωμένες διαδικασίες."
         },
         {
           "code": "5.27",
@@ -247,7 +301,9 @@
           "is_new_2022": false,
           "description": "Knowledge gained from information security incidents shall be used to improve the security posture.",
           "detailed_description": "Post-incident reviews (lessons learned) are critical for continuous improvement. Each significant incident should be analyzed to identify root causes, systemic weaknesses, and improvement opportunities. Findings should be documented in a post-incident report with actionable recommendations. Improvements may include process changes, additional controls, training, or configuration changes. Lessons should be shared with relevant teams across the organization.",
-          "guidance": "Conduct post-incident reviews within 2 weeks of resolution. Document root cause analysis using structured methodologies. Track improvement actions to closure. Share anonymized lessons learned across the organization. Update incident response plans based on findings."
+          "guidance": "Conduct post-incident reviews within 2 weeks of resolution. Document root cause analysis using structured methodologies. Track improvement actions to closure. Share anonymized lessons learned across the organization. Update incident response plans based on findings.",
+          "title_el": "Μάθηση από περιστατικά ασφάλειας πληροφοριών",
+          "purpose_el": "Αξιοποίηση της γνώσης από περιστατικά για βελτίωση των μέτρων ασφάλειας."
         },
         {
           "code": "5.28",
@@ -256,7 +312,9 @@
           "is_new_2022": false,
           "description": "The organization shall establish procedures for the identification, collection, acquisition and preservation of evidence related to information security events.",
           "detailed_description": "Digital evidence must be handled carefully to maintain its integrity and admissibility in legal or disciplinary proceedings. Procedures should follow forensic best practices, including maintaining chain of custody, using write-blockers, and creating forensic images rather than working on original media. Evidence collection should be performed by trained personnel. The order of volatility should be considered when collecting evidence.",
-          "guidance": "Train staff on basic evidence handling procedures. Maintain forensic toolkits. Document chain of custody for all evidence. Use write-blockers when collecting storage media. Follow jurisdictional requirements for evidence handling."
+          "guidance": "Train staff on basic evidence handling procedures. Maintain forensic toolkits. Document chain of custody for all evidence. Use write-blockers when collecting storage media. Follow jurisdictional requirements for evidence handling.",
+          "title_el": "Συλλογή αποδεικτικών στοιχείων",
+          "purpose_el": "Διασφάλιση κατάλληλης συλλογής και διαχείρισης αποδεικτικών στοιχείων."
         },
         {
           "code": "5.29",
@@ -265,7 +323,9 @@
           "is_new_2022": false,
           "description": "The organization shall plan and prepare to maintain information security at an appropriate level during disruption.",
           "detailed_description": "Disruptions such as natural disasters, cyber attacks, or infrastructure failures can impact information security. Business continuity and disaster recovery plans must include information security considerations. This includes ensuring security controls remain operational during alternate processing modes, maintaining security during relocation, and restoring security controls to normal levels after recovery. Security requirements should be integrated into the business continuity management system.",
-          "guidance": "Integrate security into business continuity plans. Test security controls during BCP exercises. Ensure alternate sites maintain security standards. Plan for degraded mode operations security. Review security implications of continuity strategies."
+          "guidance": "Integrate security into business continuity plans. Test security controls during BCP exercises. Ensure alternate sites maintain security standards. Plan for degraded mode operations security. Review security implications of continuity strategies.",
+          "title_el": "Ασφάλεια πληροφοριών κατά τη διακοπή ή αλλαγή της απασχόλησης",
+          "purpose_el": "Προστασία των πληροφοριών του οργανισμού κατά τη λήξη ή αλλαγή της απασχόλησης."
         },
         {
           "code": "5.30",
@@ -274,7 +334,9 @@
           "is_new_2022": true,
           "description": "The organization shall ensure ICT readiness for business continuity through appropriate technical controls and planning.",
           "detailed_description": "ICT readiness for business continuity ensures that technology systems can support business continuity requirements. This includes system redundancy, backup and restore capabilities, disaster recovery sites, and capacity management for failover scenarios. ICT continuity plans should be tested regularly to ensure they work when needed. The level of readiness should be based on business impact analysis results and recovery time objectives (RTOs) and recovery point objectives (RPOs).",
-          "guidance": "Define RTOs and RPOs for critical systems. Implement redundant infrastructure for high-availability systems. Test disaster recovery plans at least annually. Document and test failover procedures. Review ICT continuity capacity against growth."
+          "guidance": "Define RTOs and RPOs for critical systems. Implement redundant infrastructure for high-availability systems. Test disaster recovery plans at least annually. Document and test failover procedures. Review ICT continuity capacity against growth.",
+          "title_el": "Προετοιμασία ΤΠ για επιχειρησιακή συνέχεια",
+          "purpose_el": "Διασφάλιση της συνέχειας των υπηρεσιών ΤΠ σε περιπτώσεις διαταραχής."
         },
         {
           "code": "5.31",
@@ -283,7 +345,9 @@
           "is_new_2022": false,
           "description": "The organization shall identify, document and comply with legal, statutory, regulatory and contractual requirements related to information security.",
           "detailed_description": "Organizations operate in a complex legal environment with multiple obligations relating to information security. These may include data protection laws (GDPR, CCPA), sector-specific regulations (HIPAA, PCI DSS, SOX), intellectual property laws, and contractual agreements. A structured approach to legal compliance includes identifying applicable requirements, assessing compliance, implementing controls, and monitoring changes. Legal counsel should be involved in interpreting requirements.",
-          "guidance": "Maintain a legal register of applicable requirements. Review legal changes quarterly. Assess compliance through internal audits. Engage legal counsel for interpretation. Document compliance decisions and rationale."
+          "guidance": "Maintain a legal register of applicable requirements. Review legal changes quarterly. Assess compliance through internal audits. Engage legal counsel for interpretation. Document compliance decisions and rationale.",
+          "title_el": "Νομικές, κανονιστικές και συμβατικές απαιτήσεις",
+          "purpose_el": "Διασφάλιση συμμόρφωσης με νομικές, κανονιστικές και συμβατικές απαιτήσεις."
         },
         {
           "code": "5.32",
@@ -292,7 +356,9 @@
           "is_new_2022": false,
           "description": "The organization shall implement procedures to protect intellectual property rights.",
           "detailed_description": "Intellectual property (IP) includes patents, copyrights, trademarks, trade secrets, and proprietary information. The organization must ensure it respects third-party IP rights and protects its own IP. This includes managing software licenses, controlling access to proprietary information, and ensuring proper use of copyrighted materials. IP protection should be addressed in employment agreements, supplier contracts, and data handling policies.",
-          "guidance": "Implement software license management. Use digital rights management (DRM) for sensitive IP. Include IP protection in employment agreements. Conduct IP compliance audits. Establish processes for IP disclosure and protection."
+          "guidance": "Implement software license management. Use digital rights management (DRM) for sensitive IP. Include IP protection in employment agreements. Conduct IP compliance audits. Establish processes for IP disclosure and protection.",
+          "title_el": "Δικαιώματα πνευματικής ιδιοκτησίας",
+          "purpose_el": "Προστασία των δικαιωμάτων πνευματικής ιδιοκτησίας σύμφωνα με την ισχύουσα νομοθεσία."
         },
         {
           "code": "5.33",
@@ -301,7 +367,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect records against loss, destruction, falsification, unauthorized access and unauthorized release.",
           "detailed_description": "Records (documents, data, evidence) are essential for business operations, legal compliance, and governance. Records management covers the entire lifecycle from creation through storage, retrieval, archiving, and disposal. Controls should ensure records are authentic, reliable, complete, and usable. Records retention schedules should align with legal and regulatory requirements. Both physical and electronic records require appropriate protection.",
-          "guidance": "Implement a records management policy. Define retention schedules for all record types. Use secure storage for physical records. Implement audit trails for record access and changes. Ensure disposal processes are secure."
+          "guidance": "Implement a records management policy. Define retention schedules for all record types. Use secure storage for physical records. Implement audit trails for record access and changes. Ensure disposal processes are secure.",
+          "title_el": "Προστασία αρχείων",
+          "purpose_el": "Προστασία των αρχείων από απώλεια, καταστροφή, παραποίηση και μη εξουσιοδοτημένη πρόσβαση."
         },
         {
           "code": "5.34",
@@ -310,7 +378,9 @@
           "is_new_2022": false,
           "description": "The organization shall identify and meet the requirements for privacy and protection of personally identifiable information (PII).",
           "detailed_description": "Privacy and PII protection requirements arise from regulations such as GDPR, CCPA, and other data protection laws. The organization must identify what PII it processes, establish lawful bases for processing, implement data subject rights, and apply appropriate technical and organizational measures. A privacy program should include privacy impact assessments, data protection policies, and breach notification procedures.",
-          "guidance": "Appoint a Data Protection Officer (DPO) if required. Conduct privacy impact assessments for high-risk processing. Implement data subject rights procedures. Maintain records of processing activities (ROPA). Provide privacy training to staff."
+          "guidance": "Appoint a Data Protection Officer (DPO) if required. Conduct privacy impact assessments for high-risk processing. Implement data subject rights procedures. Maintain records of processing activities (ROPA). Provide privacy training to staff.",
+          "title_el": "Προστασία προσωπικών δεδομένων και ιδιωτικότητας",
+          "purpose_el": "Διασφάλιση προστασίας προσωπικών δεδομένων σύμφωνα με το ισχύον νομικό πλαίσιο."
         },
         {
           "code": "5.35",
@@ -319,7 +389,9 @@
           "is_new_2022": false,
           "description": "The organization shall ensure independent review of its approach to managing information security at planned intervals.",
           "detailed_description": "Independent review provides objective assurance that the information security management system (ISMS) is operating effectively. Reviews can be conducted by internal audit, external auditors, or other independent parties. The review should assess conformity with ISO 27001 requirements, implementation effectiveness, and alignment with business objectives. Findings should be reported to management with recommendations for improvement.",
-          "guidance": "Schedule internal audits at least annually. Use qualified independent auditors. Define audit scope based on risk. Report findings to top management. Track corrective actions to closure."
+          "guidance": "Schedule internal audits at least annually. Use qualified independent auditors. Define audit scope based on risk. Report findings to top management. Track corrective actions to closure.",
+          "title_el": "Ανεξάρτητη αναθεώρηση της ασφάλειας πληροφοριών",
+          "purpose_el": "Διασφάλιση ανεξάρτητης αναθεώρησης της προσέγγισης του οργανισμού για την ασφάλεια πληροφοριών."
         },
         {
           "code": "5.36",
@@ -328,7 +400,9 @@
           "is_new_2022": false,
           "description": "The organization shall ensure compliance with policies, rules and standards for information security.",
           "detailed_description": "Compliance with internal policies and standards is as important as external regulatory compliance. The organization must establish processes to monitor, measure, and report on compliance with its own security requirements. This includes regular compliance audits, automated monitoring where possible, and defined consequences for non-compliance. Management should receive regular compliance reports.",
-          "guidance": "Use automated compliance monitoring tools. Conduct periodic compliance audits. Define consequences for non-compliance. Report compliance metrics to management. Update policies based on compliance findings."
+          "guidance": "Use automated compliance monitoring tools. Conduct periodic compliance audits. Define consequences for non-compliance. Report compliance metrics to management. Update policies based on compliance findings.",
+          "title_el": "Συμμόρφωση με πολιτικές, κανόνες και πρότυπα ασφάλειας πληροφοριών",
+          "purpose_el": "Διασφάλιση συμμόρφωσης με καθιερωμένες πολιτικές και πρότυπα ασφάλειας."
         },
         {
           "code": "5.37",
@@ -337,14 +411,18 @@
           "is_new_2022": false,
           "description": "The organization shall document and make available operating procedures for information processing facilities.",
           "detailed_description": "Documented operating procedures ensure that information processing facilities are operated correctly and consistently. Procedures should cover routine operations, startup and shutdown, backup, maintenance, and emergency operations. Procedures should be clear, accessible to operators, and kept up to date. Well-documented procedures reduce operational errors and support training of new operators.",
-          "guidance": "Document procedures for all critical systems. Use a standard format for procedure documents. Review and update procedures annually. Make procedures available at point of use. Include procedures in operator training."
+          "guidance": "Document procedures for all critical systems. Use a standard format for procedure documents. Review and update procedures annually. Make procedures available at point of use. Include procedures in operator training.",
+          "title_el": "Τυποποιημένες επιχειρησιακές διαδικασίες",
+          "purpose_el": "Τεκμηρίωση και διατήρηση των τυποποιημένων επιχειρησιακών διαδικασιών για λειτουργίες ασφάλειας."
         }
       ]
     },
     {
       "code": 6,
       "name": "People Controls",
+      "name_el": "Έλεγχοι Προσωπικού",
       "description": "Controls related to the behavior and management of personnel in relation to information security.",
+      "description_el": "Έλεγχοι που σχετίζονται με τη συμπεριφορά και διαχείριση του προσωπικού σε σχέση με την ασφάλεια πληροφοριών.",
       "sort_order": 2,
       "controls": [
         {
@@ -354,7 +432,9 @@
           "is_new_2022": false,
           "description": "The organization shall conduct screening checks of all candidates prior to employment.",
           "detailed_description": "Pre-employment screening helps ensure that personnel are suitable for their roles and can be trusted with organizational assets. Screening should be proportionate to the sensitivity of the role and may include identity verification, criminal record checks, employment history verification, and reference checks. Screening requirements should be applied consistently and comply with applicable privacy laws.",
-          "guidance": "Define screening requirements by role sensitivity. Obtain candidate consent before screening. Use consistent screening processes. Document screening results. Re-screen periodically for sensitive roles."
+          "guidance": "Define screening requirements by role sensitivity. Obtain candidate consent before screening. Use consistent screening processes. Document screening results. Re-screen periodically for sensitive roles.",
+          "title_el": "Έλεγχος υποψηφίων προς πρόσληψη",
+          "purpose_el": "Διασφάλιση ότι οι υποψήφιοι κατανοούν τις ευθύνες τους και είναι κατάλληλοι για τους ρόλους τους."
         },
         {
           "code": "6.2",
@@ -363,7 +443,9 @@
           "is_new_2022": false,
           "description": "The organization shall define and document information security responsibilities in employment terms and conditions.",
           "detailed_description": "Employment contracts and terms of reference should clearly communicate information security responsibilities to all employees and contractors. This includes obligations to protect organizational assets, comply with security policies, report security incidents, and maintain confidentiality. Specific responsibilities for security roles should be documented in job descriptions. Contract clauses should survive termination of employment.",
-          "guidance": "Include security responsibilities in all employment contracts. Define role-specific security duties in job descriptions. Ensure contractors sign security agreements. Include post-employment confidentiality obligations. Review terms regularly."
+          "guidance": "Include security responsibilities in all employment contracts. Define role-specific security duties in job descriptions. Ensure contractors sign security agreements. Include post-employment confidentiality obligations. Review terms regularly.",
+          "title_el": "Όροι και προϋποθέσεις απασχόλησης",
+          "purpose_el": "Διασφάλιση ότι οι εργαζόμενοι γνωρίζουν και αποδέχονται τις ευθύνες τους για την ασφάλεια πληροφοριών."
         },
         {
           "code": "6.3",
@@ -372,7 +454,9 @@
           "is_new_2022": false,
           "description": "The organization shall provide information security awareness, education and training to personnel.",
           "detailed_description": "A comprehensive security awareness program ensures that personnel understand their security responsibilities and have the knowledge to fulfill them. The program should include initial induction training, annual refresher training, specialized training for security roles, and ongoing awareness communications (newsletters, posters, phishing simulations). Training effectiveness should be measured and the program adjusted based on results.",
-          "guidance": "Develop a security awareness program calendar. Use phishing simulations to test awareness. Track training completion rates. Tailor training to different roles. Measure behavior change through metrics."
+          "guidance": "Develop a security awareness program calendar. Use phishing simulations to test awareness. Track training completion rates. Tailor training to different roles. Measure behavior change through metrics.",
+          "title_el": "Ευαισθητοποίηση, εκπαίδευση και κατάρτιση για την ασφάλεια πληροφοριών",
+          "purpose_el": "Διασφάλιση κατάλληλης ευαισθητοποίησης και εκπαίδευσης των εργαζομένων σε θέματα ασφάλειας."
         },
         {
           "code": "6.4",
@@ -381,7 +465,9 @@
           "is_new_2022": false,
           "description": "The organization shall establish a disciplinary process for handling information security violations.",
           "detailed_description": "A clear disciplinary process demonstrates that information security violations have consequences and supports consistent enforcement. The process should define what constitutes a violation, how violations are reported and investigated, and what disciplinary measures may be applied (from verbal warnings to termination). Due process should be followed, and actions should be proportionate to the severity and intent of the violation.",
-          "guidance": "Document the disciplinary process in the security policy. Ensure due process and right of appeal. Communicate consequences of violations. Document all disciplinary actions. Apply process consistently across the organization."
+          "guidance": "Document the disciplinary process in the security policy. Ensure due process and right of appeal. Communicate consequences of violations. Document all disciplinary actions. Apply process consistently across the organization.",
+          "title_el": "Διαδικασία πειθαρχικής ευθύνης",
+          "purpose_el": "Καθιέρωση επίσημης διαδικασίας πειθαρχικής ευθύνης για παραβιάσεις ασφάλειας."
         },
         {
           "code": "6.5",
@@ -390,7 +476,9 @@
           "is_new_2022": false,
           "description": "The organization shall ensure information security responsibilities continue after termination or change of employment.",
           "detailed_description": "Responsibilities for protecting information assets extend beyond the period of employment. Employees and contractors must return all organizational assets upon departure and continue to respect confidentiality obligations. The organization should conduct exit interviews to remind departing personnel of their ongoing obligations. Access rights should be revoked promptly upon termination or role change.",
-          "guidance": "Include post-employment obligations in contracts. Conduct exit interviews with security reminders. Revoke access promptly on termination. Remind personnel of confidentiality obligations. Document asset return verification."
+          "guidance": "Include post-employment obligations in contracts. Conduct exit interviews with security reminders. Revoke access promptly on termination. Remind personnel of confidentiality obligations. Document asset return verification.",
+          "title_el": "Ευθύνες μετά τη λήξη ή αλλαγή απασχόλησης",
+          "purpose_el": "Διασφάλιση ολοκλήρωσης των ευθυνών ασφάλειας μετά τη λήξη ή αλλαγή απασχόλησης."
         },
         {
           "code": "6.6",
@@ -399,7 +487,9 @@
           "is_new_2022": false,
           "description": "The organization shall require employees and contractors to sign confidentiality or non-disclosure agreements.",
           "detailed_description": "Confidentiality and non-disclosure agreements (NDAs) legally bind personnel to protect confidential information. NDAs should specify what information is considered confidential, the duration of obligations, and permitted uses. Different agreements may be needed for employees, contractors, and third parties. NDAs should be signed before access to confidential information is granted.",
-          "guidance": "Use standardized NDA templates reviewed by legal. Require NDAs before granting access to confidential data. Specify duration and scope of confidentiality. Ensure NDAs are enforceable in relevant jurisdictions. Maintain NDA register."
+          "guidance": "Use standardized NDA templates reviewed by legal. Require NDAs before granting access to confidential data. Specify duration and scope of confidentiality. Ensure NDAs are enforceable in relevant jurisdictions. Maintain NDA register.",
+          "title_el": "Συμφωνίες εμπιστευτικότητας ή μη αποκάλυψης",
+          "purpose_el": "Προστασία πληροφοριών μέσω συμφωνιών εμπιστευτικότητας."
         },
         {
           "code": "6.7",
@@ -408,7 +498,9 @@
           "is_new_2022": false,
           "description": "The organization shall implement security measures to protect information accessed, processed or stored remotely.",
           "detailed_description": "Remote working introduces additional security risks including unsecured networks, device theft, and reduced oversight. Organizations must implement technical controls such as VPNs, multi-factor authentication, endpoint protection, and secure remote desktop solutions. Policy controls should define acceptable remote working practices, device requirements, and data handling procedures. The remote working policy should be reviewed regularly as technology and threats evolve.",
-          "guidance": "Implement VPN with MFA for remote access. Use managed devices with endpoint protection. Enforce disk encryption on remote devices. Provide remote working security guidelines. Test remote access controls regularly."
+          "guidance": "Implement VPN with MFA for remote access. Use managed devices with endpoint protection. Enforce disk encryption on remote devices. Provide remote working security guidelines. Test remote access controls regularly.",
+          "title_el": "Τηλεργασία",
+          "purpose_el": "Διασφάλιση ασφάλειας πληροφοριών κατά την τηλεργασία."
         },
         {
           "code": "6.8",
@@ -417,14 +509,18 @@
           "is_new_2022": false,
           "description": "The organization shall establish a mechanism for personnel to report information security events in a timely manner.",
           "detailed_description": "Timely reporting of security events is critical for effective incident response. Personnel must know what constitutes a security event and how to report it. Reporting channels should be accessible, simple, and available 24/7. Anonymity or confidentiality options should be provided for sensitive reports. The reporting process should be communicated during induction and reinforced through awareness activities.",
-          "guidance": "Establish a single reporting channel (phone, email, portal). Provide 24/7 reporting capability. Encourage reporting without fear of blame. Acknowledge receipt of all reports. Track report resolution times."
+          "guidance": "Establish a single reporting channel (phone, email, portal). Provide 24/7 reporting capability. Encourage reporting without fear of blame. Acknowledge receipt of all reports. Track report resolution times.",
+          "title_el": "Αναφορά συμβάντων ασφάλειας πληροφοριών",
+          "purpose_el": "Διασφάλιση έγκαιρης αναφοράς συμβάντων ασφάλειας πληροφοριών."
         }
       ]
     },
     {
       "code": 7,
       "name": "Physical Controls",
+      "name_el": "Φυσικοί Έλεγχοι",
       "description": "Controls related to physical security of facilities, equipment and information assets.",
+      "description_el": "Έλεγχοι που σχετίζονται με τη φυσική ασφάλεια εγκαταστάσεων, εξοπλισμού και περιουσιακών στοιχείων πληροφοριών.",
       "sort_order": 3,
       "controls": [
         {
@@ -434,7 +530,9 @@
           "is_new_2022": false,
           "description": "The organization shall define and implement physical security perimeters to protect information processing facilities.",
           "detailed_description": "Physical security perimeters create a boundary between internal secure areas and the external environment. Perimeters may include walls, fences, gates, locked doors, and barriers. The level of physical security should be based on a risk assessment considering the sensitivity of assets, location, and threat environment. Multiple layers of physical security (defense in depth) provide better protection than single barriers.",
-          "guidance": "Conduct physical security risk assessments. Implement multiple layers of perimeter security. Use intrusion detection systems on perimeters. Control and monitor entry points. Test physical security controls regularly."
+          "guidance": "Conduct physical security risk assessments. Implement multiple layers of perimeter security. Use intrusion detection systems on perimeters. Control and monitor entry points. Test physical security controls regularly.",
+          "title_el": "Φυσικά όρια ασφάλειας",
+          "purpose_el": "Προστασία εγκαταστάσεων και πληροφοριών μέσω φυσικών περιμέτρων ασφάλειας."
         },
         {
           "code": "7.2",
@@ -443,7 +541,9 @@
           "is_new_2022": false,
           "description": "The organization shall control physical access to premises and secure areas.",
           "detailed_description": "Physical access controls ensure that only authorized individuals can enter organizational premises and secure areas. Access control systems may include card readers, biometric scanners, key systems, and security personnel. Access should be granted based on business need and reviewed regularly. Visitor access should be logged, accompanied, and time-limited.",
-          "guidance": "Use electronic access control systems with audit trails. Implement visitor management procedures. Conduct periodic access rights reviews. Escort visitors in secure areas. Revoke access promptly when no longer needed."
+          "guidance": "Use electronic access control systems with audit trails. Implement visitor management procedures. Conduct periodic access rights reviews. Escort visitors in secure areas. Revoke access promptly when no longer needed.",
+          "title_el": "Φυσική είσοδος",
+          "purpose_el": "Διασφάλιση ασφαλούς φυσικής εισόδου σε χώρους του οργανισμού."
         },
         {
           "code": "7.3",
@@ -452,7 +552,9 @@
           "is_new_2022": false,
           "description": "The organization shall secure offices, rooms and facilities against unauthorized physical access.",
           "detailed_description": "Offices, server rooms, network closets, and other facilities require physical protection appropriate to the assets they contain. This includes lockable doors, secure windows, access control systems, and environmental monitoring. High-security areas may require additional controls such as mantraps, CCTV, and intrusion alarms. The level of security should be proportionate to the value and sensitivity of assets within.",
-          "guidance": "Lock server rooms and network closets at all times. Implement environmental monitoring (temperature, humidity). Use CCTV in critical areas. Maintain asset register for each room. Conduct physical security walkthroughs."
+          "guidance": "Lock server rooms and network closets at all times. Implement environmental monitoring (temperature, humidity). Use CCTV in critical areas. Maintain asset register for each room. Conduct physical security walkthroughs.",
+          "title_el": "Ασφάλεια γραφείων, δωματίων και εγκαταστάσεων",
+          "purpose_el": "Προστασία χώρων από μη εξουσιοδοτημένη πρόσβαση και φυσικές απειλές."
         },
         {
           "code": "7.4",
@@ -461,7 +563,9 @@
           "is_new_2022": true,
           "description": "The organization shall monitor physical areas for unauthorized physical access.",
           "detailed_description": "Physical security monitoring provides detection of unauthorized access attempts and supports incident response. Monitoring technologies include CCTV systems, intrusion detection sensors, motion detectors, and alarm systems. Recorded footage should be retained for an appropriate period and protected from tampering. Monitoring should be documented in a physical security monitoring policy with defined response procedures.",
-          "guidance": "Install CCTV at entry points and critical areas. Retain footage for minimum 30 days. Test intrusion detection systems regularly. Establish monitoring response procedures. Protect monitoring recordings from tampering."
+          "guidance": "Install CCTV at entry points and critical areas. Retain footage for minimum 30 days. Test intrusion detection systems regularly. Establish monitoring response procedures. Protect monitoring recordings from tampering.",
+          "title_el": "Παρακολούθηση φυσικής ασφάλειας",
+          "purpose_el": "Συνεχής παρακολούθηση των φυσικών μέτρων ασφάλειας."
         },
         {
           "code": "7.5",
@@ -470,7 +574,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect against physical and environmental threats such as natural disasters and intentional attacks.",
           "detailed_description": "Physical and environmental threats include fire, flood, earthquake, extreme temperatures, power failures, and deliberate attacks. Protection measures should be based on a risk assessment considering the location, building construction, and criticality of assets. Controls may include fire suppression systems, UPS/generators, water detection, and structural reinforcement. Business continuity plans should address residual risks.",
-          "guidance": "Install fire suppression systems in critical areas. Implement UPS and backup generators. Use water detection sensors in server rooms. Conduct risk assessments for environmental threats. Include environmental scenarios in BCP testing."
+          "guidance": "Install fire suppression systems in critical areas. Implement UPS and backup generators. Use water detection sensors in server rooms. Conduct risk assessments for environmental threats. Include environmental scenarios in BCP testing.",
+          "title_el": "Προστασία από φυσικές και περιβαλλοντικές απειλές",
+          "purpose_el": "Προστασία εγκαταστάσεων από φυσικές και περιβαλλοντικές απειλές."
         },
         {
           "code": "7.6",
@@ -479,7 +585,9 @@
           "is_new_2022": false,
           "description": "The organization shall apply security measures to protect personnel and assets in secure areas.",
           "detailed_description": "Secure areas require additional controls beyond standard physical security. These may include restrictions on what can be brought in or taken out, prohibitions on photography, and limitations on unsupervised access. Personnel working in secure areas should be aware of specific security procedures. Secure areas include server rooms, data centers, research labs, and executive offices.",
-          "guidance": "Define rules for working in secure areas. Restrict personal devices in secure areas. Prohibit photography without authorization. Maintain access logs for secure areas. Train personnel on secure area procedures."
+          "guidance": "Define rules for working in secure areas. Restrict personal devices in secure areas. Prohibit photography without authorization. Maintain access logs for secure areas. Train personnel on secure area procedures.",
+          "title_el": "Εργασία σε περιοχές ασφάλειας",
+          "purpose_el": "Καθιέρωση κανόνων για εργασία σε περιοχές με αυξημένες απαιτήσεις ασφάλειας."
         },
         {
           "code": "7.7",
@@ -488,7 +596,9 @@
           "is_new_2022": false,
           "description": "The organization shall implement clear desk and clear screen policies to reduce risk of unauthorized access.",
           "detailed_description": "Clear desk and clear screen policies ensure that sensitive information is not left exposed when workstations are unattended. This includes locking screens, removing papers from desks, securing portable devices, and clearing printer output. The policy should cover all types of workspaces including offices, hot desks, and home offices. Compliance should be monitored through spot checks and security walkthroughs.",
-          "guidance": "Implement automatic screen lock after 5 minutes of inactivity. Provide secure storage for documents. Conduct clear desk spot checks. Include clear desk requirements in induction training. Use privacy screens for sensitive work."
+          "guidance": "Implement automatic screen lock after 5 minutes of inactivity. Provide secure storage for documents. Conduct clear desk spot checks. Include clear desk requirements in induction training. Use privacy screens for sensitive work.",
+          "title_el": "Καθαρό γραφείο και καθαρή οθόνη",
+          "purpose_el": "Μείωση κινδύνου μη εξουσιοδοτημένης πρόσβασης σε πληροφορίες σε χώρους εργασίας."
         },
         {
           "code": "7.8",
@@ -497,7 +607,9 @@
           "is_new_2022": false,
           "description": "The organization shall site and protect equipment to reduce risks from environmental threats and unauthorized access.",
           "detailed_description": "Equipment should be sited and protected to minimize risks from physical threats and unauthorized access. This includes considerations for server room location (avoid basements in flood-prone areas), equipment positioning (away from water pipes), and securing equipment against theft. Environmental controls (temperature, humidity, power quality) should be maintained according to equipment specifications.",
-          "guidance": "Site critical equipment in environmentally controlled rooms. Secure equipment with cable locks or enclosures. Maintain environmental monitoring. Keep equipment away from water sources. Use anti-static flooring in server rooms."
+          "guidance": "Site critical equipment in environmentally controlled rooms. Secure equipment with cable locks or enclosures. Maintain environmental monitoring. Keep equipment away from water sources. Use anti-static flooring in server rooms.",
+          "title_el": "Τοποθέτηση και προστασία εξοπλισμού",
+          "purpose_el": "Προστασία εξοπλισμού από φυσικές απειλές και μη εξουσιοδοτημένη πρόσβαση."
         },
         {
           "code": "7.9",
@@ -506,7 +618,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect off-premises assets against the risks of physical theft, loss and environmental damage.",
           "detailed_description": "Assets taken off organizational premises (laptops, mobile devices, documents, equipment) face increased risks. Controls should address physical protection, data security, and reporting of loss or theft. This includes requiring encryption on mobile devices, using secure transport for valuable equipment, and implementing tracking for high-value assets. Personnel should be trained on the risks of working off-premises.",
-          "guidance": "Encrypt all laptops and mobile devices. Use asset tracking tags for valuable equipment. Train staff on off-premises security. Require immediate reporting of lost or stolen devices. Implement remote wipe capability."
+          "guidance": "Encrypt all laptops and mobile devices. Use asset tracking tags for valuable equipment. Train staff on off-premises security. Require immediate reporting of lost or stolen devices. Implement remote wipe capability.",
+          "title_el": "Ασφάλεια περιουσιακών στοιχείων εκτός χώρου",
+          "purpose_el": "Προστασία φορητών περιουσιακών στοιχείων εκτός των εγκαταστάσεων."
         },
         {
           "code": "7.10",
@@ -515,7 +629,9 @@
           "is_new_2022": false,
           "description": "The organization shall manage storage media securely throughout its lifecycle.",
           "detailed_description": "Storage media (hard drives, SSDs, USB drives, tapes, optical media) require secure management from procurement through disposal. Controls should cover media classification, handling, transport, storage, and destruction. Media reuse must ensure complete data removal through secure wiping. Destruction methods should be appropriate to the classification of data previously stored on the media.",
-          "guidance": "Classify media based on data stored. Use secure wiping software before media reuse. Use degaussing or physical destruction for classified media. Maintain media disposal records. Track media movement through asset management."
+          "guidance": "Classify media based on data stored. Use secure wiping software before media reuse. Use degaussing or physical destruction for classified media. Maintain media disposal records. Track media movement through asset management.",
+          "title_el": "Αποθήκευση μέσων",
+          "purpose_el": "Ασφαλής αποθήκευση και διαχείριση φυσικών μέσων αποθήκευσης."
         },
         {
           "code": "7.11",
@@ -524,7 +640,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect information processing facilities from power failures and other disruptions caused by utility failures.",
           "detailed_description": "Supporting utilities (electricity, telecommunications, water, HVAC) are essential for information processing facilities. Failures can cause service disruption or equipment damage. Controls should include uninterruptible power supplies (UPS) to bridge short-term outages, backup generators for extended outages, and redundant utility feeds where available. Regular testing of backup utilities is essential.",
-          "guidance": "Install UPS for critical equipment. Test UPS and generators regularly. Arrange redundant power feeds where possible. Monitor utility quality (voltage, frequency). Document utility failure procedures."
+          "guidance": "Install UPS for critical equipment. Test UPS and generators regularly. Arrange redundant power feeds where possible. Monitor utility quality (voltage, frequency). Document utility failure procedures.",
+          "title_el": "Υποστήριξη βοηθητικών υπηρεσιών",
+          "purpose_el": "Προστασία του εξοπλισμού από διακοπές βοηθητικών υπηρεσιών."
         },
         {
           "code": "7.12",
@@ -533,7 +651,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect cabling carrying power, data and supporting services against interception, interference and damage.",
           "detailed_description": "Cabling infrastructure is vulnerable to physical damage, electromagnetic interference, and interception. Power and data cables should be physically separated to reduce interference. Cabling should be routed through secure conduits and protected from accidental damage. Sensitive data cables should be protected from tapping through physical security and encryption. Labeling and documentation support maintenance and change management.",
-          "guidance": "Use shielded cabling for sensitive data. Separate power and data cables. Secure cable runs in conduits or cable trays. Label all cables clearly. Protect network ports in public areas."
+          "guidance": "Use shielded cabling for sensitive data. Separate power and data cables. Secure cable runs in conduits or cable trays. Label all cables clearly. Protect network ports in public areas.",
+          "title_el": "Ασφάλεια καλωδίωσης",
+          "purpose_el": "Προστασία καλωδίωσης από υποκλοπή ή ζημιά."
         },
         {
           "code": "7.13",
@@ -542,7 +662,9 @@
           "is_new_2022": false,
           "description": "The organization shall ensure equipment is maintained correctly to ensure its continuing availability and integrity.",
           "detailed_description": "Regular maintenance of equipment ensures reliable operation and extends equipment life. Maintenance should be performed according to manufacturer specifications and organizational requirements. Maintenance can be performed in-house or by external service providers, who should be subject to appropriate security controls. Records of all maintenance activities should be maintained for audit and planning purposes.",
-          "guidance": "Schedule preventive maintenance for critical equipment. Use authorized maintenance providers only. Supervise external maintenance personnel. Document all maintenance activities. Retain maintenance records for equipment lifecycle."
+          "guidance": "Schedule preventive maintenance for critical equipment. Use authorized maintenance providers only. Supervise external maintenance personnel. Document all maintenance activities. Retain maintenance records for equipment lifecycle.",
+          "title_el": "Συντήρηση εξοπλισμού",
+          "purpose_el": "Διασφάλιση σωστής συντήρησης του εξοπλισμού για συνεχή διαθεσιμότητα και ακεραιότητα."
         },
         {
           "code": "7.14",
@@ -551,14 +673,18 @@
           "is_new_2022": false,
           "description": "The organization shall ensure secure disposal or re-use of equipment containing storage media.",
           "detailed_description": "Equipment disposal and re-use must ensure that all sensitive data is securely removed before equipment leaves organizational control. This applies to all equipment with data storage capability including computers, servers, printers, copiers, and mobile devices. Secure disposal methods include cryptographic erasure, degaussing, and physical destruction. A certificate of sanitization should be obtained for disposed equipment.",
-          "guidance": "Establish equipment disposal procedures. Use certified data destruction services. Obtain certificates of destruction. Sanitize equipment before transfer or sale. Maintain disposal records for audit."
+          "guidance": "Establish equipment disposal procedures. Use certified data destruction services. Obtain certificates of destruction. Sanitize equipment before transfer or sale. Maintain disposal records for audit.",
+          "title_el": "Ασφαλής διάθεση ή επαναχρησιμοποίηση εξοπλισμού",
+          "purpose_el": "Διασφάλιση ασφαλούς διάθεσης ή επαναχρησιμοποίησης εξοπλισμού."
         }
       ]
     },
     {
       "code": 8,
       "name": "Technological Controls",
+      "name_el": "Τεχνολογικοί Έλεγχοι",
       "description": "Controls related to technical security measures for systems and networks.",
+      "description_el": "Έλεγχοι που σχετίζονται με τεχνικά μέτρα ασφάλειας για συστήματα και δίκτυα.",
       "sort_order": 4,
       "controls": [
         {
@@ -568,7 +694,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect user endpoint devices used for information processing.",
           "detailed_description": "End-user devices including laptops, desktops, tablets, and smartphones are common targets for attacks and a primary vector for data breaches. Controls should include device encryption, endpoint protection software, patch management, device management (MDM), and user authentication. Bring Your Own Device (BYOD) programs require additional controls including device separation and remote wipe capabilities.",
-          "guidance": "Deploy endpoint detection and response (EDR) solutions. Enforce disk encryption on all devices. Implement mobile device management (MDM). Patch endpoints within defined SLAs. Restrict administrative privileges on endpoints."
+          "guidance": "Deploy endpoint detection and response (EDR) solutions. Enforce disk encryption on all devices. Implement mobile device management (MDM). Patch endpoints within defined SLAs. Restrict administrative privileges on endpoints.",
+          "title_el": "Τερματικά συσκευών χρηστών",
+          "purpose_el": "Προστασία πληροφοριών που αποθηκεύονται ή επεξεργάζονται σε τερματικά συσκευών χρηστών."
         },
         {
           "code": "8.2",
@@ -577,7 +705,9 @@
           "is_new_2022": false,
           "description": "The organization shall control and manage privileged access rights to systems and data.",
           "detailed_description": "Privileged accounts (administrators, root users, service accounts) have elevated access that can bypass normal security controls. These accounts require additional protections including just-in-time (JIT) access, privileged access management (PAM) tools, multi-factor authentication, and session monitoring. Privileged access should be granted only when needed and for the minimum duration required. Regular reviews of privileged accounts are essential.",
-          "guidance": "Implement a PAM solution. Enforce MFA for all privileged access. Use JIT access for administrative tasks. Monitor and record privileged sessions. Review privileged access quarterly."
+          "guidance": "Implement a PAM solution. Enforce MFA for all privileged access. Use JIT access for administrative tasks. Monitor and record privileged sessions. Review privileged access quarterly.",
+          "title_el": "Προνόμια πρόσβασης",
+          "purpose_el": "Περιορισμός και διαχείριση των προνομίων πρόσβασης σε συστήματα και δεδομένα."
         },
         {
           "code": "8.3",
@@ -586,7 +716,9 @@
           "is_new_2022": false,
           "description": "The organization shall restrict access to information based on established access control policies.",
           "detailed_description": "Information access restriction ensures that users can only access the information they need for their roles (need-to-know principle). Access controls should be applied at multiple levels including network, application, database, and file system. Role-based access control (RBAC) and attribute-based access control (ABAC) models help manage access efficiently. Access rights should be subject to regular review.",
-          "guidance": "Define access policies by role and data classification. Implement least privilege principles. Use RBAC for consistent access management. Conduct quarterly access reviews. Implement automated access recertification."
+          "guidance": "Define access policies by role and data classification. Implement least privilege principles. Use RBAC for consistent access management. Conduct quarterly access reviews. Implement automated access recertification.",
+          "title_el": "Περιορισμός πρόσβασης σε πληροφορίες",
+          "purpose_el": "Περιορισμός πρόσβασης σε πληροφορίες και πόρους συστημάτων εφαρμογών."
         },
         {
           "code": "8.4",
@@ -595,7 +727,9 @@
           "is_new_2022": false,
           "description": "The organization shall control access to program source code and associated items.",
           "detailed_description": "Source code is a valuable intellectual property asset and a potential security vulnerability if not properly controlled. Access to source code repositories, development environments, and build systems should be restricted based on role. Version control systems should enforce access controls and maintain audit trails. Code changes should require peer review. Third-party access to source code should be subject to specific agreements.",
-          "guidance": "Use version control with access controls. Require pull request reviews for all code changes. Restrict direct access to production code. Implement CI/CD pipeline security. Audit source code access regularly."
+          "guidance": "Use version control with access controls. Require pull request reviews for all code changes. Restrict direct access to production code. Implement CI/CD pipeline security. Audit source code access regularly.",
+          "title_el": "Πρόσβαση σε πηγαίο κώδικα",
+          "purpose_el": "Περιορισμός πρόσβασης σε πηγαίο κώδικα για προστασία της πνευματικής ιδιοκτησίας."
         },
         {
           "code": "8.5",
@@ -604,7 +738,9 @@
           "is_new_2022": false,
           "description": "The organization shall implement secure authentication methods for users and systems.",
           "detailed_description": "Authentication verifies the identity of users, systems, and services before granting access. Secure authentication should use multiple factors where appropriate (something you know, have, and are). Password policies should require adequate complexity and length. Multi-factor authentication should be mandatory for privileged accounts and remote access. Biometric authentication should have appropriate liveness detection.",
-          "guidance": "Enforce MFA for all external-facing systems. Implement passwordless authentication where possible. Use FIDO2/WebAuthn standards. Secure biometric templates. Regularly review authentication logs."
+          "guidance": "Enforce MFA for all external-facing systems. Implement passwordless authentication where possible. Use FIDO2/WebAuthn standards. Secure biometric templates. Regularly review authentication logs.",
+          "title_el": "Ασφαλής πιστοποίηση ταυτότητας",
+          "purpose_el": "Διασφάλιση ασφαλούς πιστοποίησης ταυτότητας μέσω κατάλληλων μηχανισμών."
         },
         {
           "code": "8.6",
@@ -613,7 +749,9 @@
           "is_new_2022": false,
           "description": "The organization shall monitor and manage the capacity of information processing facilities.",
           "detailed_description": "Capacity management ensures that information processing facilities have sufficient resources to meet current and future business requirements. This includes monitoring CPU, memory, storage, and network utilization, forecasting future demand, and planning capacity upgrades. Insufficient capacity can lead to service degradation or outages. Capacity planning should consider both normal operations and peak demands.",
-          "guidance": "Monitor resource utilization with thresholds and alerts. Forecast capacity needs based on growth trends. Plan capacity upgrades with sufficient lead time. Document capacity management procedures. Review capacity during change management."
+          "guidance": "Monitor resource utilization with thresholds and alerts. Forecast capacity needs based on growth trends. Plan capacity upgrades with sufficient lead time. Document capacity management procedures. Review capacity during change management.",
+          "title_el": "Διαχείριση δυναμικότητας",
+          "purpose_el": "Παρακολούθηση και προσαρμογή της δυναμικότητας συστημάτων για διασφάλιση διαθεσιμότητας."
         },
         {
           "code": "8.7",
@@ -622,7 +760,9 @@
           "is_new_2022": false,
           "description": "The organization shall implement protection against malware through preventive and detective controls.",
           "detailed_description": "Malware protection requires a multi-layered approach including antivirus/antimalware software, endpoint detection and response (EDR), email filtering, web filtering, and user awareness. Signature-based detection should be supplemented with behavioral analysis and threat intelligence. All systems should be protected, including servers, endpoints, mobile devices, and virtual environments. Malware protection software should be kept current with automatic updates.",
-          "guidance": "Deploy EDR on all endpoints. Use email and web filtering gateways. Keep malware signatures updated. Conduct regular malware scan schedules. Train users on malware prevention."
+          "guidance": "Deploy EDR on all endpoints. Use email and web filtering gateways. Keep malware signatures updated. Conduct regular malware scan schedules. Train users on malware prevention.",
+          "title_el": "Προστασία από κακόβουλο λογισμικό",
+          "purpose_el": "Προστασία συστημάτων από κακόβουλο λογισμικό."
         },
         {
           "code": "8.8",
@@ -631,7 +771,9 @@
           "is_new_2022": false,
           "description": "The organization shall manage technical vulnerabilities in a timely manner.",
           "detailed_description": "Technical vulnerability management is a continuous process of identifying, evaluating, prioritizing, and remediating security vulnerabilities in systems and software. The process should cover operating systems, applications, network devices, and firmware. Vulnerability scanning should be conducted regularly, and critical vulnerabilities should be patched within defined timeframes. A vulnerability management policy should define SLAs for remediation based on severity.",
-          "guidance": "Conduct regular vulnerability scans (weekly/monthly). Prioritize vulnerabilities by CVSS score and context. Patch critical vulnerabilities within 48 hours. Use a patch management system. Test patches before production deployment."
+          "guidance": "Conduct regular vulnerability scans (weekly/monthly). Prioritize vulnerabilities by CVSS score and context. Patch critical vulnerabilities within 48 hours. Use a patch management system. Test patches before production deployment.",
+          "title_el": "Διαχείριση τεχνικών τρωτών σημείων",
+          "purpose_el": "Πρόληψη εκμετάλλευσης τεχνικών τρωτών σημείων μέσω συστηματικής διαχείρισης."
         },
         {
           "code": "8.9",
@@ -640,7 +782,9 @@
           "is_new_2022": true,
           "description": "The organization shall establish and maintain secure configurations for hardware, software and services.",
           "detailed_description": "Configuration management ensures that systems are deployed and maintained in a known secure state. This includes establishing security baseline configurations, using automated configuration management tools, monitoring for configuration drift, and applying hardening standards (e.g., CIS benchmarks). Configuration changes should follow a change management process. Non-compliant configurations should be detected and remediated automatically.",
-          "guidance": "Use CIS benchmarks for system hardening. Implement infrastructure as code (IaC) for consistent deployments. Automate configuration compliance monitoring. Track configuration changes through CMDB. Remediate configuration drift automatically."
+          "guidance": "Use CIS benchmarks for system hardening. Implement infrastructure as code (IaC) for consistent deployments. Automate configuration compliance monitoring. Track configuration changes through CMDB. Remediate configuration drift automatically.",
+          "title_el": "Διαχείριση ρυθμίσεων παραμέτρων",
+          "purpose_el": "Διασφάλιση ασφαλούς ρύθμισης παραμέτρων συστημάτων και εφαρμογών."
         },
         {
           "code": "8.10",
@@ -649,7 +793,9 @@
           "is_new_2022": true,
           "description": "The organization shall ensure secure deletion of information when no longer needed.",
           "detailed_description": "Information deletion ensures that data is permanently and irrecoverably removed when it is no longer required for business or legal purposes. Deletion should follow retention schedules defined in records management policies. Different deletion methods are required for different storage media (overwriting, cryptographic erasure, degaussing, physical destruction). Deletion should be verified and logged. Deletion processes must ensure data is removed from all locations including backups.",
-          "guidance": "Define retention periods for all data types. Use secure deletion methods appropriate to media. Verify deletion through verification procedures. Log all deletion activities. Ensure backups also comply with retention schedules."
+          "guidance": "Define retention periods for all data types. Use secure deletion methods appropriate to media. Verify deletion through verification procedures. Log all deletion activities. Ensure backups also comply with retention schedules.",
+          "title_el": "Διαγραφή πληροφοριών",
+          "purpose_el": "Διασφάλιση ασφαλούς διαγραφής πληροφοριών όταν δεν απαιτούνται πλέον."
         },
         {
           "code": "8.11",
@@ -658,7 +804,9 @@
           "is_new_2022": true,
           "description": "The organization shall use data masking techniques to protect sensitive data as required.",
           "detailed_description": "Data masking (also called data obfuscation or anonymization) replaces sensitive data with realistic but non-sensitive data for use in non-production environments. Techniques include substitution, shuffling, encryption, and tokenization. Masking should be irreversible or use strong encryption with separate key management. Testing environments, development, training, and analytics should use masked data where production data is not required.",
-          "guidance": "Identify data requiring masking. Implement masking in non-production environments. Use tokenization for payment data. Test that masked data remains usable. Audit masking implementation regularly."
+          "guidance": "Identify data requiring masking. Implement masking in non-production environments. Use tokenization for payment data. Test that masked data remains usable. Audit masking implementation regularly.",
+          "title_el": "Απόκρυψη δεδομένων",
+          "purpose_el": "Απόκρυψη ευαίσθητων δεδομένων για προστασία από μη εξουσιοδοτημένη αποκάλυψη."
         },
         {
           "code": "8.12",
@@ -667,7 +815,9 @@
           "is_new_2022": true,
           "description": "The organization shall implement data leakage prevention measures to detect and prevent unauthorized disclosure.",
           "detailed_description": "Data leakage prevention (DLP) controls monitor, detect, and block unauthorized attempts to transfer sensitive data outside the organization. DLP solutions can operate at the network level (monitoring outbound traffic), endpoint level (monitoring USB, printing, clipboard), and cloud level (monitoring SaaS applications). DLP policies should be based on data classification and defined with input from business units to avoid false positives.",
-          "guidance": "Classify data to inform DLP rules. Start with monitoring mode before blocking. Implement network DLP for outbound traffic. Use endpoint DLP for removable media. Review DLP alerts regularly."
+          "guidance": "Classify data to inform DLP rules. Start with monitoring mode before blocking. Implement network DLP for outbound traffic. Use endpoint DLP for removable media. Review DLP alerts regularly.",
+          "title_el": "Πρόληψη διαρροής δεδομένων",
+          "purpose_el": "Πρόληψη μη εξουσιοδοτημένης διαρροής δεδομένων."
         },
         {
           "code": "8.13",
@@ -676,7 +826,9 @@
           "is_new_2022": false,
           "description": "The organization shall maintain and test backup copies of information, software and system images.",
           "detailed_description": "Backups are essential for recovery from data loss events including system failures, ransomware attacks, accidental deletion, and natural disasters. The backup strategy should be defined by recovery point objectives (RPOs) and recovery time objectives (RTOs) established through business impact analysis. Backups should be encrypted, stored separately from production systems, and tested regularly. The 3-2-1 backup rule (3 copies, 2 media types, 1 offsite) is a recommended practice.",
-          "guidance": "Implement the 3-2-1 backup strategy. Encrypt backups at rest and in transit. Test backup restoration at least quarterly. Store backups offsite or in cloud. Protect backup systems from ransomware."
+          "guidance": "Implement the 3-2-1 backup strategy. Encrypt backups at rest and in transit. Test backup restoration at least quarterly. Store backups offsite or in cloud. Protect backup systems from ransomware.",
+          "title_el": "Αντίγραφα ασφαλείας πληροφοριών",
+          "purpose_el": "Διασφάλιση διαθεσιμότητας πληροφοριών μέσω αντιγράφων ασφαλείας."
         },
         {
           "code": "8.14",
@@ -685,7 +837,9 @@
           "is_new_2022": false,
           "description": "The organization shall ensure redundancy of information processing facilities to meet availability requirements.",
           "detailed_description": "Redundancy ensures that information processing facilities remain available if individual components fail. This can include redundant servers (clustering), redundant network paths, redundant storage (RAID), and redundant data centers (active-active or active-passive). The level of redundancy should be based on availability requirements determined through business impact analysis. Redundant components should be tested regularly to ensure they function when needed.",
-          "guidance": "Design systems for high availability. Implement failover testing regularly. Use load balancers for traffic distribution. Ensure redundancy at all layers (compute, network, storage). Document failover procedures."
+          "guidance": "Design systems for high availability. Implement failover testing regularly. Use load balancers for traffic distribution. Ensure redundancy at all layers (compute, network, storage). Document failover procedures.",
+          "title_el": "Πλεονασμός εγκαταστάσεων επεξεργασίας πληροφοριών",
+          "purpose_el": "Διασφάλιση διαθεσιμότητας εγκαταστάσεων επεξεργασίας πληροφοριών μέσω πλεονασμού."
         },
         {
           "code": "8.15",
@@ -694,7 +848,9 @@
           "is_new_2022": false,
           "description": "The organization shall record events that provide evidence of system activity for security monitoring and investigation.",
           "detailed_description": "Logging is essential for detecting security incidents, supporting investigations, and demonstrating compliance. Logs should record user activities, system events, authentication attempts, access to sensitive data, and administrative actions. Logs must be protected from tampering and retained for an appropriate period. A centralized logging solution (SIEM) enables correlation and analysis of logs from multiple sources.",
-          "guidance": "Implement centralized logging with SIEM. Log all authentication and authorization events. Protect logs from modification. Define log retention periods by regulation. Monitor logs for suspicious activity."
+          "guidance": "Implement centralized logging with SIEM. Log all authentication and authorization events. Protect logs from modification. Define log retention periods by regulation. Monitor logs for suspicious activity.",
+          "title_el": "Ασφάλεια ΤΠ σε συμφωνίες επιπέδου υπηρεσιών",
+          "purpose_el": "Ενσωμάτωση απαιτήσεων ασφάλειας σε συμφωνίες επιπέδου υπηρεσιών ΤΠ."
         },
         {
           "code": "8.16",
@@ -703,7 +859,9 @@
           "is_new_2022": true,
           "description": "The organization shall monitor systems and networks for anomalous behavior and potential security incidents.",
           "detailed_description": "Security monitoring provides continuous visibility into the security state of systems and networks. Monitoring should cover network traffic, system behavior, user activity, and security control effectiveness. Security Information and Event Management (SIEM) systems and User and Entity Behavior Analytics (UEBA) tools can help detect anomalies. Monitoring results should be reviewed regularly, and alerts should be investigated and escalated according to defined procedures.",
-          "guidance": "Deploy SIEM for centralized monitoring. Define use cases for alert generation. Establish monitoring coverage for all critical systems. Tune alerts to reduce false positives. Review monitoring reports weekly."
+          "guidance": "Deploy SIEM for centralized monitoring. Define use cases for alert generation. Establish monitoring coverage for all critical systems. Tune alerts to reduce false positives. Review monitoring reports weekly.",
+          "title_el": "Διαχείριση περιστατικών ασφάλειας πληροφοριών",
+          "purpose_el": "Διασφάλιση συνεπούς και αποτελεσματικής διαχείρισης περιστατικών ασφάλειας."
         },
         {
           "code": "8.17",
@@ -712,7 +870,9 @@
           "is_new_2022": false,
           "description": "The organization shall synchronize system clocks to a single reference time source.",
           "detailed_description": "Clock synchronization ensures that log timestamps are consistent across all systems, which is critical for correlating events during incident investigation and meeting legal admissibility requirements for evidence. The organization should use Network Time Protocol (NTP) to synchronize clocks to a reliable time source (e.g., national time standard or GPS-based source). Time zone settings should be consistent or clearly documented.",
-          "guidance": "Configure all systems to use NTP. Use authenticated NTP to prevent tampering. Document time zone settings. Monitor clock drift and synchronization status. Include time sync in system build standards."
+          "guidance": "Configure all systems to use NTP. Use authenticated NTP to prevent tampering. Document time zone settings. Monitor clock drift and synchronization status. Include time sync in system build standards.",
+          "title_el": "Υπηρεσίες παρακολούθησης ασφάλειας",
+          "purpose_el": "Παρακολούθηση συστημάτων και δικτύων για ανίχνευση περιστατικών ασφάλειας."
         },
         {
           "code": "8.18",
@@ -721,7 +881,9 @@
           "is_new_2022": false,
           "description": "The organization shall control the use of privileged utility programs that could bypass system controls.",
           "detailed_description": "Privileged utilities (e.g., debuggers, system administration tools, registry editors) can bypass normal system and application controls if misused. Access to these utilities should be restricted to authorized personnel and logged. Usage should be monitored for suspicious activity. Alternative approaches (e.g., automated administration scripts) should be used where possible to reduce the need for direct utility access.",
-          "guidance": "Restrict utility access to authorized administrators. Log all usage of privileged utilities. Monitor utility usage for anomalies. Use automated administration tools where possible. Review utility access lists regularly."
+          "guidance": "Restrict utility access to authorized administrators. Log all usage of privileged utilities. Monitor utility usage for anomalies. Use automated administration tools where possible. Review utility access lists regularly.",
+          "title_el": "Αρνητική πρόσβαση σε προνόμια",
+          "purpose_el": "Περιορισμός της χρήσης προγραμμάτων με δικαιώματα διαχειριστή συστήματος."
         },
         {
           "code": "8.19",
@@ -730,7 +892,9 @@
           "is_new_2022": false,
           "description": "The organization shall control the installation of software on operational systems.",
           "detailed_description": "Uncontrolled software installation can introduce vulnerabilities, malware, and configuration issues. Software installation should follow a formal process including approval, testing, and verification. Application whitelisting can prevent unauthorized software from running. Operating system and application installations should use standard builds and approved sources. Users should not have administrative rights to install software on managed systems.",
-          "guidance": "Use application whitelisting for critical systems. Remove local admin rights from users. Test software in staging before production. Use managed software distribution tools. Maintain a software inventory."
+          "guidance": "Use application whitelisting for critical systems. Remove local admin rights from users. Test software in staging before production. Use managed software distribution tools. Maintain a software inventory.",
+          "title_el": "Εγκατάσταση λογισμικού σε λειτουργικά συστήματα",
+          "purpose_el": "Διαχείριση και έλεγχος εγκατάστασης λογισμικού σε λειτουργικά συστήματα."
         },
         {
           "code": "8.20",
@@ -739,7 +903,9 @@
           "is_new_2022": false,
           "description": "The organization shall secure networks and network services to protect information and systems.",
           "detailed_description": "Network security protects the confidentiality, integrity, and availability of data in transit and the systems connected to the network. Controls should include network segmentation, firewalls, intrusion detection/prevention systems (IDS/IPS), and network access control (NAC). Networks should be segregated based on security requirements (e.g., separating production from development, internal from DMZ, guest Wi-Fi from corporate network).",
-          "guidance": "Implement network segmentation by security zone. Use firewalls to control inter-zone traffic. Deploy IDS/IPS for threat detection. Implement 802.1X for network access control. Monitor network traffic for anomalies."
+          "guidance": "Implement network segmentation by security zone. Use firewalls to control inter-zone traffic. Deploy IDS/IPS for threat detection. Implement 802.1X for network access control. Monitor network traffic for anomalies.",
+          "title_el": "Ασφάλεια δικτύων",
+          "purpose_el": "Προστασία δικτύων από απειλές και διασφάλιση ασφάλειας συστημάτων που χρησιμοποιούν δίκτυα."
         },
         {
           "code": "8.21",
@@ -748,7 +914,9 @@
           "is_new_2022": false,
           "description": "The organization shall define and implement security requirements for network services.",
           "detailed_description": "Network services (DNS, DHCP, VPN, proxies, load balancers) must be configured securely to support overall network security. Each network service should have documented security requirements covering access control, logging, redundancy, and encryption. Service level agreements for network services should include security metrics. Changes to network services should follow the change management process.",
-          "guidance": "Document security requirements for each network service. Implement access controls for network management. Encrypt administrative access to network devices. Log all network service changes. Review network service security quarterly."
+          "guidance": "Document security requirements for each network service. Implement access controls for network management. Encrypt administrative access to network devices. Log all network service changes. Review network service security quarterly.",
+          "title_el": "Ασφάλεια υπηρεσιών δικτύου",
+          "purpose_el": "Διασφάλιση ασφάλειας υπηρεσιών δικτύου μέσω κατάλληλων μηχανισμών."
         },
         {
           "code": "8.22",
@@ -757,7 +925,9 @@
           "is_new_2022": false,
           "description": "The organization shall segregate networks based on security requirements.",
           "detailed_description": "Network segregation divides the network into separate zones based on security classification, function, or risk level. Segregation can be achieved through physical separation (separate network hardware) or logical separation (VLANs, firewalls). Segregation limits the impact of a security breach by containing it within a single network zone. Guest networks, DMZs, and IoT networks should be segregated from corporate networks.",
-          "guidance": "Design network zones based on data classification. Use VLANs for logical segregation. Implement firewall rules between zones. Separate guest Wi-Fi from corporate network. Audit network segregation quarterly."
+          "guidance": "Design network zones based on data classification. Use VLANs for logical segregation. Implement firewall rules between zones. Separate guest Wi-Fi from corporate network. Audit network segregation quarterly.",
+          "title_el": "Διαχωρισμός δικτύων",
+          "purpose_el": "Διαχωρισμός ομάδων υπηρεσιών πληροφορικής, χρηστών και συστημάτων σε δίκτυα."
         },
         {
           "code": "8.23",
@@ -766,7 +936,9 @@
           "is_new_2022": true,
           "description": "The organization shall implement web filtering to protect systems from web-based threats.",
           "detailed_description": "Web filtering controls access to internet websites to protect against malware, phishing, and inappropriate content. Filters can block known malicious sites, enforce acceptable use policies, and prevent data leakage. Web filtering should be applied to all users and devices accessing the internet through organizational networks. Categories, whitelists, and blacklists should be maintained based on organizational policy.",
-          "guidance": "Implement web proxy with content filtering. Block known malicious and phishing sites. Filter by category based on policy. Allow exceptions through defined approval process. Monitor web traffic for violations."
+          "guidance": "Implement web proxy with content filtering. Block known malicious and phishing sites. Filter by category based on policy. Allow exceptions through defined approval process. Monitor web traffic for violations.",
+          "title_el": "Φιλτράρισμα ιστού",
+          "purpose_el": "Προστασία συστημάτων από κακόβουλο περιεχόμενο και περιορισμός πρόσβασης σε μη εγκεκριμένους ιστότοπους."
         },
         {
           "code": "8.24",
@@ -775,7 +947,9 @@
           "is_new_2022": false,
           "description": "The organization shall ensure proper and effective use of cryptography to protect information.",
           "detailed_description": "Cryptography provides confidentiality, integrity, authentication, and non-repudiation for information. A cryptographic policy should define approved algorithms, key lengths, key management procedures, and use cases. Cryptographic keys must be protected throughout their lifecycle using a hardware security module (HSM) or key management service where appropriate. Cryptographic controls should comply with relevant regulations and standards.",
-          "guidance": "Develop a cryptographic policy. Use approved algorithms (AES-256, RSA-2048+). Implement key management procedures. Use TLS 1.2+ for data in transit. Consider quantum-resistant algorithms for long-lived data."
+          "guidance": "Develop a cryptographic policy. Use approved algorithms (AES-256, RSA-2048+). Implement key management procedures. Use TLS 1.2+ for data in transit. Consider quantum-resistant algorithms for long-lived data.",
+          "title_el": "Χρήση κρυπτογραφίας",
+          "purpose_el": "Διασφάλιση αποτελεσματικής χρήσης κρυπτογραφίας για προστασία της εμπιστευτικότητας και ακεραιότητας."
         },
         {
           "code": "8.25",
@@ -784,7 +958,9 @@
           "is_new_2022": false,
           "description": "The organization shall establish and maintain a secure development lifecycle for software and systems.",
           "detailed_description": "A secure development lifecycle (SDL or SSDLC) integrates security into every phase of the software development process from requirements through design, implementation, testing, deployment, and maintenance. Key activities include security requirements definition, threat modeling, secure coding standards, static and dynamic analysis, vulnerability scanning, and security testing before release. The process should be tailored to the development methodology (Agile, DevOps, Waterfall).",
-          "guidance": "Integrate security into each SDLC phase. Conduct threat modeling for new features. Perform SAST and DAST scanning. Define security acceptance criteria. Train developers on secure coding."
+          "guidance": "Integrate security into each SDLC phase. Conduct threat modeling for new features. Perform SAST and DAST scanning. Define security acceptance criteria. Train developers on secure coding.",
+          "title_el": "Κύκλος ζωής ασφαλούς ανάπτυξης",
+          "purpose_el": "Ενσωμάτωση ασφάλειας σε όλο τον κύκλο ζωής ανάπτυξης λογισμικού."
         },
         {
           "code": "8.26",
@@ -793,7 +969,9 @@
           "is_new_2022": false,
           "description": "The organization shall identify and document security requirements for applications.",
           "detailed_description": "Application security requirements should be identified during the requirements phase of development or procurement. Requirements should address authentication, authorization, input validation, session management, cryptography, error handling, logging, and data protection. Security requirements should be derived from applicable regulations, organizational policies, and risk assessments. Acceptance testing should validate that security requirements are met.",
-          "guidance": "Document security requirements in specifications. Use security requirement checklists. Validate requirements against OWASP ASVS. Include security in acceptance criteria. Review requirements with security team."
+          "guidance": "Document security requirements in specifications. Use security requirement checklists. Validate requirements against OWASP ASVS. Include security in acceptance criteria. Review requirements with security team.",
+          "title_el": "Απαιτήσεις ασφάλειας εφαρμογών",
+          "purpose_el": "Καθορισμός και εφαρμογή απαιτήσεων ασφάλειας σε εφαρμογές."
         },
         {
           "code": "8.27",
@@ -802,7 +980,9 @@
           "is_new_2022": false,
           "description": "The organization shall apply secure system architecture and engineering principles to information systems.",
           "detailed_description": "Secure architecture principles should be applied throughout the design of information systems. Principles include defense in depth, least privilege, secure defaults, fail secure, economy of mechanism, and complete mediation. Architecture reviews should assess security design and identify potential vulnerabilities. Reference architectures and design patterns should incorporate security by default.",
-          "guidance": "Apply security architecture principles (defense in depth, least privilege). Conduct architecture security reviews. Use reference security architectures. Document security design decisions. Review architecture against threats."
+          "guidance": "Apply security architecture principles (defense in depth, least privilege). Conduct architecture security reviews. Use reference security architectures. Document security design decisions. Review architecture against threats.",
+          "title_el": "Ασφαλής αρχιτεκτονική και μηχανική συστημάτων",
+          "purpose_el": "Ενσωμάτωση αρχών ασφαλούς αρχιτεκτονικής στο σχεδιασμό συστημάτων."
         },
         {
           "code": "8.28",
@@ -811,7 +991,9 @@
           "is_new_2022": true,
           "description": "The organization shall implement secure coding practices throughout the development process.",
           "detailed_description": "Secure coding practices prevent common vulnerabilities such as injection flaws, cross-site scripting, buffer overflows, and insecure deserialization. Coding standards should reference recognized frameworks such as OWASP Top 10, CWE Top 25, and language-specific secure coding guidelines. Static analysis tools should be integrated into the development pipeline to automatically detect insecure code. Peer reviews should verify secure coding compliance.",
-          "guidance": "Adopt OWASP secure coding guidelines. Integrate SAST in CI/CD pipeline. Conduct peer code reviews with security focus. Train developers on secure coding annually. Maintain coding standards documentation."
+          "guidance": "Adopt OWASP secure coding guidelines. Integrate SAST in CI/CD pipeline. Conduct peer code reviews with security focus. Train developers on secure coding annually. Maintain coding standards documentation.",
+          "title_el": "Ασφαλής κωδικοποίηση",
+          "purpose_el": "Εφαρμογή αρχών ασφαλούς κωδικοποίησης για μείωση τρωτών σημείων."
         },
         {
           "code": "8.29",
@@ -820,7 +1002,9 @@
           "is_new_2022": false,
           "description": "The organization shall conduct security testing during development and acceptance phases.",
           "detailed_description": "Security testing ensures that applications meet security requirements before deployment. Testing should include static application security testing (SAST), dynamic application security testing (DAST), software composition analysis (SCA) for third-party components, and manual penetration testing for high-risk applications. Testing should occur at multiple points in the development lifecycle, not just at the end. Vulnerabilities should be tracked and remediated before go-live.",
-          "guidance": "Perform SAST/DAST in CI/CD pipeline. Run SCA for open-source components. Conduct penetration testing for critical apps. Track vulnerabilities to remediation. Test security controls in staging environment."
+          "guidance": "Perform SAST/DAST in CI/CD pipeline. Run SCA for open-source components. Conduct penetration testing for critical apps. Track vulnerabilities to remediation. Test security controls in staging environment.",
+          "title_el": "Δοκιμές ασφάλειας στην ανάπτυξη και αποδοχή",
+          "purpose_el": "Διασφάλιση δοκιμών ασφάλειας κατά την ανάπτυξη και αποδοχή συστημάτων."
         },
         {
           "code": "8.30",
@@ -829,7 +1013,9 @@
           "is_new_2022": false,
           "description": "The organization shall manage security of outsourced development activities.",
           "detailed_description": "Outsourced development introduces additional risks including intellectual property protection, code quality, and backdoors. The organization should specify security requirements in outsourcing contracts, require secure development practices, and conduct security testing of delivered software. Source code escrow may be appropriate for critical systems. Acceptance testing should include security verification.",
-          "guidance": "Include security requirements in outsourcing contracts. Require security testing by the developer. Conduct independent security reviews. Use source code escrow for critical systems. Verify security in acceptance testing."
+          "guidance": "Include security requirements in outsourcing contracts. Require security testing by the developer. Conduct independent security reviews. Use source code escrow for critical systems. Verify security in acceptance testing.",
+          "title_el": "Ανάθεση ανάπτυξης σε εξωτερικούς συνεργάτες",
+          "purpose_el": "Διασφάλιση ασφάλειας σε αναθέσεις ανάπτυξης σε εξωτερικούς συνεργάτες."
         },
         {
           "code": "8.31",
@@ -838,7 +1024,9 @@
           "is_new_2022": false,
           "description": "The organization shall separate development, test and production environments.",
           "detailed_description": "Separation of environments prevents unauthorized changes, protects production data, and supports quality assurance. Development, test, and production environments should be physically or logically separated with strict controls on promotions between environments. Production data should not be used in non-production environments without appropriate sanitization. Access to each environment should be restricted based on role.",
-          "guidance": "Use separate networks or VLANs for each environment. Control environment promotion processes. Sanitize data used in non-production. Restrict production access to operations staff. Audit environment separation regularly."
+          "guidance": "Use separate networks or VLANs for each environment. Control environment promotion processes. Sanitize data used in non-production. Restrict production access to operations staff. Audit environment separation regularly.",
+          "title_el": "Διαχωρισμός περιβαλλόντων ανάπτυξης, δοκιμών και παραγωγής",
+          "purpose_el": "Προστασία περιβάλλοντος παραγωγής μέσω διαχωρισμού από περιβάλλοντα ανάπτυξης και δοκιμών."
         },
         {
           "code": "8.32",
@@ -847,7 +1035,9 @@
           "is_new_2022": false,
           "description": "The organization shall manage changes to information processing facilities and systems in a controlled manner.",
           "detailed_description": "Change management ensures that changes to systems and facilities are assessed, approved, tested, implemented, and reviewed in a controlled manner. Changes should be classified by risk level, with higher-risk changes requiring more rigorous review. Emergency changes should follow an expedited process but still require post-change review. A change advisory board (CAB) should review significant changes. All changes should be documented in a change log.",
-          "guidance": "Implement a formal change management process. Establish a Change Advisory Board (CAB). Classify changes by risk and impact. Test changes before production deployment. Document and review all changes."
+          "guidance": "Implement a formal change management process. Establish a Change Advisory Board (CAB). Classify changes by risk and impact. Test changes before production deployment. Document and review all changes.",
+          "title_el": "Διαχείριση αλλαγών",
+          "purpose_el": "Διασφάλιση ελέγχου αλλαγών για μείωση επιπτώσεων στην ασφάλεια."
         },
         {
           "code": "8.33",
@@ -856,7 +1046,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect test data appropriately.",
           "detailed_description": "Test data should be carefully managed to avoid using production data containing sensitive or personal information in test environments. Where production data is needed for realistic testing, it should be sanitized, anonymized, or masked. Test data sets should be controlled, documented, and securely deleted when no longer needed. Access to test data should be restricted to authorized testing personnel.",
-          "guidance": "Use synthetic or anonymized data for testing. Mask production data used in test environments. Protect test data with access controls. Delete test data after testing completes. Document test data sources and handling."
+          "guidance": "Use synthetic or anonymized data for testing. Mask production data used in test environments. Protect test data with access controls. Delete test data after testing completes. Document test data sources and handling.",
+          "title_el": "Πληροφορίες δοκιμών",
+          "purpose_el": "Προστασία δεδομένων δοκιμών μέσω κατάλληλων ελέγχων."
         },
         {
           "code": "8.34",
@@ -865,7 +1057,9 @@
           "is_new_2022": false,
           "description": "The organization shall protect information systems during audit testing.",
           "detailed_description": "Audit testing (including penetration testing and vulnerability assessments) can disrupt systems or expose sensitive information if not properly managed. Testing should be planned, scoped, and authorized in advance. System owners should be notified, and a test plan should define what systems are in scope, what tests will be performed, and what safeguards are in place. Testing should be conducted during agreed windows, and system backups should be verified before testing.",
-          "guidance": "Define audit testing scope and authorization. Notify system owners before testing. Use test accounts and systems where possible. Monitor systems during testing. Document testing results and remediation."
+          "guidance": "Define audit testing scope and authorization. Notify system owners before testing. Use test accounts and systems where possible. Monitor systems during testing. Document testing results and remediation.",
+          "title_el": "Προστασία συστημάτων ελέγχου και παρακολούθησης",
+          "purpose_el": "Προστασία συστημάτων ελέγχου και παρακολούθησης από κυβερνοεπιθέσεις."
         }
       ]
     }

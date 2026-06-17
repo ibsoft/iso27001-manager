@@ -1404,6 +1404,10 @@ msgstr "Λογισμικό"
 msgid "Data"
 msgstr "Δεδομένα"
 
+#: app/templates/policies/list.html:38
+msgid "Forms"
+msgstr "Φόρμες"
+
 #: app/templates/assets/list.html:26 app/templates/policies/list.html:39
 msgid "Other"
 msgstr "Άλλο"
@@ -3754,7 +3758,7 @@ msgstr "Ασφάλεια Δικτύου & Πληροφοριών"
 #: app/templates/nis2/compliance_list.html:21
 #: app/templates/policies/list.html:32
 msgid "Access Control"
-msgstr "Έλεγχοι Παραρτήματος Α"
+msgstr "Έλεγχος Πρόσβασης"
 
 #: app/templates/nis2/compliance_list.html:22
 msgid "Cryptography"
@@ -3763,7 +3767,7 @@ msgstr "Κρυπτογραφία"
 #: app/templates/nis2/compliance_list.html:23
 #: app/templates/policies/list.html:37
 msgid "HR Security"
-msgstr "Ανά Σοβαρότητα"
+msgstr "Ασφάλεια Ανθρώπινου Δυναμικού"
 
 #: app/templates/nis2/compliance_list.html:24
 msgid "Multi-Factor Authentication"
@@ -4431,15 +4435,15 @@ msgstr "Πολιτικές & Έγγραφα"
 
 #: app/templates/policies/list.html:30
 msgid "All Categories"
-msgstr "Όλες οι Σοβαρότητες"
+msgstr "Όλες οι Κατηγορίες"
 
 #: app/templates/policies/list.html:31
 msgid "Information Security"
-msgstr "Σύστημα Διαχείρισης Ασφάλειας Πληροφοριών"
+msgstr "Ασφάλεια Πληροφοριών"
 
 #: app/templates/policies/list.html:33
 msgid "Incident Response"
-msgstr "Τάσεις Περιστατικών"
+msgstr "Αντιμετώπιση Περιστατικών"
 
 #: app/templates/policies/list.html:35
 msgid "Data Protection"
@@ -4451,11 +4455,11 @@ msgstr "Φυσική Ασφάλεια"
 
 #: app/templates/policies/list.html:38
 msgid "Supplier Security"
-msgstr "Όνομα Προμηθευτή"
+msgstr "Ασφάλεια Προμηθευτών"
 
 #: app/templates/policies/list.html:43
 msgid "Search by title, description or filename..."
-msgstr "Σύντομη περιγραφή αλλαγών..."
+msgstr "Αναζήτηση με τίτλο, περιγραφή ή όνομα αρχείου..."
 
 #: app/templates/policies/list.html:72 app/templates/policies/view.html:60
 msgid "Document"
