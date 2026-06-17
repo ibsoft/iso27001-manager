@@ -138,6 +138,9 @@ do_update() {
   export FLASK_APP=wsgi.py
   flask db upgrade 2>/dev/null || warn "Flask db upgrade skipped (may not need it)"
 
+  log "Ensuring upload directories exist…"
+  mkdir -p "$INSTALL_DIR/logs" "$INSTALL_DIR/instance" "$INSTALL_DIR/app/static/uploads/avatars"
+
   log "Recompiling translations…"
   pybabel compile -d app/translations 2>/dev/null || true
 

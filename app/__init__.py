@@ -190,6 +190,9 @@ def create_app(config_name=None):
     if not os.path.exists(app.config["LOG_DIR"]):
         os.makedirs(app.config["LOG_DIR"])
 
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+    os.makedirs(os.path.join(app.config["UPLOAD_FOLDER"], "avatars"), exist_ok=True)
+
     log_file = os.path.join(app.config["LOG_DIR"], "app.log")
     handler = RotatingFileHandler(log_file, maxBytes=10 * 1024 * 1024, backupCount=10)
     handler.setLevel(getattr(logging, app.config.get("LOG_LEVEL", "INFO")))
