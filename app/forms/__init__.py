@@ -124,8 +124,8 @@ class ControlForm(BaseForm):
     domain_id = SelectField("Domain", coerce=int, validators=[DataRequired()])
     implementation_status = SelectField(
         "Implementation Status",
-        choices=[("not_started", "Not Started"), ("in_progress", "In Progress"),
-                 ("implemented", "Implemented"), ("not_applicable", "Not Applicable")],
+        choices=[("not_started", _l("Not Started")), ("in_progress", _l("In Progress")),
+                 ("implemented", _l("Implemented")), ("not_applicable", _l("Not Applicable"))],
         default="not_started",
     )
     owner_id = SelectField("Owner", coerce=int, validators=[Optional()])

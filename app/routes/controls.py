@@ -49,8 +49,10 @@ def list_controls():
 @login_required
 @permission_required("control_create")
 def new_control():
+    from flask import session
     form = ControlForm()
-    form.domain_id.choices = [(d.id, f"{d.code}. {d.name}") for d in Domain.query.order_by(Domain.code).all()]
+    lang = session.get("lang", "en")
+    form.domain_id.choices = [(d.id, f"{d.code}. {d.localized_name(lang)}") for d in Domain.query.order_by(Domain.code).all()]
     form.owner_id.choices = [(0, _("Unassigned"))] + [(u.id, f"{u.first_name} {u.last_name}") for u in User.query.filter_by(is_active=True).all()]
 
     if form.validate_on_submit():
@@ -78,10 +80,19 @@ def view_control(control_id):
 @login_required
 @permission_required("control_edit")
 def edit_control(control_id):
+    from flask import session
     control = Control.query.get_or_404(control_id)
     form = ControlForm(obj=control)
-    form.domain_id.choices = [(d.id, f"{d.code}. {d.name}") for d in Domain.query.order_by(Domain.code).all()]
+    lang = session.get("lang", "en")
+    form.domain_id.choices = [(d.id, f"{d.code}. {d.localized_name(lang)}") for d in Domain.query.order_by(Domain.code).all()]
     form.owner_id.choices = [(0, _("Unassigned"))] + [(u.id, f"{u.first_name} {u.last_name}") for u in User.query.filter_by(is_active=True).all()]
+
+    if lang == "el" and not form.validate_on_submit():
+        form.title.data = control.localized_title("el")
+        form.description.data = control.localized_description("el")
+        form.detailed_description.data = control.localized_detailed_description("el")
+        form.purpose.data = control.localized_purpose("el")
+        form.guidance.data = control.localized_guidance("el")
 
     if form.validate_on_submit():
         form.populate_obj(control)
