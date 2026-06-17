@@ -75,7 +75,8 @@ def seed_database():
 
         for dd in annex_data["domains"]:
             domain = Domain(code=dd["code"], name=dd["name"], description=dd["description"],
-                            sort_order=dd["sort_order"])
+                            sort_order=dd["sort_order"],
+                            name_el=dd.get("name_el"), description_el=dd.get("description_el"))
             db.session.add(domain)
             db.session.flush()
             for cd in dd["controls"]:
@@ -89,6 +90,11 @@ def seed_database():
                     domain_id=domain.id,
                     sort_order=int(cd["code"].split(".")[1]),
                     is_new_2022=cd.get("is_new_2022", False),
+                    title_el=cd.get("title_el"),
+                    description_el=cd.get("description_el"),
+                    detailed_description_el=cd.get("detailed_description_el"),
+                    purpose_el=cd.get("purpose_el"),
+                    guidance_el=cd.get("guidance_el"),
                 )
                 db.session.add(control)
 
