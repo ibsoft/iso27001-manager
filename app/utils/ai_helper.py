@@ -1,6 +1,8 @@
 import os
 import re
 import json
+from datetime import datetime, date, timedelta
+from decimal import Decimal
 from flask import current_app
 from sqlalchemy import inspect, text
 from app.extensions import db
@@ -45,6 +47,16 @@ def _sanitize_sql(sql):
     return stripped
 
 
+def _serialize(val):
+    if isinstance(val, (datetime, date)):
+        return val.isoformat()
+    if isinstance(val, Decimal):
+        return float(val)
+    if isinstance(val, timedelta):
+        return str(val)
+    return val
+
+
 def query_db(sql):
     try:
         sql = _sanitize_sql(sql)
@@ -53,7 +65,7 @@ def query_db(sql):
     try:
         with db.engine.connect() as conn:
             result = conn.execute(text(sql))
-            rows = [dict(r._mapping) for r in result]
+            rows = [{k: _serialize(v) for k, v in r._mapping.items()} for r in result]
             return {"rows": rows, "count": len(rows)}
     except Exception as e:
         return {"error": str(e)}
@@ -83,7 +95,7 @@ SQL_TOOL = {
     "type": "function",
     "function": {
         "name": "query_db",
-        "description": "Execute a SELECT SQL query on the database to retrieve real-time data. Use this to answer questions about controls, risks, incidents, assets, policies, audits, training, etc.",
+        "description": "Execute a SELECT SQL query on the database to retrieve real-time data about controls, risks, incidents, assets, policies, filled forms, training, etc.",
         "parameters": {
             "type": "object",
             "properties": {
@@ -100,6 +112,10 @@ SQL_TOOL = {
 SYSTEM_PROMPT = """You are an expert ISMS (Information Security Management System) assistant specialized in ISO 27001:2022, NIS2 Directive, and GDPR compliance. You help manage and complete the corporate ISMS.
 
 You have FULL READ-ONLY access to the company's ISMS database. You MUST use the `query_db` tool to retrieve real data whenever the user asks about the current state of the system (counts, lists, statuses, etc.). Never tell the user to run their own queries — you run them.
+
+When listing documents (policies, filled forms), include a download link with each item using markdown format:
+- Policies: [filename](/policies/<id>/download)
+- Filled forms: [filename](/filled-forms/<form_id>/download)
 
 Rules:
 1. Always answer in the same language the user wrote in (Greek or English).
