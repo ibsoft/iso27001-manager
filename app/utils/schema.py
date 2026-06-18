@@ -35,3 +35,49 @@ def ensure_supplier_risk_columns():
         if name not in existing:
             db.session.execute(text(f"ALTER TABLE supplier ADD COLUMN {name} {sql_type}"))
     db.session.commit()
+
+
+def update_control_guidance():
+    """Update control guidance fields from seed JSON on every startup."""
+    import json
+    import os
+    from app.models.control import Control
+
+    seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+    json_path = os.path.join(seed_dir, "annex_a_controls.json")
+    if not os.path.exists(json_path):
+        return
+
+    with open(json_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    lookup = {}
+    for domain in data["domains"]:
+        for ctrl in domain["controls"]:
+            lookup[ctrl["code"]] = ctrl
+
+    updated = 0
+    for control in Control.query.all():
+        jc = lookup.get(control.code)
+        if not jc:
+            continue
+        changed = False
+        for field in ("guidance", "guidance_el"):
+            val = jc.get(field)
+            if val and val != getattr(control, field):
+                setattr(control, field, val)
+                changed = True
+        if changed:
+            updated += 1
+
+    db.session.commit()
+
+
+def ensure_control_columns():
+    """Add guidance_el column to control table if missing (PostgreSQL migration)."""
+    inspector = inspect(db.engine)
+    if inspector.has_table("control"):
+        existing = {c["name"] for c in inspector.get_columns("control")}
+        if "guidance_el" not in existing:
+            db.session.execute(text("ALTER TABLE control ADD COLUMN guidance_el TEXT"))
+            db.session.commit()

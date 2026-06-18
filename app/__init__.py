@@ -205,10 +205,16 @@ def create_app(config_name=None):
     with app.app_context():
         from app.extensions import db as _db
         _db.create_all()
-        from app.utils.schema import ensure_supplier_risk_columns
+        from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns
         ensure_supplier_risk_columns()
+        ensure_control_columns()
         from app.utils.seed import seed_database
         seed_database()
+        try:
+            from app.utils.schema import update_control_guidance
+            update_control_guidance()
+        except Exception:
+            app.logger.warning("Guidance update failed")
         try:
             import subprocess
             subprocess.run(["pybabel", "compile", "-d",
@@ -217,4 +223,42 @@ def create_app(config_name=None):
         except Exception:
             app.logger.warning("Translation compilation failed")
 
+    register_commands(app)
+
     return app
+
+
+def register_commands(app):
+    import click
+    import json
+    import os
+    from app.models.control import Control
+
+    @app.cli.command("update-guidance")
+    def update_guidance():
+        """Update control guidance from the seed JSON file."""
+        seed_dir = os.path.join(os.path.dirname(__file__), "..", "seed_data")
+        json_path = os.path.join(seed_dir, "annex_a_controls.json")
+        if not os.path.exists(json_path):
+            click.echo("JSON file not found.")
+            return
+        with open(json_path, encoding="utf-8") as f:
+            data = json.load(f)
+        lookup = {}
+        for domain in data["domains"]:
+            for ctrl in domain["controls"]:
+                lookup[ctrl["code"]] = ctrl
+        updated = 0
+        for control in Control.query.all():
+            jc = lookup.get(control.code)
+            if jc:
+                changed = False
+                for field in ("guidance", "guidance_el"):
+                    if jc.get(field) and jc[field] != getattr(control, field):
+                        setattr(control, field, jc[field])
+                        changed = True
+                if changed:
+                    updated += 1
+        from app.extensions import db
+        db.session.commit()
+        click.echo(f"Updated {updated} controls.")
