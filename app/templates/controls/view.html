@@ -29,7 +29,7 @@
           <tr><td class="text-muted">{{ _('Description') }}</td><td>{{ control.localized_description(current_lang) or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Detailed Description') }}</td><td>{{ control.localized_detailed_description(current_lang) or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Purpose') }}</td><td>{{ control.localized_purpose(current_lang) or '—' }}</td></tr>
-          <tr><td class="text-muted">{{ _('Guidance') }}</td><td>{{ control.localized_guidance(current_lang) or '—' }}</td></tr>
+          <tr><td class="text-muted">{{ _('Guidance') }}</td><td style="white-space:pre-wrap;">{{ control.localized_guidance(current_lang) or '—' }}</td></tr>
           <tr><td class="text-muted">{{ _('Implementation Status') }}</td><td><span class="{{ control.status_badge_class }} fs-6">{{ control.implementation_status|replace('_', ' ')|title }}</span></td></tr>
           <tr><td class="text-muted">{{ _('Owner') }}</td><td>{{ control.owner.first_name ~ ' ' ~ control.owner.last_name if control.owner else _('Unassigned') }}</td></tr>
           <tr><td class="text-muted">{{ _('Target Date') }}</td><td>{{ control.target_date.strftime('%Y-%m-%d') if control.target_date else _('Not set') }}</td></tr>
