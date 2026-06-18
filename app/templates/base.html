@@ -528,6 +528,7 @@
             <li class="nav-item"><a href="{{ url_for('admin.list_users') }}" class="nav-link {{ 'active' if request.endpoint and 'admin' in request.endpoint and 'admin.list_users' in request.endpoint else '' }}"><i class="fas fa-users-cog"></i><p>{{ _('User Management') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('reports.view_audit_log') }}" class="nav-link"><i class="fas fa-history"></i><p>{{ _('Audit Trail') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('admin.list_backups') }}" class="nav-link"><i class="fas fa-database"></i><p>{{ _('Backup & Restore') }}</p></a></li>
+            <li class="nav-item"><a href="{{ url_for('ai.ai_settings') }}" class="nav-link"><i class="fas fa-robot"></i><p>{{ _('AI Settings') }}</p></a></li>
           </ul>
         </li>
         {% endif %}
@@ -827,5 +828,144 @@
     }
   })();
 </script>
+
+{% if current_user.is_authenticated and ai_enabled %}
+<div id="aiChatBtn" title="{{ _('AI Assistant') }}" style="position:fixed;bottom:24px;right:24px;z-index:99998;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(102,126,234,0.4);transition:transform 0.15s;font-size:24px;" onclick="toggleAIChat()">
+  <i class="fas fa-robot"></i>
+</div>
+
+<div id="aiChatPanel" style="position:fixed;bottom:92px;right:24px;z-index:99998;width:400px;max-height:600px;background:var(--card-bg);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.15);display:none;flex-direction:column;overflow:hidden;transition:all 0.2s;border:1px solid var(--header-border);">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;">
+    <span style="font-weight:600;font-size:14px;"><i class="fas fa-robot me-2"></i>{{ _('ISMS AI Assistant') }}</span>
+    <div>
+      <span id="aiFullscreenBtn" style="cursor:pointer;margin-right:10px;" onclick="toggleAIFullscreen()" title="{{ _('Full screen') }}"><i class="fas fa-expand"></i></span>
+      <span style="cursor:pointer;" onclick="toggleAIChat()" title="{{ _('Close') }}"><i class="fas fa-times"></i></span>
+    </div>
+  </div>
+  <div id="aiChatMessages" style="flex:1;overflow-y:auto;padding:14px 18px;min-height:200px;max-height:400px;background:var(--body-bg);"></div>
+  <div style="padding:10px 14px;border-top:1px solid var(--header-border);background:var(--card-bg);">
+    <form id="aiChatForm" onsubmit="return sendAIChat(event)" style="display:flex;gap:8px;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="text" id="aiChatInput" placeholder="{{ _('Ask about ISMS, compliance, risks...') }}" style="flex:1;padding:10px 14px;border:1px solid var(--input-border);border-radius:24px;outline:none;font-size:13px;background:var(--input-bg);color:var(--text-primary);">
+      <button type="submit" style="width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fas fa-paper-plane" style="font-size:14px;"></i></button>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<style>
+  #aiChatPanel.fullscreen { width:100% !important; height:100% !important; max-height:100% !important; bottom:0 !important; right:0 !important; border-radius:0 !important; }
+  #aiChatPanel.fullscreen #aiChatMessages { max-height:none !important; }
+  #aiChatMessages .msg { margin-bottom:12px; max-width:85%; padding:10px 14px; border-radius:14px; font-size:13px; line-height:1.5; word-wrap:break-word; }
+  #aiChatMessages .msg.user { margin-left:auto; background:#667eea; color:#fff; border-bottom-right-radius:4px; }
+  #aiChatMessages .msg.assistant { margin-right:auto; background:var(--table-hover); color:var(--text-primary); border-bottom-left-radius:4px; }
+  #aiChatMessages .msg.assistant p { margin:0 0 6px; }
+  #aiChatMessages .msg.assistant p:last-child { margin-bottom:0; }
+  #aiChatMessages .msg.assistant ul, #aiChatMessages .msg.assistant ol { margin:4px 0; padding-left:18px; }
+  #aiChatMessages .msg.error { background:#fee2e2; color:#dc2626; margin-right:auto; }
+  #aiChatMessages .typing { display:flex; gap:4px; padding:10px 14px; margin-bottom:12px; max-width:60px; border-radius:14px; background:var(--table-hover); border-bottom-left-radius:4px; }
+  #aiChatMessages .typing span { width:6px; height:6px; border-radius:50%; background:var(--text-muted); animation:typing 1.4s infinite; }
+  #aiChatMessages .typing span:nth-child(2) { animation-delay:0.2s; }
+  #aiChatMessages .typing span:nth-child(3) { animation-delay:0.4s; }
+  @keyframes typing { 0%,60%,100% { opacity:0.3; } 30% { opacity:1; } }
+  #aiChatMessages .usage { font-size:10px; color:var(--text-muted); text-align:right; margin-top:-6px; margin-bottom:10px; }
+  #aiChatMessages table { width:100%; border-collapse:collapse; margin:6px 0; font-size:12px; }
+  #aiChatMessages table td { border:1px solid var(--header-border); padding:4px 8px; }
+</style>
+
+<script>
+var aiOpen = false;
+function toggleAIChat() {
+  aiOpen = !aiOpen;
+  document.getElementById('aiChatPanel').style.display = aiOpen ? 'flex' : 'none';
+  if (aiOpen) document.getElementById('aiChatInput').focus();
+}
+function toggleAIFullscreen() {
+  var p = document.getElementById('aiChatPanel');
+  p.classList.toggle('fullscreen');
+  var btn = document.getElementById('aiFullscreenBtn');
+  btn.innerHTML = p.classList.contains('fullscreen') ? '<i class="fas fa-compress"></i>' : '<i class="fas fa-expand"></i>';
+}
+function addMsg(role, text) {
+  var c = document.getElementById('aiChatMessages');
+  var d = document.createElement('div');
+  d.className = 'msg ' + role;
+  d.innerHTML = text;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+function addTyping() {
+  var c = document.getElementById('aiChatMessages');
+  var d = document.createElement('div');
+  d.className = 'typing';
+  d.id = 'aiTyping';
+  d.innerHTML = '<span></span><span></span><span></span>';
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+function removeTyping() {
+  var t = document.getElementById('aiTyping');
+  if (t) t.remove();
+}
+function sendAIChat(e) {
+  e.preventDefault();
+  var input = document.getElementById('aiChatInput');
+  var q = input.value.trim();
+  if (!q) return false;
+  addMsg('user', escHtml(q));
+  input.value = '';
+  addTyping();
+  fetch('/chat', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'X-CSRFToken': document.querySelector('#aiChatForm [name=csrf_token]').value},
+    body: JSON.stringify({question: q, history: getChatHistory()})
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    removeTyping();
+    if (d.error) { addMsg('error', escHtml(d.error)); return; }
+    addMsg('assistant', mdToHtml(d.answer));
+    if (d.usage) addMsg('usage', 'Tokens: ' + d.usage.total_tokens);
+  }).catch(function() {
+    removeTyping();
+    addMsg('error', '{{ _("Connection error. Please try again.")|e }}');
+  });
+  return false;
+}
+function getChatHistory() {
+  var msgs = document.querySelectorAll('#aiChatMessages .msg');
+  var hist = [];
+  msgs.forEach(function(m) {
+    if (!m.classList.contains('usage') && !m.classList.contains('error')) {
+      var role = m.classList.contains('user') ? 'user' : 'assistant';
+      hist.push({role: role, content: m.textContent});
+    }
+  });
+  return hist.slice(-7);
+}
+function escHtml(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+function mdToHtml(s) {
+  var h = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  h = h.replace(/\|\|/g, '|');
+  h = h.replace(/^\|(.+)\|$/gm, function(m) {
+    var cells = m.slice(1,-1).split('|').map(function(c){return c.trim()});
+    return '<tr><td>' + cells.join('</td><td>') + '</td></tr>';
+  });
+  h = h.replace(/<tr><td>[- ]+<\/td><\/tr>/g, '');
+  h = h.replace(/(<tr>.*<\/tr>\n?)+/g, '<table>$&</table>');
+  h = h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  h = h.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  h = h.replace(/`([^`]+)`/g,'<code>$1</code>');
+  h = h.replace(/^- (.+)/gm,'<li>$1</li>');
+  h = h.replace(/(<li>.*<\/li>\n?)+/g,'<ul>$&</ul>');
+  h = h.replace(/\n{2,}/g,'</p><p>');
+  h = h.replace(/\n/g,'<br>');
+  h = h.replace(/^(.+)$/,'<p>$1</p>').replace(/<p><br><\/p>/g,'');
+  return h;
+}
+</script>
+
 </body>
 </html>
