@@ -71,7 +71,7 @@
             <td>
               <a href="{{ url_for('nis2.edit_supply_chain', assessment_id=a.id) }}" class="btn btn-sm btn-outline-primary" title="{{ _('Edit') }}"><i class="fas fa-edit"></i></a>
               <form method="POST" action="{{ url_for('nis2.delete_supply_chain', assessment_id=a.id) }}" class="d-inline" data-confirm="{{ _('Delete this assessment?') }}">
-                <input type="hidden" name="csrf_token" value="<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
               </form>
             </td>

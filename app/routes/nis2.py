@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db
@@ -17,6 +17,8 @@ from app.forms import (
 from app.utils.decorators import permission_required, admin_required
 from app.utils.pagination import paginate
 from datetime import datetime, date
+import json
+import os
 
 nis2_bp = Blueprint("nis2", __name__)
 
@@ -341,12 +343,14 @@ def new_compliance():
         form.populate_obj(check)
         if form.responsible_person_id.data == 0:
             check.responsible_person_id = None
+        _populate_nis2_guidance(check)
         db.session.add(check)
         db.session.commit()
         _log_audit(f"Created compliance check: {check.measure_display}", "Nis2ComplianceCheck")
         flash(_("Compliance check created."), "success")
         return redirect(url_for("nis2.view_compliance", check_id=check.id))
-    return render_template("nis2/compliance_form.html", form=form, title=_("New Compliance Check"))
+    guidance_localized = _get_guidance_for_measure(form.measure.data or "risk_analysis")
+    return render_template("nis2/compliance_form.html", form=form, title=_("New Compliance Check"), guidance_localized=guidance_localized)
 
 
 @nis2_bp.route("/compliance/<int:check_id>")
@@ -367,13 +371,46 @@ def edit_compliance(check_id):
         form.populate_obj(check)
         if form.responsible_person_id.data == 0:
             check.responsible_person_id = None
+        _populate_nis2_guidance(check)
         check.updated_at = datetime.utcnow()
         db.session.commit()
         _log_audit(f"Updated compliance check: {check.measure_display}", "Nis2ComplianceCheck")
         flash(_("Compliance check updated."), "success")
         return redirect(url_for("nis2.view_compliance", check_id=check.id))
     form.responsible_person_id.data = check.responsible_person_id or 0
-    return render_template("nis2/compliance_form.html", form=form, title=_("Edit Compliance Check"), check=check)
+    lang = session.get("lang", "en")
+    guidance_localized = check.localized_guidance(lang)
+    return render_template("nis2/compliance_form.html", form=form, title=_("Edit Compliance Check"), check=check, guidance_localized=guidance_localized)
+
+
+def _get_guidance_for_measure(measure_key):
+    """Return localized guidance text for a given measure key based on current language."""
+    json_path = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data", "nis2_controls.json")
+    if not os.path.exists(json_path):
+        return ""
+    with open(json_path, encoding="utf-8") as f:
+        data = json.load(f)
+    for m in data.get("measures", []):
+        if m["measure"] == measure_key:
+            lang = session.get("lang", "en")
+            return m.get("guidance_el" if lang == "el" else "guidance", "") or m.get("guidance", "")
+    return ""
+
+
+def _populate_nis2_guidance(check):
+    """Populate guidance from seed JSON based on the check's measure."""
+    json_path = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data", "nis2_controls.json")
+    if not os.path.exists(json_path):
+        return
+    with open(json_path, encoding="utf-8") as f:
+        data = json.load(f)
+    for m in data.get("measures", []):
+        if m["measure"] == check.measure:
+            if m.get("guidance") and not check.guidance:
+                check.guidance = m["guidance"]
+            if m.get("guidance_el") and not check.guidance_el:
+                check.guidance_el = m["guidance_el"]
+            break
 
 
 @nis2_bp.route("/compliance/<int:check_id>/delete", methods=["POST"])

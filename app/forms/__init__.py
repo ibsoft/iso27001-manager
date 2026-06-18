@@ -864,6 +864,7 @@ class Nis2ComplianceForm(BaseForm):
     implementation_details = TextAreaField(_l("Implementation Details"), validators=[Optional()])
     evidence_notes = TextAreaField(_l("Evidence Notes"), validators=[Optional()])
     control_references = StringField(_l("Control References"), validators=[Optional(), Length(max=256)])
+    guidance = TextAreaField(_l("Guidance"), validators=[Optional()], render_kw={"readonly": True, "rows": 6})
     target_date = DateField(_l("Target Date"), validators=[Optional()])
     completion_date = DateField(_l("Completion Date"), validators=[Optional()])
     review_date = DateField(_l("Review Date"), validators=[Optional()])

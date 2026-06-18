@@ -150,11 +150,16 @@ class Nis2ComplianceCheck(db.Model):
     completion_date = db.Column(db.Date, nullable=True)
     review_date = db.Column(db.Date, nullable=True)
     responsible_person_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+    guidance = db.Column(db.Text, nullable=True)
+    guidance_el = db.Column(db.Text, nullable=True)
     notes = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     responsible_person = db.relationship("User", backref="nis2_compliance_checks", foreign_keys=[responsible_person_id])
+
+    def localized_guidance(self, lang):
+        return self.guidance_el if lang == "el" and self.guidance_el else self.guidance
 
     def __repr__(self):
         return f"<Nis2ComplianceCheck {self.measure}>"

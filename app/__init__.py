@@ -205,9 +205,10 @@ def create_app(config_name=None):
     with app.app_context():
         from app.extensions import db as _db
         _db.create_all()
-        from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns
+        from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns, ensure_nis2_columns
         ensure_supplier_risk_columns()
         ensure_control_columns()
+        ensure_nis2_columns()
         from app.utils.seed import seed_database
         seed_database()
         try:
@@ -215,6 +216,11 @@ def create_app(config_name=None):
             update_control_guidance()
         except Exception:
             app.logger.warning("Guidance update failed")
+        try:
+            from app.utils.schema import update_nis2_guidance
+            update_nis2_guidance()
+        except Exception:
+            app.logger.warning("NIS2 guidance update failed")
         try:
             import subprocess
             subprocess.run(["pybabel", "compile", "-d",
