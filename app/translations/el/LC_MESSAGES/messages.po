@@ -7691,4 +7691,80 @@ msgstr "ώρες"
 msgid "percent"
 msgstr "ποσοστό"
 
+#: app/templates/base.html app/templates/admin/ai_settings.html
+msgid "AI Assistant"
+msgstr "Βοηθός AI"
+
+#: app/templates/base.html
+msgid "ISMS AI Assistant"
+msgstr "Βοηθός AI ISMS"
+
+#: app/templates/base.html
+msgid "Full screen"
+msgstr "Πλήρης οθόνη"
+
+#: app/templates/base.html
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: app/templates/base.html
+msgid "Ask about ISMS, compliance, risks..."
+msgstr "Ρωτήστε για ISMS, συμμόρφωση, κινδύνους..."
+
+#: app/templates/base.html
+msgid "Connection error. Please try again."
+msgstr "Σφάλμα σύνδεσης. Παρακαλώ δοκιμάστε ξανά."
+
+#: app/routes/ai_assistant.py
+msgid "AI assistant is disabled by administrator."
+msgstr "Ο βοηθός AI είναι απενεργοποιημένος από τον διαχειριστή."
+
+#: app/routes/ai_assistant.py
+msgid "AI assistant is not configured. Ask your administrator to set the API key in AI Settings."
+msgstr "Ο βοηθός AI δεν είναι ρυθμισμένος. Ζητήστε από τον διαχειριστή να ορίσει το κλειδί API στις Ρυθμίσεις AI."
+
+#: app/routes/ai_assistant.py
+msgid "AI settings saved successfully."
+msgstr "Οι ρυθμίσεις AI αποθηκεύτηκαν επιτυχώς."
+
+#: app/templates/admin/ai_settings.html
+msgid "AI Assistant Settings"
+msgstr "Ρυθμίσεις Βοηθού AI"
+
+#: app/templates/admin/ai_settings.html
+msgid "OpenAI API Key"
+msgstr "Κλειδί API OpenAI"
+
+#: app/templates/admin/ai_settings.html
+msgid "API key is set. Leave blank to keep current."
+msgstr "Το κλειδί API έχει οριστεί. Αφήστε κενό για να παραμείνει το τρέχον."
+
+#: app/templates/admin/ai_settings.html
+msgid "Enable AI Assistant for all users"
+msgstr "Ενεργοποίηση Βοηθού AI για όλους τους χρήστες"
+
+#: app/templates/admin/ai_settings.html
+msgid "Save Settings"
+msgstr "Αποθήκευση Ρυθμίσεων"
+
+#: app/templates/admin/ai_settings.html
+msgid "About"
+msgstr "Σχετικά"
+
+#: app/templates/admin/ai_settings.html
+msgid "The AI Assistant is an ISMS expert that helps users navigate the system, answer compliance questions, and manage the ISMS."
+msgstr "Ο Βοηθός AI είναι ένας ειδικός ISMS που βοηθά τους χρήστες να περιηγηθούν στο σύστημα, να απαντήσουν σε ερωτήσεις συμμόρφωσης και να διαχειριστούν το ISMS."
+
+#: app/templates/admin/ai_settings.html
+msgid "It uses OpenAI GPT-4o-mini and has access to the database schema to provide context-aware answers."
+msgstr "Χρησιμοποιεί OpenAI GPT-4o-mini και έχει πρόσβαση στο σχήμα της βάσης δεδομένων για να παρέχει απαντήσεις με βάση τα συμφραζόμενα."
+
+#: app/templates/admin/ai_settings.html
+msgid "Your API key is stored securely in the database and used only for AI chat requests."
+msgstr "Το κλειδί API σας αποθηκεύεται με ασφάλεια στη βάση δεδομένων και χρησιμοποιείται μόνο για αιτήματα συνομιλίας AI."
+
+#: app/templates/base.html
+msgid "AI Settings"
+msgstr "Ρυθμίσεις AI"
+
 

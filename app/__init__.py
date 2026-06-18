@@ -113,6 +113,7 @@ def create_app(config_name=None):
     def inject_globals():
         from flask import session as _session
         from app.models.user import SystemSetting
+        from app.utils.ai_helper import is_enabled as _ai_enabled
         _apply_forced_settings()
         return {
             "current_lang": _session.get("lang", "en"),
@@ -121,6 +122,7 @@ def create_app(config_name=None):
                 "forced_language": SystemSetting.get("forced_language"),
                 "forced_timezone": SystemSetting.get("forced_timezone"),
             },
+            "ai_enabled": _ai_enabled(),
         }
 
     @app.errorhandler(403)
@@ -156,6 +158,7 @@ def create_app(config_name=None):
     from app.routes.business_continuity import business_continuity_bp
     from app.routes.filled_forms import filled_forms_bp
     from app.routes.kpi import kpi_bp
+    from app.routes.ai_assistant import ai_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/")
@@ -179,6 +182,7 @@ def create_app(config_name=None):
     app.register_blueprint(business_continuity_bp, url_prefix="/business-continuity")
     app.register_blueprint(filled_forms_bp, url_prefix="/filled-forms")
     app.register_blueprint(kpi_bp, url_prefix="/")
+    app.register_blueprint(ai_bp, url_prefix="/")
 
     @app.route("/health")
     def health():
