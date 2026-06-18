@@ -81,3 +81,48 @@ def ensure_control_columns():
         if "guidance_el" not in existing:
             db.session.execute(text("ALTER TABLE control ADD COLUMN guidance_el TEXT"))
             db.session.commit()
+
+
+def ensure_nis2_columns():
+    """Add guidance/guidance_el columns to nis2_compliance_check if missing."""
+    inspector = inspect(db.engine)
+    if not inspector.has_table("nis2_compliance_check"):
+        return
+    existing = {c["name"] for c in inspector.get_columns("nis2_compliance_check")}
+    for col in ("guidance", "guidance_el"):
+        if col not in existing:
+            db.session.execute(text(f"ALTER TABLE nis2_compliance_check ADD COLUMN {col} TEXT"))
+    db.session.commit()
+
+
+def update_nis2_guidance():
+    """Update NIS2 compliance check guidance fields from seed JSON on every startup."""
+    import json
+    import os
+    from app.models.nis2 import Nis2ComplianceCheck
+
+    seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+    json_path = os.path.join(seed_dir, "nis2_controls.json")
+    if not os.path.exists(json_path):
+        return
+
+    with open(json_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    lookup = {item["measure"]: item for item in data.get("measures", [])}
+
+    updated = 0
+    for check in Nis2ComplianceCheck.query.all():
+        jc = lookup.get(check.measure)
+        if not jc:
+            continue
+        changed = False
+        for field in ("guidance", "guidance_el"):
+            val = jc.get(field)
+            if val and val != getattr(check, field):
+                setattr(check, field, val)
+                changed = True
+        if changed:
+            updated += 1
+
+    db.session.commit()

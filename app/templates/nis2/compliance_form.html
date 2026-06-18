@@ -24,6 +24,10 @@
         <div class="col-12">{{ form.implementation_details.label }}{{ form.implementation_details(class="form-control", rows=3) }}</div>
         <div class="col-12">{{ form.evidence_notes.label }}{{ form.evidence_notes(class="form-control", rows=2) }}</div>
         <div class="col-lg-4">{{ form.control_references.label }}{{ form.control_references(class="form-control") }}</div>
+        <div class="col-12">
+          <label class="form-label">{{ _('Guidance') }}</label>
+          <textarea class="form-control" readonly rows="6">{{ guidance_localized }}</textarea>
+        </div>
         <div class="col-12">{{ form.notes.label }}{{ form.notes(class="form-control", rows=2) }}</div>
       </div>
       <div class="mt-3">

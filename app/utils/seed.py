@@ -146,12 +146,23 @@ def seed_database():
             ("mfa", "Multi-Factor Authentication", "Art 21(2)(i)"),
             ("security_training", "Security Training", "Art 21(2)(j)"),
         ]
+        seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+        nis2_json = os.path.join(seed_dir, "nis2_controls.json")
+        guidance_lookup = {}
+        if os.path.exists(nis2_json):
+            with open(nis2_json, encoding="utf-8") as f:
+                gdata = json.load(f)
+            for m in gdata.get("measures", []):
+                guidance_lookup[m["measure"]] = (m.get("guidance", ""), m.get("guidance_el", ""))
         for measure, display, article in nis2_measures:
+            g = guidance_lookup.get(measure, ("", ""))
             check = Nis2ComplianceCheck(
                 measure=measure,
                 measure_display=display,
                 article_ref=article,
                 status="not_started",
+                guidance=g[0],
+                guidance_el=g[1],
             )
             db.session.add(check)
 

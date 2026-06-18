@@ -13,7 +13,7 @@
     <div>
       <a href="{{ url_for('nis2.edit_compliance', check_id=check.id) }}" class="btn btn-sm btn-primary">{{ _('Edit') }}</a>
       <form method="POST" action="{{ url_for('nis2.delete_compliance', check_id=check.id) }}" class="d-inline" data-confirm="{{ _('Delete this check?') }}">
-        <input type="hidden" name="csrf_token" value="<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button class="btn btn-sm btn-outline-danger">{{ _('Delete') }}</button>
       </form>
     </div>
@@ -40,7 +40,10 @@
         </table>
       </div>
     </div>
-    <h6 class="text-muted mb-3">{{ _('Details') }}</h6>
+    <h6 class="text-muted mb-3">{{ _('Guidance') }}</h6>
+    <div style="white-space:pre-wrap;">{{ check.localized_guidance(current_lang) or '-' }}</div>
+    <hr>
+    <h6 class="text-muted mb-3">{{ _('Implementation Details') }}</h6>
     <table class="table table-borderless">
       <tr><th style="180px;">{{ _('Implementation Details') }}</th><td>{{ check.implementation_details or '-' }}</td></tr>
       <tr><th>{{ _('Evidence Notes') }}</th><td>{{ check.evidence_notes or '-' }}</td></tr>
