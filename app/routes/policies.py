@@ -1,5 +1,6 @@
 import io
 import os
+import re
 import uuid
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, current_app
@@ -270,6 +271,49 @@ def preview_policy_file(policy_id):
         path = os.path.join(current_app.config["UPLOAD_FOLDER"], policy.filename)
         if os.path.exists(path):
             ext = os.path.splitext(policy.original_filename or "")[1].lower()
+            if ext == ".docx":
+                try:
+                    from docx import Document
+                    doc = Document(path)
+                    parts = []
+                    for p in doc.paragraphs:
+                        text = p.text.strip()
+                        if not text:
+                            continue
+                        style = p.style.name.lower() if p.style else ""
+                        if "heading" in style:
+                            level = re.search(r"heading\s*(\d+)", style)
+                            n = int(level.group(1)) if level else 1
+                            n = min(n, 6)
+                            parts.append(f"<h{n}>{_escape_html(text)}</h{n}>")
+                        elif any(r.bold for r in p.runs if r.bold):
+                            parts.append(f"<p><strong>{_escape_html(text)}</strong></p>")
+                        else:
+                            parts.append(f"<p>{_escape_html(text)}</p>")
+                    for table in doc.tables:
+                        parts.append('<table class="table table-bordered">')
+                        for row in table.rows:
+                            parts.append("<tr>" + "".join(f"<td>{_escape_html(c.text.strip())}</td>" for c in row.cells) + "</tr>")
+                        parts.append("</table>")
+                    html = "<html><head><meta charset='utf-8'>" + _preview_styles() + "</head><body class='p-3'>" + "".join(parts) + "</body></html>"
+                    return html, 200, {"Content-Type": "text/html; charset=utf-8"}
+                except Exception as e:
+                    return f"<html><body><p class='text-danger'>Preview error: {_escape_html(str(e))}</p></body></html>", 200, {"Content-Type": "text/html; charset=utf-8"}
+            if ext in (".xlsx", ".xls"):
+                try:
+                    from openpyxl import load_workbook
+                    wb = load_workbook(path, read_only=True, data_only=True)
+                    parts = []
+                    for ws in wb.worksheets:
+                        parts.append(f"<h4>{_escape_html(ws.title)}</h4><table class='table table-bordered table-sm'>")
+                        for row in ws.iter_rows(values_only=True):
+                            cells = "".join(f"<td>{_escape_html(str(c) if c is not None else '')}</td>" for c in row)
+                            parts.append(f"<tr>{cells}</tr>")
+                        parts.append("</table>")
+                    html = "<html><head><meta charset='utf-8'>" + _preview_styles() + "</head><body class='p-3'>" + "".join(parts) + "</body></html>"
+                    return html, 200, {"Content-Type": "text/html; charset=utf-8"}
+                except Exception as e:
+                    return f"<html><body><p class='text-danger'>Preview error: {_escape_html(str(e))}</p></body></html>", 200, {"Content-Type": "text/html; charset=utf-8"}
             mimetypes = {
                 ".pdf": "application/pdf",
                 ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
@@ -283,6 +327,22 @@ def preview_policy_file(policy_id):
         return redirect(url_for("policies.view_policy", policy_id=policy.id))
     flash(_("No file to preview."), "warning")
     return redirect(url_for("policies.view_policy", policy_id=policy.id))
+
+
+def _escape_html(s):
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+def _preview_styles():
+    return """<style>
+body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.6;color:#212529;}
+h1{font-size:1.5rem;margin-top:1rem;}
+h2{font-size:1.3rem;margin-top:0.8rem;}
+h3{font-size:1.15rem;margin-top:0.6rem;}
+table{width:100%;border-collapse:collapse;margin:0.5rem 0;}
+td{border:1px solid #dee2e6;padding:4px 6px;font-size:13px;vertical-align:top;}
+p{margin:0.3rem 0;}
+</style>"""
 
 
 @policies_bp.route("/<int:policy_id>/delete", methods=["POST"])
