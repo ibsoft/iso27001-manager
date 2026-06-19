@@ -5,6 +5,7 @@ from flask_babel import gettext as _
 from app.extensions import db
 from app.models.metric import KpiDefinition, KpiMeasurement
 from app.utils.decorators import role_required
+from app.utils.metrics import recalculate_kpi
 
 kpi_bp = Blueprint("kpi", __name__)
 
@@ -74,4 +75,34 @@ def delete_measurement(measurement_id):
     db.session.delete(m)
     db.session.commit()
     flash(_("Measurement deleted."), "success")
+    return redirect(url_for("kpi.dashboard"))
+
+
+@kpi_bp.route("/kpi/<int:kpi_id>/calculate", methods=["POST"])
+@login_required
+@role_required("admin", "manager")
+def calculate_kpi(kpi_id):
+    kpi = KpiDefinition.query.get_or_404(kpi_id)
+    measurement = recalculate_kpi(kpi)
+    if measurement is None:
+        flash(_("No auto-calculation formula defined for this KPI."), "warning")
+    else:
+        flash(_("Auto-calculated: %(name)s = %(value)s", name=kpi.name, value=measurement.value), "success")
+    return redirect(url_for("kpi.dashboard"))
+
+
+@kpi_bp.route("/kpi/calculate-all", methods=["POST"])
+@login_required
+@role_required("admin", "manager")
+def calculate_all_kpis():
+    kpis = KpiDefinition.query.filter_by(is_active=True).all()
+    count = 0
+    for kpi in kpis:
+        m = recalculate_kpi(kpi)
+        if m is not None:
+            count += 1
+    if count:
+        flash(_("Auto-calculated %(count)d KPIs.", count=count), "success")
+    else:
+        flash(_("No KPIs have auto-calculation formulas defined."), "warning")
     return redirect(url_for("kpi.dashboard"))
