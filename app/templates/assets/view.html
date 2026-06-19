@@ -31,17 +31,19 @@
     <div class="row">
       <div class="col-lg-8">
         <div class="card">
-          <div class="card-header d-flex justify-content-between">
-            <span>{{ _('Asset Details') }}</span>
-            <div>
-              <a href="{{ url_for('assignments.checkout_asset', asset_id=asset.id) }}" class="btn btn-sm btn-success me-1"><i class="fas fa-sign-out-alt me-1"></i>{{ _('Check Out') }}</a>
-              <a href="{{ url_for('assets.edit_asset', asset_id=asset.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
-              {% if current_user.has_role('admin') %}
-              <form method="POST" action="{{ url_for('assets.delete_asset', asset_id=asset.id) }}" class="d-inline" data-confirm="{{ _('Delete this asset?') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
-              </form>
-              {% endif %}
+          <div class="card-header">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <span>{{ _('Asset Details') }}</span>
+              <div class="ms-auto d-flex flex-wrap gap-1">
+                <a href="{{ url_for('assignments.checkout_asset', asset_id=asset.id) }}" class="btn btn-sm btn-success"><i class="fas fa-sign-out-alt"></i><span class="d-none d-sm-inline ms-1">{{ _('Check Out') }}</span></a>
+                <a href="{{ url_for('assets.edit_asset', asset_id=asset.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i><span class="d-none d-sm-inline ms-1">{{ _('Edit') }}</span></a>
+                {% if current_user.has_role('admin') %}
+                <form method="POST" action="{{ url_for('assets.delete_asset', asset_id=asset.id) }}" class="d-inline" data-confirm="{{ _('Delete this asset?') }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i><span class="d-none d-sm-inline ms-1">{{ _('Delete') }}</span></button>
+                </form>
+                {% endif %}
+              </div>
             </div>
           </div>
           <div class="card-body">
@@ -82,9 +84,11 @@
   {# ── Assignments Tab ── #}
   <div class="tab-pane fade" id="assignments">
     <div class="card">
-      <div class="card-header d-flex justify-content-between">
-        <span>{{ _('Assignment History') }}</span>
-        <a href="{{ url_for('assignments.checkout_asset', asset_id=asset.id) }}" class="btn btn-sm btn-success"><i class="fas fa-plus me-1"></i>{{ _('Check Out') }}</a>
+      <div class="card-header">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <span>{{ _('Assignment History') }}</span>
+          <a href="{{ url_for('assignments.checkout_asset', asset_id=asset.id) }}" class="btn btn-sm btn-success ms-auto"><i class="fas fa-plus"></i><span class="d-none d-sm-inline ms-1">{{ _('Check Out') }}</span></a>
+        </div>
       </div>
       <div class="card-body p-0">
         {% set assignments = asset.assignments %}
