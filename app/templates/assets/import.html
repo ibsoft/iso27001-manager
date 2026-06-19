@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Import Assets') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('assets.list_assets') }}">{{ _('Assets') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Import') }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-12">
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Import Assets from File') }}</div>
+      <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3">
+            <label class="form-label">{{ _('Select CSV or Excel file') }}</label>
+            <input type="file" name="file" class="form-control" accept=".csv,.xlsx,.xls" required>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-upload me-1"></i>{{ _('Import') }}</button>
+          <a href="{{ url_for('assets.list_assets') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">{{ _('File Format Instructions') }}</div>
+      <div class="card-body small">
+        <p>{{ _('Upload a CSV or Excel file with the following columns:') }}</p>
+        <ul>
+          <li><strong>{{ _('Name') }}</strong> — {{ _('required') }}</li>
+          <li><strong>{{ _('Serial Number') }}</strong></li>
+          <li><strong>{{ _('Description') }}</strong></li>
+          <li><strong>{{ _('Type') }}</strong> — {{ _('hardware, software, data, personnel, facility, other') }}</li>
+          <li><strong>{{ _('Classification') }}</strong> — {{ _('public, internal, confidential, restricted') }}</li>
+          <li><strong>{{ _('Criticality') }}</strong> — {{ _('low, medium, high, critical') }}</li>
+          <li><strong>{{ _('Status') }}</strong> — {{ _('active, inactive, disposed') }}</li>
+          <li><strong>{{ _('Location') }}</strong></li>
+          <li><strong>{{ _('Owner') }}</strong> — {{ _('full name of existing active user') }}</li>
+          <li><strong>{{ _('Retention Period') }}</strong></li>
+          <li><strong>{{ _('Notes') }}</strong></li>
+        </ul>
+        <p class="mb-0">{{ _('Column headers can be in English or the current language. Only Name is required — all other fields are optional.') }}</p>
+      </div>
+    </div>
+
+    {% if results.created or results.skipped %}
+    <div class="card mt-3">
+      <div class="card-header">{{ _('Import Results') }}</div>
+      <div class="card-body">
+        <p><span class="text-success"><i class="fas fa-check-circle me-1"></i>{{ _('Created') }}: {{ results.created }}</span></p>
+        <p><span class="text-warning"><i class="fas fa-exclamation-triangle me-1"></i>{{ _('Skipped') }}: {{ results.skipped }}</span></p>
+        {% if results.errors %}
+        <h6>{{ _('Errors') }}:</h6>
+        <ul class="text-danger small">
+          {% for err in results.errors %}
+          <li>{{ err }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        <a href="{{ url_for('assets.list_assets') }}" class="btn btn-primary">{{ _('View Assets') }}</a>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
