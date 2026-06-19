@@ -1,382 +1,461 @@
-================================================================================
-ISO 27001 / 2022 ISMS Manager (with NIS2 & GDPR)
-================================================================================
+# ISO 27001 / 2022 ISMS Manager (with NIS2 & GDPR)
 
 A web-based Information Security Management System (ISMS) manager built with
-Flask.  Covers ISO 27001:2022 Annex A controls, NIS2 compliance, GDPR (DPA,
+Flask. Covers ISO 27001:2022 Annex A controls, NIS2 compliance, GDPR (DPA,
 DSAR, RoPA), risk management, asset management, incident management, audit
 management, policy management, business continuity, supplier/third-party risk,
 training & competence, KPI dashboard, AI assistant, and AD/LDAP authentication.
 
+---
 
-Table of Contents
---------------------------------------------------------------------------------
-1.  Requirements
-2.  Quick Start (SQLite – Development)
-3.  Production Deployment (PostgreSQL)
-4.  Environment Variables
-5.  Database Migrations
-6.  Seed Data
-7.  Translations
-8.  AD / LDAP Authentication
-9.  SSO Configuration (Placeholder)
-10. AI Assistant
-11. Backup & Restore
-12. Directory Structure
-13. Troubleshooting
+## Table of Contents
 
+1. [Requirements](#1-requirements)
+2. [Quick Start (SQLite – Development)](#2-quick-start-sqlite--development)
+3. [Production Deployment (PostgreSQL)](#3-production-deployment-postgresql)
+4. [Production Setup Script](#4-production-setup-script)
+5. [Environment Variables](#5-environment-variables)
+6. [Database Migrations](#6-database-migrations)
+7. [Seed Data](#7-seed-data)
+8. [Translations](#8-translations)
+9. [AD / LDAP Authentication](#9-ad--ldap-authentication)
+10. [SSO Configuration (Placeholder)](#10-sso-configuration-placeholder)
+11. [AI Assistant](#11-ai-assistant)
+12. [Backup & Restore](#12-backup--restore)
+13. [Directory Structure](#13-directory-structure)
+14. [Troubleshooting](#14-troubleshooting)
 
-1. Requirements
---------------------------------------------------------------------------------
+---
 
-  * Python >= 3.10
-  * pip / virtualenv (recommended)
-  * SQLite (development) or PostgreSQL 14+ (production)
-  * Optional: Redis (for session storage)
-  * Optional: SMTP server (for email notifications)
+## 1. Requirements
 
+- Python >= 3.10
+- pip / virtualenv (recommended)
+- SQLite (development) or PostgreSQL 14+ (production)
+- Optional: Redis (for session storage)
+- Optional: SMTP server (for email notifications)
 
-2. Quick Start (SQLite – Development)
---------------------------------------------------------------------------------
+---
 
-  1. Clone the repository and enter the directory:
+## 2. Quick Start (SQLite – Development)
 
-       cd iso27001-manager
+1. Clone the repository and enter the directory:
 
-  2. Create a virtual environment and activate it:
+   ```bash
+   cd iso27001-manager
+   ```
 
-       python3 -m venv .venv
-       source .venv/bin/activate      # Linux / macOS
-       .venv\Scripts\activate          # Windows
+2. Create a virtual environment and activate it:
 
-  3. Install dependencies:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate       # Linux / macOS
+   .venv\Scripts\activate           # Windows
+   ```
 
-       pip install -r requirements.txt
+3. Install dependencies:
 
-  4. Run the application:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-       .venv/bin/python run.py
+4. Run the application:
 
-     The server starts at http://127.0.0.1:5000.
-     On first run the database is created automatically and seed data is loaded.
+   ```bash
+   .venv/bin/python run.py
+   ```
 
-  5. Default admin credentials:
+   The server starts at http://127.0.0.1:5000.
+   On first run the database is created automatically and seed data is loaded.
 
-       Username:  admin
-       Password:  Admin@ISO27001!2024
+5. Default admin credentials:
 
-     Additional pre-seeded users: manager / auditor / user (same password
-     convention with respective role name).
+   | Username | Password |
+   |----------|----------|
+   | admin    | `Admin@ISO27001!2024` |
 
+   Additional pre-seeded users: `manager` / `auditor` / `user` (same password
+   convention with respective role name).
 
-3. Production Deployment (PostgreSQL)
---------------------------------------------------------------------------------
+---
 
-  1. Create a PostgreSQL database:
+## 3. Production Deployment (PostgreSQL)
 
-       CREATE DATABASE isms;
-       CREATE USER isms_user WITH PASSWORD 'strong_password';
-       GRANT ALL PRIVILEGES ON DATABASE isms TO isms_user;
+1. Create a PostgreSQL database:
 
-  2. Set the DATABASE_URL environment variable:
+   ```sql
+   CREATE DATABASE isms;
+   CREATE USER isms_user WITH PASSWORD 'strong_password';
+   GRANT ALL PRIVILEGES ON DATABASE isms TO isms_user;
+   ```
 
-       export DATABASE_URL=postgresql://isms_user:strong_password@localhost:5432/isms
+2. Set the `DATABASE_URL` environment variable:
 
-  3. Install dependencies (including the PostgreSQL adapter):
+   ```bash
+   export DATABASE_URL=postgresql://isms_user:strong_password@localhost:5432/isms
+   ```
 
-       pip install -r requirements.txt
+3. Install dependencies (including the PostgreSQL adapter):
 
-  4. Run with Gunicorn:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-       gunicorn -w 4 -b 0.0.0.0:8000 'app:create_app()'
+4. Run with Gunicorn:
 
-     Tables are created and seed data loaded automatically on first startup.
+   ```bash
+   gunicorn -w 4 -b 0.0.0.0:8000 'app:create_app()'
+   ```
 
-  NOTE:  "user" and "control" are reserved words in PostgreSQL.  The schema
-  migration functions quote them with double-quotes (") for compatibility.
-  If you encounter ALTER TABLE errors, verify your PostgreSQL version is 14+.
+   Tables are created and seed data loaded automatically on first startup.
 
+> **Note:** `user` and `control` are reserved words in PostgreSQL. The schema
+> migration functions quote them with double-quotes (`"`) for compatibility.
+> If you encounter ALTER TABLE errors, verify your PostgreSQL version is 14+.
 
-4. Environment Variables
---------------------------------------------------------------------------------
+---
 
-  Variable                    Default                          Description
-  ─────────────────────────────────────────────────────────────────────────────
-  FLASK_ENV                   development                     Environment name
-  SECRET_KEY                  dev-secret-…                     Flask secret key
-  DATABASE_URL                sqlite:///…/isms.db              Database URI
-  SESSION_TYPE                filesystem                       Session backend
-  SESSION_REDIS               (none)                           Redis URL
-  MAIL_SERVER                 smtp.gmail.com                   SMTP server
-  MAIL_PORT                   587                              SMTP port
-  MAIL_USE_TLS                true                             SMTP TLS flag
-  MAIL_USERNAME               (empty)                          SMTP username
-  MAIL_PASSWORD               (empty)                          SMTP password
-  MAIL_DEFAULT_SENDER         noreply@example.com              From address
-  TOTP_ISSUER_NAME            ISO27001-Manager                 TOTP issuer
-  ADMIN_EMAIL                 admin@example.com                Admin contact
+## 4. Production Setup Script
 
-  Create a .env file in the project root to set these values:
+For automated deployment on a fresh Ubuntu/Debian server, run the included
+`setup.sh` script as root. It installs all system dependencies, configures
+PostgreSQL, Redis, Nginx with SSL, creates a systemd service, and seeds the
+database.
 
-       SECRET_KEY=your-strong-secret-here
-       DATABASE_URL=postgresql://user:pass@localhost:5432/isms
+```bash
+sudo bash setup.sh
+```
 
-  The .env file is excluded from version control (see .gitignore).
+Options:
 
+| Flag              | Description                  |
+|-------------------|------------------------------|
+| `--update` / `-u` | Update an existing install   |
+| `--docker` / `-d` | Deploy via Docker Compose    |
+| `--domain=...`    | Set domain (skips prompt)    |
 
-5. Database Migrations
---------------------------------------------------------------------------------
+The script will prompt you for:
 
-  The application uses Flask-Migrate (Alembic) for schema migrations.
+- **Domain name** – for SSL certificate generation
+- **Database** – PostgreSQL (recommended) or SQLite
+- **SMTP** – email notification configuration
+- **Redis** – session storage (auto-detected if installed)
 
-  Create a migration after model changes:
+After completion, four default users are created with auto-generated
+passwords printed to the console (save them securely).
 
-       .venv/bin/python run.py db migrate -m "Description of change"
-       .venv/bin/python run.py db upgrade
+### Docker deployment
 
-  On startup, the application also runs several ensure_*() functions that add
-  columns if they do not yet exist (supplier risk columns, guidance_el on
-  controls, guidance/guidance_el on NIS2 checks, auth_source on user table).
-  These provide a safety net for environments where Alembic migrations have
-  not yet been applied.
+```bash
+sudo bash setup.sh --docker
+```
 
+This builds and starts all containers (app, PostgreSQL, Redis, Nginx)
+via `docker compose`. No system packages beyond Docker are required.
 
-6. Seed Data
---------------------------------------------------------------------------------
+---
 
-  Seed JSON files are located in seed_data/:
+## 5. Environment Variables
 
-       roles.json                      Role definitions & permissions
-       annex_a_controls.json           ISO 27001:2022 Annex A controls
-       clauses.json                    ISO 27001:2022 clauses
-       nis2_controls.json              NIS2 compliance measures & guidance
+| Variable            | Default                             | Description           |
+|---------------------|-------------------------------------|-----------------------|
+| `FLASK_ENV`         | `development`                       | Environment name      |
+| `SECRET_KEY`        | `dev-secret-…`                      | Flask secret key      |
+| `DATABASE_URL`      | `sqlite:///…/isms.db`               | Database URI          |
+| `SESSION_TYPE`      | `filesystem`                        | Session backend       |
+| `SESSION_REDIS`     | _(none)_                            | Redis URL             |
+| `MAIL_SERVER`       | `smtp.gmail.com`                    | SMTP server           |
+| `MAIL_PORT`         | `587`                               | SMTP port             |
+| `MAIL_USE_TLS`      | `true`                              | SMTP TLS flag         |
+| `MAIL_USERNAME`     | _(empty)_                           | SMTP username         |
+| `MAIL_PASSWORD`     | _(empty)_                           | SMTP password         |
+| `MAIL_DEFAULT_SENDER` | `noreply@example.com`             | From address          |
+| `TOTP_ISSUER_NAME`  | `ISO27001-Manager`                  | TOTP issuer           |
+| `ADMIN_EMAIL`       | `admin@example.com`                 | Admin contact         |
 
-  The seed_database() function in app/utils/seed.py runs automatically on
-  startup (idempotent – does not overwrite existing data).  It seeds:
+Create a `.env` file in the project root to set these values:
 
-    * Roles: admin, manager, auditor, user
-    * Users: admin, manager, auditor, user (only when the user table is empty)
-    * Domains and Annex A controls (only when domain table is empty)
-    * Clauses (only when clause table is empty)
-    * KPI definitions (10 default KPIs, only on first run)
-    * NIS2 compliance checks (10 measures, only on first run)
+```ini
+SECRET_KEY=your-strong-secret-here
+DATABASE_URL=postgresql://user:pass@localhost:5432/isms
+```
 
-  To re-seed specific tables, truncate them manually and restart the app.
+The `.env` file is excluded from version control (see `.gitignore`).
 
+---
 
-7. Translations
---------------------------------------------------------------------------------
+## 6. Database Migrations
 
-  Supported locales:  en (English)  /  el (Ελληνικά)
+The application uses Flask-Migrate (Alembic) for schema migrations.
 
-  Translation files are in app/translations/<locale>/LC_MESSAGES/messages.po.
+Create a migration after model changes:
 
-  On every startup the application compiles .po → .mo automatically using
-  pybabel compile.  You can also compile manually:
+```bash
+.venv/bin/python run.py db migrate -m "Description of change"
+.venv/bin/python run.py db upgrade
+```
 
-       pybabel compile -d app/translations
+On startup, the application also runs several `ensure_*()` functions that add
+columns if they do not yet exist (supplier risk columns, `guidance_el` on
+controls, `guidance`/`guidance_el` on NIS2 checks, `auth_source` on user table).
+These provide a safety net for environments where Alembic migrations have
+not yet been applied.
 
-  To extract new translatable strings after code changes:
+---
 
-       pybabel extract -F babel.cfg -o messages.pot .
+## 7. Seed Data
 
-  To update an existing .po file:
+Seed JSON files are located in `seed_data/`:
 
-       pybabel update -i messages.pot -d app/translations -l el
+| File                       | Contents                         |
+|----------------------------|----------------------------------|
+| `roles.json`               | Role definitions & permissions   |
+| `annex_a_controls.json`    | ISO 27001:2022 Annex A controls  |
+| `clauses.json`             | ISO 27001:2022 clauses           |
+| `nis2_controls.json`       | NIS2 compliance measures & guidance |
 
-  To create a new locale:
+The `seed_database()` function in `app/utils/seed.py` runs automatically on
+startup (idempotent – does not overwrite existing data). It seeds:
 
-       pybabel init -i messages.pot -d app/translations -l de
+- **Roles:** admin, manager, auditor, user
+- **Users:** admin, manager, auditor, user (only when the user table is empty)
+- **Domains and Annex A controls** (only when domain table is empty)
+- **Clauses** (only when clause table is empty)
+- **KPI definitions** (10 default KPIs, only on first run)
+- **NIS2 compliance checks** (10 measures, only on first run)
 
-  The built-in language switcher is in the user menu (top-right).  An admin
-  can force a language for all users via the Admin → AI Settings page
-  (currently stored under AI Settings – to be moved to a dedicated
-  Localization settings page.)
+To re-seed specific tables, truncate them manually and restart the app.
 
+---
 
-8. AD / LDAP Authentication
---------------------------------------------------------------------------------
+## 8. Translations
 
-  The application supports authenticating users against an LDAP directory
-  (Active Directory, OpenLDAP, etc.).
+Supported locales: **en** (English) / **el** (Ελληνικά)
 
-  Configuration (Admin → LDAP Settings):
+Translation files are in `app/translations/<locale>/LC_MESSAGES/messages.po`.
 
-    * Enable LDAP Authentication        – Master on/off toggle
-    * LDAP Server                        – e.g. ldap://dc01.example.com
-    * Port                               – 389 (LDAP) or 636 (LDAPS)
-    * Use TLS                            – Enable STARTTLS
-    * Base DN                            – e.g. DC=example,DC=com
-    * Bind DN                            – Service account DN (optional)
-    * Bind Password                      – Service account password
-    * User Filter                        – LDAP filter string, use {username}
-                                           as placeholder, e.g.
-                                           (sAMAccountName={username})
-    * Attribute Mapping (JSON)           – Maps local fields to LDAP
-                                           attributes:
-      {
-        "email":      "mail",
-        "first_name": "givenName",
-        "last_name":  "sn"
-      }
+On every startup the application compiles `.po` → `.mo` automatically using
+`pybabel compile`. You can also compile manually:
 
-  How it works:
+```bash
+pybabel compile -d app/translations
+```
 
-    1. User submits username + password on the login page.
-    2. The application checks if LDAP is enabled and the username does not
-       already exist as a local-only (auth_source='local') user.
-    3. If LDAP conditions are met, it binds to the LDAP server using the
-       configured service account, searches for the user, and attempts to
-       re-bind as that user to verify the password.
-    4. On success, a local User record is created (or updated) with
-       auth_source='ldap'.  The user is assigned the "user" role
-       automatically.
-    5. Subsequent logins continue through LDAP.  Local users (auth_source
-       = 'local') are not affected and authenticate with their hashed
-       password as before.
-
-  NOTE:  The bind password and attribute mapping are stored in plain text
-  in the SystemSetting table.  For production, consider using a vault or
-  environment variables instead.
+To extract new translatable strings after code changes:
 
+```bash
+pybabel extract -F babel.cfg -o messages.pot .
+```
 
-9. SSO Configuration (Placeholder)
---------------------------------------------------------------------------------
+To update an existing `.po` file:
 
-  Admin → SSO Settings provides a form to store SAML 2.0 / OIDC provider
-  parameters (provider type, client ID, client secret, issuer URL, metadata
-  URL).  These values are persisted in the SystemSetting table but the
-  actual authentication flow (SAML assertion handling / OIDC callback) is
-  NOT implemented yet and remains a future enhancement.
+```bash
+pybabel update -i messages.pot -d app/translations -l el
+```
 
+To create a new locale:
 
-10. AI Assistant
---------------------------------------------------------------------------------
+```bash
+pybabel init -i messages.pot -d app/translations -l de
+```
 
-  An optional AI assistant powered by OpenAI GPT-4o-mini provides context-
-  aware answers about the ISMS.  The assistant has read-only access to the
-  database schema and can answer questions about compliance, risks,
-  controls, and system usage.
-
-  Admin configuration (Admin → AI Settings):
+The built-in language switcher is in the user menu (top-right). An admin
+can force a language for all users via the Admin → AI Settings page
+(currently stored under AI Settings – to be moved to a dedicated
+Localization settings page.)
 
-    1. Set your OpenAI API Key.
-    2. Enable the assistant for all users.
-
-  Once enabled, a floating chat button appears in the bottom-right corner.
+---
 
-  Chat history is limited to the last 7 messages per session.
-
-  The assistant uses function calling with a single tool, query_db, that
-  executes read-only SQL SELECT queries.  It never modifies data.
-
-
-11. Backup & Restore
---------------------------------------------------------------------------------
-
-  Admin → Backup & Restore
+## 9. AD / LDAP Authentication
 
-    * Create Backup   – Zips the SQLite database (or PostgreSQL dump) and
-                        uploaded files into app/static/backups/.
-    * Download        – Download a backup archive.
-    * Restore         – Upload a backup archive and restore.
-    * Delete          – Remove a backup archive.
+The application supports authenticating users against an LDAP directory
+(Active Directory, OpenLDAP, etc.).
 
-  For PostgreSQL, backups are created by running pg_dump.  Ensure pg_dump
-  is installed on the server.  The database connection string is read from
-  the DATABASE_URL environment variable.
+### Configuration (Admin → LDAP Settings)
 
+| Setting                    | Description                                         |
+|----------------------------|-----------------------------------------------------|
+| Enable LDAP Authentication | Master on/off toggle                                |
+| LDAP Server                | e.g. `ldap://dc01.example.com`                      |
+| Port                       | `389` (LDAP) or `636` (LDAPS)                       |
+| Use TLS                    | Enable STARTTLS                                     |
+| Base DN                    | e.g. `DC=example,DC=com`                            |
+| Bind DN                    | Service account DN (optional)                       |
+| Bind Password              | Service account password                            |
+| User Filter                | LDAP filter string, use `{username}` as placeholder, e.g. `(sAMAccountName={username})` |
+| Attribute Mapping (JSON)   | Maps local fields to LDAP attributes                |
 
-12. Directory Structure
---------------------------------------------------------------------------------
+Example attribute mapping:
 
-  iso27001-manager/
-  ├── app/
-  │   ├── __init__.py            Application factory
-  │   ├── extensions.py          Flask extensions (db, login, bcrypt, etc.)
-  │   ├── forms/                 WTForms form definitions
-  │   ├── models/                SQLAlchemy models
-  │   │   ├── user.py            User, Role, Permission, SystemSetting
-  │   │   ├── control.py         Annex A controls
-  │   │   ├── domain.py          Control domains
-  │   │   ├── clause.py          ISO 27001 clauses
-  │   │   ├── metric.py          KPI definitions
-  │   │   ├── risk.py            Risk register
-  │   │   ├── asset.py           Asset register
-  │   │   ├── incident.py        Incident management
-  │   │   ├── policy.py          Policy management
-  │   │   ├── audit.py           Audit management
-  │   │   ├── supplier.py        Supplier / third-party risk
-  │   │   ├── nis2.py            NIS2 compliance checks
-  │   │   ├── gdpr.py            GDPR data processing records
-  │   │   ├── training.py        Training & competence
-  │   │   ├── bc.py              Business continuity
-  │   │   ├── capa.py            Corrective actions
-  │   │   └── …                  Additional model files
-  │   ├── routes/                Blueprint route definitions
-  │   ├── templates/             Jinja2 templates
-  │   ├── static/                CSS, JS, uploaded files
-  │   ├── translations/          Babel .po / .mo files
-  │   └── utils/                 Helper modules
-  │       ├── seed.py            Seed data loader
-  │       ├── schema.py          Schema migration helpers
-  │       ├── metrics.py         KPI auto-calculation engine
-  │       ├── ldap_auth.py       LDAP / AD authentication
-  │       ├── ai_helper.py       AI assistant orchestration
-  │       ├── decorators.py      Route decorators (admin_required, etc.)
-  │       └── pagination.py      Pagination utility
-  ├── seed_data/                 JSON seed files
-  │   ├── roles.json
-  │   ├── annex_a_controls.json
-  │   ├── clauses.json
-  │   └── nis2_controls.json
-  ├── config.py                  Configuration classes
-  ├── requirements.txt           Python dependencies
-  ├── run.py                     Entry point
-  ├── README.md                  This file
-  └── .gitignore
+```json
+{
+  "email": "mail",
+  "first_name": "givenName",
+  "last_name": "sn"
+}
+```
 
+### How it works
 
-13. Troubleshooting
---------------------------------------------------------------------------------
-
-  "TemplateNotFound: bootstrap5/form.html"
-       → Remove the line  {% import "bootstrap5/form.html" as wtf %} from the
-         template – this project uses plain HTML forms, not Flask-Bootstrap.
-
-  "psycopg2.OperationalError" when using PostgreSQL
-       → Verify DATABASE_URL is correct and the PostgreSQL server is running.
-       → Ensure the user has been granted CONNECT and CREATE privileges.
-
-  "pybabel: command not found"
-       → Run  pip install -r requirements.txt  inside the virtual environment
-         and use  .venv/bin/pybabel.
-
-  "ldap3.core.exceptions.LDAPException" on login
-       → Verify LDAP server address, port, and TLS settings in Admin → LDAP
-         Settings.
-       → Check that the Base DN and Bind DN are correct.
-       → Ensure the firewall allows outbound connections to the LDAP port.
-
-  Translations not appearing (texts show English on Greek locale)
-       → Restart the application – translations are compiled on startup.
-       → Run  .venv/bin/pybabel compile -d app/translations  manually.
-       → Check that your browser language preference is set to Greek (el).
-
-  "Disk quota exceeded" or "No space left" during upload
-       → Check MAX_CONTENT_LENGTH in config.py (default 16 MB) and server
-         disk space.
-
-  "Failed to build wheel for pyasn1"
-       → Ensure you have a C compiler installed (build-essential / xcode-select
-         --install).  pyasn1 has a Rust dependency on some platforms; if the
-         build fails, install the pre-compiled binary wheel:
-
-             pip install pyasn1 --only-binary=:all:
-
-         or use your system package manager:
-
-             apt install python3-pyasn1          # Debian / Ubuntu
-             dnf install python3-pyasn1          # Fedora
-
-================================================================================
+1. User submits username + password on the login page.
+2. The application checks if LDAP is enabled and the username does not
+   already exist as a local-only (`auth_source='local'`) user.
+3. If LDAP conditions are met, it binds to the LDAP server using the
+   configured service account, searches for the user, and attempts to
+   re-bind as that user to verify the password.
+4. On success, a local User record is created (or updated) with
+   `auth_source='ldap'`. The user is assigned the "user" role
+   automatically.
+5. Subsequent logins continue through LDAP. Local users (`auth_source`
+   = `'local'`) are not affected and authenticate with their hashed
+   password as before.
+
+> **Note:** The bind password and attribute mapping are stored in plain text
+> in the `SystemSetting` table. For production, consider using a vault or
+> environment variables instead.
+
+---
+
+## 10. SSO Configuration (Placeholder)
+
+Admin → SSO Settings provides a form to store SAML 2.0 / OIDC provider
+parameters (provider type, client ID, client secret, issuer URL, metadata
+URL). These values are persisted in the `SystemSetting` table but the
+actual authentication flow (SAML assertion handling / OIDC callback) is
+**not implemented yet** and remains a future enhancement.
+
+---
+
+## 11. AI Assistant
+
+An optional AI assistant powered by OpenAI GPT-4o-mini provides context-aware
+answers about the ISMS. The assistant has read-only access to the database
+schema and can answer questions about compliance, risks, controls, and
+system usage.
+
+### Admin configuration (Admin → AI Settings)
+
+1. Set your OpenAI API Key.
+2. Enable the assistant for all users.
+
+Once enabled, a floating chat button appears in the bottom-right corner.
+
+Chat history is limited to the last 7 messages per session.
+
+The assistant uses function calling with a single tool, `query_db`, that
+executes read-only SQL `SELECT` queries. It never modifies data.
+
+---
+
+## 12. Backup & Restore
+
+Admin → Backup & Restore
+
+| Action         | Description                                                     |
+|----------------|-----------------------------------------------------------------|
+| Create Backup  | Zips the SQLite database (or PostgreSQL dump) and uploaded files into `app/static/backups/` |
+| Download       | Download a backup archive                                       |
+| Restore        | Upload a backup archive and restore                             |
+| Delete         | Remove a backup archive                                         |
+
+For PostgreSQL, backups are created by running `pg_dump`. Ensure `pg_dump`
+is installed on the server. The database connection string is read from
+the `DATABASE_URL` environment variable.
+
+---
+
+## 13. Directory Structure
+
+```
+iso27001-manager/
+├── app/
+│   ├── __init__.py            Application factory
+│   ├── extensions.py          Flask extensions (db, login, bcrypt, etc.)
+│   ├── forms/                 WTForms form definitions
+│   ├── models/                SQLAlchemy models
+│   │   ├── user.py            User, Role, Permission, SystemSetting
+│   │   ├── control.py         Annex A controls
+│   │   ├── domain.py          Control domains
+│   │   ├── clause.py          ISO 27001 clauses
+│   │   ├── metric.py          KPI definitions
+│   │   ├── risk.py            Risk register
+│   │   ├── asset.py           Asset register
+│   │   ├── incident.py        Incident management
+│   │   ├── policy.py          Policy management
+│   │   ├── audit.py           Audit management
+│   │   ├── supplier.py        Supplier / third-party risk
+│   │   ├── nis2.py            NIS2 compliance checks
+│   │   ├── gdpr.py            GDPR data processing records
+│   │   ├── training.py        Training & competence
+│   │   ├── bc.py              Business continuity
+│   │   ├── capa.py            Corrective actions
+│   │   └── …                  Additional model files
+│   ├── routes/                Blueprint route definitions
+│   ├── templates/             Jinja2 templates
+│   ├── static/                CSS, JS, uploaded files
+│   ├── translations/          Babel .po / .mo files
+│   └── utils/                 Helper modules
+│       ├── seed.py            Seed data loader
+│       ├── schema.py          Schema migration helpers
+│       ├── metrics.py         KPI auto-calculation engine
+│       ├── ldap_auth.py       LDAP / AD authentication
+│       ├── ai_helper.py       AI assistant orchestration
+│       ├── decorators.py      Route decorators (admin_required, etc.)
+│       └── pagination.py      Pagination utility
+├── seed_data/                 JSON seed files
+│   ├── roles.json
+│   ├── annex_a_controls.json
+│   ├── clauses.json
+│   └── nis2_controls.json
+├── config.py                  Configuration classes
+├── requirements.txt           Python dependencies
+├── run.py                     Entry point
+├── README.md                  This file
+└── .gitignore
+```
+
+---
+
+## 14. Troubleshooting
+
+**"TemplateNotFound: bootstrap5/form.html"**
+  Remove the line `{% import "bootstrap5/form.html" as wtf %}` from the
+  template – this project uses plain HTML forms, not Flask-Bootstrap.
+
+**"psycopg2.OperationalError" when using PostgreSQL**
+  Verify `DATABASE_URL` is correct and the PostgreSQL server is running.
+  Ensure the user has been granted CONNECT and CREATE privileges.
+
+**"pybabel: command not found"**
+  Run `pip install -r requirements.txt` inside the virtual environment
+  and use `.venv/bin/pybabel`.
+
+**"ldap3.core.exceptions.LDAPException" on login**
+  Verify LDAP server address, port, and TLS settings in Admin → LDAP
+  Settings. Check that the Base DN and Bind DN are correct. Ensure the
+  firewall allows outbound connections to the LDAP port.
+
+**Translations not appearing (texts show English on Greek locale)**
+  Restart the application – translations are compiled on startup.
+  Run `.venv/bin/pybabel compile -d app/translations` manually.
+  Check that your browser language preference is set to Greek (el).
+
+**"Disk quota exceeded" or "No space left" during upload**
+  Check `MAX_CONTENT_LENGTH` in `config.py` (default 16 MB) and server
+  disk space.
+
+**"Failed to build wheel for pyasn1"**
+  Ensure you have a C compiler installed (`build-essential` / `xcode-select
+  --install`). pyasn1 has a Rust dependency on some platforms; if the
+  build fails, install the pre-compiled binary wheel:
+
+  ```bash
+  pip install pyasn1 --only-binary=:all:
+  ```
+
+  Or use your system package manager:
+
+  ```bash
+  apt install python3-pyasn1          # Debian / Ubuntu
+  dnf install python3-pyasn1          # Fedora
+  ```
