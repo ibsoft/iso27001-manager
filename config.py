@@ -9,10 +9,9 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///../instance/isms.db")
 
-    if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith("sqlite"):
-        SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace(
-            "sqlite:///", "sqlite:///"
-        )
+    _uri = SQLALCHEMY_DATABASE_URI
+    if _uri and _uri.startswith("sqlite:///") and not _uri.startswith("sqlite:////"):
+        SQLALCHEMY_DATABASE_URI = _uri.replace("sqlite:///", "sqlite:////", 1)
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = 3600
@@ -56,10 +55,9 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL", "sqlite:///../instance/isms_dev.db"
     )
-    if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith("sqlite:///"):
-        SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace(
-            "sqlite:///", "sqlite:///"
-        )
+    _uri = SQLALCHEMY_DATABASE_URI
+    if _uri and _uri.startswith("sqlite:///") and not _uri.startswith("sqlite:////"):
+        SQLALCHEMY_DATABASE_URI = _uri.replace("sqlite:///", "sqlite:////", 1)
 
 
 class ProductionConfig(Config):

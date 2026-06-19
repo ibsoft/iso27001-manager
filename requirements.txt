@@ -28,3 +28,5 @@ markdown==3.7.0
 Pillow==11.1.0
 python-docx==1.2.0
 openpyxl==3.1.5
+ldap3>=2.9
+pyasn1>=0.6.1
