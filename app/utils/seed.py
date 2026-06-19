@@ -122,6 +122,11 @@ def seed_database():
             ("Incident Resolution Time", "Average time to resolve incidents", "avg_resolution_time", 48, "hours", "monthly", "Incident Management"),
             ("Audit Finding Closure", "Percentage of audit findings closed within target", "closed_findings/total_findings*100", 90, "percent", "quarterly", "Audit"),
             ("Policy Review Currency", "Percentage of policies reviewed on time", "reviewed_policies/total_policies*100", 95, "percent", "monthly", "Governance"),
+            ("NIS2 Compliance", "Percentage of NIS2 measures implemented", "nis2_compliance_percent", 80, "percent", "monthly", "Implementation"),
+            ("Training Completion", "Percentage of training records completed", "training_completion_percent", 90, "percent", "monthly", "Governance"),
+            ("Active Assets", "Percentage of assets with active status", "active_assets/total_assets*100", 95, "percent", "monthly", "Implementation"),
+            ("Open Non-Conformities", "Number of open non-conformities", "open_non_conformities", 0, "count", "weekly", "Audit"),
+            ("Overdue Risk Treatments", "Number of overdue risk treatments", "overdue_risk_treatments", 0, "count", "monthly", "Risk Management"),
         ]
         for name, desc, formula, target, unit, freq, cat in default_kpis:
             kpi = KpiDefinition(

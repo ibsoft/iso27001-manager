@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-18 16:39+0300\n"
+"POT-Creation-Date: 2026-06-19 09:25+0300\n"
 "PO-Revision-Date: 2026-06-15 14:10+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: el\n"
@@ -909,21 +909,39 @@ msgstr "Επεξεργασία Περιστατικού"
 msgid "Incident deleted."
 msgstr "Η οντότητα διαγράφηκε."
 
-#: app/routes/kpi.py:51
+#: app/routes/kpi.py:52
 msgid "Value is required."
 msgstr "Απαιτείται τιμή."
 
-#: app/routes/kpi.py:59
+#: app/routes/kpi.py:60
 msgid "Invalid date format."
 msgstr "Μη έγκυρη μορφή ημερομηνίας."
 
-#: app/routes/kpi.py:65
+#: app/routes/kpi.py:66
 msgid "Measurement recorded."
 msgstr "Η μέτρηση καταγράφηκε."
 
-#: app/routes/kpi.py:76
+#: app/routes/kpi.py:77
 msgid "Measurement deleted."
 msgstr "Η μέτρηση διαγράφηκε."
+
+#: app/routes/kpi.py:88
+msgid "No auto-calculation formula defined for this KPI."
+msgstr "Δεν ορίζεται τύπος αυτόματου υπολογισμού για αυτό το KPI."
+
+#: app/routes/kpi.py:90
+#, python-format
+msgid "Auto-calculated: %(name)s = %(value)s"
+msgstr "Αυτόματος υπολογισμός: %(name)s = %(value)s"
+
+#: app/routes/kpi.py:105
+#, python-format
+msgid "Auto-calculated %(count)d KPIs."
+msgstr "Αυτόματος υπολογισμός %(count)d KPI."
+
+#: app/routes/kpi.py:107
+msgid "No KPIs have auto-calculation formulas defined."
+msgstr "Κανένα KPI δεν έχει ορισμένο τύπο αυτόματου υπολογισμού."
 
 #: app/routes/management_review.py:47
 msgid "Management review created successfully."
@@ -2011,7 +2029,7 @@ msgstr ""
 "Δημιουργήστε ένα πλήρες αντίγραφο ασφαλείας της βάσης δεδομένων και όλων "
 "των ανεβασμένων αρχείων."
 
-#: app/templates/admin/backup.html:15 app/templates/kpi/dashboard.html:73
+#: app/templates/admin/backup.html:15 app/templates/kpi/dashboard.html:92
 msgid "Notes (optional)"
 msgstr "Σημειώσεις (προαιρετικά)"
 
@@ -2175,7 +2193,7 @@ msgstr "Ενεργό"
 #: app/templates/gdpr/dpia/form.html:85 app/templates/gdpr/dsar/form.html:84
 #: app/templates/gdpr/notices/form.html:47
 #: app/templates/gdpr/processing/form.html:124
-#: app/templates/incidents/form.html:55 app/templates/kpi/dashboard.html:76
+#: app/templates/incidents/form.html:55 app/templates/kpi/dashboard.html:95
 #: app/templates/policies/form.html:119 app/templates/risks/form.html:70
 #: app/templates/soa/edit.html:55 app/templates/soa/form.html:55
 #: app/templates/suppliers/form.html:193
@@ -2277,8 +2295,9 @@ msgid ""
 "Column headers can be in English or the current language. Only Name is "
 "required — all other fields are optional."
 msgstr ""
-"Οι επικεφαλίδες στηλών μπορεί να είναι στα Αγγλικά ή στην τρέχουσα γλώσσα. "
-"Μόνο το Όνομα είναι υποχρεωτικό — όλα τα άλλα πεδία είναι προαιρετικά."
+"Οι επικεφαλίδες στηλών μπορεί να είναι στα Αγγλικά ή στην τρέχουσα "
+"γλώσσα. Μόνο το Όνομα είναι υποχρεωτικό — όλα τα άλλα πεδία είναι "
+"προαιρετικά."
 
 #: app/templates/assets/import.html:49
 msgid "Import Results"
@@ -4089,7 +4108,7 @@ msgstr "SoA"
 msgid "implemented"
 msgstr "υλοποιήθηκε"
 
-#: app/templates/controls/list.html:62 app/templates/kpi/dashboard.html:27
+#: app/templates/controls/list.html:62 app/templates/kpi/dashboard.html:36
 #: app/templates/nis2/dashboard.html:100
 #: app/templates/reports/pdf/audits.html:36
 #: app/templates/reports/pdf/capas.html:16
@@ -5459,27 +5478,43 @@ msgstr "Ενημερώθηκε:"
 msgid "Metrics & KPIs"
 msgstr "Μετρήσεις & KPI"
 
-#: app/templates/kpi/dashboard.html:20
+#: app/templates/kpi/dashboard.html:10
+msgid "Recalculate All"
+msgstr "Υπολογισμός Όλων"
+
+#: app/templates/kpi/dashboard.html:12
+msgid "Computes all KPIs with formulas from live database data"
+msgstr "Υπολογίζει όλα τα KPI με τύπους από δεδομένα της βάσης"
+
+#: app/templates/kpi/dashboard.html:29
 msgid "Current"
 msgstr "Τρέχουσα"
 
-#: app/templates/kpi/dashboard.html:34
+#: app/templates/kpi/dashboard.html:43
 msgid "Trend"
 msgstr "Τάση"
 
-#: app/templates/kpi/dashboard.html:50
+#: app/templates/kpi/dashboard.html:59
 msgid "No measurements yet."
 msgstr "Δεν υπάρχουν ακόμα μετρήσεις."
 
-#: app/templates/kpi/dashboard.html:61
+#: app/templates/kpi/dashboard.html:73
+msgid "Auto-calculate from live data"
+msgstr "Αυτόματος υπολογισμός από δεδομένα"
+
+#: app/templates/kpi/dashboard.html:74
+msgid "Calculate"
+msgstr "Υπολογισμός"
+
+#: app/templates/kpi/dashboard.html:79
 msgid "Record Measurement"
 msgstr "Καταγραφή Μέτρησης"
 
-#: app/templates/kpi/dashboard.html:67
+#: app/templates/kpi/dashboard.html:86
 msgid "Value"
 msgstr "Τιμή"
 
-#: app/templates/kpi/dashboard.html:88
+#: app/templates/kpi/dashboard.html:107
 msgid "No KPIs configured."
 msgstr "Δεν έχουν ρυθμιστεί KPI."
 
