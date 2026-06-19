@@ -7291,6 +7291,154 @@ msgstr "Δεν υπάρχουν ακόμη συμμετέχοντες."
 msgid "Session Info"
 msgstr "Πληροφορίες Συνεδρίας"
 
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Controls Implementation"
+msgstr "Υλοποίηση Ελέγχων"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Percentage of controls implemented"
+msgstr "Ποσοστό ελέγχων που έχουν υλοποιηθεί"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Risk Treatment Progress"
+msgstr "Πρόοδος Αντιμετώπισης Κινδύνων"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Percentage of risks with treatment plans completed"
+msgstr "Ποσοστό κινδύνων με ολοκληρωμένα σχέδια αντιμετώπισης"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Incident Resolution Time"
+msgstr "Χρόνος Επίλυσης Περιστατικών"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Average time to resolve incidents"
+msgstr "Μέσος χρόνος επίλυσης περιστατικών"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Audit Finding Closure"
+msgstr "Κλείσιμο Ευρημάτων Ελέγχου"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Percentage of audit findings closed within target"
+msgstr "Ποσοστό ευρημάτων ελέγχου που έκλεισαν εντός στόχου"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Policy Review Currency"
+msgstr "Επικαιρότητα Αναθεώρησης Πολιτικών"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Percentage of policies reviewed on time"
+msgstr "Ποσοστό πολιτικών που αναθεωρήθηκαν εγκαίρως"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Training Completion"
+msgstr "Ολοκλήρωση Εκπαίδευσης"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Percentage of training records completed"
+msgstr "Ποσοστό εκπαιδευτικών εγγραφών που ολοκληρώθηκαν"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Active Assets"
+msgstr "Ενεργά Περιουσιακά Στοιχεία"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Percentage of assets with active status"
+msgstr "Ποσοστό περιουσιακών στοιχείων με ενεργή κατάσταση"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Open Non-Conformities"
+msgstr "Ανοιχτές Μη-Συμμορφώσεις"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Number of open non-conformities"
+msgstr "Αριθμός ανοιχτών μη-συμμορφώσεων"
+
+#: app/templates/kpi/dashboard.html:21 app/templates/kpi/dashboard.html:124
+msgid "Overdue Risk Treatments"
+msgstr "Καθυστερημένες Αντιμετωπίσεις Κινδύνων"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Number of overdue risk treatments"
+msgstr "Αριθμός καθυστερημένων αντιμετωπίσεων κινδύνων"
+
+#: app/templates/kpi/dashboard.html:64
+msgid "Percentage of NIS2 measures implemented"
+msgstr "Ποσοστό μέτρων NIS2 που έχουν υλοποιηθεί"
+
+#: app/templates/kpi/dashboard.html:22
+msgid "Implementation"
+msgstr "Υλοποίηση"
+
+#: app/templates/kpi/dashboard.html:22
+msgid "Incident Management"
+msgstr "Διαχείριση Περιστατικών"
+
+#: app/templates/kpi/dashboard.html:22
+msgid "Governance"
+msgstr "Διακυβέρνηση"
+
+#: app/templates/kpi/dashboard.html:22
+msgid "Audit"
+msgstr "Έλεγχος"
+
+#: app/templates/kpi/dashboard.html:24
+msgid "monthly"
+msgstr "μηνιαία"
+
+#: app/templates/kpi/dashboard.html:24
+msgid "quarterly"
+msgstr "τριμηνιαία"
+
+#: app/templates/kpi/dashboard.html:24
+msgid "weekly"
+msgstr "εβδομαδιαία"
+
+#: app/templates/kpi/dashboard.html:32 app/templates/kpi/dashboard.html:39
+msgid "percent"
+msgstr "ποσοστό"
+
+#: app/templates/kpi/dashboard.html:32 app/templates/kpi/dashboard.html:39
+msgid "hours"
+msgstr "ώρες"
+
+#: app/templates/kpi/dashboard.html:32 app/templates/kpi/dashboard.html:39
+msgid "count"
+msgstr "πλήθος"
+
+#: app/templates/kpi/dashboard.html:29
+msgid "Current"
+msgstr "Τρέχουσα"
+
+#: app/templates/kpi/dashboard.html:36
+msgid "Target"
+msgstr "Στόχος"
+
+#: app/templates/kpi/dashboard.html:43
+msgid "Trend"
+msgstr "Τάση"
+
+#: app/templates/kpi/dashboard.html:59
+msgid "No measurements yet."
+msgstr "Δεν υπάρχουν ακόμη μετρήσεις."
+
+#: app/templates/kpi/dashboard.html:12
+msgid "Computes all KPIs with formulas from live database data"
+msgstr "Υπολογίζει όλους τους KPI με τύπους από ζωντανά δεδομένα βάσης"
+
+#: app/templates/kpi/dashboard.html:107
+msgid "No KPIs configured."
+msgstr "Δεν έχουν ρυθμιστεί KPI."
+
+#: app/templates/kpi/dashboard.html:73
+msgid "Auto-calculate from live data"
+msgstr "Αυτόματος υπολογισμός από ζωντανά δεδομένα"
+
+#: app/templates/kpi/dashboard.html:92
+msgid "Notes (optional)"
+msgstr "Σημειώσεις (προαιρετικό)"
+
 #~ msgid "Policy created successfully."
 #~ msgstr "Η πολιτική δημιουργήθηκε επιτυχώς."
 
@@ -8171,51 +8319,5 @@ msgstr "Πληροφορίες Συνεδρίας"
 #~ msgid "Reporting"
 #~ msgstr "Αναφορές"
 
-#~ msgid "Controls Implementation"
-#~ msgstr "Υλοποίηση Ελέγχων"
 
-#~ msgid "Percentage of controls implemented"
-#~ msgstr "Ποσοστό ελέγχων που έχουν υλοποιηθεί"
-
-#~ msgid "Risk Treatment Progress"
-#~ msgstr "Πρόοδος Αντιμετώπισης Κινδύνων"
-
-#~ msgid "Percentage of risks with treatment plans completed"
-#~ msgstr "Ποσοστό κινδύνων με ολοκληρωμένα σχέδια αντιμετώπισης"
-
-#~ msgid "Incident Resolution Time"
-#~ msgstr "Χρόνος Επίλυσης Περιστατικών"
-
-#~ msgid "Average time to resolve incidents"
-#~ msgstr "Μέσος χρόνος επίλυσης περιστατικών"
-
-#~ msgid "Audit Finding Closure"
-#~ msgstr "Κλείσιμο Ευρημάτων Ελέγχου"
-
-#~ msgid "Percentage of audit findings closed within target"
-#~ msgstr "Ποσοστό ευρημάτων ελέγχου που έκλεισαν εντός στόχου"
-
-#~ msgid "Policy Review Currency"
-#~ msgstr "Επικαιρότητα Αναθεώρησης Πολιτικών"
-
-#~ msgid "Percentage of policies reviewed on time"
-#~ msgstr "Ποσοστό πολιτικών που αναθεωρήθηκαν εγκαίρως"
-
-#~ msgid "Implementation"
-#~ msgstr "Υλοποίηση"
-
-#~ msgid "Incident Management"
-#~ msgstr "Διαχείριση Περιστατικών"
-
-#~ msgid "monthly"
-#~ msgstr "μηνιαία"
-
-#~ msgid "quarterly"
-#~ msgstr "τριμηνιαία"
-
-#~ msgid "hours"
-#~ msgstr "ώρες"
-
-#~ msgid "percent"
-#~ msgstr "ποσοστό"
 
