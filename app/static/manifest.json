@@ -1,0 +1,57 @@
+{
+  "name": "ISMS Manager – ISO 27001 · NIS2 · GDPR",
+  "short_name": "ISMS Manager",
+  "description": "Information Security Management System for ISO 27001, NIS2 & GDPR compliance.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8fafc",
+  "theme_color": "#1a56db",
+  "categories": ["business", "productivity", "security"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/static/pwa-icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/pwa-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "ISMS overview dashboard",
+      "url": "/"
+    },
+    {
+      "name": "Controls",
+      "short_name": "Controls",
+      "description": "Annex A controls",
+      "url": "/controls/"
+    },
+    {
+      "name": "Risks",
+      "short_name": "Risks",
+      "description": "Risk register",
+      "url": "/risks/"
+    },
+    {
+      "name": "Incidents",
+      "short_name": "Incidents",
+      "description": "Incident management",
+      "url": "/incidents/"
+    }
+  ]
+}

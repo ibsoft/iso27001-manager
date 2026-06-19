@@ -6,50 +6,44 @@
 {% block content %}
 <div class="card mb-3">
   <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <form method="GET" class="row g-2 flex-grow-1">
-        <div class="col-md-3">
-          <select name="classification" class="form-select" onchange="this.form.submit()">
-            <option value="">{{ _('All Classifications') }}</option>
-            <option value="public" {{ 'selected' if request.args.get('classification') == 'public' }}>{{ _('Public') }}</option>
-            <option value="internal" {{ 'selected' if request.args.get('classification') == 'internal' }}>{{ _('Internal') }}</option>
-            <option value="confidential" {{ 'selected' if request.args.get('classification') == 'confidential' }}>{{ _('Confidential') }}</option>
-            <option value="restricted" {{ 'selected' if request.args.get('classification') == 'restricted' }}>{{ _('Restricted') }}</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <select name="asset_type" class="form-select" onchange="this.form.submit()">
-            <option value="">{{ _('All Types') }}</option>
-            <option value="hardware" {{ 'selected' if request.args.get('asset_type') == 'hardware' }}>{{ _('Hardware') }}</option>
-            <option value="software" {{ 'selected' if request.args.get('asset_type') == 'software' }}>{{ _('Software') }}</option>
-            <option value="data" {{ 'selected' if request.args.get('asset_type') == 'data' }}>{{ _('Data') }}</option>
-            <option value="other" {{ 'selected' if request.args.get('asset_type') == 'other' }}>{{ _('Other') }}</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <input type="text" name="search" class="form-control" placeholder="{{ _('Search assets...') }}" value="{{ request.args.get('search', '') }}">
-        </div>
-        <div class="col-md-1">
-          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
-        </div>
-      </form>
-      <div class="ms-2">
-        <div class="btn-group">
-          <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-download me-1"></i>{{ _('Export') }}</button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="{{ url_for('assets.export_assets', format='csv', **request.args) }}"><i class="fas fa-file-csv me-2"></i>CSV</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('assets.export_assets', format='xlsx', **request.args) }}"><i class="fas fa-file-excel me-2"></i>Excel</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ url_for('reports.export_pdf_assets') }}"><i class="fas fa-file-pdf me-2"></i>PDF</a></li>
-          </ul>
-        </div>
+    <form method="GET" class="row g-2 mb-2">
+      <div class="col-md-3 col-sm-6">
+        <select name="classification" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Classifications') }}</option>
+          <option value="public" {{ 'selected' if request.args.get('classification') == 'public' }}>{{ _('Public') }}</option>
+          <option value="internal" {{ 'selected' if request.args.get('classification') == 'internal' }}>{{ _('Internal') }}</option>
+          <option value="confidential" {{ 'selected' if request.args.get('classification') == 'confidential' }}>{{ _('Confidential') }}</option>
+          <option value="restricted" {{ 'selected' if request.args.get('classification') == 'restricted' }}>{{ _('Restricted') }}</option>
+        </select>
       </div>
-      <div class="ms-2">
-        <a href="{{ url_for('assets.import_assets') }}" class="btn btn-outline-info"><i class="fas fa-upload me-1"></i>{{ _('Import') }}</a>
+      <div class="col-md-2 col-sm-6">
+        <select name="asset_type" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Types') }}</option>
+          <option value="hardware" {{ 'selected' if request.args.get('asset_type') == 'hardware' }}>{{ _('Hardware') }}</option>
+          <option value="software" {{ 'selected' if request.args.get('asset_type') == 'software' }}>{{ _('Software') }}</option>
+          <option value="data" {{ 'selected' if request.args.get('asset_type') == 'data' }}>{{ _('Data') }}</option>
+          <option value="other" {{ 'selected' if request.args.get('asset_type') == 'other' }}>{{ _('Other') }}</option>
+        </select>
       </div>
-      <div class="ms-2">
-        <a href="{{ url_for('assets.new_asset') }}" class="btn btn-success"><i class="fas fa-plus me-1"></i>{{ _('New Asset') }}</a>
+      <div class="col-md-5 col-sm-8">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search assets...') }}" value="{{ request.args.get('search', '') }}">
       </div>
+      <div class="col-md-2 col-sm-4">
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    <div class="d-flex flex-wrap gap-2">
+      <div class="btn-group">
+        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-download me-1"></i>{{ _('Export') }}</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{{ url_for('assets.export_assets', format='csv', **request.args) }}"><i class="fas fa-file-csv me-2"></i>CSV</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('assets.export_assets', format='xlsx', **request.args) }}"><i class="fas fa-file-excel me-2"></i>Excel</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="{{ url_for('reports.export_pdf_assets') }}"><i class="fas fa-file-pdf me-2"></i>PDF</a></li>
+        </ul>
+      </div>
+      <a href="{{ url_for('assets.import_assets') }}" class="btn btn-outline-info"><i class="fas fa-upload me-1"></i>{{ _('Import') }}</a>
+      <a href="{{ url_for('assets.new_asset') }}" class="btn btn-success"><i class="fas fa-plus me-1"></i>{{ _('New Asset') }}</a>
     </div>
   </div>
 </div>
