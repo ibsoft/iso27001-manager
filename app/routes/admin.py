@@ -327,3 +327,70 @@ def restore_backup():
         flash(_("Database restore failed: ") + str(e), "danger")
 
     return redirect(url_for("admin.list_backups"))
+
+
+@admin_bp.route("/ldap-settings", methods=["GET", "POST"])
+@login_required
+@admin_required
+def ldap_settings():
+    from app.models.user import SystemSetting
+
+    if request.method == "POST":
+        SystemSetting.set("ldap_enabled", "1" if request.form.get("ldap_enabled") else "0", current_user.id)
+        SystemSetting.set("ldap_server", request.form.get("ldap_server", ""), current_user.id)
+        SystemSetting.set("ldap_port", request.form.get("ldap_port", "389"), current_user.id)
+        SystemSetting.set("ldap_use_tls", "1" if request.form.get("ldap_use_tls") else "0", current_user.id)
+        SystemSetting.set("ldap_base_dn", request.form.get("ldap_base_dn", ""), current_user.id)
+        SystemSetting.set("ldap_bind_dn", request.form.get("ldap_bind_dn", ""), current_user.id)
+        if request.form.get("ldap_bind_password"):
+            SystemSetting.set("ldap_bind_password", request.form.get("ldap_bind_password", ""), current_user.id)
+        SystemSetting.set("ldap_user_filter", request.form.get("ldap_user_filter", "(sAMAccountName={username})"),
+                           current_user.id)
+        SystemSetting.set("ldap_attribute_map",
+                           request.form.get("ldap_attribute_map",
+                                            '{"email":"mail","first_name":"givenName","last_name":"sn"}'),
+                           current_user.id)
+        flash(_("LDAP settings saved."), "success")
+        return redirect(url_for("admin.ldap_settings"))
+
+    settings = {
+        "ldap_enabled": SystemSetting.get("ldap_enabled", "0") == "1",
+        "ldap_server": SystemSetting.get("ldap_server", ""),
+        "ldap_port": SystemSetting.get("ldap_port", "389"),
+        "ldap_use_tls": SystemSetting.get("ldap_use_tls", "0") == "1",
+        "ldap_base_dn": SystemSetting.get("ldap_base_dn", ""),
+        "ldap_bind_dn": SystemSetting.get("ldap_bind_dn", ""),
+        "ldap_bind_password": SystemSetting.get("ldap_bind_password", ""),
+        "ldap_user_filter": SystemSetting.get("ldap_user_filter", "(sAMAccountName={username})"),
+        "ldap_attribute_map": SystemSetting.get("ldap_attribute_map",
+                                                 '{"email":"mail","first_name":"givenName","last_name":"sn"}'),
+    }
+    return render_template("admin/ldap_settings.html", settings=settings)
+
+
+@admin_bp.route("/sso-settings", methods=["GET", "POST"])
+@login_required
+@admin_required
+def sso_settings():
+    from app.models.user import SystemSetting
+
+    if request.method == "POST":
+        SystemSetting.set("sso_enabled", "1" if request.form.get("sso_enabled") else "0", current_user.id)
+        SystemSetting.set("sso_provider", request.form.get("sso_provider", ""), current_user.id)
+        SystemSetting.set("sso_client_id", request.form.get("sso_client_id", ""), current_user.id)
+        if request.form.get("sso_client_secret"):
+            SystemSetting.set("sso_client_secret", request.form.get("sso_client_secret", ""), current_user.id)
+        SystemSetting.set("sso_issuer_url", request.form.get("sso_issuer_url", ""), current_user.id)
+        SystemSetting.set("sso_metadata_url", request.form.get("sso_metadata_url", ""), current_user.id)
+        flash(_("SSO settings saved."), "success")
+        return redirect(url_for("admin.sso_settings"))
+
+    settings = {
+        "sso_enabled": SystemSetting.get("sso_enabled", "0") == "1",
+        "sso_provider": SystemSetting.get("sso_provider", ""),
+        "sso_client_id": SystemSetting.get("sso_client_id", ""),
+        "sso_client_secret": SystemSetting.get("sso_client_secret", ""),
+        "sso_issuer_url": SystemSetting.get("sso_issuer_url", ""),
+        "sso_metadata_url": SystemSetting.get("sso_metadata_url", ""),
+    }
+    return render_template("admin/sso_settings.html", settings=settings)

@@ -3,6 +3,11 @@ from sqlalchemy import inspect, text
 from app.extensions import db
 
 
+def _q(table):
+    """Quote identifier for PostgreSQL & SQLite compatibility."""
+    return f'"{table}"'
+
+
 def ensure_supplier_risk_columns():
     inspector = inspect(db.engine)
     if not inspector.has_table("supplier"):
@@ -33,7 +38,7 @@ def ensure_supplier_risk_columns():
 
     for name, sql_type in columns.items():
         if name not in existing:
-            db.session.execute(text(f"ALTER TABLE supplier ADD COLUMN {name} {sql_type}"))
+            db.session.execute(text(f"ALTER TABLE {_q('supplier')} ADD COLUMN {name} {sql_type}"))
     db.session.commit()
 
 
@@ -79,7 +84,7 @@ def ensure_control_columns():
     if inspector.has_table("control"):
         existing = {c["name"] for c in inspector.get_columns("control")}
         if "guidance_el" not in existing:
-            db.session.execute(text("ALTER TABLE control ADD COLUMN guidance_el TEXT"))
+            db.session.execute(text(f"ALTER TABLE {_q('control')} ADD COLUMN guidance_el TEXT"))
             db.session.commit()
 
 
@@ -93,6 +98,18 @@ def ensure_nis2_columns():
         if col not in existing:
             db.session.execute(text(f"ALTER TABLE nis2_compliance_check ADD COLUMN {col} TEXT"))
     db.session.commit()
+
+
+def ensure_auth_columns():
+    """Add auth_source column to user table if missing."""
+    inspector = inspect(db.engine)
+    if inspector.has_table("user"):
+        existing = {c["name"] for c in inspector.get_columns("user")}
+        if "auth_source" not in existing:
+            db.session.execute(text(
+                f"ALTER TABLE {_q('user')} ADD COLUMN auth_source VARCHAR(16) NOT NULL DEFAULT 'local'"
+            ))
+            db.session.commit()
 
 
 def update_nis2_guidance():

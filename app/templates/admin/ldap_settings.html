@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('LDAP Settings') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('LDAP Settings') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card shadow">
+      <div class="card-header"><h5 class="mb-0"><i class="fas fa-server me-2"></i>{{ _('LDAP / Active Directory Configuration') }}</h5></div>
+      <div class="card-body">
+        <form method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="form-check form-switch mb-4">
+            <input class="form-check-input" type="checkbox" id="ldap_enabled" name="ldap_enabled" value="1"
+                   {% if settings.ldap_enabled %}checked{% endif %}>
+            <label class="form-check-label" for="ldap_enabled">{{ _('Enable LDAP Authentication') }}</label>
+            <div class="form-text">{{ _('When enabled, users can authenticate using their LDAP / AD credentials.') }}</div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-8">
+              <label for="ldap_server" class="form-label">{{ _('LDAP Server') }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="ldap_server" name="ldap_server"
+                     value="{{ settings.ldap_server }}" placeholder="ldap://dc01.example.com">
+            </div>
+            <div class="col-md-2">
+              <label for="ldap_port" class="form-label">{{ _('Port') }}</label>
+              <input type="number" class="form-control" id="ldap_port" name="ldap_port"
+                     value="{{ settings.ldap_port }}">
+            </div>
+            <div class="col-md-2 d-flex align-items-end pb-2">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="ldap_use_tls" name="ldap_use_tls" value="1"
+                       {% if settings.ldap_use_tls %}checked{% endif %}>
+                <label class="form-check-label" for="ldap_use_tls">{{ _('Use TLS') }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="ldap_base_dn" class="form-label">{{ _('Base DN') }} <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="ldap_base_dn" name="ldap_base_dn"
+                   value="{{ settings.ldap_base_dn }}" placeholder="DC=example,DC=com">
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="ldap_bind_dn" class="form-label">{{ _('Bind DN') }}</label>
+              <input type="text" class="form-control" id="ldap_bind_dn" name="ldap_bind_dn"
+                     value="{{ settings.ldap_bind_dn }}" placeholder="CN=Service Account,OU=Users,DC=example,DC=com">
+              <div class="form-text">{{ _('Optional. Leave empty for anonymous bind.') }}</div>
+            </div>
+            <div class="col-md-6">
+              <label for="ldap_bind_password" class="form-label">{{ _('Bind Password') }}</label>
+              <input type="password" class="form-control" id="ldap_bind_password" name="ldap_bind_password"
+                     placeholder="{% if settings.ldap_bind_password %}{{ _('(leave empty to keep current)') }}{% endif %}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="ldap_user_filter" class="form-label">{{ _('User Filter') }}</label>
+            <input type="text" class="form-control" id="ldap_user_filter" name="ldap_user_filter"
+                   value="{{ settings.ldap_user_filter }}" placeholder="(sAMAccountName={username})">
+            <div class="form-text">{{ _('Use {username} as placeholder for the login name.') }}</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="ldap_attribute_map" class="form-label">{{ _('Attribute Mapping (JSON)') }}</label>
+            <textarea class="form-control font-monospace" id="ldap_attribute_map" name="ldap_attribute_map" rows="4">{{ settings.ldap_attribute_map }}</textarea>
+            <div class="form-text">{{ _('Maps local fields (email, first_name, last_name) to LDAP attributes.') }}</div>
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Settings') }}</button>
+          <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

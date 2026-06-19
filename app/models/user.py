@@ -34,6 +34,7 @@ class User(UserMixin, db.Model):
     timezone = db.Column(db.String(64), nullable=True, default="UTC")
     default_language = db.Column(db.String(8), nullable=True)
     avatar_url = db.Column(db.String(512), nullable=True)
+    auth_source = db.Column(db.String(16), nullable=False, default="local", comment="local|ldap|saml")
 
     roles = db.relationship("Role", secondary=user_roles, lazy="subquery",
                             backref=db.backref("users", lazy=True))
@@ -71,6 +72,10 @@ class User(UserMixin, db.Model):
             for role in self.roles
             for perm in role.permissions
         )
+
+    @property
+    def is_ldap_user(self):
+        return self.auth_source == "ldap"
 
     def is_locked(self):
         if self.login_attempts >= 5 and self.last_login_attempt:

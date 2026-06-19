@@ -43,19 +43,33 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        username = form.username.data
+        password = form.password.data
+        user = User.query.filter_by(username=username).first()
 
-        if not user or not user.verify_password(form.password.data):
-            if user:
+        # Try LDAP authentication first if enabled and user is an LDAP user (or doesn't exist locally)
+        from app.utils.ldap_auth import authenticate as ldap_authenticate
+        ldap_result = None
+        if not user or user.auth_source == "ldap":
+            ldap_result = ldap_authenticate(username, password)
+
+        if ldap_result:
+            user = User.query.get(ldap_result["id"])
+        elif user and user.auth_source != "ldap":
+            # Local authentication
+            if not user.verify_password(password):
                 user.increment_login_attempts()
                 db.session.commit()
                 if user.is_locked():
                     flash(_("Account locked due to too many failed attempts. Try again in 15 minutes."), "danger")
                     _log_audit(None, "ACCOUNT_LOCKED", "User", user.id, f"Account locked for {user.username}")
                     return render_template("auth/login.html", form=form)
+                flash(_("Invalid username or password."), "danger")
+                _log_audit(None, "FAILED_LOGIN", "User", user.id, f"Failed login for {username}")
+                return render_template("auth/login.html", form=form)
+        else:
             flash(_("Invalid username or password."), "danger")
-            _log_audit(None, "FAILED_LOGIN", "User", user.id if user else None,
-                       f"Failed login for {form.username.data}")
+            _log_audit(None, "FAILED_LOGIN", "User", user.id if user else None, f"Failed login for {username}")
             return render_template("auth/login.html", form=form)
 
         if not user.is_active:

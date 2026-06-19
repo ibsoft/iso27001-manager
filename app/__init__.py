@@ -191,6 +191,11 @@ def create_app(config_name=None):
     if not os.path.exists(app.config["LOG_DIR"]):
         os.makedirs(app.config["LOG_DIR"])
 
+    for _dir in ("app/static/uploads/avatars", "app/static/uploads/filled_forms"):
+        _path = os.path.join(os.path.dirname(__file__), _dir)
+        if not os.path.exists(_path):
+            os.makedirs(_path)
+
     log_file = os.path.join(app.config["LOG_DIR"], "app.log")
     handler = RotatingFileHandler(log_file, maxBytes=10 * 1024 * 1024, backupCount=10)
     handler.setLevel(getattr(logging, app.config.get("LOG_LEVEL", "INFO")))
@@ -205,10 +210,11 @@ def create_app(config_name=None):
     with app.app_context():
         from app.extensions import db as _db
         _db.create_all()
-        from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns, ensure_nis2_columns
+        from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns, ensure_nis2_columns, ensure_auth_columns
         ensure_supplier_risk_columns()
         ensure_control_columns()
         ensure_nis2_columns()
+        ensure_auth_columns()
         from app.utils.seed import seed_database
         seed_database()
         try:
