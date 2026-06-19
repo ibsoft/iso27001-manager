@@ -370,6 +370,10 @@
       .table th, .table td { padding: 0.5rem; font-size: 0.75rem; white-space: nowrap; }
       .badge { font-size: 0.65rem; }
       .d-flex.align-items-center.gap-3 { gap: 0.5rem !important; }
+      .card-body > .d-flex { flex-wrap: wrap; }
+      .card-body > .d-flex > form { min-width: 200px; flex: 1 1 100%; }
+      .card-body > .d-flex > .ms-2, .card-body > .d-flex > .ms-3,
+      .card-body > .d-flex > a:not(.nav-link), .card-body > .d-flex > .btn-group { margin-left: 0 !important; }
       .clause-card-inner { padding: 1.25rem; min-height: 130px; }
       .clause-number-badge, .clause-icon { width: 2.5rem; height: 2.5rem; font-size: 1.1rem; }
       .clause-title { font-size: 1rem; }
@@ -386,7 +390,10 @@
       img, iframe, embed, object, video { max-width: 100% !important; height: auto; }
       input, select, textarea { max-width: 100%; }
       .table-borderless td:first-child { width: auto !important; min-width: 90px; }
-      .card-header .d-flex.flex-wrap.gap-2 .btn span { font-size: 0.75rem; }
+      .card-header .btn span { font-size: 0.75rem; }
+      .card-header.d-flex, .card-header .d-flex { flex-wrap: wrap; gap: 0.35rem; }
+      .card-header.d-flex .btn .d-none.d-sm-inline { display: none !important; }
+      .card-header .btn i { margin-right: 0 !important; }
       .nav-tabs .nav-link { font-size: 0.8rem; padding: 0.45rem 0.6rem; }
       .content-wrapper table.table:not(.table-responsive) {
         display: block;
@@ -879,7 +886,7 @@ if ('serviceWorker' in navigator) {
   <i class="fas fa-robot"></i>
 </div>
 
-<div id="aiChatPanel" style="position:fixed;bottom:92px;right:24px;z-index:99998;width:400px;max-height:600px;background:var(--card-bg);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.15);display:none;flex-direction:column;overflow:hidden;transition:all 0.2s;border:1px solid var(--header-border);">
+<div id="aiChatPanel" style="position:fixed;bottom:92px;right:24px;z-index:99998;background:var(--card-bg);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.15);display:none;flex-direction:column;overflow:hidden;transition:all 0.2s;border:1px solid var(--header-border);">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;">
     <span style="font-weight:600;font-size:14px;"><i class="fas fa-robot me-2"></i>{{ _('ISMS AI Assistant') }}</span>
     <div>
@@ -887,7 +894,7 @@ if ('serviceWorker' in navigator) {
       <span style="cursor:pointer;" onclick="toggleAIChat()" title="{{ _('Close') }}"><i class="fas fa-times"></i></span>
     </div>
   </div>
-  <div id="aiChatMessages" style="flex:1;overflow-y:auto;padding:14px 18px;min-height:200px;max-height:400px;background:var(--body-bg);"></div>
+  <div id="aiChatMessages" style="flex:1;overflow-y:auto;padding:14px 18px;background:var(--body-bg);"></div>
   <div style="padding:10px 14px;border-top:1px solid var(--header-border);background:var(--card-bg);">
     <form id="aiChatForm" onsubmit="return sendAIChat(event)" style="display:flex;gap:8px;">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -899,8 +906,18 @@ if ('serviceWorker' in navigator) {
 {% endif %}
 
 <style>
+  #aiChatPanel { width:420px; max-height:680px; }
+  #aiChatMessages { min-height:250px; max-height:480px; }
   #aiChatPanel.fullscreen { width:100% !important; height:100% !important; max-height:100% !important; bottom:0 !important; right:0 !important; border-radius:0 !important; }
   #aiChatPanel.fullscreen #aiChatMessages { max-height:none !important; }
+  @media (max-width: 768px) {
+    #aiChatPanel { width:calc(100vw - 32px); max-height:calc(100vh - 120px); right:16px; bottom:84px; }
+    #aiChatMessages { max-height:none; min-height:150px; }
+    #aiChatBtn { bottom:16px; right:16px; width:52px; height:52px; font-size:20px; }
+  }
+  @media (max-width: 480px) {
+    #aiChatPanel { width:calc(100vw - 16px); right:8px; bottom:76px; border-radius:12px; }
+  }
   #aiChatMessages .msg { margin-bottom:12px; max-width:85%; padding:10px 14px; border-radius:14px; font-size:13px; line-height:1.5; word-wrap:break-word; }
   #aiChatMessages .msg.user { margin-left:auto; background:#667eea; color:#fff; border-bottom-right-radius:4px; }
   #aiChatMessages .msg.assistant { margin-right:auto; background:var(--table-hover); color:var(--text-primary); border-bottom-left-radius:4px; }
