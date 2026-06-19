@@ -906,8 +906,8 @@ if ('serviceWorker' in navigator) {
 {% endif %}
 
 <style>
-  #aiChatPanel { width:420px; max-height:680px; }
-  #aiChatMessages { min-height:250px; max-height:480px; }
+  #aiChatPanel { width:420px; height:80vh; max-height:800px; }
+  #aiChatMessages { min-height:250px; max-height:none; flex:1; }
   #aiChatPanel.fullscreen { width:100% !important; height:100% !important; max-height:100% !important; bottom:0 !important; right:0 !important; border-radius:0 !important; }
   #aiChatPanel.fullscreen #aiChatMessages { max-height:none !important; }
   @media (max-width: 768px) {
