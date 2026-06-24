@@ -38,6 +38,22 @@
       </div>
     </div>
   </div>
+
+  {% if is_demo %}
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 border-danger">
+      <div class="card-header text-danger"><h5 class="mb-0"><i class="fas fa-redo-alt me-2"></i>{{ _('Reset Demo Data') }}</h5></div>
+      <div class="card-body">
+        <p class="text-muted">{{ _('Reset all user-generated data back to the initial demo state.') }}</p>
+        <p class="small text-danger"><i class="fas fa-exclamation-triangle me-1"></i>{{ _('This will delete all assets, risks, incidents, policies, and other user data. Seed data will be preserved.') }}</p>
+        <form method="POST" action="{{ url_for('admin.reset_demo_data') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger" data-confirm="{{ _('This will permanently delete all user-generated data. Are you sure?') }}"><i class="fas fa-redo-alt me-1"></i>{{ _('Reset Data') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 <div class="card">

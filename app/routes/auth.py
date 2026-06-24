@@ -8,6 +8,7 @@ from app.models.audit_log import AuditLog
 from app.models.asset_assignment import AssetAssignment
 from app.forms import LoginForm, ChangePasswordForm, ProfileForm
 from datetime import datetime
+from app.paths import data_root
 
 import pyotp
 import qrcode
@@ -185,7 +186,7 @@ def profile():
         if form.avatar_file.data:
             file = form.avatar_file.data
             if allowed_file(file.filename):
-                upload_dir = os.path.join(current_app.root_path, "static", "uploads", "avatars")
+                upload_dir = os.path.join(data_root(), "app", "static", "uploads", "avatars")
                 os.makedirs(upload_dir, exist_ok=True)
                 ext = file.filename.rsplit(".", 1)[1].lower()
                 filename = f"user_{current_user.id}_{int(datetime.utcnow().timestamp())}.{ext}"

@@ -8,6 +8,7 @@ from app.models.nis2 import (
 )
 from app.models.incident import Incident
 from app.models.supplier import Supplier
+from app.paths import app_root
 from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import (
@@ -385,7 +386,7 @@ def edit_compliance(check_id):
 
 def _get_guidance_for_measure(measure_key):
     """Return localized guidance text for a given measure key based on current language."""
-    json_path = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data", "nis2_controls.json")
+    json_path = os.path.join(app_root(), "seed_data", "nis2_controls.json")
     if not os.path.exists(json_path):
         return ""
     with open(json_path, encoding="utf-8") as f:
@@ -399,7 +400,7 @@ def _get_guidance_for_measure(measure_key):
 
 def _populate_nis2_guidance(check):
     """Populate guidance from seed JSON based on the check's measure."""
-    json_path = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data", "nis2_controls.json")
+    json_path = os.path.join(app_root(), "seed_data", "nis2_controls.json")
     if not os.path.exists(json_path):
         return
     with open(json_path, encoding="utf-8") as f:

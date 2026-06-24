@@ -4,6 +4,7 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask_talisman import Talisman
 from config import config
+from app.paths import data_root, app_root
 
 talisman = Talisman()
 
@@ -35,7 +36,7 @@ def create_app(config_name=None):
     session_ext.init_app(app)
     mail.init_app(app)
     limiter.init_app(app)
-    from flask import request, session, flash, redirect, url_for, jsonify
+    from flask import request, session, flash, redirect, url_for, jsonify, render_template
     from flask_babel import gettext as _
 
     LANGUAGES = {"en": "English", "el": "Ελληνικά"}
@@ -50,26 +51,9 @@ def create_app(config_name=None):
 
     csp = {
         "default-src": ["'self'"],
-        "style-src": [
-            "'self'",
-            "'unsafe-inline'",
-            "https://cdn.jsdelivr.net",
-            "https://fonts.googleapis.com",
-            "https://cdnjs.cloudflare.com",
-        ],
-        "script-src": [
-            "'self'",
-            "'unsafe-inline'",
-            "https://cdn.jsdelivr.net",
-            "https://cdnjs.cloudflare.com",
-        ],
-        "font-src": [
-            "'self'",
-            "data:",
-            "https://fonts.gstatic.com",
-            "https://cdn.jsdelivr.net",
-            "https://cdnjs.cloudflare.com",
-        ],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "script-src": ["'self'", "'unsafe-inline'"],
+        "font-src": ["'self'", "data:"],
         "img-src": ["'self'", "data:", "https:"],
         "connect-src": ["'self'", "https:"],
     }
@@ -111,7 +95,7 @@ def create_app(config_name=None):
 
     @app.context_processor
     def inject_globals():
-        from flask import session as _session
+        from flask import session as _session, current_app as _current_app
         from app.models.user import SystemSetting
         from app.utils.ai_helper import is_enabled as _ai_enabled
         _apply_forced_settings()
@@ -123,7 +107,18 @@ def create_app(config_name=None):
                 "forced_timezone": SystemSetting.get("forced_timezone"),
             },
             "ai_enabled": _ai_enabled(),
+            "is_demo": _current_app.config.get("DEMO", False),
         }
+
+    @app.before_request
+    def apply_forced_settings_before():
+        from app.models.user import SystemSetting
+        forced_lang = SystemSetting.get("forced_language")
+        forced_tz = SystemSetting.get("forced_timezone")
+        if forced_lang:
+            session["lang"] = forced_lang
+        if forced_tz:
+            session["timezone"] = forced_tz
 
     @app.errorhandler(403)
     def forbidden(error):
@@ -135,6 +130,12 @@ def create_app(config_name=None):
         if request.referrer and request.referrer != request.url:
             return redirect(request.referrer)
         return redirect(fallback)
+
+    @app.errorhandler(429)
+    def too_many_requests(error):
+        if request.accept_mimetypes.best == "application/json":
+            return jsonify({"error": _("Too Many Requests"), "message": _("Rate limit exceeded. Please wait before retrying.")}), 429
+        return render_template("errors/429.html"), 429
 
     from app.routes.auth import auth_bp
     from app.routes.dashboard import dashboard_bp
@@ -192,11 +193,11 @@ def create_app(config_name=None):
         os.makedirs(app.config["LOG_DIR"])
 
     for _dir in ("app/static/uploads/avatars", "app/static/uploads/filled_forms"):
-        _path = os.path.join(os.path.dirname(__file__), _dir)
+        _path = os.path.join(data_root(), _dir)
         if not os.path.exists(_path):
             os.makedirs(_path)
 
-    _backup_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "backups")
+    _backup_dir = os.path.join(data_root(), "backups")
     if not os.path.exists(_backup_dir):
         os.makedirs(_backup_dir)
 
@@ -253,7 +254,7 @@ def register_commands(app):
     @app.cli.command("update-guidance")
     def update_guidance():
         """Update control guidance from the seed JSON file."""
-        seed_dir = os.path.join(os.path.dirname(__file__), "..", "seed_data")
+        seed_dir = os.path.join(app_root(), "seed_data")
         json_path = os.path.join(seed_dir, "annex_a_controls.json")
         if not os.path.exists(json_path):
             click.echo("JSON file not found.")

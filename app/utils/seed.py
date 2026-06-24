@@ -1,6 +1,7 @@
 import json
 import os
 from app.extensions import db
+from app.paths import app_root
 
 
 def seed_database():
@@ -10,10 +11,10 @@ def seed_database():
     from app.models.clause import Clause
     from app.models.metric import KpiDefinition
 
-    seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+    seed_dir = os.path.join(app_root(), "seed_data")
 
     # ── Roles & Permissions ────────────────────────────────────
-    with open(os.path.join(seed_dir, "roles.json")) as f:
+    with open(os.path.join(seed_dir, "roles.json"), encoding="utf-8") as f:
         roles_data = json.load(f)
 
     all_perms = {}
@@ -70,7 +71,7 @@ def seed_database():
 
     # ── Annex A Controls (only on first run) ───────────────────
     if Domain.query.first() is None:
-        with open(os.path.join(seed_dir, "annex_a_controls.json")) as f:
+        with open(os.path.join(seed_dir, "annex_a_controls.json"), encoding="utf-8") as f:
             annex_data = json.load(f)
 
         for dd in annex_data["domains"]:
@@ -100,7 +101,7 @@ def seed_database():
 
     # ── Clauses (only on first run) ────────────────────────────
     if Clause.query.first() is None:
-        with open(os.path.join(seed_dir, "clauses.json")) as f:
+        with open(os.path.join(seed_dir, "clauses.json"), encoding="utf-8") as f:
             clauses_data = json.load(f)
 
         for cd in clauses_data:
@@ -151,7 +152,7 @@ def seed_database():
             ("mfa", "Multi-Factor Authentication", "Art 21(2)(i)"),
             ("security_training", "Security Training", "Art 21(2)(j)"),
         ]
-        seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+        seed_dir = os.path.join(app_root(), "seed_data")
         nis2_json = os.path.join(seed_dir, "nis2_controls.json")
         guidance_lookup = {}
         if os.path.exists(nis2_json):
@@ -172,3 +173,25 @@ def seed_database():
             db.session.add(check)
 
     db.session.commit()
+
+
+def reset_demo_data():
+    from sqlalchemy import text
+
+    preserve = {
+        "user", "role", "permission", "user_roles", "role_permissions",
+        "system_setting", "domain", "control", "clause",
+        "kpi_definition", "nis2_compliance_check",
+        "alembic_version",
+    }
+
+    db.session.execute(text("PRAGMA foreign_keys = OFF"))
+    try:
+        for name in list(db.metadata.tables.keys()):
+            if name not in preserve:
+                db.session.execute(text(f"DELETE FROM {name}"))
+        db.session.commit()
+    finally:
+        db.session.execute(text("PRAGMA foreign_keys = ON"))
+
+    seed_database()

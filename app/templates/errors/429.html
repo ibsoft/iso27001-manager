@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ _('Too Many Requests') }} - ISO 27001 - NIS2 - GDPR</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/inter/inter.css') }}">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f1f5f9;
+    }
+    .error-container { text-align: center; max-width: 480px; padding: 2rem; }
+    .error-code { font-size: 6rem; font-weight: 800; background: linear-gradient(135deg, #ef4444, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+    .error-title { font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0 1rem; }
+    .error-desc { color: #94a3b8; margin-bottom: 2rem; }
+    .btn-home { display: inline-block; padding: 0.6rem 1.5rem; background: linear-gradient(135deg, #1a56db, #7c3aed); color: #fff; text-decoration: none; font-weight: 600; border-radius: 0.5rem; }
+    .btn-home:hover { color: #fff; opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="error-code">429</div>
+    <div class="error-title">{{ _('Too Many Requests') }}</div>
+    <div class="error-desc">{{ _('You have sent too many requests in a short period. Please wait a moment and try again.') }}</div>
+    <a href="{{ url_for('auth.login') }}" class="btn-home">{{ _('Back to Login') }}</a>
+  </div>
+</body>
+</html>
