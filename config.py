@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from app.paths import data_root, app_root
 
 load_dotenv()
 
@@ -75,9 +76,41 @@ class TestingConfig(Config):
     WTF_CSRF_ENABLED = False
 
 
+class DemoConfig(Config):
+    """Configuration for the standalone Windows demo bundle."""
+
+    DEBUG = False
+    TALISMAN_FORCE_HTTPS = False
+    DEMO = True
+    SESSION_COOKIE_SECURE = False
+
+    _d = data_root()
+    _instance = os.path.join(_d, "instance")
+    os.makedirs(_instance, exist_ok=True)
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(
+        _instance, "isms_demo.db"
+    ).replace("\\", "/")
+
+    UPLOAD_FOLDER = os.path.join(_d, "app", "static", "uploads")
+    LOG_DIR = os.path.join(_d, "logs")
+
+    @staticmethod
+    def init_app(app):
+        _d = data_root()
+        _static = os.path.join(_d, "app", "static")
+        if not os.path.exists(_static):
+            import shutil
+            _src = os.path.join(app_root(), "app", "static")
+            if os.path.exists(_src):
+                shutil.copytree(_src, _static, ignore=shutil.ignore_patterns("uploads"))
+        app.static_folder = _static
+        app.static_url_path = "/static"
+
+
 config = {
     "development": DevelopmentConfig,
     "production": ProductionConfig,
     "testing": TestingConfig,
+    "demo": DemoConfig,
     "default": DevelopmentConfig,
 }

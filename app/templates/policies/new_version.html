@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link href="https://cdn.jsdelivr.net/npm/tinymce@7.7.2/skins/ui/oxide/skin.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='vendor/tinymce/skins/ui/oxide/skin.min.css') }}" rel="stylesheet">
 <style>
   .upload-area {
     border: 2px dashed #cbd5e1;
@@ -85,7 +85,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/tinymce@7.7.2/tinymce.min.js"></script>
+<script src="{{ url_for('static', filename='vendor/tinymce/tinymce.min.js') }}"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var dropZone = document.getElementById('dropZone');

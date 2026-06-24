@@ -1,6 +1,7 @@
 from sqlalchemy import inspect, text
 
 from app.extensions import db
+from app.paths import app_root
 
 
 def _q(table):
@@ -48,7 +49,7 @@ def update_control_guidance():
     import os
     from app.models.control import Control
 
-    seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+    seed_dir = os.path.join(app_root(), "seed_data")
     json_path = os.path.join(seed_dir, "annex_a_controls.json")
     if not os.path.exists(json_path):
         return
@@ -118,7 +119,7 @@ def update_nis2_guidance():
     import os
     from app.models.nis2 import Nis2ComplianceCheck
 
-    seed_dir = os.path.join(os.path.dirname(__file__), "..", "..", "seed_data")
+    seed_dir = os.path.join(app_root(), "seed_data")
     json_path = os.path.join(seed_dir, "nis2_controls.json")
     if not os.path.exists(json_path):
         return

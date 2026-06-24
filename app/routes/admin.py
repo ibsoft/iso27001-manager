@@ -3,6 +3,7 @@ import os
 import zipfile
 import shutil
 from datetime import datetime
+from app.paths import data_root
 from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, current_app
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
@@ -169,7 +170,7 @@ def _get_db_path():
 
 
 def _get_backup_dir():
-    backup_dir = os.path.join(current_app.root_path, "..", "backups")
+    backup_dir = os.path.join(data_root(), "backups")
     os.makedirs(backup_dir, exist_ok=True)
     return backup_dir
 
@@ -326,6 +327,21 @@ def restore_backup():
     except Exception as e:
         flash(_("Database restore failed: ") + str(e), "danger")
 
+    return redirect(url_for("admin.list_backups"))
+
+
+@admin_bp.route("/reset-demo-data", methods=["POST"])
+@login_required
+@admin_required
+def reset_demo_data():
+    if not current_app.config.get("DEMO", False):
+        flash(_("This action is only available in demo mode."), "danger")
+        return redirect(url_for("admin.list_backups"))
+
+    from app.utils.seed import reset_demo_data as _reset
+    _reset()
+    _log_audit("Reset demo data")
+    flash(_("Demo data has been reset successfully."), "success")
     return redirect(url_for("admin.list_backups"))
 
 

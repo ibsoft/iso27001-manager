@@ -1,0 +1,105 @@
+FROM ubuntu:24.04 AS wine-python
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV WINEPREFIX=/opt/wine
+ENV WINEARCH=win64
+ENV WINEDLLOVERRIDES="winemenubuilder,mshtml,mscoree="
+ENV DISPLAY=:99
+
+# Ubuntu 24.04 ships Wine 9.x which has better propsys support
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      ca-certificates unzip wget xvfb xauth wine wine64 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN wget -q https://www.python.org/ftp/python/3.12.4/python-3.12.4-embed-amd64.zip -O /tmp/py.zip
+COPY pip-*.whl setuptools-*.whl wheel-*.whl /tmp/
+
+RUN rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1024x768x16 & sleep 2 && \
+    wine wineboot --init 2>&1; wineserver -w; true
+
+RUN mkdir -p /opt/wine/drive_c/Python312/Lib/site-packages && \
+    unzip -q /tmp/py.zip -d /opt/wine/drive_c/Python312 && \
+    printf '%s\n' 'python312.zip' '.' 'Lib/site-packages' 'import site' > /opt/wine/drive_c/Python312/python312._pth && \
+    unzip -q /tmp/pip-*.whl -d /opt/wine/drive_c/Python312/Lib/site-packages/ && \
+    unzip -q /tmp/setuptools-*.whl -d /opt/wine/drive_c/Python312/Lib/site-packages/ && \
+    unzip -q /tmp/wheel-*.whl -d /opt/wine/drive_c/Python312/Lib/site-packages/ && \
+    rm -f /tmp/py.zip /tmp/pip-*.whl /tmp/setuptools-*.whl /tmp/wheel-*.whl
+
+RUN rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1024x768x16 & sleep 2 && \
+    wine C:/Python312/python.exe --version 2>&1 && \
+    wine C:/Python312/python.exe -m pip --version 2>&1
+
+FROM wine-python AS build
+
+WORKDIR /src
+COPY requirements.txt .
+RUN rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1024x768x16 & sleep 2 && \
+    wine C:/Python312/python.exe -m pip install --only-binary :all: -r requirements.txt 2>&1
+
+COPY . .
+RUN rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1024x768x16 & sleep 2 && \
+    wine C:/Python312/python.exe -m pip install pyinstaller 2>&1 && \
+    wine C:/Python312/python.exe -m babel.messages.frontend compile -d app/translations 2>/dev/null || true
+
+RUN rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1024x768x16 & sleep 2 && \
+    wine C:/Python312/python.exe -c "import reportlab; print('reportlab OK:', reportlab.__file__); import reportlab.graphics.barcode.code128; print('code128 OK'); import reportlab.graphics.barcode.eanbc; print('eanbc OK'); import reportlab.graphics.barcode.widgets; print('widgets OK')" 2>&1 && \
+    echo "=== Barcode directory ===" && \
+    ls -la /opt/wine/drive_c/Python312/Lib/site-packages/reportlab/graphics/barcode/ && \
+    rm -rf dist/ISMS-Demo build/ISMS-Demo && \
+    wine C:/Python312/Scripts/pyinstaller.exe --name=ISMS-Demo \
+      --onedir \
+      --windowed \
+      --noconfirm \
+      --add-data "app/templates;app/templates" \
+      --add-data "app/static;app/static" \
+      --add-data "app/translations;app/translations" \
+      --add-data "seed_data;seed_data" \
+      --hidden-import "waitress" \
+      --hidden-import "flask" \
+      --hidden-import "flask_sqlalchemy" \
+      --hidden-import "flask_login" \
+      --hidden-import "flask_wtf" \
+      --hidden-import "flask_mail" \
+      --hidden-import "flask_migrate" \
+      --hidden-import "flask_babel" \
+      --hidden-import "flask_limiter" \
+      --hidden-import "flask_talisman" \
+      --hidden-import "flask_session" \
+      --hidden-import "qrcode" \
+      --hidden-import "pyotp" \
+      --hidden-import "ldap3" \
+      --hidden-import "openai" \
+      --hidden-import "dotenv" \
+      --hidden-import "PIL" \
+      --hidden-import "PIL._tkinter_finder" \
+      --hidden-import "reportlab" \
+      --hidden-import "reportlab.graphics.barcode" \
+      --hidden-import "reportlab.graphics.barcode.code128" \
+      --hidden-import "reportlab.graphics.barcode.code39" \
+      --hidden-import "reportlab.graphics.barcode.code93" \
+      --hidden-import "reportlab.graphics.barcode.common" \
+      --hidden-import "reportlab.graphics.barcode.eanbc" \
+      --hidden-import "reportlab.graphics.barcode.qr" \
+      --hidden-import "reportlab.graphics.barcode.widgets" \
+      --hidden-import "reportlab.graphics.barcode.usps" \
+      --hidden-import "reportlab.graphics.barcode.usps4s" \
+      --hidden-import "reportlab.graphics.barcode.lto" \
+      --hidden-import "reportlab.graphics.barcode.fourstate" \
+      --collect-all "reportlab.graphics.barcode" \
+      --add-data "C:/Python312/Lib/site-packages/reportlab/graphics/barcode;reportlab/graphics/barcode" \
+      --hidden-import "xhtml2pdf" \
+      --hidden-import "bleach" \
+      --hidden-import "markdown" \
+      --hidden-import "openpyxl" \
+      --hidden-import "docx" \
+      --hidden-import "apscheduler" \
+      --hidden-import "email_validator" \
+      --hidden-import "redis" \
+      --collect-all "flask" \
+      --collect-all "app" \
+      demo.py 2>&1 && \
+    mkdir -p /out && cp -r dist/ISMS-Demo /out/
+
+FROM alpine:latest AS export
+COPY --from=build /out /

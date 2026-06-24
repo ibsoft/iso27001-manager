@@ -5,6 +5,7 @@ from flask_babel import gettext as _
 from xhtml2pdf import pisa
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+import reportlab.graphics.barcode.code128  # noqa: F401 — ensure PyInstaller bundles barcode submodules
 
 
 _FONTS_REGISTERED = False
