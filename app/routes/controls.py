@@ -19,6 +19,7 @@ controls_bp = Blueprint("controls", __name__)
 
 @controls_bp.route("/")
 @login_required
+@permission_required("menu_controls")
 def list_controls():
     domain_id = request.args.get("domain_id", type=int)
     status = request.args.get("status")

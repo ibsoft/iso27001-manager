@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Edit Role: %(name)s', name=role.name|title) }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('admin.list_roles') }}">{{ _('Roles') }}</a></li>
+<li class="breadcrumb-item active">{{ role.name|title }}</li>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span><i class="fas fa-user-tag me-2"></i>{{ _('Permissions for') }} {{ role.name|title }}</span>
+          <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+        </div>
+        <div class="card-body">
+          <p class="text-muted small mb-3">{{ role.description }}</p>
+          <div class="row g-3">
+            {% for group_name, codenames in permission_groups.items() %}
+            <div class="col-md-6 col-lg-4">
+              <div class="card h-100">
+                <div class="card-header py-2 small fw-semibold d-flex justify-content-between align-items-center">
+                  <span>{{ _(group_name) }}</span>
+                  <div class="form-check form-switch" style="font-size:0.75rem">
+                    <input class="form-check-input group-toggle" type="checkbox" id="toggle_{{ group_name|replace(' ', '_')|lower }}" data-group="{{ group_name|replace(' ', '_')|lower }}" {% if codenames|select('in', role_perms)|list|length == codenames|length %}checked{% endif %}>
+                    <label class="form-check-label" for="toggle_{{ group_name|replace(' ', '_')|lower }}" style="font-size:0.75rem">{{ _('All') }}</label>
+                  </div>
+                </div>
+                <div class="card-body py-2" style="max-height:280px;overflow-y:auto;">
+                  {% for codename in codenames %}
+                  {% set perm = all_perms|selectattr('codename', 'equalto', codename)|first %}
+                  <div class="form-check form-check-inline mb-1" style="min-width:160px;">
+                    <input class="form-check-input perm-checkbox group-{{ group_name|replace(' ', '_')|lower }}" type="checkbox" name="permissions" value="{{ codename }}" id="perm_{{ codename }}" {% if codename in role_perms %}checked{% endif %}>
+                    <label class="form-check-label small" for="perm_{{ codename }}">{{ codename }}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Permissions') }}</button>
+          <a href="{{ url_for('admin.list_roles') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.group-toggle').forEach(function(toggle) {
+  toggle.addEventListener('change', function() {
+    var groupClass = 'group-' + this.getAttribute('data-group');
+    document.querySelectorAll('.' + groupClass).forEach(function(cb) {
+      cb.checked = toggle.checked;
+    });
+  });
+});
+</script>
+{% endblock %}

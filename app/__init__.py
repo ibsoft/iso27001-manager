@@ -98,7 +98,21 @@ def create_app(config_name=None):
         from flask import session as _session, current_app as _current_app
         from app.models.user import SystemSetting
         from app.utils.ai_helper import is_enabled as _ai_enabled
+        from app.utils.menu_permissions import ENDPOINT_MENU_PERMISSION, PERMISSION_GROUPS
+        from flask_login import current_user
+
         _apply_forced_settings()
+
+        def has_menu_access(endpoint):
+            from flask_login import current_user as _cu
+            if _cu.is_authenticated and _cu.has_role("admin"):
+                return True
+            perm = ENDPOINT_MENU_PERMISSION.get(endpoint)
+            if perm is None:
+                return True
+            write_perm = perm + "_write"
+            return _cu.is_authenticated and (_cu.has_permission(perm) or _cu.has_permission(write_perm))
+
         return {
             "current_lang": _session.get("lang", "en"),
             "LANGUAGES": LANGUAGES,
@@ -108,6 +122,8 @@ def create_app(config_name=None):
             },
             "ai_enabled": _ai_enabled(),
             "is_demo": _current_app.config.get("DEMO", False),
+            "has_menu_access": has_menu_access,
+            "permission_groups": PERMISSION_GROUPS,
         }
 
     @app.before_request

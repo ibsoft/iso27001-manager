@@ -15,6 +15,7 @@ incidents_bp = Blueprint("incidents", __name__)
 
 @incidents_bp.route("/")
 @login_required
+@permission_required("menu_incidents")
 def list_incidents():
     status = request.args.get("status")
     severity = request.args.get("severity")

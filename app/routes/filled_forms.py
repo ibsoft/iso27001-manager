@@ -9,7 +9,7 @@ from app.models.filled_form import FilledForm
 from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.models.asset_assignment import AssetAssignment
-from app.utils.decorators import admin_required, role_required
+from app.utils.decorators import permission_required, admin_required, role_required
 from app.utils.pagination import paginate
 
 filled_forms_bp = Blueprint("filled_forms", __name__)
@@ -39,6 +39,7 @@ def _delete_upload(filename):
 
 @filled_forms_bp.route("/")
 @login_required
+@permission_required("menu_filled_forms")
 def list_filled_forms():
     year = request.args.get("year", type=int)
     user_id = request.args.get("user_id", type=int)

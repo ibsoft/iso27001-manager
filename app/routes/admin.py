@@ -11,8 +11,9 @@ from app.extensions import db
 from app.models.user import User, Role, Permission
 from app.models.audit_log import AuditLog
 from app.forms import UserForm
-from app.utils.decorators import admin_required
+from app.utils.decorators import admin_required, permission_required
 from app.utils.pagination import paginate
+from app.utils.menu_permissions import PERMISSION_GROUPS
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -131,6 +132,23 @@ def toggle_user_active(user_id):
 def list_roles():
     roles = Role.query.all()
     return render_template("admin/roles.html", roles=roles)
+
+
+@admin_bp.route("/roles/<int:role_id>/edit", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_role(role_id):
+    role = Role.query.get_or_404(role_id)
+    if request.method == "POST":
+        selected = request.form.getlist("permissions")
+        role.permissions = Permission.query.filter(Permission.codename.in_(selected)).all()
+        db.session.commit()
+        _log_audit(f"Updated permissions for role: {role.name}")
+        flash(_("Role permissions updated."), "success")
+        return redirect(url_for("admin.list_roles"))
+    all_perms = Permission.query.order_by(Permission.codename).all()
+    role_perm_codenames = {p.codename for p in role.permissions}
+    return render_template("admin/role_edit.html", role=role, all_perms=all_perms, role_perms=role_perm_codenames, permission_groups=PERMISSION_GROUPS)
 
 
 @admin_bp.route("/audit-log")

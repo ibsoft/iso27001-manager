@@ -13,6 +13,9 @@
       </div>
       <div class="card-body">
         <p class="text-muted small">{{ role.description }}</p>
+        <div class="mb-2">
+          <a href="{{ url_for('admin.edit_role', role_id=role.id) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit me-1"></i>{{ _('Edit Permissions') }}</a>
+        </div>
         <h6 class="small">{{ _('Permissions:') }}</h6>
         <div>
           {% for perm in role.permissions %}

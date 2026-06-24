@@ -19,6 +19,7 @@ assets_bp = Blueprint("assets", __name__)
 
 @assets_bp.route("/")
 @login_required
+@permission_required("menu_assets")
 def list_assets():
     classification = request.args.get("classification")
     asset_type = request.args.get("asset_type")

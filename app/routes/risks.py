@@ -17,6 +17,7 @@ risks_bp = Blueprint("risks", __name__)
 
 @risks_bp.route("/")
 @login_required
+@permission_required("menu_risks")
 def list_risks():
     status = request.args.get("status")
     risk_level = request.args.get("risk_level")

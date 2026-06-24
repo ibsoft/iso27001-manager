@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session
 from flask_login import login_required
 from flask_babel import gettext as _
+from app.utils.decorators import permission_required
 from app.models.clause import Clause
 
 clauses_bp = Blueprint("clauses", __name__)
@@ -8,6 +9,7 @@ clauses_bp = Blueprint("clauses", __name__)
 
 @clauses_bp.route("/")
 @login_required
+@permission_required("menu_clauses")
 def list_clauses():
     lang = session.get("lang", "en")
     clauses = Clause.query.order_by(Clause.number).all()

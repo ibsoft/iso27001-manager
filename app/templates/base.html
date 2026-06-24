@@ -565,6 +565,13 @@
 
         {% for section_name, items in sections %}
         {% set section_id = section_name|replace(' ', '_')|replace('&', '')|lower %}
+        {% set ns = namespace(has_visible=false) %}
+        {% for endpoint, icon, label in items %}
+        {% if has_menu_access(endpoint) %}
+        {% set ns.has_visible = true %}
+        {% endif %}
+        {% endfor %}
+        {% if ns.has_visible %}
         <li class="nav-header" onclick="toggleAccordion('{{ section_id }}')">
           <span class="nav-header-text">{{ _(section_name) }}</span>
           <i class="fas fa-chevron-right nav-chevron"></i>
@@ -572,10 +579,13 @@
         <li class="nav-section" id="{{ section_id }}">
           <ul class="nav-sidebar" style="list-style:none;padding:0;margin:0;">
             {% for endpoint, icon, label in items %}
+            {% if has_menu_access(endpoint) %}
             <li class="nav-item"><a href="{{ url_for(endpoint) }}" class="nav-link {{ 'active' if request.endpoint and endpoint in request.endpoint else '' }}"><i class="{{ icon }}"></i><p>{{ label }}</p></a></li>
+            {% endif %}
             {% endfor %}
           </ul>
         </li>
+        {% endif %}
         {% endfor %}
 
         {% if current_user.has_role('admin') %}
@@ -587,6 +597,7 @@
         <li class="nav-section" id="{{ admin_section_id }}">
           <ul class="nav-sidebar" style="list-style:none;padding:0;margin:0;">
             <li class="nav-item"><a href="{{ url_for('admin.list_users') }}" class="nav-link {{ 'active' if request.endpoint and 'admin' in request.endpoint and 'admin.list_users' in request.endpoint else '' }}"><i class="fas fa-users-cog"></i><p>{{ _('User Management') }}</p></a></li>
+            <li class="nav-item"><a href="{{ url_for('admin.list_roles') }}" class="nav-link {{ 'active' if request.endpoint and 'admin' in request.endpoint and 'admin.list_roles' in request.endpoint else '' }}"><i class="fas fa-user-tag"></i><p>{{ _('Roles & Permissions') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('reports.view_audit_log') }}" class="nav-link"><i class="fas fa-history"></i><p>{{ _('Audit Trail') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('admin.list_backups') }}" class="nav-link"><i class="fas fa-database"></i><p>{{ _('Backup & Restore') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('ai.ai_settings') }}" class="nav-link"><i class="fas fa-robot"></i><p>{{ _('AI Settings') }}</p></a></li>
