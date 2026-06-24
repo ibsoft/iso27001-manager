@@ -15,6 +15,7 @@ mgmt_review_bp = Blueprint("management_review", __name__)
 
 @mgmt_review_bp.route("/")
 @login_required
+@permission_required("menu_reviews")
 def list_reviews():
     status = request.args.get("status")
     query = ManagementReview.query

@@ -67,11 +67,12 @@ class User(UserMixin, db.Model):
         return any(role.name == role_name for role in self.roles)
 
     def has_permission(self, permission_codename):
-        return any(
-            perm.codename == permission_codename
-            for role in self.roles
-            for perm in role.permissions
-        )
+        codenames = {perm.codename for role in self.roles for perm in role.permissions}
+        if permission_codename in codenames:
+            return True
+        if not permission_codename.endswith("_write") and (permission_codename + "_write") in codenames:
+            return True
+        return False
 
     @property
     def is_ldap_user(self):

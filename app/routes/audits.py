@@ -16,6 +16,7 @@ audits_bp = Blueprint("audits", __name__)
 
 @audits_bp.route("/")
 @login_required
+@permission_required("menu_audits")
 def list_audits():
     status = request.args.get("status")
     query = InternalAudit.query

@@ -65,7 +65,7 @@ def _log_audit(details):
 
 @business_continuity_bp.route("/")
 @login_required
-@permission_required("business_continuity_view")
+@permission_required("menu_business_continuity")
 def dashboard():
     total_bia = BusinessImpactAnalysis.query.count()
     total_plans = BusinessContinuityPlan.query.count()

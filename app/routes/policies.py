@@ -41,6 +41,7 @@ def _delete_upload(filename):
 
 @policies_bp.route("/")
 @login_required
+@permission_required("menu_policies")
 def list_policies():
     status = request.args.get("status")
     category = request.args.get("category")

@@ -15,6 +15,7 @@ capa_bp = Blueprint("capa", __name__)
 
 @capa_bp.route("/")
 @login_required
+@permission_required("menu_capa")
 def list_capas():
     status = request.args.get("status")
     source = request.args.get("source")

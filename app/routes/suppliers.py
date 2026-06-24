@@ -14,6 +14,7 @@ suppliers_bp = Blueprint("suppliers", __name__)
 
 @suppliers_bp.route("/")
 @login_required
+@permission_required("menu_suppliers")
 def list_suppliers():
     status = request.args.get("status")
     assessment = request.args.get("assessment_status")

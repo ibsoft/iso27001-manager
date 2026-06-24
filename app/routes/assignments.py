@@ -32,6 +32,7 @@ def _log(user_id, action, details):
 
 @assignments_bp.route("/")
 @login_required
+@permission_required("menu_assignments")
 def list_assignments():
     status_filter = request.args.get("status")
     search = request.args.get("search", "")

@@ -19,6 +19,7 @@ soa_bp = Blueprint("soa", __name__)
 
 @soa_bp.route("/")
 @login_required
+@permission_required("menu_soa")
 def list_soa():
     lang = session.get("lang", "en")
     domains = Domain.query.order_by(Domain.code).all()

@@ -17,6 +17,7 @@ training_bp = Blueprint("training", __name__)
 
 @training_bp.route("/")
 @login_required
+@permission_required("menu_training")
 def list_courses():
     category = request.args.get("category")
     query = TrainingCourse.query
