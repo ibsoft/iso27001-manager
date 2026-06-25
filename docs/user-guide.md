@@ -385,3 +385,28 @@ The database is recreated with seed data on next startup.
 ### Controls Not Loading
 
 The 93 Annex A controls are loaded from `seed_data/annex_a_controls.json`. If the file is missing or malformed, delete the database and restart (see above).
+
+---
+
+## 11. Changelog / New Features
+
+### Approval Request Deletion (Admin)
+
+Admins can delete approval requests from the approval history page.
+A trash icon appears next to each historic entry for admin users only.
+Notifications linked to the deleted request are also removed.
+
+### Greek Translations for Controls
+
+The **Description** and **Detailed Description** fields of all ISO 27001:2022
+Annex A controls now include Greek translations. These are applied
+automatically on startup. To edit them, open a control's edit form where
+dedicated "Description (Greek)" and "Detailed Description (Greek)" fields
+are provided.
+
+### Dark Theme Improvements
+
+- The asset import instructions section renders with correct text color
+  in dark mode.
+- The signature canvas in asset checkout/checkin forms now has a white
+  background, ensuring signatures are visible in both light and dark themes.

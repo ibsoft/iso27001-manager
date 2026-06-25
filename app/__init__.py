@@ -37,7 +37,22 @@ def create_app(config_name=None):
     mail.init_app(app)
     limiter.init_app(app)
     from flask import request, session, flash, redirect, url_for, jsonify, render_template
+    import flask_babel as _fb
+    import unicodedata as _uc
+
+    def _strip_el_accents(text):
+        result = []
+        for ch in text:
+            if '\u0386' <= ch <= '\u03CE':
+                ch = _uc.normalize('NFD', ch)[0]
+            result.append(ch)
+        return ''.join(result)
+
+    _original_gettext = _fb.gettext
+    _fb.gettext = lambda *args, **kwargs: _strip_el_accents(_original_gettext(*args, **kwargs))
     from flask_babel import gettext as _
+    app.jinja_env.globals.update(_strip_el_accents=_strip_el_accents)
+    app.jinja_env.filters["strip_el_accents"] = _strip_el_accents
 
     LANGUAGES = {"en": "English", "el": "Ελληνικά"}
 
