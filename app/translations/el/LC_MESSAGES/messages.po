@@ -3971,7 +3971,7 @@ msgstr "Νέος Χρήστης"
 
 #: app/templates/gdpr/dsar/list.html:39
 msgid "New Request"
-msgstr "Νέος Κίνδυνος"
+msgstr "Νέο Αίτημα"
 
 #: app/templates/risks/list.html:41
 msgid "New Risk"
@@ -7294,6 +7294,95 @@ msgstr "έκδ"
 #: app/routes/assignments.py:220
 msgid "— External / Not listed —"
 msgstr ""
+
+#: app/routes/general_requests.py:61
+msgid "Title is required."
+msgstr "Απαιτείται τίτλος."
+
+#: app/routes/general_requests.py:83
+msgid "You do not have a manager assigned. Please contact an administrator."
+msgstr "Δεν έχετε ορισμένο διαχειριστή. Παρακαλούμε επικοινωνήστε με τον διαχειριστή."
+
+#: app/routes/general_requests.py:98
+#, python-format
+msgid "Approval Request: %(title)s"
+msgstr "Αίτημα Έγκρισης: %(title)s"
+
+#: app/routes/general_requests.py:103
+msgid "Request submitted for approval."
+msgstr "Το αίτημα υποβλήθηκε για έγκριση."
+
+#: app/routes/general_requests.py:115 app/routes/general_requests.py:126
+msgid "Access denied."
+msgstr "Η πρόσβαση απορρίφθηκε."
+
+#: app/routes/general_requests.py:129
+msgid "No file attached."
+msgstr "Δεν επισυνάφθηκε αρχείο."
+
+#: app/templates/general_requests/form.html:2 app/templates/general_requests/form.html:5 app/templates/general_requests/list.html:13
+msgid "My Requests"
+msgstr "Τα Αιτήματά Μου"
+
+#: app/templates/general_requests/form.html:46
+msgid "Description / Details"
+msgstr "Περιγραφή / Λεπτομέρειες"
+
+#: app/templates/general_requests/form.html:50
+msgid "Attachment (optional)"
+msgstr "Συνημμένο (προαιρετικό)"
+
+#: app/templates/general_requests/form.html:66
+msgid "Submit for Approval"
+msgstr "Υποβολή για Έγκριση"
+
+#: app/templates/general_requests/list.html:25 app/templates/general_requests/view.html:68
+msgid "Approver"
+msgstr "Εγκρίνων"
+
+#: app/templates/general_requests/list.html:79
+msgid "No requests yet."
+msgstr "Δεν υπάρχουν ακόμη αιτήματα."
+
+#: app/templates/general_requests/list.html:81
+msgid "Create Your First Request"
+msgstr "Δημιουργήστε το Πρώτο σας Αίτημα"
+
+#: app/templates/general_requests/view.html:24
+msgid "Pending Approval"
+msgstr "Αναμονή Έγκρισης"
+
+#: app/templates/general_requests/view.html:40
+msgid "Rejection Reason"
+msgstr "Λόγος Απόρριψης"
+
+#: app/templates/general_requests/view.html:49
+msgid "Approved by"
+msgstr "Εγκρίθηκε από"
+
+#: app/templates/general_requests/view.html:51
+msgid "Rejected by"
+msgstr "Απορρίφθηκε από"
+
+#: app/templates/general_requests/view.html:53
+msgid "on"
+msgstr "στις"
+
+#: app/templates/general_requests/view.html:84
+msgid "Attachment"
+msgstr "Συνημμένο"
+
+#: app/templates/general_requests/view.html:95
+msgid "Back to My Requests"
+msgstr "Επιστροφή στα Αιτήματά Μου"
+
+#: app/templates/general_requests/view.html:101
+msgid "Cancel this request?"
+msgstr "Ακύρωση αυτού του αιτήματος;"
+
+#: app/templates/general_requests/view.html:102
+msgid "Cancel Request"
+msgstr "Ακύρωση Αιτήματος"
 
 #~ msgid "Policy created successfully."
 #~ msgstr "Η πολιτική δημιουργήθηκε επιτυχώς."

@@ -10,6 +10,7 @@ from app.extensions import db
 from app.models.policy import Policy, PolicyVersion
 from app.models.user import User
 from app.models.audit_log import AuditLog
+from app.models.approval import ApprovalRequest
 from app.forms import PolicyForm
 from app.utils.decorators import permission_required, admin_required
 from app.utils.pagination import paginate
@@ -124,7 +125,8 @@ def new_policy():
 @login_required
 def view_policy(policy_id):
     policy = Policy.query.get_or_404(policy_id)
-    return render_template("policies/view.html", policy=policy)
+    pending_req = ApprovalRequest.query.filter_by(target_type="policy", target_id=policy.id, status="pending").first()
+    return render_template("policies/view.html", policy=policy, pending_req=pending_req)
 
 
 @policies_bp.route("/<int:policy_id>/edit", methods=["GET", "POST"])

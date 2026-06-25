@@ -35,14 +35,25 @@ def seed_database():
             role = Role(name=rd["name"], description=rd["description"])
             db.session.add(role)
             db.session.flush()
+        json_codenames = set(rd["permissions"])
         existing_codenames = {p.codename for p in role.permissions}
-        for pcode in rd["permissions"]:
-            if pcode not in existing_codenames:
-                perm = all_perms.get(pcode) or Permission.query.filter_by(codename=pcode).first()
-                if perm:
-                    role.permissions.append(perm)
+        for pcode in json_codenames - existing_codenames:
+            perm = all_perms.get(pcode) or Permission.query.filter_by(codename=pcode).first()
+            if perm:
+                role.permissions.append(perm)
+        for pcode in existing_codenames - json_codenames:
+            perm = Permission.query.filter_by(codename=pcode).first()
+            if perm:
+                role.permissions.remove(perm)
 
     db.session.flush()
+
+    # ── Default Department (only on first run) ──────────────────
+    from app.models.user import Department
+
+    if Department.query.first() is None:
+        dept = Department(name="Information Security", description="Default information security department")
+        db.session.add(dept)
 
     # ── Default Users (only on first run) ──────────────────────
     if User.query.first() is None:
@@ -98,6 +109,25 @@ def seed_database():
                     guidance_el=cd.get("guidance_el"),
                 )
                 db.session.add(control)
+
+    # ── Update Greek translations on every startup ─────────────
+    from app.models.control import Control as _Control
+    with open(os.path.join(seed_dir, "annex_a_controls.json"), encoding="utf-8") as f:
+        _annex_data = json.load(f)
+    for _dd in _annex_data["domains"]:
+        for _cd in _dd["controls"]:
+            if _cd.get("description_el") or _cd.get("detailed_description_el"):
+                _ctrl = _Control.query.filter_by(code=_cd["code"]).first()
+                if _ctrl:
+                    changed = False
+                    if _cd.get("description_el") and _ctrl.description_el != _cd["description_el"]:
+                        _ctrl.description_el = _cd["description_el"]
+                        changed = True
+                    if _cd.get("detailed_description_el") and _ctrl.detailed_description_el != _cd["detailed_description_el"]:
+                        _ctrl.detailed_description_el = _cd["detailed_description_el"]
+                        changed = True
+                    if changed:
+                        _ctrl.updated_at = __import__('datetime').datetime.utcnow()
 
     # ── Clauses (only on first run) ────────────────────────────
     if Clause.query.first() is None:
@@ -173,6 +203,41 @@ def seed_database():
             db.session.add(check)
 
     db.session.commit()
+
+    _cleanup_stale_notifications()
+    db.session.commit()
+
+
+def _cleanup_stale_notifications():
+    from app.models.notification import Notification
+    from app.models.approval import ApprovalRequest
+
+    # New-style notifications: match by reference_id and clear if request is no longer pending
+    stale_new = Notification.query.filter(
+        Notification.type == "approval_requested",
+        Notification.is_read == False,
+        Notification.reference_id.isnot(None),
+        Notification.reference_type == "approval_request",
+    ).all()
+    for n in stale_new:
+        req = ApprovalRequest.query.get(n.reference_id)
+        if req and req.status != "pending":
+            n.is_read = True
+
+    # Old-style notifications (no reference data, created before schema migration):
+    # Clear if the user has no pending approvals at all
+    stale_old = Notification.query.filter(
+        Notification.type == "approval_requested",
+        Notification.is_read == False,
+        Notification.reference_type.is_(None),
+    ).all()
+    for n in stale_old:
+        pending = ApprovalRequest.query.filter(
+            ApprovalRequest.approver_id == n.user_id,
+            ApprovalRequest.status == "pending",
+        ).count()
+        if pending == 0:
+            n.is_read = True
 
 
 def reset_demo_data():

@@ -25,6 +25,8 @@ from app.models.business_continuity import (
 from app.models.supplier import Supplier
 from datetime import datetime, date
 from sqlalchemy import func
+from app.utils.decorators import permission_required
+
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -32,6 +34,7 @@ dashboard_bp = Blueprint("dashboard", __name__)
 @dashboard_bp.route("/")
 @dashboard_bp.route("/dashboard")
 @login_required
+@permission_required("menu_dashboard")
 def index():
     now = datetime.utcnow()
 

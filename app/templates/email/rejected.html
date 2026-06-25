@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: 'Inter', Arial, sans-serif; background: #f8fafc; padding: 24px;">
+  <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <h2 style="color: #ef4444; margin: 8px 0 0;">{{ title }}</h2>
+    </div>
+    <p style="color: #4a5568; line-height: 1.6;">{{ message }}</p>
+    {% if link %}
+    <div style="text-align: center; margin: 24px 0;">
+      <a href="{{ link }}" style="display: inline-block; background: #ef4444; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">{{ _('View Details') }}</a>
+    </div>
+    {% endif %}
+    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+    <p style="color: #6b7280; font-size: 12px; text-align: center;">{{ _('ISMS Manager - ISO 27001, NIS2, GDPR Compliance') }}</p>
+  </div>
+</body>
+</html>

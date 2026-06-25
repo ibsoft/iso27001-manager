@@ -137,6 +137,8 @@
     const rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width - 4;
     canvas.height = 200;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#1e293b';
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
@@ -179,6 +181,8 @@
 
   function clearSig() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     sigInput.value = '';
     hasDrawn = false;
   }

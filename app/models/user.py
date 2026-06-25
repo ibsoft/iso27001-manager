@@ -39,6 +39,18 @@ class User(UserMixin, db.Model):
     roles = db.relationship("Role", secondary=user_roles, lazy="subquery",
                             backref=db.backref("users", lazy=True))
 
+    department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=True)
+    manager_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+
+    department = db.relationship("Department", backref=db.backref("members", lazy="dynamic"),
+                                 foreign_keys=[department_id])
+    manager = db.relationship("User", backref=db.backref("managed_users", lazy="dynamic"),
+                              remote_side="User.id", foreign_keys=[manager_id])
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     @property
     def gravatar_url(self):
         email_hash = hashlib.md5(self.email.lower().encode()).hexdigest()
@@ -159,3 +171,19 @@ class SystemSetting(db.Model):
 
     def __repr__(self):
         return f"<SystemSetting {self.key}={self.value}>"
+
+
+class Department(db.Model):
+    __tablename__ = "department"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True, nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    head_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    head = db.relationship("User", backref=db.backref("headed_department", uselist=False),
+                           foreign_keys=[head_id], remote_side="User.id")
+
+    def __repr__(self):
+        return f"<Department {self.name}>"

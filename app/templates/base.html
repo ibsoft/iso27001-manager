@@ -490,6 +490,31 @@
       </li>
       {% if current_user.is_authenticated %}
       <li class="nav-item dropdown">
+        <a class="nav-link position-relative" href="#" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="{{ _('Notifications') }}">
+          <i class="far fa-bell"></i>
+          {% if unread_count > 0 %}
+          <span class="badge rounded-pill bg-danger" style="font-size:0.55rem;position:absolute;top:-4px;right:-6px;">{{ unread_count }}</span>
+          {% endif %}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="width:360px;max-height:400px;overflow-y:auto;">
+          {% if recent_notifications %}
+          {% for n in recent_notifications %}
+          <li>
+            <a class="dropdown-item {{ 'fw-bold' if not n.is_read }}" href="{{ n.link or '#' }}">
+              <small class="text-muted float-end">{{ n.created_at.strftime('%d/%m') }}</small>
+              <div class="small">{{ n.title }}</div>
+              <small class="text-muted">{{ n.message }}</small>
+            </a>
+          </li>
+          {% endfor %}
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-center small" href="{{ url_for('notifications.list_all') }}">{{ _('View All') }}</a></li>
+          {% else %}
+          <li><span class="dropdown-item text-muted small">{{ _('No notifications') }}</span></li>
+          {% endif %}
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="far fa-user-circle me-1"></i>
           <span class="d-none d-sm-inline">{{ current_user.first_name }} {{ current_user.last_name }}</span>
@@ -517,7 +542,9 @@
     </a>
     <div class="sidebar">
       <ul class="nav-sidebar">
+        {% if has_menu_access('dashboard.index') %}
         <li class="nav-item"><a href="{{ url_for('dashboard.index') }}" class="nav-link {{ 'active' if request.endpoint and 'dashboard' in request.endpoint else '' }}"><i class="fas fa-tachometer-alt"></i><p>{{ _('Dashboard') }}</p></a></li>
+        {% endif %}
 
         {% set sections = [
           ('ISMS Framework', [
@@ -533,6 +560,7 @@
             ('assignments.list_assignments', 'fas fa-exchange-alt', _('Asset Assignments')),
           ]),
           ('Operations', [
+            ('general_requests.new', 'fas fa-plus-circle', _('New Request')),
             ('incidents.list_incidents', 'fas fa-bolt', _('Incidents')),
             ('policies.list_policies', 'fas fa-file-alt', _('Policies & Documents')),
             ('filled_forms.list_filled_forms', 'fas fa-file-upload', _('Filled-out Forms')),
@@ -560,6 +588,10 @@
           ]),
           ('Reporting', [
             ('reports.index', 'fas fa-chart-bar', _('Reports')),
+          ]),
+          ('Approvals', [
+            ('approval.pending', 'fas fa-clock', _('Pending Approvals')),
+            ('approval.my_requests', 'fas fa-paper-plane', _('My Requests')),
           ]),
         ] %}
 
@@ -598,6 +630,7 @@
           <ul class="nav-sidebar" style="list-style:none;padding:0;margin:0;">
             <li class="nav-item"><a href="{{ url_for('admin.list_users') }}" class="nav-link {{ 'active' if request.endpoint and 'admin' in request.endpoint and 'admin.list_users' in request.endpoint else '' }}"><i class="fas fa-users-cog"></i><p>{{ _('User Management') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('admin.list_roles') }}" class="nav-link {{ 'active' if request.endpoint and 'admin' in request.endpoint and 'admin.list_roles' in request.endpoint else '' }}"><i class="fas fa-user-tag"></i><p>{{ _('Roles & Permissions') }}</p></a></li>
+            <li class="nav-item"><a href="{{ url_for('admin.list_departments') }}" class="nav-link {{ 'active' if request.endpoint and 'admin' in request.endpoint and 'admin.list_departments' in request.endpoint else '' }}"><i class="fas fa-building"></i><p>{{ _('Departments') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('reports.view_audit_log') }}" class="nav-link"><i class="fas fa-history"></i><p>{{ _('Audit Trail') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('admin.list_backups') }}" class="nav-link"><i class="fas fa-database"></i><p>{{ _('Backup & Restore') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('ai.ai_settings') }}" class="nav-link"><i class="fas fa-robot"></i><p>{{ _('AI Settings') }}</p></a></li>

@@ -26,3 +26,4 @@ from app.models.capa import CapaRequest
 from app.models.training import TrainingCourse, TrainingSession, TrainingRecord, CompetenceProfile
 from app.models.business_continuity import BusinessImpactAnalysis, BusinessContinuityPlan, BusinessContinuityTest, BusinessContinuityAction
 from app.models.filled_form import FilledForm
+from app.models.general_request import GeneralRequest

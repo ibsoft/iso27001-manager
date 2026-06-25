@@ -64,6 +64,7 @@ def create_app(config_name=None):
         talisman.init_app(app, content_security_policy=csp)
 
     from app.models.user import User
+    from app.models.notification import Notification
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -113,6 +114,13 @@ def create_app(config_name=None):
             write_perm = perm + "_write"
             return _cu.is_authenticated and (_cu.has_permission(perm) or _cu.has_permission(write_perm))
 
+        unread_count = 0
+        recent_notifications = []
+        if current_user.is_authenticated:
+            from app.models.notification import Notification as _Notification
+            unread_count = _Notification.query.filter_by(user_id=current_user.id, is_read=False).count()
+            recent_notifications = _Notification.query.filter_by(user_id=current_user.id, is_read=False).order_by(_Notification.created_at.desc()).limit(5).all()
+
         return {
             "current_lang": _session.get("lang", "en"),
             "LANGUAGES": LANGUAGES,
@@ -124,6 +132,8 @@ def create_app(config_name=None):
             "is_demo": _current_app.config.get("DEMO", False),
             "has_menu_access": has_menu_access,
             "permission_groups": PERMISSION_GROUPS,
+            "unread_count": unread_count,
+            "recent_notifications": recent_notifications,
         }
 
     @app.before_request
@@ -176,6 +186,9 @@ def create_app(config_name=None):
     from app.routes.filled_forms import filled_forms_bp
     from app.routes.kpi import kpi_bp
     from app.routes.ai_assistant import ai_bp
+    from app.routes.notifications import notifications_bp
+    from app.routes.approval import approval_bp
+    from app.routes.general_requests import general_requests_bp
 
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(dashboard_bp, url_prefix="/")
@@ -200,6 +213,20 @@ def create_app(config_name=None):
     app.register_blueprint(filled_forms_bp, url_prefix="/filled-forms")
     app.register_blueprint(kpi_bp, url_prefix="/")
     app.register_blueprint(ai_bp, url_prefix="/")
+    app.register_blueprint(notifications_bp, url_prefix="/notifications")
+    app.register_blueprint(approval_bp, url_prefix="/approval")
+    app.register_blueprint(general_requests_bp, url_prefix="/requests")
+
+    from app.models.approval import ApprovalRequest
+    from app.models.policy import Policy
+    from app.models.capa import CapaRequest
+    from app.models.supplier import Supplier
+    from app.models.general_request import GeneralRequest
+
+    ApprovalRequest.register_target_model("policy", Policy)
+    ApprovalRequest.register_target_model("capa", CapaRequest)
+    ApprovalRequest.register_target_model("supplier", Supplier)
+    ApprovalRequest.register_target_model("general_request", GeneralRequest)
 
     @app.route("/health")
     def health():
@@ -208,7 +235,7 @@ def create_app(config_name=None):
     if not os.path.exists(app.config["LOG_DIR"]):
         os.makedirs(app.config["LOG_DIR"])
 
-    for _dir in ("app/static/uploads/avatars", "app/static/uploads/filled_forms"):
+    for _dir in ("app/static/uploads/avatars", "app/static/uploads/filled_forms", "app/static/uploads/general_requests"):
         _path = os.path.join(data_root(), _dir)
         if not os.path.exists(_path):
             os.makedirs(_path)
@@ -231,11 +258,13 @@ def create_app(config_name=None):
     with app.app_context():
         from app.extensions import db as _db
         _db.create_all()
-        from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns, ensure_nis2_columns, ensure_auth_columns
+        from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns, ensure_nis2_columns, ensure_auth_columns, ensure_user_org_columns, ensure_notification_ref_columns
         ensure_supplier_risk_columns()
         ensure_control_columns()
         ensure_nis2_columns()
         ensure_auth_columns()
+        ensure_user_org_columns()
+        ensure_notification_ref_columns()
         from app.utils.seed import seed_database
         seed_database()
         try:

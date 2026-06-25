@@ -115,7 +115,13 @@
         "menu_gdpr_notices",
         "menu_gdpr_notices_write",
         "menu_reports",
-        "menu_dashboard"
+        "menu_dashboard",
+        "department_view",
+        "department_edit",
+        "menu_approvals",
+        "menu_approvals_write",
+        "menu_general_requests",
+        "menu_general_requests_write"
       ]
     },
     {
@@ -212,7 +218,12 @@
         "menu_gdpr_notices",
         "menu_gdpr_notices_write",
         "menu_reports",
-        "menu_dashboard"
+        "menu_dashboard",
+        "department_view",
+        "menu_approvals",
+        "menu_approvals_write",
+        "menu_general_requests",
+        "menu_general_requests_write"
       ]
     },
     {
@@ -263,41 +274,24 @@
         "menu_gdpr_controllers",
         "menu_gdpr_notices",
         "menu_reports",
-        "menu_dashboard"
+        "menu_dashboard",
+        "menu_general_requests"
       ]
     },
     {
       "name": "user",
-      "description": "Basic read-only access, can report incidents and view assigned items",
+      "description": "Can report incidents, create general requests, view training",
       "permissions": [
-        "control_view",
-        "risk_view",
-        "asset_view",
         "incident_view",
         "incident_create",
-        "policy_view",
-        "report_view",
-        "management_review_view",
-        "business_continuity_view",
-        "capa_view",
+        "incident_edit",
         "training_view",
-        "menu_controls",
-        "menu_clauses",
-        "menu_soa",
-        "menu_reviews",
-        "menu_kpi",
-        "menu_risks",
-        "menu_assets",
-        "menu_assignments",
+        "training_edit",
         "menu_incidents",
         "menu_incidents_write",
         "menu_policies",
-        "menu_filled_forms",
-        "menu_business_continuity",
-        "menu_capa",
         "menu_training",
-        "menu_reports",
-        "menu_dashboard"
+        "menu_general_requests_write"
       ]
     }
   ]

@@ -8,7 +8,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db
-from app.models.user import User, Role, Permission
+from app.models.user import User, Role, Permission, Department
 from app.models.audit_log import AuditLog
 from app.forms import UserForm
 from app.utils.decorators import admin_required, permission_required
@@ -32,6 +32,8 @@ def list_users():
 def new_user():
     form = UserForm()
     form.roles.choices = [(r.id, r.name) for r in Role.query.order_by(Role.name).all()]
+    form.department.choices = [(0, _("None"))] + [(d.id, d.name) for d in Department.query.order_by(Department.name).all()]
+    form.manager.choices = [(0, _("None"))] + [(u.id, u.full_name) for u in User.query.filter_by(is_active=True).order_by(User.first_name).all()]
 
     if form.validate_on_submit():
         if User.query.filter_by(username=form.username.data).first():
@@ -52,6 +54,8 @@ def new_user():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             is_active=form.is_active.data,
+            department_id=form.department.data if form.department.data else None,
+            manager_id=form.manager.data if form.manager.data else None,
         )
         user.password = form.password.data
         for role_id in form.roles.data:
@@ -75,6 +79,8 @@ def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     form = UserForm(obj=user)
     form.roles.choices = [(r.id, r.name) for r in Role.query.order_by(Role.name).all()]
+    form.department.choices = [(0, _("None"))] + [(d.id, d.name) for d in Department.query.order_by(Department.name).all()]
+    form.manager.choices = [(0, _("None"))] + [(u.id, u.full_name) for u in User.query.filter_by(is_active=True).order_by(User.first_name).all()]
 
     if form.validate_on_submit():
         if form.username.data != user.username and User.query.filter_by(username=form.username.data).first():
@@ -90,6 +96,8 @@ def edit_user(user_id):
         user.first_name = form.first_name.data
         user.last_name = form.last_name.data
         user.is_active = form.is_active.data
+        user.department_id = form.department.data if form.department.data else None
+        user.manager_id = form.manager.data if form.manager.data else None
 
         if form.password.data:
             user.password = form.password.data
@@ -107,6 +115,8 @@ def edit_user(user_id):
         return redirect(url_for("admin.list_users"))
 
     form.roles.data = [r.id for r in user.roles]
+    form.department.data = user.department_id or 0
+    form.manager.data = user.manager_id or 0
     return render_template("admin/user_form.html", form=form, title=_("Edit User"), user=user)
 
 
@@ -428,3 +438,89 @@ def sso_settings():
         "sso_metadata_url": SystemSetting.get("sso_metadata_url", ""),
     }
     return render_template("admin/sso_settings.html", settings=settings)
+
+
+@admin_bp.route("/departments")
+@login_required
+@admin_required
+def list_departments():
+    departments = Department.query.order_by(Department.name).all()
+    return render_template("admin/departments.html", departments=departments)
+
+
+@admin_bp.route("/departments/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_department():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        description = request.form.get("description", "").strip()
+        head_id = request.form.get("head_id", type=int)
+
+        if not name:
+            flash(_("Department name is required."), "danger")
+            users = User.query.order_by(User.first_name).all()
+            return render_template("admin/department_form.html", users=users)
+
+        existing = Department.query.filter_by(name=name).first()
+        if existing:
+            flash(_("A department with this name already exists."), "danger")
+            users = User.query.order_by(User.first_name).all()
+            return render_template("admin/department_form.html", users=users)
+
+        dept = Department(name=name, description=description or None, head_id=head_id or None)
+        db.session.add(dept)
+        db.session.commit()
+        _log_audit(f"Created department: {name}")
+        flash(_("Department created."), "success")
+        return redirect(url_for("admin.list_departments"))
+
+    users = User.query.order_by(User.first_name).all()
+    return render_template("admin/department_form.html", users=users)
+
+
+@admin_bp.route("/departments/<int:dept_id>/edit", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_department(dept_id):
+    dept = Department.query.get_or_404(dept_id)
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        description = request.form.get("description", "").strip()
+        head_id = request.form.get("head_id", type=int)
+
+        if not name:
+            flash(_("Department name is required."), "danger")
+            users = User.query.order_by(User.first_name).all()
+            return render_template("admin/department_form.html", dept=dept, users=users)
+
+        existing = Department.query.filter(Department.name == name, Department.id != dept.id).first()
+        if existing:
+            flash(_("A department with this name already exists."), "danger")
+            users = User.query.order_by(User.first_name).all()
+            return render_template("admin/department_form.html", dept=dept, users=users)
+
+        dept.name = name
+        dept.description = description or None
+        dept.head_id = head_id or None
+        db.session.commit()
+        _log_audit(f"Edited department: {name}")
+        flash(_("Department updated."), "success")
+        return redirect(url_for("admin.list_departments"))
+
+    users = User.query.order_by(User.first_name).all()
+    return render_template("admin/department_form.html", dept=dept, users=users)
+
+
+@admin_bp.route("/departments/<int:dept_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def delete_department(dept_id):
+    dept = Department.query.get_or_404(dept_id)
+    name = dept.name
+    User.query.filter_by(department_id=dept.id).update({User.department_id: None})
+    db.session.delete(dept)
+    db.session.commit()
+    _log_audit(f"Deleted department: {name}")
+    flash(_("Department deleted."), "success")
+    return redirect(url_for("admin.list_departments"))

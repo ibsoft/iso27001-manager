@@ -99,6 +99,8 @@
     const rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width - 4;
     canvas.height = 200;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#1e293b';
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
@@ -115,7 +117,7 @@
   function startDrawing(e) { e.preventDefault(); drawing = true; const pos = getPos(e); lastX = pos.x; lastY = pos.y; canvas.classList.add('drawing'); }
   function draw(e) { e.preventDefault(); if (!drawing) return; hasDrawn = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(pos.x, pos.y); ctx.stroke(); lastX = pos.x; lastY = pos.y; }
   function stopDrawing(e) { e.preventDefault(); drawing = false; canvas.classList.remove('drawing'); sigInput.value = hasDrawn ? canvas.toDataURL('image/png') : ''; }
-  function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); sigInput.value = ''; hasDrawn = false; }
+  function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); sigInput.value = ''; hasDrawn = false; }
 
   canvas.addEventListener('mousedown', startDrawing);
   canvas.addEventListener('mousemove', draw);
