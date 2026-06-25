@@ -140,7 +140,7 @@ def ensure_user_org_columns():
             ))
         if "manager_id" not in existing:
             db.session.execute(text(
-                f"ALTER TABLE {_q('user')} ADD COLUMN manager_id INTEGER REFERENCES user(id)"
+                f"ALTER TABLE {_q('user')} ADD COLUMN manager_id INTEGER REFERENCES {_q('user')}(id)"
             ))
         db.session.commit()
 
