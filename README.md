@@ -87,6 +87,8 @@ training & competence, KPI dashboard, AI assistant, and AD/LDAP authentication.
    CREATE DATABASE isms;
    CREATE USER isms_user WITH PASSWORD 'strong_password';
    GRANT ALL PRIVILEGES ON DATABASE isms TO isms_user;
+   \c isms
+   GRANT ALL ON SCHEMA public TO isms_user;
    ```
 
 2. Set the `DATABASE_URL` environment variable:
@@ -101,7 +103,15 @@ training & competence, KPI dashboard, AI assistant, and AD/LDAP authentication.
    pip install -r requirements.txt
    ```
 
-4. Run with Gunicorn:
+4. Initialize Alembic migrations (first time only):
+
+   ```bash
+   flask db init
+   flask db migrate -m "initial migration"
+   flask db upgrade
+   ```
+
+5. Run with Gunicorn:
 
    ```bash
    gunicorn -w 4 -b 0.0.0.0:8000 'app:create_app()'
@@ -109,9 +119,9 @@ training & competence, KPI dashboard, AI assistant, and AD/LDAP authentication.
 
    Tables are created and seed data loaded automatically on first startup.
 
-> **Note:** `user` and `control` are reserved words in PostgreSQL. The schema
-> migration functions quote them with double-quotes (`"`) for compatibility.
-> If you encounter ALTER TABLE errors, verify your PostgreSQL version is 14+.
+> **Note:** `user` is a reserved word in PostgreSQL. The schema
+> migration functions quote it with double-quotes (`"user"`). If you
+> encounter ALTER TABLE errors, ensure you are running PostgreSQL 14+.
 
 ---
 
@@ -186,20 +196,29 @@ The `.env` file is excluded from version control (see `.gitignore`).
 
 ## 6. Database Migrations
 
-The application uses Flask-Migrate (Alembic) for schema migrations.
+The application uses **Flask-Migrate** (Alembic) for schema migrations.
 
-Create a migration after model changes:
+### First-time setup
 
 ```bash
-.venv/bin/python run.py db migrate -m "Description of change"
-.venv/bin/python run.py db upgrade
+flask db init                    # creates migrations/ directory
+flask db migrate -m "initial"    # auto-detects model changes
+flask db upgrade                 # applies to database
 ```
 
-On startup, the application also runs several `ensure_*()` functions that add
-columns if they do not yet exist (supplier risk columns, `guidance_el` on
-controls, `guidance`/`guidance_el` on NIS2 checks, `auth_source` on user table).
-These provide a safety net for environments where Alembic migrations have
-not yet been applied.
+### After model changes
+
+```bash
+flask db migrate -m "description of change"
+flask db upgrade
+```
+
+### Safety net
+
+On startup, the application also runs several `ensure_*()` functions
+(`app/utils/schema.py`) that add columns if they do not yet exist. These
+provide a safety net for environments where Alembic migrations have not yet
+been applied. They are not a replacement for proper migrations in production.
 
 ---
 
@@ -416,7 +435,32 @@ iso27001-manager/
 
 ---
 
-## 14. Troubleshooting
+## 14. New Features
+
+### Approval Request Deletion (Admin)
+
+Admins can delete approval requests from the history view. A trash icon
+button appears next to each historic entry for admin users. Deleting a
+request also removes its associated notifications.
+
+### Greek Translations for Controls (Description & Detailed Description)
+
+All 93 Annex A controls now include Greek translations for the **Description**
+(`description_el`) and **Detailed Description** (`detailed_description_el`)
+fields. These are auto-populated on startup from the seed data. The control
+edit form also includes fields for entering/modifying Greek translations.
+
+### Dark Theme Fixes
+
+- **Import instructions text** now uses the theme's primary text color
+  (`var(--text-primary)`) for proper visibility in both light and dark modes.
+- **Signature pad** (asset checkout/checkin) now renders on a white canvas
+  background, ensuring the signature strokes are always visible regardless
+  of the active theme.
+
+---
+
+## 15. Troubleshooting
 
 **"TemplateNotFound: bootstrap5/form.html"**
   Remove the line `{% import "bootstrap5/form.html" as wtf %}` from the
