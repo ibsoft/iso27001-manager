@@ -81,6 +81,8 @@ class UserForm(BaseForm):
     password = PasswordField("Password", validators=[Optional(), Length(min=12)])
     is_active = BooleanField("Active")
     roles = SelectMultipleField("Roles", coerce=int)
+    department = SelectField("Department", coerce=int, validators=[Optional()])
+    manager = SelectField("Manager", coerce=int, validators=[Optional()])
     submit = SubmitField("Save")
 
     def validate_password(form, field):
@@ -116,7 +118,9 @@ class ControlForm(BaseForm):
     code = StringField("Control Code", validators=[DataRequired(), Length(max=8)])
     title = StringField("Title", validators=[DataRequired(), Length(max=256)])
     description = TextAreaField("Description", validators=[Optional()])
+    description_el = TextAreaField("Description (EL)", validators=[Optional()])
     detailed_description = TextAreaField("Detailed Description", validators=[Optional()])
+    detailed_description_el = TextAreaField("Detailed Description (EL)", validators=[Optional()])
     purpose = TextAreaField("Purpose", validators=[Optional()])
     guidance = TextAreaField("Guidance", validators=[Optional()])
     domain_id = SelectField("Domain", coerce=int, validators=[DataRequired()])

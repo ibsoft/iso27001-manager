@@ -111,6 +111,21 @@
           <button type="submit" class="btn btn-outline-danger w-100"><i class="fas fa-trash me-1"></i>{{ _('Delete') }}</button>
         </form>
         {% endif %}
+        {% if capa.status == 'open' and current_user.manager and not pending_req %}
+        <hr>
+        <form method="POST" action="{{ url_for('approval.create_request') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="target_type" value="capa">
+          <input type="hidden" name="target_id" value="{{ capa.id }}">
+          <input type="hidden" name="approver_id" value="{{ current_user.manager.id }}">
+          <button type="submit" class="btn btn-primary w-100"><i class="fas fa-paper-plane me-1"></i>{{ _('Submit for Approval') }} ({{ current_user.manager.full_name }})</button>
+        </form>
+        {% elif pending_req %}
+        <hr>
+        <div class="text-center">
+          <span class="badge bg-info"><i class="fas fa-clock me-1"></i>{{ _('Pending approval by') }} {{ pending_req.approver.full_name }}</span>
+        </div>
+        {% endif %}
       </div>
     </div>
 

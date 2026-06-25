@@ -4,6 +4,7 @@ from flask_babel import gettext as _
 from app.extensions import db
 from app.models.supplier import Supplier
 from app.models.audit_log import AuditLog
+from app.models.approval import ApprovalRequest
 from app.forms import SupplierForm
 from app.utils.decorators import permission_required, admin_required
 from app.utils.pagination import paginate
@@ -84,7 +85,8 @@ def new_supplier():
 @login_required
 def view_supplier(supplier_id):
     supplier = Supplier.query.get_or_404(supplier_id)
-    return render_template("suppliers/view.html", supplier=supplier)
+    pending_req = ApprovalRequest.query.filter_by(target_type="supplier", target_id=supplier.id, status="pending").first()
+    return render_template("suppliers/view.html", supplier=supplier, pending_req=pending_req)
 
 
 @suppliers_bp.route("/<int:supplier_id>/edit", methods=["GET", "POST"])

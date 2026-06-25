@@ -113,6 +113,38 @@ def ensure_auth_columns():
             db.session.commit()
 
 
+def ensure_notification_ref_columns():
+    """Add reference_type and reference_id columns to notification table if missing."""
+    inspector = inspect(db.engine)
+    if inspector.has_table("notification"):
+        existing = {c["name"] for c in inspector.get_columns("notification")}
+        if "reference_type" not in existing:
+            db.session.execute(text(
+                f"ALTER TABLE {_q('notification')} ADD COLUMN reference_type VARCHAR(32)"
+            ))
+        if "reference_id" not in existing:
+            db.session.execute(text(
+                f"ALTER TABLE {_q('notification')} ADD COLUMN reference_id INTEGER"
+            ))
+        db.session.commit()
+
+
+def ensure_user_org_columns():
+    """Add department_id and manager_id columns to user table if missing."""
+    inspector = inspect(db.engine)
+    if inspector.has_table("user"):
+        existing = {c["name"] for c in inspector.get_columns("user")}
+        if "department_id" not in existing:
+            db.session.execute(text(
+                f"ALTER TABLE {_q('user')} ADD COLUMN department_id INTEGER REFERENCES department(id)"
+            ))
+        if "manager_id" not in existing:
+            db.session.execute(text(
+                f"ALTER TABLE {_q('user')} ADD COLUMN manager_id INTEGER REFERENCES user(id)"
+            ))
+        db.session.commit()
+
+
 def update_nis2_guidance():
     """Update NIS2 compliance check guidance fields from seed JSON on every startup."""
     import json

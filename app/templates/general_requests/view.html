@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block page_title %}{{ request.title }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('general_requests.list_requests') }}">{{ _('My Requests') }}</a></li>
+<li class="breadcrumb-item active">{{ request.title }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+          <div>
+            <h4 class="mb-1">{{ request.title }}</h4>
+            <small class="text-muted">
+              {{ _('Created') }}: {{ request.created_at.strftime('%d/%m/%Y %H:%M') }}
+              {{ _('by') }} {{ request.created_by.full_name }}
+            </small>
+          </div>
+          <div>
+            {% if approval %}
+              {% if approval.status == 'pending' %}
+                <span class="badge bg-warning text-dark fs-6">{{ _('Pending Approval') }}</span>
+              {% elif approval.status == 'approved' %}
+                <span class="badge bg-success fs-6">{{ _('Approved') }}</span>
+              {% elif approval.status == 'rejected' %}
+                <span class="badge bg-danger fs-6">{{ _('Rejected') }}</span>
+              {% elif approval.status == 'cancelled' %}
+                <span class="badge bg-secondary fs-6">{{ _('Cancelled') }}</span>
+              {% endif %}
+            {% else %}
+              <span class="badge bg-secondary fs-6">{{ _('Draft') }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if approval and approval.status == 'rejected' and approval.reason %}
+        <div class="alert alert-danger">
+          <strong><i class="fas fa-times-circle me-1"></i>{{ _('Rejection Reason') }}:</strong>
+          {{ approval.reason }}
+        </div>
+        {% endif %}
+
+        {% if approval and approval.responded_at %}
+        <div class="alert alert-info small">
+          <i class="fas fa-info-circle me-1"></i>
+          {% if approval.status == 'approved' %}
+            {{ _('Approved by') }} <strong>{{ approval.responded_by.full_name }}</strong>
+          {% elif approval.status == 'rejected' %}
+            {{ _('Rejected by') }} <strong>{{ approval.responded_by.full_name }}</strong>
+          {% endif %}
+          {{ _('on') }} {{ approval.responded_at.strftime('%d/%m/%Y %H:%M') }}
+        </div>
+        {% endif %}
+
+        {% if request.content %}
+        <hr>
+        <div class="mb-4">
+          {{ request.content|safe }}
+        </div>
+        {% endif %}
+
+        {% if approval %}
+        <hr>
+        <div class="row small text-muted">
+          <div class="col-md-4">
+            <strong>{{ _('Approver') }}:</strong> {{ approval.approver.full_name }}
+          </div>
+          <div class="col-md-4">
+            <strong>{{ _('Submitted') }}:</strong> {{ approval.created_at.strftime('%d/%m/%Y %H:%M') }}
+          </div>
+          {% if approval.responded_at %}
+          <div class="col-md-4">
+            <strong>{{ _('Responded') }}:</strong> {{ approval.responded_at.strftime('%d/%m/%Y %H:%M') }}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if request.filename %}
+        <hr>
+        <div class="mb-3">
+          <strong>{{ _('Attachment') }}:</strong>
+          <a href="{{ url_for('general_requests.download', req_id=request.id) }}" class="btn btn-sm btn-outline-primary ms-2">
+            <i class="fas fa-download me-1"></i>{{ request.original_filename }}
+            {% if request.file_size_display %}<span class="text-muted">({{ request.file_size_display }})</span>{% endif %}
+          </a>
+        </div>
+        {% endif %}
+
+        <hr>
+        <div class="d-flex gap-2">
+          <a href="{{ url_for('general_requests.list_requests') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i>{{ _('Back to My Requests') }}
+          </a>
+          {% if approval and approval.status == 'pending' and approval.requester_id == current_user.id %}
+          <form method="POST" action="{{ url_for('approval.cancel', req_id=approval.id) }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-outline-danger"
+                    onclick="return confirm('{{ _('Cancel this request?') }}')">
+              <i class="fas fa-times me-1"></i>{{ _('Cancel Request') }}
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

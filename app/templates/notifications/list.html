@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Notifications') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Notifications') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span><i class="far fa-bell me-2"></i>{{ _('Notifications') }}</span>
+    {% if unread_count > 0 %}
+    <form method="POST" action="{{ url_for('notifications.mark_all_read') }}" class="d-inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fas fa-check-double me-1"></i>{{ _('Mark All Read') }}</button>
+    </form>
+    {% endif %}
+  </div>
+  <div class="card-body p-0">
+    {% if notifications.items %}
+    <div class="list-group list-group-flush">
+      {% for n in notifications.items %}
+      <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-start {{ 'fw-bold' if not n.is_read }}">
+        <div class="ms-2 me-auto">
+          <div class="small">{{ n.title }}</div>
+          {% if n.message %}<small class="text-muted">{{ n.message }}</small>{% endif %}
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <small class="text-muted">{{ n.created_at.strftime('%d/%m/%Y %H:%M') }}</small>
+          {% if not n.is_read %}
+          <form method="POST" action="{{ url_for('notifications.mark_read', notif_id=n.id) }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-link p-0" title="{{ _('Mark as read') }}"><i class="fas fa-check text-muted"></i></button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% with items=notifications, route='notifications.list_all' %}
+    {% include '_pagination.html' %}
+    {% endwith %}
+    {% else %}
+    <div class="text-center py-5 text-muted">
+      <i class="far fa-bell fa-3x mb-3 d-block"></i>
+      {{ _('No notifications yet.') }}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

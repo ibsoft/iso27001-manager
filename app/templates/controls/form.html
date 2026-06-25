@@ -32,8 +32,16 @@
             {{ form.description(class="form-control", rows=3) }}
           </div>
           <div class="mb-3">
+            <label class="form-label small">{{ _('Description (Greek)') }}</label>
+            {{ form.description_el(class="form-control", rows=3) }}
+          </div>
+          <div class="mb-3">
             <label class="form-label small">{{ _('Detailed Description') }}</label>
             {{ form.detailed_description(class="form-control", rows=5) }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small">{{ _('Detailed Description (Greek)') }}</label>
+            {{ form.detailed_description_el(class="form-control", rows=5) }}
           </div>
           <div class="mb-3">
             <label class="form-label small">{{ _('Purpose') }}</label>

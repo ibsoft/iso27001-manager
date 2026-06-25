@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('My Requests') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('My Requests') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <span><i class="fas fa-paper-plane me-2"></i>{{ _('My Requests') }}</span>
+  </div>
+  <div class="card-body p-0">
+    {% if requests.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>{{ _('Approver') }}</th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Item') }}</th>
+            <th>{{ _('Status') }}</th>
+            <th>{{ _('Date') }}</th>
+            <th>{{ _('Reason') }}</th>
+            <th>{{ _('Actions') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in requests.items %}
+          <tr>
+            <td>{{ r.approver.full_name }}</td>
+            <td><span class="badge bg-info">{{ r.target_type.replace('_', ' ').title() }}</span></td>
+            <td>{{ r.target_title }}</td>
+            <td><span class="{{ r.status_class }}">{{ _(r.status|title) }}</span></td>
+            <td><small class="text-muted">{{ r.created_at.strftime('%d/%m/%Y %H:%M') }}</small></td>
+            <td><small class="text-muted">{{ r.reason or '-' }}</small></td>
+            <td>
+              {% if r.status == 'pending' %}
+              <form method="POST" action="{{ url_for('approval.cancel', req_id=r.id) }}" class="d-inline" data-confirm="{{ _('Cancel this request?') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="fas fa-ban me-1"></i>{{ _('Cancel') }}</button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% with items=requests, route='approval.my_requests' %}
+    {% include '_pagination.html' %}
+    {% endwith %}
+    {% else %}
+    <div class="text-center py-5 text-muted">
+      <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+      {{ _('No requests yet.') }}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block page_title %}{% if tab == 'history' %}{{ _('Approval History') }}{% else %}{{ _('Pending Approvals') }}{% endif %}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{% if tab == 'history' %}{{ _('Approval History') }}{% else %}{{ _('Pending Approvals') }}{% endif %}</li>{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if tab == 'pending' }}" href="{{ url_for('approval.pending') }}">
+          <i class="fas fa-clock me-1"></i>{{ _('Pending') }}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ 'active' if tab == 'history' }}" href="{{ url_for('approval.history') }}">
+          <i class="fas fa-history me-1"></i>{{ _('History') }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <form method="GET" class="row g-2 mb-3">
+      <div class="col-md-8">
+        <input type="text" name="search" class="form-control" placeholder="{{ _('Search by requester or type...') }}" value="{{ search }}">
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search me-1"></i>{{ _('Search') }}</button>
+        {% if search %}
+        <a href="{{ url_for('approval.pending') if tab == 'pending' else url_for('approval.history') }}" class="btn btn-secondary">{{ _('Clear') }}</a>
+        {% endif %}
+      </div>
+    </form>
+
+    {% if requests.items %}
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>{{ _('Requester') }}</th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Item') }}</th>
+            <th>{{ _('File') }}</th>
+            <th>{{ _('Date') }}</th>
+            {% if tab == 'history' %}
+            <th>{{ _('Status') }}</th>
+            <th>{{ _('Reason') }}</th>
+            {% endif %}
+            <th>{{ _('Actions') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in requests.items %}
+          {% set is_img = r.target_type == 'general_request' and r.target and r.target.filename and r.target.original_filename and r.target.original_filename.lower().split('.')[-1] in ('png','jpg','jpeg','gif','svg','webp') %}
+          <tr>
+            <td>{{ r.requester.full_name }}</td>
+            <td><span class="badge bg-info">{{ r.target_type.replace('_', ' ').title() }}</span></td>
+            <td>
+              {% if r.target_type == 'general_request' and r.target %}
+                <a href="{{ url_for('general_requests.view', req_id=r.target_id) }}">{{ r.target_title }}</a>
+              {% else %}
+                {{ r.target_title }}
+              {% endif %}
+            </td>
+            <td>
+              {% if r.target_type == 'general_request' and r.target and r.target.filename %}
+                <a href="{{ url_for('general_requests.download', req_id=r.target_id) }}" class="btn btn-sm btn-outline-secondary" title="{{ r.target.original_filename }}">
+                  <i class="fas fa-paperclip"></i>
+                </a>
+                {% if is_img %}
+                <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#previewModal{{ r.id }}">
+                  <i class="fas fa-eye"></i>
+                </a>
+                {% endif %}
+                <small class="text-muted d-block">{{ r.target.original_filename }}</small>
+              {% else %}
+                <span class="text-muted small">—</span>
+              {% endif %}
+            </td>
+            <td><small class="text-muted">{{ r.created_at.strftime('%d/%m/%Y %H:%M') }}</small></td>
+            {% if tab == 'history' %}
+            <td>{{ r.status_class|safe }}</td>
+            <td><small class="text-muted">{{ r.reason or '—' }}</small></td>
+            {% endif %}
+            <td>
+              {% if tab == 'pending' %}
+              <form method="POST" action="{{ url_for('approval.approve', req_id=r.id) }}" class="d-inline" data-confirm="{{ _('Approve this request?') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check me-1"></i>{{ _('Approve') }}</button>
+              </form>
+              <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal{{ r.id }}"><i class="fas fa-times me-1"></i>{{ _('Reject') }}</button>
+
+              <div class="modal fade" id="rejectModal{{ r.id }}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <form method="POST" action="{{ url_for('approval.reject', req_id=r.id) }}">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                      <div class="modal-header">
+                        <h5 class="modal-title">{{ _('Reject Request') }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label class="form-label small">{{ _('Reason') }} <span class="text-danger">*</span></label>
+                          <textarea name="reason" class="form-control" rows="3" required></textarea>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+                        <button type="submit" class="btn btn-danger">{{ _('Reject') }}</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="d-flex align-items-center gap-2">
+                <span class="small text-muted">{{ r.responded_at.strftime('%d/%m/%Y %H:%M') if r.responded_at else '' }}</span>
+                {% if current_user.has_role('admin') %}
+                <form method="POST" action="{{ url_for('approval.delete', req_id=r.id) }}" class="d-inline" onsubmit="return confirm('{{ _('Delete this approval request permanently?') }}')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}"><i class="fas fa-trash"></i></button>
+                </form>
+                {% endif %}
+              </div>
+              {% endif %}
+            </td>
+          </tr>
+          {% if is_img %}
+          <div class="modal fade" id="previewModal{{ r.id }}" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{ r.target.original_filename }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                  <img src="{{ url_for('general_requests.download', req_id=r.target_id) }}" class="img-fluid" alt="{{ r.target.original_filename }}">
+                </div>
+                <div class="modal-footer">
+                  <a href="{{ url_for('general_requests.download', req_id=r.target_id) }}" class="btn btn-primary" download>
+                    <i class="fas fa-download me-1"></i>{{ _('Download') }}
+                  </a>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Close') }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% with items=requests, route=('approval.pending' if tab == 'pending' else 'approval.history') %}
+    {% include '_pagination.html' %}
+    {% endwith %}
+    {% else %}
+    <div class="text-center py-5 text-muted">
+      <i class="fas {{ 'fa-check-circle' if tab == 'pending' else 'fa-history' }} fa-3x mb-3 d-block"></i>
+      {% if tab == 'pending' %}
+        {{ _('No pending approvals.') }}
+      {% else %}
+        {{ _('No approval history.') }}
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

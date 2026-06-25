@@ -5,6 +5,7 @@ from app.extensions import db
 from app.models.capa import CapaRequest
 from app.models.user import User
 from app.models.audit_log import AuditLog
+from app.models.approval import ApprovalRequest
 from app.forms import CapaRequestForm
 from app.utils.decorators import permission_required, admin_required
 from app.utils.pagination import paginate
@@ -65,7 +66,8 @@ def new_capa():
 def view_capa(capa_id):
     capa = CapaRequest.query.get_or_404(capa_id)
     can_edit = current_user.has_permission("capa_edit") or capa.assigned_to_id == current_user.id
-    return render_template("capa/view.html", capa=capa, can_edit=can_edit)
+    pending_req = ApprovalRequest.query.filter_by(target_type="capa", target_id=capa.id, status="pending").first()
+    return render_template("capa/view.html", capa=capa, can_edit=can_edit, pending_req=pending_req)
 
 
 @capa_bp.route("/<int:capa_id>/edit", methods=["GET", "POST"])

@@ -1,0 +1,18 @@
+{
+  "name": "iso27001-manager",
+  "version": "1.0.0",
+  "description": "A web-based Information Security Management System (ISMS) manager built with Flask. Covers ISO 27001:2022 Annex A controls, NIS2 compliance, GDPR (DPA, DSAR, RoPA), risk management, asset management, incident management, audit management, policy management, business continuity, supplier/third-party risk, training & competence, KPI dashboard, AI assistant, and AD/LDAP authentication.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tinymce": "^8.6.0"
+  }
+}
