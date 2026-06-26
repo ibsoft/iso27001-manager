@@ -6,14 +6,11 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card shadow">
-      <div class="card-header"><h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>{{ _('Single Sign-On Configuration') }}</h5></div>
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>{{ _('Single Sign-On Configuration') }}</h5>
+      </div>
       <div class="card-body">
-        <div class="alert alert-info">
-          <i class="fas fa-info-circle me-1"></i>
-          {{ _('SSO integration is a placeholder. Configure your provider details below; actual SAML/OIDC authentication flow is not yet implemented.') }}
-        </div>
-
-        <form method="POST">
+        <form method="POST" action="{{ url_for('admin.sso_settings') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
           <div class="form-check form-switch mb-4">
@@ -60,11 +57,44 @@
             </div>
           </div>
 
+          <div class="mb-3" id="saml_cert_field" style="display:none">
+            <label for="saml_x509_cert" class="form-label">{{ _('SAML IdP X.509 Certificate') }}</label>
+            <textarea class="form-control font-monospace" id="saml_x509_cert" name="saml_x509_cert" rows="4" placeholder="-----BEGIN CERTIFICATE-----&#10;...&#10;-----END CERTIFICATE-----">{{ settings.saml_x509_cert }}</textarea>
+          </div>
+
           <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Settings') }}</button>
-          <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+          <button type="submit" class="btn btn-outline-info ms-2" formaction="{{ url_for('admin.validate_sso_settings') }}"><i class="fas fa-check-circle me-1"></i>{{ _('Validate Settings') }}</button>
+          <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary ms-2">{{ _('Cancel') }}</a>
         </form>
       </div>
     </div>
+
+    {% if validate_result %}
+    <div class="card mt-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-vial me-1"></i>{{ _('Validation Result') }}</span>
+        <span class="badge bg-{{ 'success' if validate_result.success else 'warning text-dark' }} fs-6">
+          {{ validate_result.message }}
+        </span>
+      </div>
+      <div class="card-body p-0">
+        <pre class="mb-0 p-3" style="max-height:400px;overflow-y:auto;font-size:0.8rem;background:var(--input-bg);color:var(--text-primary);border-radius:0;">{% for line in validate_result.log %}{{ line }}
+{% endfor %}</pre>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var sel = document.getElementById('sso_provider');
+  var certField = document.getElementById('saml_cert_field');
+  function toggleCertField() {
+    certField.style.display = sel.value === 'custom' ? '' : 'none';
+  }
+  sel.addEventListener('change', toggleCertField);
+  toggleCertField();
+});
+</script>
 {% endblock %}

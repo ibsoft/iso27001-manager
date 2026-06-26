@@ -6,10 +6,38 @@
 {% block content %}
 <div class="card mb-3">
   <div class="card-body">
-    <div class="d-flex justify-content-between mb-3">
+    <div class="d-flex justify-content-between mb-3 flex-wrap gap-2">
       <h5 class="mb-0"><i class="fas fa-users me-2"></i>{{ users.total }} {{ _('Users') }}</h5>
-      <a href="{{ url_for('admin.new_user') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New User') }}</a>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('admin.export_users') }}" class="btn btn-outline-success"><i class="fas fa-download me-1"></i>{{ _('Export') }}</a>
+        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#importModal"><i class="fas fa-upload me-1"></i>{{ _('Import') }}</button>
+        <a href="{{ url_for('admin.new_user') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('New User') }}</a>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="importModal" tabindex="-1">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('admin.import_users_csv') }}" enctype="multipart/form-data" class="modal-content">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-upload me-1"></i>{{ _('Import Users from CSV') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small">{{ _('Upload a CSV file with columns: username, email, first_name, last_name, password, is_active, roles.') }}</p>
+        <p class="text-muted small">{{ _('Roles should be comma-separated role names (e.g. "user,admin"). Password is optional — a random one is generated if empty.') }}</p>
+        <div class="mb-3">
+          <label class="form-label">{{ _('CSV File') }}</label>
+          <input type="file" name="file" class="form-control" accept=".csv" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-upload me-1"></i>{{ _('Import') }}</button>
+      </div>
+    </form>
   </div>
 </div>
 

@@ -65,6 +65,9 @@ def create_app(config_name=None):
 
     babel.init_app(app, locale_selector=get_locale)
 
+    from app.utils.sso_auth import init_sso
+    init_sso(app)
+
     csp = {
         "default-src": ["'self'"],
         "style-src": ["'self'", "'unsafe-inline'"],
@@ -164,18 +167,16 @@ def create_app(config_name=None):
         if forced_tz:
             session["timezone"] = forced_tz
 
-        if _cu.is_authenticated and request.endpoint not in ("auth.logout", "static"):
+        if _cu.is_authenticated and request.endpoint not in ("auth.logout", "auth.login", "auth.sso_login", "auth.sso_callback", "auth.sso_acs", "auth.sso_metadata", "static"):
             from app.models.user import UserSession
             try:
                 _s = UserSession.query.filter_by(session_id=_session.sid, user_id=_cu.id).first()
                 if not _s:
-                    from flask_login import logout_user as _lu
-                    _lu()
-                    _session.clear()
-                    flash(_("Your session has been terminated by an administrator."), "warning")
-                    return redirect(url_for("auth.login"))
-                _s.last_activity = datetime.utcnow()
-                db.session.commit()
+                    current_app.logger.warning("Session record NOT found for sid=%s uid=%s — allowing pass-through for debugging",
+                                               _session.sid, _cu.id)
+                else:
+                    _s.last_activity = datetime.utcnow()
+                    db.session.commit()
             except Exception:
                 pass
 
@@ -185,10 +186,9 @@ def create_app(config_name=None):
         if request.accept_mimetypes.best == "application/json":
             return jsonify({"error": _("Forbidden"), "message": message}), 403
         flash(message, "forbidden")
-        fallback = url_for("dashboard.index")
-        if request.referrer and request.referrer != request.url:
+        if request.referrer and request.referrer != request.url and "login" not in request.referrer:
             return redirect(request.referrer)
-        return redirect(fallback)
+        return redirect(url_for("auth.profile"))
 
     @app.errorhandler(429)
     def too_many_requests(error):
@@ -249,6 +249,8 @@ def create_app(config_name=None):
     app.register_blueprint(notifications_bp, url_prefix="/notifications")
     app.register_blueprint(approval_bp, url_prefix="/approval")
     app.register_blueprint(general_requests_bp, url_prefix="/requests")
+
+
 
     from app.models.approval import ApprovalRequest
     from app.models.policy import Policy

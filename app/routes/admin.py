@@ -1,13 +1,14 @@
 import io
 import os
+import csv
 import zipfile
 import shutil
 from datetime import datetime
 from app.paths import data_root
-from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, session, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, session, current_app, Response
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
-from app.extensions import db
+from app.extensions import db, bcrypt
 from app.models.user import User, Role, Permission, Department, UserSession
 from app.models.audit_log import AuditLog
 from app.forms import UserForm
@@ -24,6 +25,83 @@ admin_bp = Blueprint("admin", __name__)
 def list_users():
     users = paginate(User.query.order_by(User.username))
     return render_template("admin/users.html", users=users)
+
+
+@admin_bp.route("/users/export")
+@login_required
+@admin_required
+def export_users():
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["username", "email", "first_name", "last_name", "is_active", "auth_source", "roles"])
+    for u in User.query.order_by(User.username).all():
+        writer.writerow([
+            u.username, u.email, u.first_name, u.last_name,
+            "1" if u.is_active else "0", u.auth_source,
+            ",".join(r.name for r in u.roles),
+        ])
+    output.seek(0)
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=users.csv"},
+    )
+
+
+@admin_bp.route("/users/import", methods=["POST"])
+@login_required
+@admin_required
+def import_users_csv():
+    file = request.files.get("file")
+    if not file:
+        flash(_("No file uploaded."), "danger")
+        return redirect(url_for("admin.list_users"))
+    try:
+        stream = io.StringIO(file.stream.read().decode("utf-8-sig"))
+        reader = csv.DictReader(stream)
+        created = 0
+        errors = []
+        for row in reader:
+            username = row.get("username", "").strip()
+            if not username:
+                continue
+            if User.query.filter_by(username=username).first():
+                errors.append(f"{username}: already exists")
+                continue
+            try:
+                user = User(
+                    username=username,
+                    email=row.get("email", "").strip() or f"{username}@imported",
+                    first_name=row.get("first_name", "").strip() or username,
+                    last_name=row.get("last_name", "").strip() or "",
+                    is_active=row.get("is_active", "1").strip() in ("1", "true", "yes"),
+                    auth_source="local",
+                    password_hash=bcrypt.generate_password_hash(
+                        row.get("password", "").strip() or os.urandom(16).hex()
+                    ).decode("utf-8"),
+                )
+                roles_str = row.get("roles", "").strip()
+                if roles_str:
+                    for rname in roles_str.split(","):
+                        rname = rname.strip()
+                        role = Role.query.filter_by(name=rname).first()
+                        if role:
+                            user.roles.append(role)
+                db.session.add(user)
+                db.session.commit()
+                created += 1
+            except Exception as e:
+                db.session.rollback()
+                errors.append(f"{username}: {e}")
+        msg = _("Imported %(count)s user(s).", count=created)
+        if errors:
+            msg += " " + _("Errors: %(err)s", err="; ".join(errors[:5]))
+            flash(msg, "warning" if created else "danger")
+        else:
+            flash(msg, "success")
+    except Exception as e:
+        flash(_("Failed to parse file: %(err)s", err=str(e)), "danger")
+    return redirect(url_for("admin.list_users"))
 
 
 @admin_bp.route("/users/new", methods=["GET", "POST"])
@@ -513,7 +591,55 @@ def ldap_settings():
         flash(_("LDAP settings saved."), "success")
         return redirect(url_for("admin.ldap_settings"))
 
-    settings = {
+    settings = _get_ldap_settings_dict()
+    return render_template("admin/ldap_settings.html", settings=settings, test_result=None, ldap_users=None)
+
+
+@admin_bp.route("/ldap-settings/test", methods=["POST"])
+@login_required
+@admin_required
+def test_ldap_connection():
+    from app.utils.ldap_auth import test_connection
+    result = test_connection()
+    current_app.logger.info("LDAP test: %s", result["message"])
+    settings = _get_ldap_settings_dict()
+    return render_template("admin/ldap_settings.html", settings=settings, test_result=result, ldap_users=None)
+
+
+@admin_bp.route("/ldap-settings/list-users", methods=["POST"])
+@login_required
+@admin_required
+def list_ldap_users():
+    from app.utils.ldap_auth import list_users
+    search = request.form.get("search", "")
+    page = request.form.get("page", 1, type=int)
+    result = list_users(search=search, page=page)
+    settings = _get_ldap_settings_dict()
+    return render_template("admin/ldap_settings.html", settings=settings, test_result=None, ldap_users=result)
+
+
+@admin_bp.route("/ldap-settings/import-users", methods=["POST"])
+@login_required
+@admin_required
+def import_ldap_users():
+    from app.utils.ldap_auth import import_users
+    selected = request.form.getlist("selected_users")
+    if not selected:
+        flash(_("No users selected."), "warning")
+        return redirect(url_for("admin.ldap_settings"))
+    result = import_users(selected)
+    if result["imported"]:
+        flash(_("Imported %(count)s user(s).", count=result["imported"]), "success")
+    if result["skipped"]:
+        flash(_("Skipped %(count)s existing LDAP user(s).", count=result["skipped"]), "info")
+    for err in result["errors"]:
+        flash(err, "danger")
+    return redirect(url_for("admin.ldap_settings"))
+
+
+def _get_ldap_settings_dict():
+    from app.models.user import SystemSetting
+    return {
         "ldap_enabled": SystemSetting.get("ldap_enabled", "0") == "1",
         "ldap_server": SystemSetting.get("ldap_server", ""),
         "ldap_port": SystemSetting.get("ldap_port", "389"),
@@ -525,7 +651,6 @@ def ldap_settings():
         "ldap_attribute_map": SystemSetting.get("ldap_attribute_map",
                                                  '{"email":"mail","first_name":"givenName","last_name":"sn"}'),
     }
-    return render_template("admin/ldap_settings.html", settings=settings)
 
 
 @admin_bp.route("/sso-settings", methods=["GET", "POST"])
@@ -542,18 +667,88 @@ def sso_settings():
             SystemSetting.set("sso_client_secret", request.form.get("sso_client_secret", ""), current_user.id)
         SystemSetting.set("sso_issuer_url", request.form.get("sso_issuer_url", ""), current_user.id)
         SystemSetting.set("sso_metadata_url", request.form.get("sso_metadata_url", ""), current_user.id)
+        if request.form.get("saml_x509_cert"):
+            SystemSetting.set("saml_x509_cert", request.form.get("saml_x509_cert", ""), current_user.id)
         flash(_("SSO settings saved."), "success")
         return redirect(url_for("admin.sso_settings"))
 
-    settings = {
+    settings = _get_sso_settings_dict()
+    return render_template("admin/sso_settings.html", settings=settings, validate_result=None)
+
+
+@admin_bp.route("/sso-settings/validate", methods=["POST"])
+@login_required
+@admin_required
+def validate_sso_settings():
+    import urllib.request, urllib.error
+    import json as _json
+    log = []
+    settings = _get_sso_settings_dict()
+
+    log.append(f"Provider: {settings['sso_provider'] or '(not set)'}")
+    log.append(f"Client ID: {settings['sso_client_id'] or '(not set)'}")
+    log.append(f"Issuer URL: {settings['sso_issuer_url'] or '(not set)'}")
+    log.append(f"Metadata URL: {settings['sso_metadata_url'] or '(not set)'}")
+    log.append("")
+
+    if not settings["sso_provider"]:
+        return _sso_validate_result("Provider not selected", log, settings)
+
+    if not settings["sso_client_id"]:
+        log.append("[WARN] Client ID is empty")
+
+    if settings["sso_issuer_url"]:
+        if not settings["sso_issuer_url"].startswith("https://"):
+            log.append("[WARN] Issuer URL should use HTTPS")
+        log.append(f"Checking issuer URL reachability...")
+        try:
+            req = urllib.request.Request(settings["sso_issuer_url"], method="HEAD")
+            resp = urllib.request.urlopen(req, timeout=10)
+            log.append(f"  HTTP {resp.status} — OK")
+        except urllib.error.HTTPError as e:
+            log.append(f"  HTTP {e.code} — issuer responds (expected for SSO endpoints)")
+        except Exception as e:
+            log.append(f"  [WARN] Cannot reach issuer URL: {e}")
+
+    if settings["sso_metadata_url"]:
+        if not settings["sso_metadata_url"].startswith("https://"):
+            log.append("[WARN] Metadata URL should use HTTPS")
+        log.append("Fetching metadata URL...")
+        try:
+            req = urllib.request.Request(settings["sso_metadata_url"])
+            resp = urllib.request.urlopen(req, timeout=15)
+            body = resp.read()
+            log.append(f"  HTTP {resp.status} — {len(body)} bytes received")
+            content_type = resp.headers.get("Content-Type", "")
+            if "xml" in content_type.lower() or body.startswith(b"<?xml") or b"EntityDescriptor" in body[:500]:
+                log.append("  Content appears to be valid SAML metadata (XML)")
+            else:
+                log.append(f"  [WARN] Content-Type: {content_type}, may not be SAML metadata")
+        except Exception as e:
+            log.append(f"  [ERROR] Cannot fetch metadata URL: {e}")
+
+    log.append("")
+    log.append("Validation complete.")
+    return _sso_validate_result("Validation complete" if not any("[ERROR]" in l for l in log) else "Some checks failed", log, settings)
+
+
+def _sso_validate_result(message, log, settings):
+    result = {"success": "[ERROR]" not in message and "[WARN]" not in message, "message": message, "log": log}
+    current_app.logger.info("SSO validate: %s", message)
+    return render_template("admin/sso_settings.html", settings=settings, validate_result=result)
+
+
+def _get_sso_settings_dict():
+    from app.models.user import SystemSetting
+    return {
         "sso_enabled": SystemSetting.get("sso_enabled", "0") == "1",
         "sso_provider": SystemSetting.get("sso_provider", ""),
         "sso_client_id": SystemSetting.get("sso_client_id", ""),
         "sso_client_secret": SystemSetting.get("sso_client_secret", ""),
         "sso_issuer_url": SystemSetting.get("sso_issuer_url", ""),
         "sso_metadata_url": SystemSetting.get("sso_metadata_url", ""),
+        "saml_x509_cert": SystemSetting.get("saml_x509_cert", ""),
     }
-    return render_template("admin/sso_settings.html", settings=settings)
 
 
 @admin_bp.route("/departments")
