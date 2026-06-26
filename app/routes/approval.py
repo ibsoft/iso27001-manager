@@ -105,6 +105,11 @@ def create_request():
         reference_id=req.id,
     )
 
+    from app.utils.notify import dispatch_alert
+    dispatch_alert("approval_requested", _("Approval Request: %(type)s", type=target_type.replace("_", " ").title()),
+                   _("<p>%(name)s requested approval for %(type)s.</p>", name=current_user.full_name, type=target_type),
+                   context_user=current_user)
+
     flash(_("Approval request submitted."), "success")
     return redirect(request.referrer or url_for("dashboard.index"))
 
@@ -145,6 +150,11 @@ def approve(req_id):
         _("%(name)s approved your request.", name=current_user.full_name),
         link=url_for("approval.my_requests"),
     )
+
+    from app.utils.notify import dispatch_alert
+    dispatch_alert("approved", _("Request Approved: %(type)s", type=req.target_type.replace("_", " ").title()),
+                   _("<p>%(name)s approved the %(type)s request.</p>", name=current_user.full_name, type=req.target_type),
+                   context_user=current_user)
 
     flash(_("Request approved."), "success")
     return redirect(url_for("approval.pending"))
@@ -191,6 +201,12 @@ def reject(req_id):
         _("%(name)s rejected your request. Reason: %(reason)s", name=current_user.full_name, reason=reason),
         link=url_for("approval.my_requests"),
     )
+
+    from app.utils.notify import dispatch_alert
+    dispatch_alert("rejected", _("Request Rejected: %(type)s", type=req.target_type.replace("_", " ").title()),
+                   _("<p>%(name)s rejected the %(type)s request. Reason: %(reason)s</p>",
+                     name=current_user.full_name, type=req.target_type, reason=reason),
+                   context_user=current_user)
 
     flash(_("Request rejected."), "success")
     return redirect(url_for("approval.pending"))

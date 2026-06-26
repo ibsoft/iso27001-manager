@@ -355,6 +355,16 @@
     .dark-theme .toast { background: var(--card-bg); color: var(--text-primary); }
     .dark-theme .toast-body { color: var(--text-primary); }
     .dark-theme .toast-header { border-bottom-color: var(--header-border); }
+    .dark-theme input[type="file"]::file-selector-button {
+      background: #334155;
+      border: 1px solid #475569;
+      color: #f1f5f9;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0;
+      cursor: pointer;
+    }
+    .dark-theme input[type="file"]::file-selector-button:hover { background: #475569; }
+    .dark-theme input[type="file"] { color: var(--text-primary); }
 
     .table-responsive-custom {
       overflow-x: auto;
@@ -645,6 +655,8 @@
             <li class="nav-item"><a href="{{ url_for('ai.ai_settings') }}" class="nav-link"><i class="fas fa-robot"></i><p>{{ _('AI Settings') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('admin.ldap_settings') }}" class="nav-link {{ 'active' if request.endpoint and 'admin.ldap_settings' in request.endpoint else '' }}"><i class="fas fa-server"></i><p>{{ _('LDAP Settings') }}</p></a></li>
             <li class="nav-item"><a href="{{ url_for('admin.sso_settings') }}" class="nav-link {{ 'active' if request.endpoint and 'admin.sso_settings' in request.endpoint else '' }}"><i class="fas fa-shield-alt"></i><p>{{ _('SSO Settings') }}</p></a></li>
+            <li class="nav-item"><a href="{{ url_for('admin.mail_settings') }}" class="nav-link {{ 'active' if request.endpoint and 'admin.mail_settings' in request.endpoint else '' }}"><i class="fas fa-envelope"></i><p>{{ _('Mail Settings') }}</p></a></li>
+            <li class="nav-item"><a href="{{ url_for('admin.list_email_alerts') }}" class="nav-link {{ 'active' if request.endpoint and 'admin.email_alerts' in request.endpoint else '' }}"><i class="fas fa-bell"></i><p>{{ _('Email Alerts') }}</p></a></li>
           </ul>
         </li>
         {% endif %}

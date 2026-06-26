@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Email Alerts') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Email Alerts') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card shadow">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-bell me-2"></i>{{ _('Email Alerts') }}</h5>
+        <a href="{{ url_for('admin.create_email_alert') }}" class="btn btn-primary btn-sm">
+          <i class="fas fa-plus me-1"></i>{{ _('New Alert') }}
+        </a>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>{{ _('Name') }}</th>
+                <th>{{ _('Event Type') }}</th>
+                <th>{{ _('Recipient') }}</th>
+                <th>{{ _('Status') }}</th>
+                <th>{{ _('Created') }}</th>
+                <th>{{ _('Actions') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for alert in alerts %}
+              <tr>
+                <td>{{ alert.name }}</td>
+                <td>
+                  {% for val, label in event_types %}
+                    {% if val == alert.event_type %}{{ label }}{% endif %}
+                  {% endfor %}
+                </td>
+                <td>{{ alert.recipient_display }}</td>
+                <td>
+                  {% if alert.is_active %}
+                  <span class="badge bg-success">{{ _('Active') }}</span>
+                  {% else %}
+                  <span class="badge bg-secondary">{{ _('Disabled') }}</span>
+                  {% endif %}
+                </td>
+                <td class="small">{{ alert.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                  <form method="POST" action="{{ url_for('admin.toggle_email_alert', alert_id=alert.id) }}" style="display:inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    {% if alert.is_active %}
+                    <button type="submit" class="btn btn-sm btn-outline-warning" title="{{ _('Disable') }}">
+                      <i class="fas fa-pause"></i>
+                    </button>
+                    {% else %}
+                    <button type="submit" class="btn btn-sm btn-outline-success" title="{{ _('Enable') }}">
+                      <i class="fas fa-play"></i>
+                    </button>
+                    {% endif %}
+                  </form>
+                  <form method="POST" action="{{ url_for('admin.delete_email_alert', alert_id=alert.id) }}" style="display:inline" data-confirm="{{ _('Delete this alert?') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ _('Delete') }}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">
+                  <i class="fas fa-bell-slash fa-2x mb-2 d-block"></i>
+                  {{ _('No email alerts configured.') }}
+                  <a href="{{ url_for('admin.create_email_alert') }}" class="d-block mt-2">{{ _('Create your first alert') }}</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

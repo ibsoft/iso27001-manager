@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('New Email Alert') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('admin.list_email_alerts') }}">{{ _('Email Alerts') }}</a></li>
+<li class="breadcrumb-item active">{{ _('New Alert') }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>{{ _('Create Email Alert') }}</h5>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('admin.create_email_alert') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="mb-3">
+            <label for="name" class="form-label">{{ _('Alert Name') }} <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" required placeholder="{{ _('e.g. Notify admins of failed logins') }}">
+          </div>
+
+          <div class="mb-3">
+            <label for="event_type" class="form-label">{{ _('Event Type') }} <span class="text-danger">*</span></label>
+            <select class="form-select" id="event_type" name="event_type" required>
+              <option value="">{{ _('-- Select --') }}</option>
+              {% for val, label in event_types %}
+              <option value="{{ val }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="recipient_type" class="form-label">{{ _('Recipient Type') }}</label>
+            <select class="form-select" id="recipient_type" name="recipient_type" onchange="toggleRecipientField()">
+              <option value="role">{{ _('Role') }}</option>
+              <option value="user">{{ _('Specific User') }}</option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="role_field">
+            <label for="recipient_id" class="form-label">{{ _('Role') }} <span class="text-danger">*</span></label>
+            <select class="form-select" id="recipient_id" name="recipient_id">
+              <option value="">{{ _('-- Select --') }}</option>
+              {% for role in roles %}
+              <option value="{{ role.id }}">{{ role.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3" id="user_field" style="display:none">
+            <label for="recipient_id_user" class="form-label">{{ _('User') }} <span class="text-danger">*</span></label>
+            <select class="form-select" id="recipient_id_user" name="recipient_id">
+              <option value="">{{ _('-- Select --') }}</option>
+              {% for u in users %}
+              <option value="{{ u.id }}">{{ u.full_name }} ({{ u.username }})</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Create Alert') }}</button>
+          <a href="{{ url_for('admin.list_email_alerts') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleRecipientField() {
+  var type = document.getElementById('recipient_type').value;
+  document.getElementById('role_field').style.display = type === 'role' ? '' : 'none';
+  document.getElementById('user_field').style.display = type === 'user' ? '' : 'none';
+}
+document.addEventListener('DOMContentLoaded', toggleRecipientField);
+</script>
+{% endblock %}
