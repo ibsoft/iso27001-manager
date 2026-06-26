@@ -15,6 +15,7 @@ from app.models.audit import InternalAudit, NonConformity, CorrectiveAction
 from app.models.soa import SoAEntry
 from app.models.supplier import Supplier
 from app.models.audit_log import AuditLog
+from app.models.user import User
 from app.models.asset_assignment import AssetAssignment
 from app.models.management_review import ManagementReview
 from app.models.capa import CapaRequest
@@ -90,10 +91,41 @@ def incident_trends():
 def view_audit_log():
     page = request.args.get("page", 1, type=int)
     per_page = 50
-    logs = AuditLog.query.order_by(AuditLog.created_at.desc()).paginate(
+    action = request.args.get("action", "")
+    user_id = request.args.get("user_id", type=int)
+    q = request.args.get("q", "")
+    date_from = request.args.get("date_from", "")
+    date_to = request.args.get("date_to", "")
+
+    query = AuditLog.query
+
+    if action:
+        query = query.filter(AuditLog.action == action)
+    if user_id:
+        query = query.filter(AuditLog.user_id == user_id)
+    if q:
+        query = query.filter(
+            AuditLog.details.ilike(f"%{q}%") |
+            AuditLog.ip_address.ilike(f"%{q}%") |
+            AuditLog.user_agent.ilike(f"%{q}%")
+        )
+    if date_from:
+        query = query.filter(AuditLog.created_at >= datetime.strptime(date_from, "%Y-%m-%d"))
+    if date_to:
+        query = query.filter(AuditLog.created_at <= datetime.strptime(date_to, "%Y-%m-%d") + __import__("datetime").timedelta(days=1))
+
+    logs = query.order_by(AuditLog.created_at.desc()).paginate(
         page=page, per_page=per_page, error_out=False
     )
-    return render_template("reports/audit_log.html", logs=logs)
+
+    actions = [r[0] for r in db.session.query(AuditLog.action).distinct().order_by(AuditLog.action).all()]
+    users = User.query.order_by(User.username).all()
+
+    return render_template(
+        "reports/audit_log.html", logs=logs,
+        actions=actions, users=users,
+        filters=dict(action=action, user_id=user_id, q=q, date_from=date_from, date_to=date_to),
+    )
 
 
 @reports_bp.route("/export/csv/<resource>")

@@ -1,6 +1,7 @@
 import os
+import json
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 from flask import Flask
 from flask_talisman import Talisman
 from config import config
@@ -63,6 +64,9 @@ def create_app(config_name=None):
         return request.accept_languages.best_match(list(LANGUAGES.keys()), default="en")
 
     babel.init_app(app, locale_selector=get_locale)
+
+    from app.utils.sso_auth import init_sso
+    init_sso(app)
 
     csp = {
         "default-src": ["'self'"],
@@ -153,6 +157,8 @@ def create_app(config_name=None):
 
     @app.before_request
     def apply_forced_settings_before():
+        from flask_login import current_user as _cu
+        from flask import session as _session
         from app.models.user import SystemSetting
         forced_lang = SystemSetting.get("forced_language")
         forced_tz = SystemSetting.get("forced_timezone")
@@ -161,16 +167,28 @@ def create_app(config_name=None):
         if forced_tz:
             session["timezone"] = forced_tz
 
+        if _cu.is_authenticated and request.endpoint not in ("auth.logout", "auth.login", "auth.sso_login", "auth.sso_callback", "auth.sso_acs", "auth.sso_metadata", "static"):
+            from app.models.user import UserSession
+            try:
+                _s = UserSession.query.filter_by(session_id=_session.sid, user_id=_cu.id).first()
+                if not _s:
+                    current_app.logger.warning("Session record NOT found for sid=%s uid=%s — allowing pass-through for debugging",
+                                               _session.sid, _cu.id)
+                else:
+                    _s.last_activity = datetime.utcnow()
+                    db.session.commit()
+            except Exception:
+                pass
+
     @app.errorhandler(403)
     def forbidden(error):
         message = _("You do not have permission to access this resource.")
         if request.accept_mimetypes.best == "application/json":
             return jsonify({"error": _("Forbidden"), "message": message}), 403
         flash(message, "forbidden")
-        fallback = url_for("dashboard.index")
-        if request.referrer and request.referrer != request.url:
+        if request.referrer and request.referrer != request.url and "login" not in request.referrer:
             return redirect(request.referrer)
-        return redirect(fallback)
+        return redirect(url_for("auth.profile"))
 
     @app.errorhandler(429)
     def too_many_requests(error):
@@ -232,6 +250,8 @@ def create_app(config_name=None):
     app.register_blueprint(approval_bp, url_prefix="/approval")
     app.register_blueprint(general_requests_bp, url_prefix="/requests")
 
+
+
     from app.models.approval import ApprovalRequest
     from app.models.policy import Policy
     from app.models.capa import CapaRequest
@@ -259,15 +279,28 @@ def create_app(config_name=None):
     if not os.path.exists(_backup_dir):
         os.makedirs(_backup_dir)
 
-    log_file = os.path.join(app.config["LOG_DIR"], "app.log")
-    handler = RotatingFileHandler(log_file, maxBytes=10 * 1024 * 1024, backupCount=10)
-    handler.setLevel(getattr(logging, app.config.get("LOG_LEVEL", "INFO")))
-    formatter = logging.Formatter(
-        "%(asctime)s %(levelname)s [%(name)s] %(message)s"
-    )
-    handler.setFormatter(formatter)
+    log_file = os.path.join(app.config["LOG_DIR"], "app.jsonl")
+    handler = TimedRotatingFileHandler(log_file, when="midnight", backupCount=10, utc=True)
+    _level_name = app.config.get("LOG_LEVEL", "INFO")
+    from app.models.user import SystemSetting
+    with app.app_context():
+        _db_level = SystemSetting.get("log_level")
+        if _db_level and _db_level in ("DEBUG", "INFO", "WARNING", "ERROR"):
+            _level_name = _db_level
+    handler.setLevel(getattr(logging, _level_name))
+    class JsonlFormatter(logging.Formatter):
+        def format(self, record):
+            return json.dumps({
+                "timestamp": self.formatTime(record, "%Y-%m-%dT%H:%M:%S"),
+                "level": record.levelname,
+                "logger": record.name,
+                "message": record.getMessage(),
+                "module": record.module,
+                "line": record.lineno,
+            }, ensure_ascii=False)
+    handler.setFormatter(JsonlFormatter())
     app.logger.addHandler(handler)
-    app.logger.setLevel(getattr(logging, app.config.get("LOG_LEVEL", "INFO")))
+    app.logger.setLevel(getattr(logging, _level_name))
     app.logger.info("ISO27001-Manager starting")
 
     with app.app_context():

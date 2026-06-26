@@ -1,9 +1,9 @@
 import os
-from flask import Blueprint, render_template, redirect, url_for, flash, request, session, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session, current_app, abort
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import gettext as _
-from app.extensions import db, bcrypt, limiter
-from app.models.user import User, Role
+from app.extensions import db, bcrypt, limiter, csrf
+from app.models.user import User, Role, UserSession, SystemSetting
 from app.models.audit_log import AuditLog
 from app.models.asset_assignment import AssetAssignment
 from app.forms import LoginForm, ChangePasswordForm, ProfileForm
@@ -64,22 +64,22 @@ def login():
                 if user.is_locked():
                     flash(_("Account locked due to too many failed attempts. Try again in 15 minutes."), "danger")
                     _log_audit(None, "ACCOUNT_LOCKED", "User", user.id, f"Account locked for {user.username}")
-                    return render_template("auth/login.html", form=form)
+                    return render_template("auth/login.html", form=form, **_sso_context())
                 flash(_("Invalid username or password."), "danger")
                 _log_audit(None, "FAILED_LOGIN", "User", user.id, f"Failed login for {username}")
-                return render_template("auth/login.html", form=form)
+                return render_template("auth/login.html", form=form, **_sso_context())
         else:
             flash(_("Invalid username or password."), "danger")
             _log_audit(None, "FAILED_LOGIN", "User", user.id if user else None, f"Failed login for {username}")
-            return render_template("auth/login.html", form=form)
+            return render_template("auth/login.html", form=form, **_sso_context())
 
         if not user.is_active:
             flash(_("Account is deactivated. Contact an administrator."), "danger")
-            return render_template("auth/login.html", form=form)
+            return render_template("auth/login.html", form=form, **_sso_context())
 
         if user.is_locked():
             flash(_("Account locked due to too many failed attempts. Try again in 15 minutes."), "danger")
-            return render_template("auth/login.html", form=form)
+            return render_template("auth/login.html", form=form, **_sso_context())
 
         if user.is_mfa_enabled:
             session["mfa_user_id"] = user.id
@@ -91,6 +91,19 @@ def login():
         db.session.commit()
 
         login_user(user, remember=form.data.get("remember", False))
+
+        try:
+            user_session = UserSession(
+                user_id=user.id,
+                session_id=session.sid,
+                ip_address=request.remote_addr,
+                user_agent=request.user_agent.string[:500] if request.user_agent else None,
+            )
+            db.session.add(user_session)
+            db.session.commit()
+            current_app.logger.debug("UserSession created: sid=%s uid=%s", session.sid, user.id)
+        except Exception as e:
+            current_app.logger.warning("UserSession creation failed: %s", e)
 
         if user.default_language and user.default_language in ("en", "el"):
             session["lang"] = user.default_language
@@ -108,7 +121,7 @@ def login():
             return redirect(next_page)
         return redirect(url_for("dashboard.index"))
 
-    return render_template("auth/login.html", form=form)
+    return render_template("auth/login.html", form=form, **_sso_context())
 
 
 @auth_bp.route("/mfa-verify", methods=["GET", "POST"])
@@ -137,6 +150,18 @@ def mfa_verify():
                 login_user(user)
                 session.pop("mfa_user_id", None)
 
+                try:
+                    user_session = UserSession(
+                        user_id=user.id,
+                        session_id=session.sid,
+                        ip_address=request.remote_addr,
+                        user_agent=request.user_agent.string[:500] if request.user_agent else None,
+                    )
+                    db.session.add(user_session)
+                    db.session.commit()
+                except Exception:
+                    pass
+
                 if user.default_language and user.default_language in ("en", "el"):
                     session["lang"] = user.default_language
                 elif "lang" not in session:
@@ -158,6 +183,11 @@ def mfa_verify():
 @login_required
 def logout():
     _log_audit(current_user.id, "LOGOUT", "User", current_user.id, f"User {current_user.username} logged out")
+    try:
+        UserSession.query.filter_by(session_id=session.sid).delete()
+        db.session.commit()
+    except Exception:
+        pass
     logout_user()
     session.clear()
     flash(_("You have been logged out."), "info")
@@ -290,6 +320,221 @@ def disable_mfa():
     _log_audit(current_user.id, "MFA_DISABLED", "User", current_user.id, "MFA disabled")
     flash(_("MFA has been disabled."), "info")
     return redirect(url_for("auth.profile"))
+
+
+def _sso_context():
+    return {
+        "sso_enabled": SystemSetting.get("sso_enabled", "0") == "1",
+        "sso_provider": SystemSetting.get("sso_provider", ""),
+    }
+
+
+@auth_bp.route("/sso/login/<provider>")
+def sso_login(provider):
+    if provider not in ("azure", "google", "okta", "custom"):
+        flash(_("Unsupported SSO provider."), "danger")
+        return redirect(url_for("auth.login"))
+
+    from app.models.user import SystemSetting
+    sso_enabled = SystemSetting.get("sso_enabled", "0") == "1"
+    if not sso_enabled:
+        flash(_("SSO authentication is disabled."), "warning")
+        return redirect(url_for("auth.login"))
+
+    if provider == "custom":
+        from app.utils.sso_auth import get_saml_settings
+        from onelogin.saml2.auth import OneLogin_Saml2_Auth
+        import uuid
+
+        saml_settings = get_saml_settings()
+        if not saml_settings["idp"]["singleSignOnService"]["url"]:
+            flash(_("SAML IdP URL is not configured. Save SSO settings first."), "danger")
+            return redirect(url_for("admin.sso_settings"))
+
+        req = _prepare_saml_request(request)
+        saml_auth = OneLogin_Saml2_Auth(req, saml_settings)
+        session["saml_request_id"] = str(uuid.uuid4())
+        return redirect(saml_auth.login(session["saml_request_id"]))
+
+    try:
+        from authlib.integrations.flask_client import OAuth
+        from app.utils.sso_auth import _get_oidc_config as _cfg
+        _oauth = OAuth()
+
+        cfg = _cfg(provider)
+        if not cfg:
+            flash(_("SSO provider not configured."), "danger")
+            return redirect(url_for("auth.login"))
+
+        registered = _oauth.register(
+            name=f"sso_{provider}",
+            client_id=cfg["client_id"],
+            client_secret=cfg["client_secret"],
+            server_metadata_url=cfg["server_metadata_url"],
+            client_kwargs=cfg["client_kwargs"],
+        )
+        redirect_uri = url_for("auth.sso_callback", provider=provider, _external=True)
+        return registered.authorize_redirect(redirect_uri)
+    except Exception as e:
+        current_app.logger.error("SSO login error: %s", e)
+        flash(_("SSO login failed: {}").format(str(e)), "danger")
+        return redirect(url_for("auth.login"))
+
+
+@auth_bp.route("/sso/callback/<provider>")
+def sso_callback(provider):
+    if provider not in ("azure", "google", "okta"):
+        flash(_("Invalid SSO provider."), "danger")
+        return redirect(url_for("auth.login"))
+
+    from app.models.user import SystemSetting
+    sso_enabled = SystemSetting.get("sso_enabled", "0") == "1"
+    if not sso_enabled:
+        flash(_("SSO authentication is disabled."), "warning")
+        return redirect(url_for("auth.login"))
+
+    try:
+        from authlib.integrations.flask_client import OAuth
+        from app.utils.sso_auth import _get_oidc_config as _cfg
+        _oauth = OAuth()
+
+        cfg = _cfg(provider)
+        if not cfg:
+            flash(_("SSO provider not configured."), "danger")
+            return redirect(url_for("auth.login"))
+
+        registered = _oauth.register(
+            name=f"sso_{provider}",
+            client_id=cfg["client_id"],
+            client_secret=cfg["client_secret"],
+            server_metadata_url=cfg["server_metadata_url"],
+            client_kwargs=cfg["client_kwargs"],
+        )
+        token = registered.authorize_access_token()
+        user_info = registered.parse_id_token(token)
+    except Exception as e:
+        current_app.logger.error("SSO callback error: %s", e)
+        flash(_("SSO authentication failed: {}").format(str(e)), "danger")
+        return redirect(url_for("auth.login"))
+
+    user_data = {
+        "email": user_info.get("email", ""),
+        "first_name": user_info.get("given_name", user_info.get("name", "")),
+        "last_name": user_info.get("family_name", ""),
+    }
+    return _process_sso_login(user_data)
+
+
+@csrf.exempt
+@auth_bp.route("/sso/acs", methods=["POST"])
+def sso_acs():
+    from app.models.user import SystemSetting
+    sso_enabled = SystemSetting.get("sso_enabled", "0") == "1"
+    if not sso_enabled:
+        flash(_("SSO authentication is disabled."), "warning")
+        return redirect(url_for("auth.login"))
+
+    from app.utils.sso_auth import get_saml_settings
+    from onelogin.saml2.auth import OneLogin_Saml2_Auth
+
+    req = _prepare_saml_request(request)
+    saml_settings = get_saml_settings()
+    saml_auth = OneLogin_Saml2_Auth(req, saml_settings)
+    saml_auth.process_response()
+
+    errors = saml_auth.get_errors()
+    if errors:
+        current_app.logger.error("SAML ACS errors: %s", errors)
+        flash(_("SAML authentication failed: {}").format(", ".join(errors)), "danger")
+        return redirect(url_for("auth.login"))
+
+    if not saml_auth.is_authenticated():
+        flash(_("SAML authentication failed."), "danger")
+        return redirect(url_for("auth.login"))
+
+    attrs = saml_auth.get_attributes()
+    name_id = saml_auth.get_nameid()
+    user_data = {
+        "email": attrs.get("email", [name_id or ""])[0],
+        "first_name": attrs.get("givenName", attrs.get("first_name", [""]))[0],
+        "last_name": attrs.get("sn", attrs.get("last_name", [""]))[0],
+    }
+    return _process_sso_login(user_data)
+
+
+@auth_bp.route("/sso/metadata")
+def sso_metadata():
+    from app.utils.sso_auth import get_saml_settings
+    from onelogin.saml2.auth import OneLogin_Saml2_Auth
+
+    req = _prepare_saml_request(request)
+    saml_settings = get_saml_settings()
+    saml_auth = OneLogin_Saml2_Auth(req, saml_settings)
+    settings = saml_auth.get_settings()
+    metadata = settings.get_sp_metadata()
+    errors = settings.validate_metadata(metadata)
+    if errors:
+        current_app.logger.error("SAML metadata errors: %s", errors)
+        abort(500)
+    return metadata, 200, {"Content-Type": "application/xml"}
+
+
+def _prepare_saml_request(flask_request):
+    import urllib.parse
+    return {
+        "http_host": flask_request.host,
+        "server_port": urllib.parse.urlparse(flask_request.url).port or 443,
+        "https": ("on" if flask_request.scheme == "https" else "off"),
+        "http_base_url": flask_request.host_url.rstrip("/"),
+        "request_uri": flask_request.path,
+        "script_name": "",
+        "get_data": flask_request.args,
+        "post_data": flask_request.form,
+        "query_string": flask_request.query_string.decode("utf-8") if flask_request.query_string else "",
+    }
+
+
+def _process_sso_login(user_data):
+    from app.utils.sso_auth import find_or_create_sso_user
+
+    user, error = find_or_create_sso_user(user_data, "sso")
+    if error:
+        flash(error, "danger")
+        return redirect(url_for("auth.login"))
+
+    if not user.is_active:
+        flash(_("Account is deactivated. Contact an administrator."), "danger")
+        return redirect(url_for("auth.login"))
+
+    user.reset_login_attempts()
+    user.last_login = datetime.utcnow()
+    db.session.commit()
+
+    login_user(user)
+
+    try:
+        user_session = UserSession(
+            user_id=user.id,
+            session_id=session.sid,
+            ip_address=request.remote_addr,
+            user_agent=request.user_agent.string[:500] if request.user_agent else None,
+        )
+        db.session.add(user_session)
+        db.session.commit()
+    except Exception:
+        pass
+
+    if user.default_language and user.default_language in ("en", "el"):
+        session["lang"] = user.default_language
+    elif "lang" not in session:
+        session["lang"] = "en"
+
+    _log_audit(user.id, "LOGIN", "User", user.id, f"User {user.username} logged in via SSO")
+
+    next_page = request.args.get("next")
+    if next_page and next_page.startswith("/"):
+        return redirect(next_page)
+    return redirect(url_for("dashboard.index"))
 
 
 def _log_audit(user_id, action, resource_type, resource_id, details=None):

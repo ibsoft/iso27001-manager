@@ -6,9 +6,22 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card shadow">
-      <div class="card-header"><h5 class="mb-0"><i class="fas fa-server me-2"></i>{{ _('LDAP / Active Directory Configuration') }}</h5></div>
+      <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <h5 class="mb-0"><i class="fas fa-server me-2"></i>{{ _('LDAP / Active Directory Configuration') }}</h5>
+        <div class="d-flex gap-2 align-items-center">
+          <form method="POST" action="{{ url_for('admin.list_ldap_users') }}" style="display:inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="input-group input-group-sm" style="width:280px">
+              <input type="text" name="search" class="form-control" placeholder="{{ _('Search...') }}" value="{{ ldap_users.search if ldap_users else '' }}">
+              <button type="submit" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-users me-1"></i>{{ _('List Users') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
       <div class="card-body">
-        <form method="POST">
+        <form method="POST" action="{{ url_for('admin.ldap_settings') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
           <div class="form-check form-switch mb-4">
@@ -72,10 +85,116 @@
           </div>
 
           <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Settings') }}</button>
-          <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+          <button type="submit" class="btn btn-outline-info ms-2" formaction="{{ url_for('admin.test_ldap_connection') }}"><i class="fas fa-plug me-1"></i>{{ _('Test Connection') }}</button>
+          <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary ms-2">{{ _('Cancel') }}</a>
         </form>
       </div>
     </div>
+
+    {% if test_result %}
+    <div class="card mt-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-vial me-1"></i>{{ _('Connection Test Result') }}</span>
+        <span class="badge bg-{{ 'success' if test_result.success else 'danger' }} fs-6">{{ test_result.message }}</span>
+      </div>
+      <div class="card-body p-0">
+        <pre class="mb-0 p-3" style="max-height:400px;overflow-y:auto;font-size:0.8rem;background:var(--input-bg);color:var(--text-primary);border-radius:0;">{% for line in test_result.log %}{{ line }}
+{% endfor %}</pre>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if ldap_users %}
+    <div class="card mt-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-users me-1"></i>{{ _('LDAP Users') }}</span>
+        <span class="badge bg-{{ 'success' if ldap_users.success else 'danger' }} fs-6">{{ ldap_users.message }}</span>
+      </div>
+      <form method="POST" action="{{ url_for('admin.import_ldap_users') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="card-body p-0">
+          {% if ldap_users.users %}
+          <div class="table-responsive" style="max-height:400px;overflow-y:auto">
+            <table class="table table-sm table-hover mb-0">
+              <thead>
+                <tr>
+                  <th style="width:40px"><input type="checkbox" id="selectAll" onchange="document.querySelectorAll('.user-check').forEach(c=>c.checked=this.checked)"></th>
+                  <th>{{ _('Username') }}</th>
+                  <th>{{ _('First Name') }}</th>
+                  <th>{{ _('Last Name') }}</th>
+                  <th>{{ _('Email') }}</th>
+                  <th>{{ _('Status') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for u in ldap_users.users %}
+                <tr>
+                  <td>
+                    {% if not u.exists or u.auth_source != 'ldap' %}
+                    <input type="checkbox" name="selected_users" value="{{ u.username }}" class="user-check">
+                    {% endif %}
+                  </td>
+                  <td class="small font-monospace">{{ u.username }}</td>
+                  <td class="small">{{ u.first_name }}</td>
+                  <td class="small">{{ u.last_name }}</td>
+                  <td class="small">{{ u.email }}</td>
+                  <td>
+                    {% if u.exists %}
+                      {% if u.auth_source == 'ldap' %}
+                      <span class="badge bg-success">{{ _('Imported') }}</span>
+                      {% else %}
+                      <span class="badge bg-warning text-dark">{{ _('Local user') }}</span>
+                      {% endif %}
+                    {% else %}
+                    <span class="badge bg-secondary">{{ _('New') }}</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="text-center text-muted py-4">{{ _('No users found.') }}</div>
+          {% endif %}
+        </div>
+        {% if ldap_users.users %}
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i>{{ _('Import Selected Users') }}</button>
+        </div>
+        {% endif %}
+      </form>
+    </div>
+
+    {% if ldap_users.total_pages > 1 %}
+    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-top">
+      <small class="text-muted">{{ _('Page %(page)s of %(total)s (%(count)s users)', page=ldap_users.page, total=ldap_users.total_pages, count=ldap_users.total) }}</small>
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          {% for p in range(1, ldap_users.total_pages + 1) %}
+          <li class="page-item {{ 'active' if p == ldap_users.page }}">
+            <form method="POST" action="{{ url_for('admin.list_ldap_users') }}" style="display:inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="search" value="{{ ldap_users.search or '' }}">
+              <input type="hidden" name="page" value="{{ p }}">
+              <button type="submit" class="page-link" style="cursor:pointer">{{ p }}</button>
+            </form>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+    {% endif %}
+    {% if ldap_users.log %}
+    <div class="card mt-3">
+      <div class="card-header"><span class="text-muted"><i class="fas fa-list me-1"></i>{{ _('Search Log') }}</span></div>
+      <div class="card-body p-0">
+        <pre class="mb-0 p-3" style="max-height:300px;overflow-y:auto;font-size:0.8rem;background:var(--input-bg);color:var(--text-primary);border-radius:0;">{% for line in ldap_users.log %}{{ line }}
+{% endfor %}</pre>
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
   </div>
 </div>
 {% endblock %}

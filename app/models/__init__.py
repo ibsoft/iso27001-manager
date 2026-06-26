@@ -1,4 +1,4 @@
-from app.models.user import User, Role, Permission, user_roles
+from app.models.user import User, Role, Permission, user_roles, UserSession
 from app.models.domain import Domain
 from app.models.control import Control
 from app.models.clause import Clause

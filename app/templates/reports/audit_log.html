@@ -1,21 +1,61 @@
 {% extends "base.html" %}
 {% block page_title %}{{ _('Audit Trail') }}{% endblock %}
 {% block breadcrumb %}<li class="breadcrumb-item"><a href="{{ url_for('reports.index') }}">{{ _('Reports') }}</a></li><li class="breadcrumb-item active">{{ _('Audit Log') }}</li>{% endblock %}
-
 {% block content %}
+<div class="card mb-3">
+  <div class="card-body py-2">
+    <form method="GET" class="row g-2 align-items-end">
+      <div class="col-auto">
+        <label class="small text-muted mb-1">{{ _('Action') }}</label>
+        <select name="action" class="form-select form-select-sm" style="width:130px">
+          <option value="">{{ _('All') }}</option>
+          {% for a in actions %}
+          <option value="{{ a }}" {{ 'selected' if filters.action == a }}>{{ a }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-auto">
+        <label class="small text-muted mb-1">{{ _('User') }}</label>
+        <select name="user_id" class="form-select form-select-sm" style="width:150px">
+          <option value="">{{ _('All') }}</option>
+          {% for u in users %}
+          <option value="{{ u.id }}" {{ 'selected' if filters.user_id == u.id }}>{{ u.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-auto">
+        <label class="small text-muted mb-1">{{ _('From') }}</label>
+        <input type="date" name="date_from" class="form-control form-control-sm" style="width:150px" value="{{ filters.date_from }}">
+      </div>
+      <div class="col-auto">
+        <label class="small text-muted mb-1">{{ _('To') }}</label>
+        <input type="date" name="date_to" class="form-control form-control-sm" style="width:150px" value="{{ filters.date_to }}">
+      </div>
+      <div class="col-auto">
+        <label class="small text-muted mb-1">{{ _('Search') }}</label>
+        <input type="search" name="q" class="form-control form-control-sm" style="width:180px" placeholder="{{ _('details, IP...') }}" value="{{ filters.q }}">
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search me-1"></i>{{ _('Search') }}</button>
+        <a href="{{ url_for('reports.view_audit_log') }}" class="btn btn-sm btn-secondary"><i class="fas fa-times me-1"></i>{{ _('Clear') }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="card">
   <div class="card-body p-0">
-    <div style="max-height: 600px; overflow-y: auto;">
-      <table class="table table-sm table-hover mb-0">
+    <div class="table-responsive" style="max-height:700px;overflow-y:auto">
+      <table class="table table-sm table-hover mb-0" id="auditTable">
         <thead><tr><th>{{ _('Time') }}</th><th>{{ _('User') }}</th><th>{{ _('Action') }}</th><th>{{ _('Resource') }}</th><th>{{ _('Details') }}</th><th>{{ _('IP') }}</th></tr></thead>
         <tbody>
           {% for log in logs.items %}
-          <tr>
+          <tr class="audit-row" data-id="{{ log.id }}" data-action="{{ log.action }}" data-resource="{{ log.resource_type }}#{{ log.resource_id }}" data-user="{{ log.user.username if log.user else '—' }}" data-ip="{{ log.ip_address or '—' }}" data-agent="{{ log.user_agent or '—' }}" data-details="{{ log.details or '' }}" data-time="{{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') }}" style="cursor:pointer">
             <td class="small text-nowrap">{{ log.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
             <td class="small">{{ log.user.username if log.user else '—' }}</td>
             <td><span class="badge bg-{{ 'success' if log.action in ('LOGIN','CREATE') else 'warning text-dark' if log.action == 'UPDATE' else 'danger' if log.action in ('DELETE','FAILED_LOGIN') else 'info' }}">{{ log.action }}</span></td>
-            <td class="small">{{ log.resource_type }}#{{ log.resource_id }}</td>
-            <td class="small text-muted">{{ log.details|truncate(60) if log.details else '' }}</td>
+            <td class="small">{{ log.resource_type }}#{{ log.resource_id if log.resource_id else '?' }}</td>
+            <td class="small text-muted">{{ log.details|truncate(80) if log.details else '' }}</td>
             <td class="small text-muted">{{ log.ip_address }}</td>
           </tr>
           {% else %}
@@ -26,12 +66,54 @@
     </div>
   </div>
 </div>
+
 {% if logs.pages > 1 %}
 <nav><ul class="pagination">
   {% for page in logs.iter_pages() %}
-    {% if page %}<li class="page-item {{ 'active' if page == logs.page }}"><a class="page-link" href="{{ url_for('reports.view_audit_log', page=page) }}">{{ page }}</a></li>
+    {% if page %}<li class="page-item {{ 'active' if page == logs.page }}"><a class="page-link" href="{{ url_for('reports.view_audit_log', page=page, **filters) }}">{{ page }}</a></li>
     {% else %}<li class="page-item disabled"><span class="page-link">...</span></li>{% endif %}
   {% endfor %}
 </ul></nav>
 {% endif %}
+
+<div class="modal fade" id="auditModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ _('Audit Entry Details') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-sm table-bordered mb-0">
+          <tr><th class="w-25">{{ _('Time') }}</th><td id="modal-time"></td></tr>
+          <tr><th>{{ _('User') }}</th><td id="modal-user"></td></tr>
+          <tr><th>{{ _('Action') }}</th><td id="modal-action"></td></tr>
+          <tr><th>{{ _('Resource') }}</th><td id="modal-resource"></td></tr>
+          <tr><th>{{ _('IP Address') }}</th><td id="modal-ip"></td></tr>
+          <tr><th>{{ _('User Agent') }}</th><td id="modal-agent" class="text-break small"></td></tr>
+          <tr><th>{{ _('Details') }}</th><td id="modal-details" class="text-break" style="white-space:pre-wrap"></td></tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Close') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.querySelectorAll('.audit-row').forEach(function(tr) {
+  tr.addEventListener('dblclick', function() {
+    document.getElementById('modal-time').textContent = this.dataset.time;
+    document.getElementById('modal-user').textContent = this.dataset.user;
+    document.getElementById('modal-action').innerHTML = this.querySelector('td:nth-child(3)').innerHTML;
+    document.getElementById('modal-resource').textContent = this.dataset.resource;
+    document.getElementById('modal-ip').textContent = this.dataset.ip;
+    document.getElementById('modal-agent').textContent = this.dataset.agent;
+    document.getElementById('modal-details').textContent = this.dataset.details;
+    new bootstrap.Modal(document.getElementById('auditModal')).show();
+  });
+});
+</script>
 {% endblock %}

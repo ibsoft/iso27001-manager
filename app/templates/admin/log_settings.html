@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Log Settings') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('admin.list_users') }}">{{ _('Administration') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Log Settings') }}</li>
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0">{{ _('Application Log Level') }}</h5></div>
+      <div class="card-body">
+        <p class="text-muted small">{{ _('Changes the verbosity of the application log file (logs/app.jsonl). Lower levels produce more output.') }}</p>
+        <form method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="mb-3">
+            <select name="level" class="form-select form-select-lg">
+              <option value="DEBUG" {{ 'selected' if current_level == 'DEBUG' }}>DEBUG</option>
+              <option value="INFO" {{ 'selected' if current_level == 'INFO' }}>INFO</option>
+              <option value="WARNING" {{ 'selected' if current_level == 'WARNING' }}>WARNING</option>
+              <option value="ERROR" {{ 'selected' if current_level == 'ERROR' }}>ERROR</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('admin.list_users') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

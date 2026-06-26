@@ -78,7 +78,7 @@
       background: var(--body-bg);
       color: var(--text-primary);
     }
-    .wrapper { min-height: 100vh; }
+    .wrapper { min-height: 100vh; display: flex; flex-direction: column; }
 
     .main-header {
       background: var(--header-bg);
@@ -214,7 +214,7 @@
     .content-wrapper {
       margin-left: var(--sidebar-width);
       margin-top: 56px;
-      min-height: calc(100vh - 56px);
+      flex: 1;
       padding: 1.5rem;
       transition: margin-left 0.25s ease;
     }
@@ -352,6 +352,9 @@
     .dark-theme .btn-light { background: #334155; border-color: #475569; color: #f1f5f9; }
     .dark-theme .btn-light:hover { background: #475569; }
     .dark-theme .badge.bg-light { background: #334155 !important; color: #f1f5f9 !important; }
+    .dark-theme .toast { background: var(--card-bg); color: var(--text-primary); }
+    .dark-theme .toast-body { color: var(--text-primary); }
+    .dark-theme .toast-header { border-bottom-color: var(--header-border); }
 
     .table-responsive-custom {
       overflow-x: auto;
