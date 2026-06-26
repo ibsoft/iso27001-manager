@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db, bcrypt, limiter
-from app.models.user import User, Role
+from app.models.user import User, Role, UserSession
 from app.models.audit_log import AuditLog
 from app.models.asset_assignment import AssetAssignment
 from app.forms import LoginForm, ChangePasswordForm, ProfileForm
@@ -92,6 +92,18 @@ def login():
 
         login_user(user, remember=form.data.get("remember", False))
 
+        try:
+            user_session = UserSession(
+                user_id=user.id,
+                session_id=session.sid,
+                ip_address=request.remote_addr,
+                user_agent=request.user_agent.string[:500] if request.user_agent else None,
+            )
+            db.session.add(user_session)
+            db.session.commit()
+        except Exception:
+            pass
+
         if user.default_language and user.default_language in ("en", "el"):
             session["lang"] = user.default_language
         elif "lang" not in session:
@@ -137,6 +149,18 @@ def mfa_verify():
                 login_user(user)
                 session.pop("mfa_user_id", None)
 
+                try:
+                    user_session = UserSession(
+                        user_id=user.id,
+                        session_id=session.sid,
+                        ip_address=request.remote_addr,
+                        user_agent=request.user_agent.string[:500] if request.user_agent else None,
+                    )
+                    db.session.add(user_session)
+                    db.session.commit()
+                except Exception:
+                    pass
+
                 if user.default_language and user.default_language in ("en", "el"):
                     session["lang"] = user.default_language
                 elif "lang" not in session:
@@ -158,6 +182,11 @@ def mfa_verify():
 @login_required
 def logout():
     _log_audit(current_user.id, "LOGOUT", "User", current_user.id, f"User {current_user.username} logged out")
+    try:
+        UserSession.query.filter_by(session_id=session.sid).delete()
+        db.session.commit()
+    except Exception:
+        pass
     logout_user()
     session.clear()
     flash(_("You have been logged out."), "info")

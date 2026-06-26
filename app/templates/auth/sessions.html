@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('My Sessions') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('auth.profile') }}">{{ _('Profile') }}</a></li>
+<li class="breadcrumb-item active">{{ _('Sessions') }}</li>
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>{{ _('Active Sessions') }}</span>
+        <form method="POST" action="{{ url_for('admin.kill_own_sessions') }}" style="display:inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ _('Terminate all other sessions?') }}')">
+            <i class="fas fa-sign-out-alt me-1"></i>{{ _('Kill Other Sessions') }}
+          </button>
+        </form>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>{{ _('IP Address') }}</th>
+                <th>{{ _('User Agent') }}</th>
+                <th>{{ _('Created') }}</th>
+                <th>{{ _('Last Activity') }}</th>
+                <th>{{ _('Current') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in sessions %}
+              <tr>
+                <td>{{ s.ip_address or '-' }}</td>
+                <td class="small text-muted" style="max-width:350px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ s.user_agent }}">{{ s.user_agent or '-' }}</td>
+                <td>{{ s.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ s.last_activity.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                  {% if s.session_id == session.sid %}
+                  <span class="badge bg-success">{{ _('Current') }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" class="text-center text-muted py-3">{{ _('No active sessions.') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer text-muted small">
+        <i class="fas fa-info-circle me-1"></i>{{ _('Sessions are created when you log in and destroyed when you log out.') }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

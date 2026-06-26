@@ -4,11 +4,11 @@ import zipfile
 import shutil
 from datetime import datetime
 from app.paths import data_root
-from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file, session, current_app
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db
-from app.models.user import User, Role, Permission, Department
+from app.models.user import User, Role, Permission, Department, UserSession
 from app.models.audit_log import AuditLog
 from app.forms import UserForm
 from app.utils.decorators import admin_required, permission_required
@@ -117,7 +117,8 @@ def edit_user(user_id):
     form.roles.data = [r.id for r in user.roles]
     form.department.data = user.department_id or 0
     form.manager.data = user.manager_id or 0
-    return render_template("admin/user_form.html", form=form, title=_("Edit User"), user=user)
+    sessions = UserSession.query.filter_by(user_id=user.id).order_by(UserSession.created_at.desc()).all()
+    return render_template("admin/user_form.html", form=form, title=_("Edit User"), user=user, sessions=sessions)
 
 
 @admin_bp.route("/users/<int:user_id>/toggle-active", methods=["POST"])
@@ -134,6 +135,65 @@ def toggle_user_active(user_id):
     _log_audit(f"{'Activated' if user.is_active else 'Deactivated'} user: {user.username}")
     flash(_("User activated.") if user.is_active else _("User deactivated."), "success")
     return redirect(url_for("admin.list_users"))
+
+
+@admin_bp.route("/users/<int:user_id>/unlock", methods=["POST"])
+@login_required
+@admin_required
+def unlock_user(user_id):
+    user = User.query.get_or_404(user_id)
+    user.reset_login_attempts()
+    db.session.commit()
+    _log_audit(f"Unlocked user: {user.username}")
+    flash(_("Account unlocked."), "success")
+    return redirect(url_for("admin.edit_user", user_id=user.id))
+
+
+@admin_bp.route("/users/<int:user_id>/kill-sessions", methods=["POST"])
+@login_required
+@admin_required
+def kill_user_sessions(user_id):
+    user = User.query.get_or_404(user_id)
+    count = UserSession.query.filter_by(user_id=user.id).delete()
+    db.session.commit()
+    _log_audit(f"Killed {count} session(s) for user: {user.username}")
+    flash(_("All sessions terminated."), "success")
+    return redirect(url_for("admin.edit_user", user_id=user.id))
+
+
+@admin_bp.route("/users/<int:user_id>/kill-session/<int:session_id>", methods=["POST"])
+@login_required
+@admin_required
+def kill_user_session(user_id, session_id):
+    session_record = UserSession.query.filter_by(id=session_id, user_id=user_id).first_or_404()
+    db.session.delete(session_record)
+    db.session.commit()
+    _log_audit(f"Killed session {session_id} for user: {session_record.user.username}")
+    flash(_("Session terminated."), "success")
+    return redirect(url_for("admin.edit_user", user_id=user_id))
+
+
+@admin_bp.route("/sessions")
+@login_required
+@admin_required
+def list_my_sessions():
+    sessions = UserSession.query.filter_by(user_id=current_user.id).order_by(UserSession.created_at.desc()).all()
+    return render_template("auth/sessions.html", sessions=sessions)
+
+
+@admin_bp.route("/kill-own-sessions", methods=["POST"])
+@login_required
+def kill_own_sessions():
+    count = UserSession.query.filter(
+        UserSession.user_id == current_user.id,
+        UserSession.session_id != session.sid
+    ).delete()
+    db.session.commit()
+    if count:
+        flash(_("Other sessions terminated."), "success")
+    else:
+        flash(_("No other active sessions."), "info")
+    return redirect(url_for("auth.profile"))
 
 
 @admin_bp.route("/roles")
@@ -166,10 +226,66 @@ def edit_role(role_id):
 @admin_required
 def view_audit_log():
     page = request.args.get("page", 1, type=int)
-    logs = AuditLog.query.order_by(AuditLog.created_at.desc()).paginate(
+    action = request.args.get("action", "")
+    user_id = request.args.get("user_id", type=int)
+    resource_type = request.args.get("resource_type", "")
+    q = request.args.get("q", "")
+    date_from = request.args.get("date_from", "")
+    date_to = request.args.get("date_to", "")
+
+    query = AuditLog.query
+
+    if action:
+        query = query.filter(AuditLog.action == action)
+    if user_id:
+        query = query.filter(AuditLog.user_id == user_id)
+    if resource_type:
+        query = query.filter(AuditLog.resource_type == resource_type)
+    if q:
+        query = query.filter(
+            AuditLog.details.ilike(f"%{q}%") |
+            AuditLog.ip_address.ilike(f"%{q}%") |
+            AuditLog.user_agent.ilike(f"%{q}%")
+        )
+    if date_from:
+        query = query.filter(AuditLog.created_at >= datetime.strptime(date_from, "%Y-%m-%d"))
+    if date_to:
+        query = query.filter(AuditLog.created_at <= datetime.strptime(date_to, "%Y-%m-%d") + __import__("datetime").timedelta(days=1))
+
+    logs = query.order_by(AuditLog.created_at.desc()).paginate(
         page=page, per_page=50, error_out=False
     )
-    return render_template("admin/audit_log.html", logs=logs)
+
+    actions = [r[0] for r in db.session.query(AuditLog.action).distinct().order_by(AuditLog.action).all()]
+    resource_types = [r[0] for r in db.session.query(AuditLog.resource_type).distinct().order_by(AuditLog.resource_type).all()]
+    users = User.query.order_by(User.username).all()
+
+    return render_template(
+        "admin/audit_log.html", logs=logs,
+        actions=actions, resource_types=resource_types, users=users,
+        filters=dict(action=action, user_id=user_id, resource_type=resource_type, q=q, date_from=date_from, date_to=date_to),
+    )
+
+
+@admin_bp.route("/log-settings", methods=["GET", "POST"])
+@login_required
+@admin_required
+def log_settings():
+    from app.models.user import SystemSetting
+
+    if request.method == "POST":
+        level = request.form.get("level", "INFO")
+        if level in ("DEBUG", "INFO", "WARNING", "ERROR"):
+            SystemSetting.set("log_level", level, current_user.id)
+            import logging
+            current_app.logger.setLevel(getattr(logging, level))
+            for h in current_app.logger.handlers:
+                h.setLevel(getattr(logging, level))
+            flash(_("Log level updated to %(level)s.", level=level), "success")
+        return redirect(url_for("admin.log_settings"))
+
+    current_level = SystemSetting.get("log_level", current_app.config.get("LOG_LEVEL", "INFO"))
+    return render_template("admin/log_settings.html", current_level=current_level)
 
 
 def _log_audit(details):
