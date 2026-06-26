@@ -27,3 +27,4 @@ from app.models.training import TrainingCourse, TrainingSession, TrainingRecord,
 from app.models.business_continuity import BusinessImpactAnalysis, BusinessContinuityPlan, BusinessContinuityTest, BusinessContinuityAction
 from app.models.filled_form import FilledForm
 from app.models.general_request import GeneralRequest
+from app.models.email_alert import EmailAlert

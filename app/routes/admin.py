@@ -378,6 +378,8 @@ def _log_audit(details):
         )
         db.session.add(log)
         db.session.commit()
+        from app.utils.notify import dispatch_alert
+        dispatch_alert("audit_log", f"Admin Action: {details}", f"<p>{details}</p>", context_user=current_user)
     except Exception:
         pass
 
@@ -835,3 +837,141 @@ def delete_department(dept_id):
     _log_audit(f"Deleted department: {name}")
     flash(_("Department deleted."), "success")
     return redirect(url_for("admin.list_departments"))
+
+
+# ─── Mail Settings ───────────────────────────────────────────────────────
+
+@admin_bp.route("/mail-settings", methods=["GET", "POST"])
+@login_required
+@admin_required
+def mail_settings():
+    from app.models.user import SystemSetting
+
+    if request.method == "POST":
+        SystemSetting.set("mail_server", request.form.get("mail_server", ""), current_user.id)
+        SystemSetting.set("mail_port", request.form.get("mail_port", "587"), current_user.id)
+        SystemSetting.set("mail_use_tls", request.form.get("mail_use_tls", "true"), current_user.id)
+        SystemSetting.set("mail_username", request.form.get("mail_username", ""), current_user.id)
+        if request.form.get("mail_password"):
+            SystemSetting.set("mail_password", request.form.get("mail_password", ""), current_user.id)
+        SystemSetting.set("mail_default_sender", request.form.get("mail_default_sender", ""), current_user.id)
+        flash(_("Mail settings saved."), "success")
+        return redirect(url_for("admin.mail_settings"))
+
+    settings = _get_mail_settings_dict()
+    return render_template("admin/mail_settings.html", settings=settings, test_result=None)
+
+
+@admin_bp.route("/mail-settings/test", methods=["POST"])
+@login_required
+@admin_required
+def test_mail_settings():
+    from app.utils.email import send_test_email
+    success = send_test_email(current_user.email)
+    settings = _get_mail_settings_dict()
+    if success:
+        flash(_("Test email sent to {}.").format(current_user.email), "success")
+    else:
+        flash(_("Failed to send test email. Check server logs for details."), "danger")
+    return render_template("admin/mail_settings.html", settings=settings, test_result=success)
+
+
+def _get_mail_settings_dict():
+    from app.models.user import SystemSetting
+    return {
+        "mail_server": SystemSetting.get("mail_server", current_app.config.get("MAIL_SERVER", "")),
+        "mail_port": SystemSetting.get("mail_port", str(current_app.config.get("MAIL_PORT", 587))),
+        "mail_use_tls": SystemSetting.get("mail_use_tls", "true"),
+        "mail_username": SystemSetting.get("mail_username", current_app.config.get("MAIL_USERNAME", "")),
+        "mail_password": "",
+        "mail_default_sender": SystemSetting.get("mail_default_sender", current_app.config.get("MAIL_DEFAULT_SENDER", "")),
+    }
+
+
+# ─── Email Alerts ────────────────────────────────────────────────────────
+
+EVENT_TYPE_CHOICES = [
+    ("audit_log", _("All Audit Log Actions")),
+    ("approval_requested", _("Approval Requested")),
+    ("approved", _("Approved")),
+    ("rejected", _("Rejected")),
+    ("failed_login", _("Failed Login")),
+    ("account_locked", _("Account Locked")),
+    ("user_created", _("User Created")),
+    ("backup_created", _("Backup Created")),
+    ("login", _("User Login")),
+]
+
+
+@admin_bp.route("/email-alerts")
+@login_required
+@admin_required
+def list_email_alerts():
+    from app.models.email_alert import EmailAlert
+    alerts = EmailAlert.query.order_by(EmailAlert.created_at.desc()).all()
+    return render_template("admin/email_alerts.html", alerts=alerts, event_types=EVENT_TYPE_CHOICES)
+
+
+@admin_bp.route("/email-alerts/create", methods=["GET", "POST"])
+@login_required
+@admin_required
+def create_email_alert():
+    from app.models.email_alert import EmailAlert
+    from app.models.user import Role, User
+
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        event_type = request.form.get("event_type", "")
+        recipient_type = request.form.get("recipient_type", "role")
+        try:
+            recipient_id = int(request.form.get("recipient_id", 0))
+        except (ValueError, TypeError):
+            recipient_id = 0
+
+        if not name or not event_type or not recipient_id:
+            flash(_("All fields are required."), "danger")
+            return redirect(url_for("admin.create_email_alert"))
+
+        alert = EmailAlert(
+            name=name,
+            event_type=event_type,
+            recipient_type=recipient_type,
+            recipient_id=recipient_id,
+            created_by_id=current_user.id,
+        )
+        db.session.add(alert)
+        db.session.commit()
+        _log_audit(f"Created email alert: {name}")
+        flash(_("Email alert created."), "success")
+        return redirect(url_for("admin.list_email_alerts"))
+
+    roles = Role.query.order_by(Role.name).all()
+    users = User.query.order_by(User.username).all()
+    return render_template("admin/email_alert_form.html", event_types=EVENT_TYPE_CHOICES, roles=roles, users=users, alert=None)
+
+
+@admin_bp.route("/email-alerts/<int:alert_id>/toggle", methods=["POST"])
+@login_required
+@admin_required
+def toggle_email_alert(alert_id):
+    from app.models.email_alert import EmailAlert
+    alert = EmailAlert.query.get_or_404(alert_id)
+    alert.is_active = not alert.is_active
+    db.session.commit()
+    status = "enabled" if alert.is_active else "disabled"
+    _log_audit(f"{status} email alert: {alert.name}")
+    flash(_("Email alert {}.").format(status), "success")
+    return redirect(url_for("admin.list_email_alerts"))
+
+
+@admin_bp.route("/email-alerts/<int:alert_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def delete_email_alert(alert_id):
+    from app.models.email_alert import EmailAlert
+    alert = EmailAlert.query.get_or_404(alert_id)
+    db.session.delete(alert)
+    db.session.commit()
+    _log_audit(f"Deleted email alert: {alert.name}")
+    flash(_("Email alert deleted."), "success")
+    return redirect(url_for("admin.list_email_alerts"))

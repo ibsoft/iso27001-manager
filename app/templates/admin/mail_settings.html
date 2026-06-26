@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Mail Settings') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Mail Settings') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-envelope me-2"></i>{{ _('SMTP Mail Server Configuration') }}</h5>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('admin.mail_settings') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="mail_server" class="form-label">{{ _('SMTP Server') }}</label>
+              <input type="text" class="form-control" id="mail_server" name="mail_server" value="{{ settings.mail_server }}" placeholder="smtp.example.com">
+            </div>
+            <div class="col-md-3">
+              <label for="mail_port" class="form-label">{{ _('Port') }}</label>
+              <input type="number" class="form-control" id="mail_port" name="mail_port" value="{{ settings.mail_port }}" placeholder="587">
+            </div>
+            <div class="col-md-3">
+              <label for="mail_use_tls" class="form-label">{{ _('Encryption') }}</label>
+              <select class="form-select" id="mail_use_tls" name="mail_use_tls">
+                <option value="true" {{ 'selected' if settings.mail_use_tls == 'true' }}>{{ _('TLS (STARTTLS)') }}</option>
+                <option value="ssl" {{ 'selected' if settings.mail_use_tls == 'ssl' }}>{{ _('SSL / SMTPS') }}</option>
+                <option value="false" {{ 'selected' if settings.mail_use_tls == 'false' }}>{{ _('None') }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="mail_username" class="form-label">{{ _('Username') }}</label>
+              <input type="text" class="form-control" id="mail_username" name="mail_username" value="{{ settings.mail_username }}" placeholder="{{ _('Optional') }}">
+            </div>
+            <div class="col-md-6">
+              <label for="mail_password" class="form-label">{{ _('Password') }}</label>
+              <input type="password" class="form-control" id="mail_password" name="mail_password" placeholder="{{ _('Leave empty to keep current') }}">
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="mail_default_sender" class="form-label">{{ _('Default Sender Email') }}</label>
+            <input type="email" class="form-control" id="mail_default_sender" name="mail_default_sender" value="{{ settings.mail_default_sender }}" placeholder="noreply@example.com">
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save Settings') }}</button>
+          <button type="submit" class="btn btn-outline-info ms-2" formaction="{{ url_for('admin.test_mail_settings') }}"><i class="fas fa-paper-plane me-1"></i>{{ _('Send Test Email') }}</button>
+          <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary ms-2">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+
+    {% if test_result is not none %}
+    <div class="card mt-3">
+      <div class="card-header">
+        <span class="badge bg-{{ 'success' if test_result else 'danger' }} fs-6">
+          {{ _('Test Result') }}
+        </span>
+      </div>
+      <div class="card-body">
+        {% if test_result %}
+        <p class="text-success mb-0"><i class="fas fa-check-circle me-1"></i>{{ _('Test email sent successfully.') }}</p>
+        {% else %}
+        <p class="text-danger mb-0"><i class="fas fa-times-circle me-1"></i>{{ _('Failed to send test email. Check the server logs.') }}</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

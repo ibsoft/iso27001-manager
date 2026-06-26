@@ -334,15 +334,19 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="card border">
-              <div class="card-body text-center">
-                <i class="fas fa-sign-in-alt fa-2x mb-2 text-info"></i>
-                <h6>{{ _('Sessions') }}</h6>
-                <p class="small text-muted mb-2">{{ _('Manage your active login sessions.') }}</p>
-                <a href="{{ url_for('admin.list_my_sessions') }}" class="btn btn-outline-info btn-sm">
-                  <i class="fas fa-list me-1"></i>{{ _('View Sessions') }}
-                </a>
+              <div class="card-body">
+                <div class="d-flex align-items-center gap-3">
+                  <i class="fas fa-sign-in-alt fa-2x text-info"></i>
+                  <div>
+                    <h6 class="mb-1">{{ _('Sessions') }}</h6>
+                    <p class="small text-muted mb-0">{{ _('Manage your active login sessions.') }}</p>
+                  </div>
+                  <a href="{{ url_for('admin.list_my_sessions') }}" class="btn btn-outline-info btn-sm ms-auto">
+                    <i class="fas fa-list me-1"></i>{{ _('View Sessions') }}
+                  </a>
+                </div>
               </div>
             </div>
           </div>

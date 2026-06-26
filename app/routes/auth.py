@@ -550,5 +550,14 @@ def _log_audit(user_id, action, resource_type, resource_id, details=None):
         )
         db.session.add(log)
         db.session.commit()
+        from app.utils.notify import dispatch_alert
+        event_map = {
+            "LOGIN": "login",
+            "FAILED_LOGIN": "failed_login",
+            "ACCOUNT_LOCKED": "account_locked",
+        }
+        alert_type = event_map.get(action)
+        if alert_type:
+            dispatch_alert(alert_type, f"{action}: {details}", f"<p>{details}</p>", context_user=None)
     except Exception:
         pass
