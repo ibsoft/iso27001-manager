@@ -5,12 +5,12 @@ ENDPOINT_MENU_PERMISSION = {
     "soa.list_soa": "menu_soa",
     "management_review.list_reviews": "menu_reviews",
     "kpi.dashboard": "menu_kpi",
-    "admin.list_isms_roles": "menu_clauses",
-    "admin.create_isms_role": "menu_clauses",
-    "admin.edit_isms_role": "menu_clauses",
-    "admin.delete_isms_role": "menu_clauses",
-    "admin.org_chart": "menu_clauses",
-    "admin.org_chart_pdf": "menu_clauses",
+    "admin.list_isms_roles": "menu_isms_roles",
+    "admin.create_isms_role": "menu_isms_roles",
+    "admin.edit_isms_role": "menu_isms_roles",
+    "admin.delete_isms_role": "menu_isms_roles",
+    "admin.org_chart": "menu_org_chart",
+    "admin.org_chart_pdf": "menu_org_chart",
     "admin.mail_settings": "menu_mail_settings",
     "admin.test_mail_settings": "menu_mail_settings",
     "admin.list_email_alerts": "menu_email_alerts",
@@ -56,6 +56,8 @@ SECTION_MENU_PERMISSION = {
 }
 
 MENU_READ_WRITE = {
+    "menu_isms_roles": "menu_isms_roles_write",
+    "menu_org_chart": "menu_org_chart_write",
     "menu_controls": "menu_controls_write",
     "menu_soa": "menu_soa_write",
     "menu_reviews": "menu_reviews_write",
@@ -91,7 +93,7 @@ MENU_READ_WRITE = {
 
 PERMISSION_GROUPS = {
     "Dashboard": ["menu_dashboard"],
-    "ISMS Framework": ["menu_clauses", "menu_clauses_write", "menu_controls", "menu_controls_write", "menu_soa", "menu_soa_write", "menu_reviews", "menu_reviews_write", "menu_kpi"],
+    "ISMS Framework": ["menu_clauses", "menu_clauses_write", "menu_controls", "menu_controls_write", "menu_soa", "menu_soa_write", "menu_reviews", "menu_reviews_write", "menu_kpi", "menu_isms_roles", "menu_isms_roles_write", "menu_org_chart", "menu_org_chart_write"],
     "Risk & Assets": ["menu_risks", "menu_risks_write", "menu_assets", "menu_assets_write", "menu_assignments", "menu_assignments_write"],
     "Operations": ["menu_general_requests", "menu_general_requests_write", "menu_incidents", "menu_incidents_write", "menu_policies", "menu_policies_write", "menu_filled_forms", "menu_filled_forms_write", "menu_audits", "menu_audits_write", "menu_business_continuity", "menu_business_continuity_write", "menu_capa", "menu_capa_write", "menu_training", "menu_training_write", "menu_suppliers", "menu_suppliers_write"],
     "NIS2 Compliance": ["menu_nis2", "menu_nis2_write", "menu_nis2_notifications", "menu_nis2_notifications_write", "menu_nis2_supply_chain", "menu_nis2_supply_chain_write", "menu_nis2_continuity", "menu_nis2_continuity_write", "menu_nis2_compliance", "menu_nis2_compliance_write"],
