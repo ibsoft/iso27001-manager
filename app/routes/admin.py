@@ -289,7 +289,14 @@ def edit_role(role_id):
     role = Role.query.get_or_404(role_id)
     if request.method == "POST":
         selected = request.form.getlist("permissions")
-        role.permissions = Permission.query.filter(Permission.codename.in_(selected)).all()
+        perms = []
+        for codename in selected:
+            perm = Permission.query.filter_by(codename=codename).first()
+            if not perm:
+                perm = Permission(name=codename.replace("_", " ").title(), codename=codename)
+                db.session.add(perm)
+            perms.append(perm)
+        role.permissions = perms
         db.session.commit()
         _log_audit(f"Updated permissions for role: {role.name}")
         flash(_("Role permissions updated."), "success")
