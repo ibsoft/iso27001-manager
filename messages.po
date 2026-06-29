@@ -1,0 +1,5247 @@
+msgid "You do not have permission to access this resource."
+msgstr ""
+
+msgid "Forbidden"
+msgstr ""
+
+msgid "Too Many Requests"
+msgstr ""
+
+msgid "Rate limit exceeded. Please wait before retrying."
+msgstr ""
+
+msgid "No file uploaded."
+msgstr ""
+
+#, python-format
+msgid "Imported %(count)s user(s)."
+msgstr ""
+
+#, python-format
+msgid "Errors: %(err)s"
+msgstr ""
+
+#, python-format
+msgid "Failed to parse file: %(err)s"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Username already exists."
+msgstr ""
+
+msgid "New User"
+msgstr ""
+
+msgid "Email already exists."
+msgstr ""
+
+msgid "Password is required for new users."
+msgstr ""
+
+msgid "User created successfully."
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "User updated successfully."
+msgstr ""
+
+msgid "You cannot deactivate your own account."
+msgstr ""
+
+msgid "User activated."
+msgstr ""
+
+msgid "User deactivated."
+msgstr ""
+
+msgid "Account unlocked."
+msgstr ""
+
+msgid "All sessions terminated."
+msgstr ""
+
+msgid "Session terminated."
+msgstr ""
+
+msgid "Other sessions terminated."
+msgstr ""
+
+msgid "No other active sessions."
+msgstr ""
+
+msgid "Role permissions updated."
+msgstr ""
+
+#, python-format
+msgid "Log level updated to %(level)s."
+msgstr ""
+
+msgid "Backup created successfully."
+msgstr ""
+
+msgid "Database backup failed: "
+msgstr ""
+
+msgid "Backup file not found on disk."
+msgstr ""
+
+msgid "Backup deleted."
+msgstr ""
+
+msgid "Invalid backup file."
+msgstr ""
+
+msgid "Backup restored successfully."
+msgstr ""
+
+msgid "Database restore failed: "
+msgstr ""
+
+msgid "This action is only available in demo mode."
+msgstr ""
+
+msgid "Demo data has been reset successfully."
+msgstr ""
+
+msgid "LDAP settings saved."
+msgstr ""
+
+msgid "No users selected."
+msgstr ""
+
+#, python-format
+msgid "Skipped %(count)s existing LDAP user(s)."
+msgstr ""
+
+msgid "SSO settings saved."
+msgstr ""
+
+msgid "Department name is required."
+msgstr ""
+
+msgid "A department with this name already exists."
+msgstr ""
+
+msgid "Department created."
+msgstr ""
+
+msgid "Department updated."
+msgstr ""
+
+msgid "Department deleted."
+msgstr ""
+
+msgid "Mail settings saved."
+msgstr ""
+
+#, python-brace-format
+msgid "Test email sent to {}."
+msgstr ""
+
+msgid "Failed to send test email. Check server logs for details."
+msgstr ""
+
+msgid "All Audit Log Actions"
+msgstr ""
+
+msgid "Approval Requested"
+msgstr ""
+
+msgid "Approved"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Failed Login"
+msgstr ""
+
+msgid "Account Locked"
+msgstr ""
+
+msgid "User Created"
+msgstr ""
+
+msgid "Backup Created"
+msgstr ""
+
+msgid "User Login"
+msgstr ""
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "Email alert created."
+msgstr ""
+
+#, python-brace-format
+msgid "Email alert {}."
+msgstr ""
+
+msgid "Email alert deleted."
+msgstr ""
+
+msgid "Title is required."
+msgstr ""
+
+msgid "ISMS role created."
+msgstr ""
+
+msgid "ISMS role updated."
+msgstr ""
+
+msgid "ISMS role deleted."
+msgstr ""
+
+msgid "Failed to generate PDF."
+msgstr ""
+
+msgid "AI assistant is disabled by administrator."
+msgstr ""
+
+msgid "Invalid request."
+msgstr ""
+
+msgid "Question is required."
+msgstr ""
+
+msgid "AI assistant is not configured. Ask your administrator to set the API key in AI Settings."
+msgstr ""
+
+msgid "AI settings saved successfully."
+msgstr ""
+
+msgid "Missing required fields."
+msgstr ""
+
+msgid "A pending approval request already exists for this item."
+msgstr ""
+
+msgid "Approver not found."
+msgstr ""
+
+#, python-format
+msgid "Approval Request: %(type)s"
+msgstr ""
+
+#, python-format
+msgid "%(name)s requested your approval."
+msgstr ""
+
+#, python-format
+msgid "<p>%(name)s requested approval for %(type)s.</p>"
+msgstr ""
+
+msgid "Approval request submitted."
+msgstr ""
+
+msgid "You are not the approver for this request."
+msgstr ""
+
+msgid "This request has already been processed."
+msgstr ""
+
+#, python-format
+msgid "Request Approved: %(type)s"
+msgstr ""
+
+#, python-format
+msgid "%(name)s approved your request."
+msgstr ""
+
+#, python-format
+msgid "<p>%(name)s approved the %(type)s request.</p>"
+msgstr ""
+
+msgid "Request approved."
+msgstr ""
+
+msgid "Please provide a reason for rejection."
+msgstr ""
+
+#, python-format
+msgid "Request Rejected: %(type)s"
+msgstr ""
+
+#, python-format
+msgid "%(name)s rejected your request. Reason: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "<p>%(name)s rejected the %(type)s request. Reason: %(reason)s</p>"
+msgstr ""
+
+msgid "Request rejected."
+msgstr ""
+
+msgid "You are not the requester for this request."
+msgstr ""
+
+msgid "Request cancelled."
+msgstr ""
+
+msgid "Approval request deleted."
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Serial Number"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Classification"
+msgstr ""
+
+msgid "Criticality"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "Retention Period"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid "Created At"
+msgstr ""
+
+msgid "Updated At"
+msgstr ""
+
+msgid "Assets"
+msgstr ""
+
+#, python-format
+msgid "Export failed: %(error)s"
+msgstr ""
+
+msgid "No file selected."
+msgstr ""
+
+msgid "Unsupported file format. Use CSV or XLSX."
+msgstr ""
+
+#, python-format
+msgid "Error reading file: %(error)s"
+msgstr ""
+
+msgid "No data found in file."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)d: %(error)s"
+msgstr ""
+
+#, python-format
+msgid "Imported %(count)d assets."
+msgstr ""
+
+msgid "Unassigned"
+msgstr ""
+
+msgid "Asset created successfully."
+msgstr ""
+
+msgid "New Asset"
+msgstr ""
+
+msgid "Asset updated successfully."
+msgstr ""
+
+msgid "Edit Asset"
+msgstr ""
+
+msgid "Asset deleted."
+msgstr ""
+
+msgid "This asset has already been returned."
+msgstr ""
+
+msgid "Return signature is required."
+msgstr ""
+
+msgid "Asset checked in successfully."
+msgstr ""
+
+msgid "Please correct the errors below."
+msgstr ""
+
+msgid "Only returned assignments can be deleted."
+msgstr ""
+
+msgid "Assignment deleted."
+msgstr ""
+
+msgid "No active assignments for this user."
+msgstr ""
+
+#, python-format
+msgid "%(count)s asset(s) returned for %(name)s."
+msgstr ""
+
+msgid "Only active assets can be checked out."
+msgstr ""
+
+msgid "This asset is already checked out. Return it first."
+msgstr ""
+
+msgid "— External / Not listed —"
+msgstr ""
+
+msgid "Signature is required."
+msgstr ""
+
+msgid "Asset checked out successfully."
+msgstr ""
+
+msgid "Audit created successfully."
+msgstr ""
+
+msgid "New Internal Audit"
+msgstr ""
+
+msgid "Audit updated successfully."
+msgstr ""
+
+msgid "Edit Audit"
+msgstr ""
+
+msgid "No specific control"
+msgstr ""
+
+msgid "Finding added successfully."
+msgstr ""
+
+msgid "Add Finding"
+msgstr ""
+
+msgid "Audit deleted."
+msgstr ""
+
+msgid "Finding deleted."
+msgstr ""
+
+msgid "Language is enforced by administrator"
+msgstr ""
+
+msgid "Account locked due to too many failed attempts. Try again in 15 minutes."
+msgstr ""
+
+msgid "Invalid username or password."
+msgstr ""
+
+msgid "Account is deactivated. Contact an administrator."
+msgstr ""
+
+msgid "Please enter your TOTP code."
+msgstr ""
+
+msgid "Invalid TOTP code."
+msgstr ""
+
+msgid "You have been logged out."
+msgstr ""
+
+msgid "Email already in use."
+msgstr ""
+
+msgid "Invalid image format. Allowed: PNG, JPG, GIF, WebP, SVG"
+msgstr ""
+
+msgid "Profile updated successfully."
+msgstr ""
+
+msgid "Current password is incorrect."
+msgstr ""
+
+msgid "New passwords do not match."
+msgstr ""
+
+msgid "Password changed successfully."
+msgstr ""
+
+msgid "MFA is already enabled."
+msgstr ""
+
+msgid "MFA has been enabled successfully."
+msgstr ""
+
+msgid "Invalid verification code. Please try again."
+msgstr ""
+
+msgid "MFA has been disabled."
+msgstr ""
+
+msgid "Unsupported SSO provider."
+msgstr ""
+
+msgid "SSO authentication is disabled."
+msgstr ""
+
+msgid "SAML IdP URL is not configured. Save SSO settings first."
+msgstr ""
+
+msgid "SSO provider not configured."
+msgstr ""
+
+#, python-brace-format
+msgid "SSO login failed: {}"
+msgstr ""
+
+msgid "Invalid SSO provider."
+msgstr ""
+
+#, python-brace-format
+msgid "SSO authentication failed: {}"
+msgstr ""
+
+#, python-brace-format
+msgid "SAML authentication failed: {}"
+msgstr ""
+
+msgid "SAML authentication failed."
+msgstr ""
+
+msgid "Business impact analysis created."
+msgstr ""
+
+msgid "New Business Impact Analysis (BIA)"
+msgstr ""
+
+msgid "Business impact analysis updated."
+msgstr ""
+
+msgid "Edit Business Impact Analysis (BIA)"
+msgstr ""
+
+msgid "Business impact analysis deleted."
+msgstr ""
+
+msgid "Business continuity plan created."
+msgstr ""
+
+msgid "New Continuity Plan"
+msgstr ""
+
+msgid "Business continuity plan updated."
+msgstr ""
+
+msgid "Edit Continuity Plan"
+msgstr ""
+
+msgid "Business continuity plan deleted."
+msgstr ""
+
+msgid "Create a continuity plan before scheduling a test."
+msgstr ""
+
+msgid "Continuity test created."
+msgstr ""
+
+msgid "New Disaster Recovery Plan (DRP) Test"
+msgstr ""
+
+msgid "Continuity test updated."
+msgstr ""
+
+msgid "Edit Disaster Recovery Plan (DRP) Test"
+msgstr ""
+
+msgid "Continuity test deleted."
+msgstr ""
+
+msgid "Action item added."
+msgstr ""
+
+msgid "Action item completed."
+msgstr ""
+
+msgid "Action item deleted."
+msgstr ""
+
+msgid "CAPA request created successfully."
+msgstr ""
+
+msgid "New Corrective and Preventive Action (CAPA) Request"
+msgstr ""
+
+msgid "CAPA request updated successfully."
+msgstr ""
+
+msgid "Edit Corrective and Preventive Action (CAPA) Request"
+msgstr ""
+
+msgid "CAPA request deleted."
+msgstr ""
+
+msgid "Invalid status."
+msgstr ""
+
+#, python-format
+msgid "Status updated to %(status)s."
+msgstr ""
+
+msgid "Control created successfully."
+msgstr ""
+
+msgid "New Control"
+msgstr ""
+
+msgid "Control updated successfully."
+msgstr ""
+
+msgid "Edit Control"
+msgstr ""
+
+msgid "Status updated."
+msgstr ""
+
+msgid "Control deleted."
+msgstr ""
+
+msgid "Please select a user."
+msgstr ""
+
+msgid "Valid year is required."
+msgstr ""
+
+msgid "File is required."
+msgstr ""
+
+msgid "File type not allowed."
+msgstr ""
+
+msgid "Form uploaded successfully."
+msgstr ""
+
+msgid "File not found on disk."
+msgstr ""
+
+msgid "Form deleted."
+msgstr ""
+
+msgid "Processing activity created."
+msgstr ""
+
+msgid "New Processing Activity"
+msgstr ""
+
+msgid "Processing activity updated."
+msgstr ""
+
+msgid "Edit Processing Activity"
+msgstr ""
+
+msgid "Processing activity deleted."
+msgstr ""
+
+msgid "DPIA created."
+msgstr ""
+
+msgid "New DPIA"
+msgstr ""
+
+msgid "DPIA updated."
+msgstr ""
+
+msgid "Edit DPIA"
+msgstr ""
+
+msgid "DPIA deleted."
+msgstr ""
+
+#, python-brace-format
+msgid "Data subject request created. Deadline: {}"
+msgstr ""
+
+msgid "New Data Subject Request"
+msgstr ""
+
+msgid "Data subject request updated."
+msgstr ""
+
+msgid "Edit Data Subject Request"
+msgstr ""
+
+msgid "Data subject request deleted."
+msgstr ""
+
+msgid "Consent record created."
+msgstr ""
+
+msgid "New Consent Record"
+msgstr ""
+
+msgid "Consent record updated."
+msgstr ""
+
+msgid "Edit Consent Record"
+msgstr ""
+
+msgid "Consent withdrawn."
+msgstr ""
+
+msgid "Consent record deleted."
+msgstr ""
+
+msgid "Entity created."
+msgstr ""
+
+msgid "New Data Controller / Processor"
+msgstr ""
+
+msgid "Entity updated."
+msgstr ""
+
+msgid "Edit Data Controller / Processor"
+msgstr ""
+
+msgid "Entity deleted."
+msgstr ""
+
+msgid "Privacy notice created."
+msgstr ""
+
+msgid "New Privacy Notice"
+msgstr ""
+
+msgid "Privacy notice updated."
+msgstr ""
+
+msgid "Edit Privacy Notice"
+msgstr ""
+
+msgid "Privacy notice deleted."
+msgstr ""
+
+msgid "Data breach details updated."
+msgstr ""
+
+msgid "You do not have a manager assigned. Please contact an administrator."
+msgstr ""
+
+#, python-format
+msgid "Approval Request: %(title)s"
+msgstr ""
+
+msgid "Request submitted for approval."
+msgstr ""
+
+msgid "Access denied."
+msgstr ""
+
+msgid "No file attached."
+msgstr ""
+
+msgid "Incident reported successfully."
+msgstr ""
+
+msgid "Report Incident"
+msgstr ""
+
+msgid "Incident updated successfully."
+msgstr ""
+
+msgid "Edit Incident"
+msgstr ""
+
+msgid "Incident deleted."
+msgstr ""
+
+msgid "Value is required."
+msgstr ""
+
+msgid "Invalid date format."
+msgstr ""
+
+msgid "Measurement recorded."
+msgstr ""
+
+msgid "Measurement deleted."
+msgstr ""
+
+msgid "No auto-calculation formula defined for this KPI."
+msgstr ""
+
+#, python-format
+msgid "Auto-calculated: %(name)s = %(value)s"
+msgstr ""
+
+#, python-format
+msgid "Auto-calculated %(count)d KPIs."
+msgstr ""
+
+msgid "No KPIs have auto-calculation formulas defined."
+msgstr ""
+
+msgid "Management review created successfully."
+msgstr ""
+
+msgid "New Management Review"
+msgstr ""
+
+msgid "Management review updated successfully."
+msgstr ""
+
+msgid "Edit Management Review"
+msgstr ""
+
+msgid "Management review deleted."
+msgstr ""
+
+msgid "Action item updated."
+msgstr ""
+
+msgid "NIS2 entity registration saved."
+msgstr ""
+
+msgid "NIS2 incident notification created."
+msgstr ""
+
+msgid "New NIS2 Incident Notification"
+msgstr ""
+
+msgid "NIS2 incident notification updated."
+msgstr ""
+
+msgid "Edit NIS2 Incident Notification"
+msgstr ""
+
+msgid "NIS2 incident notification deleted."
+msgstr ""
+
+msgid "Supply chain assessment created."
+msgstr ""
+
+msgid "New Supply Chain Assessment"
+msgstr ""
+
+msgid "Supply chain assessment updated."
+msgstr ""
+
+msgid "Edit Supply Chain Assessment"
+msgstr ""
+
+msgid "Supply chain assessment deleted."
+msgstr ""
+
+msgid "Continuity plan created."
+msgstr ""
+
+msgid "Continuity plan updated."
+msgstr ""
+
+msgid "Continuity plan deleted."
+msgstr ""
+
+msgid "Compliance check created."
+msgstr ""
+
+msgid "New Compliance Check"
+msgstr ""
+
+msgid "Compliance check updated."
+msgstr ""
+
+msgid "Edit Compliance Check"
+msgstr ""
+
+msgid "Compliance check deleted."
+msgstr ""
+
+msgid "Notification not found."
+msgstr ""
+
+msgid "All notifications marked as read."
+msgstr ""
+
+msgid "Created successfully."
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Updated successfully."
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "New version created."
+msgstr ""
+
+msgid "No file for this version."
+msgstr ""
+
+msgid "No file to preview."
+msgstr ""
+
+msgid "Policy deleted."
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Domain"
+msgstr ""
+
+msgid "Target Date"
+msgstr ""
+
+msgid "Likelihood"
+msgstr ""
+
+msgid "Impact"
+msgstr ""
+
+msgid "Risk Level"
+msgstr ""
+
+msgid "Treatment"
+msgstr ""
+
+msgid "Severity"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Reported"
+msgstr ""
+
+msgid "Resolved"
+msgstr ""
+
+msgid "Control"
+msgstr ""
+
+msgid "Applicable"
+msgstr ""
+
+msgid "Justification"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Plan"
+msgstr ""
+
+msgid "Lifecycle Stage"
+msgstr ""
+
+msgid "RTO"
+msgstr ""
+
+msgid "RPO"
+msgstr ""
+
+msgid "Next Test"
+msgstr ""
+
+msgid "Unknown resource"
+msgstr ""
+
+msgid "Controls Status Report"
+msgstr ""
+
+msgid "PDF generation failed"
+msgstr ""
+
+msgid "Risk Assessment Report"
+msgstr ""
+
+msgid "Incident Management Report"
+msgstr ""
+
+msgid "Asset Inventory Report"
+msgstr ""
+
+msgid "Policy Management Report"
+msgstr ""
+
+msgid "Audit & Compliance Report"
+msgstr ""
+
+msgid "Statement of Applicability Report"
+msgstr ""
+
+msgid "Supplier/Vendor Risk Management Report"
+msgstr ""
+
+msgid "NIS2 Compliance Report"
+msgstr ""
+
+msgid "GDPR Compliance Report"
+msgstr ""
+
+msgid "Asset Assignment Report"
+msgstr ""
+
+msgid "Corrective and Preventive Action (CAPA) Report"
+msgstr ""
+
+msgid "Training Report"
+msgstr ""
+
+msgid "Management Review Report"
+msgstr ""
+
+msgid "Business Continuity Report"
+msgstr ""
+
+msgid "No specific asset"
+msgstr ""
+
+msgid "Risk created successfully."
+msgstr ""
+
+msgid "New Risk Assessment"
+msgstr ""
+
+msgid "Risk updated successfully."
+msgstr ""
+
+msgid "Edit Risk Assessment"
+msgstr ""
+
+msgid "Risk deleted."
+msgstr ""
+
+msgid "SoA entry already exists for this control."
+msgstr ""
+
+msgid "SoA entry created."
+msgstr ""
+
+msgid "SoA entry updated."
+msgstr ""
+
+msgid "Supplier created successfully."
+msgstr ""
+
+msgid "New Supplier/Vendor"
+msgstr ""
+
+msgid "Supplier updated successfully."
+msgstr ""
+
+msgid "Edit Supplier/Vendor"
+msgstr ""
+
+msgid "Supplier deleted."
+msgstr ""
+
+msgid "Training course created."
+msgstr ""
+
+msgid "New Training Course"
+msgstr ""
+
+msgid "Training course updated."
+msgstr ""
+
+msgid "Edit Training Course"
+msgstr ""
+
+msgid "Training course deleted."
+msgstr ""
+
+msgid "Training session created."
+msgstr ""
+
+msgid "New Training Session"
+msgstr ""
+
+msgid "Training session updated."
+msgstr ""
+
+msgid "Edit Training Session"
+msgstr ""
+
+msgid "Training session deleted."
+msgstr ""
+
+msgid "You are already enrolled in this session."
+msgstr ""
+
+msgid "Enrolled successfully."
+msgstr ""
+
+msgid "Training record updated."
+msgstr ""
+
+msgid "Edit Training Record"
+msgstr ""
+
+msgid "Training record removed."
+msgstr ""
+
+msgid "Competence profile updated."
+msgstr ""
+
+msgid "Edit Competence"
+msgstr ""
+
+msgid "Competence profile created."
+msgstr ""
+
+msgid "New Competence"
+msgstr ""
+
+msgid "Competence profile deleted."
+msgstr ""
+
+msgid "Toggle sidebar"
+msgstr ""
+
+msgid "Toggle theme"
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "View All"
+msgstr ""
+
+msgid "No notifications"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Change Password"
+msgstr ""
+
+msgid "User Management"
+msgstr ""
+
+msgid "LDAP Settings"
+msgstr ""
+
+msgid "SSO Settings"
+msgstr ""
+
+msgid "Sign Out"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "ISO Clauses 4-10"
+msgstr ""
+
+msgid "Annex A Controls"
+msgstr ""
+
+msgid "Statement of Applicability"
+msgstr ""
+
+msgid "Management Reviews"
+msgstr ""
+
+msgid "Metrics & KPIs"
+msgstr ""
+
+msgid "ISMS Roles"
+msgstr ""
+
+msgid "Organisation Chart"
+msgstr ""
+
+msgid "Risk Management"
+msgstr ""
+
+msgid "Asset Register"
+msgstr ""
+
+msgid "Asset Assignments"
+msgstr ""
+
+msgid "New Request"
+msgstr ""
+
+msgid "Incidents"
+msgstr ""
+
+msgid "Policies & Documents"
+msgstr ""
+
+msgid "Filled-out Forms"
+msgstr ""
+
+msgid "Internal Audits"
+msgstr ""
+
+msgid "Business Continuity"
+msgstr ""
+
+msgid "Corrective and Preventive Action (CAPA) Requests"
+msgstr ""
+
+msgid "Training & Competence"
+msgstr ""
+
+msgid "Supplier/Vendor Risk Management"
+msgstr ""
+
+msgid "NIS2 Dashboard"
+msgstr ""
+
+msgid "Incident Notifications"
+msgstr ""
+
+msgid "Supply Chain"
+msgstr ""
+
+msgid "Continuity Plans"
+msgstr ""
+
+msgid "Compliance Checks"
+msgstr ""
+
+msgid "GDPR Dashboard"
+msgstr ""
+
+msgid "Processing Activities"
+msgstr ""
+
+msgid "DPIAs"
+msgstr ""
+
+msgid "DSARs"
+msgstr ""
+
+msgid "Consents"
+msgstr ""
+
+msgid "Controllers"
+msgstr ""
+
+msgid "Privacy Notices"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Pending Approvals"
+msgstr ""
+
+msgid "My Requests"
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+msgid "Roles & Permissions"
+msgstr ""
+
+msgid "Departments"
+msgstr ""
+
+msgid "Audit Trail"
+msgstr ""
+
+msgid "Backup & Restore"
+msgstr ""
+
+msgid "AI Settings"
+msgstr ""
+
+msgid "Mail Settings"
+msgstr ""
+
+msgid "Email Alerts"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "ISMS Manager. All rights reserved."
+msgstr ""
+
+msgid "Made by"
+msgstr ""
+
+msgid "Software License"
+msgstr ""
+
+msgid "This software is licensed under the PolyForm Noncommercial License 1.0.0."
+msgstr ""
+
+msgid "You may use, copy, modify, and study this software only for non-commercial purposes."
+msgstr ""
+
+msgid "Any use by a company, organization, government body, contractor, employee, or commercial project requires a separate written commercial license from the author."
+msgstr ""
+
+msgid "For commercial licensing, contact:"
+msgstr ""
+
+msgid "In some cases, permission is granted to a company only for the duration of an active business relationship with the author. After the business relationship ends, the license terminates and a corporate license must be purchased."
+msgstr ""
+
+msgid "Unauthorized copying, distribution, or commercial use of this software without a valid license is strictly prohibited and may result in legal action."
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Are you sure?"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "AI Assistant"
+msgstr ""
+
+msgid "ISMS AI Assistant"
+msgstr ""
+
+msgid "Full screen"
+msgstr ""
+
+msgid "Ask about ISMS, compliance, risks..."
+msgstr ""
+
+msgid "Connection error. Please try again."
+msgstr ""
+
+msgid "AI Assistant Settings"
+msgstr ""
+
+msgid "OpenAI API Key"
+msgstr ""
+
+msgid "API key is set. Leave blank to keep current."
+msgstr ""
+
+msgid "Enable AI Assistant for all users"
+msgstr ""
+
+msgid "Save Settings"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "The AI Assistant is an ISMS expert that helps users navigate the system, answer compliance questions, and manage the ISMS."
+msgstr ""
+
+msgid "It uses OpenAI GPT-4o-mini and has access to the database schema to provide context-aware answers."
+msgstr ""
+
+msgid "Your API key is stored securely in the database and used only for AI chat requests."
+msgstr ""
+
+msgid "Audit Log"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Resource"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "details, IP, user agent..."
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "IP"
+msgstr ""
+
+msgid "No entries"
+msgstr ""
+
+msgid "Audit Entry Details"
+msgstr ""
+
+msgid "IP Address"
+msgstr ""
+
+msgid "User Agent"
+msgstr ""
+
+msgid "Create Backup"
+msgstr ""
+
+msgid "Create a full backup of the database and all uploaded files."
+msgstr ""
+
+msgid "Notes (optional)"
+msgstr ""
+
+msgid "e.g. Before upgrade to v2.0"
+msgstr ""
+
+msgid "Restore Backup"
+msgstr ""
+
+msgid "Restore from a previously created backup .zip file."
+msgstr ""
+
+msgid "This will overwrite all current data and files."
+msgstr ""
+
+msgid "Backup file (.zip)"
+msgstr ""
+
+msgid "This will overwrite all current data. Are you sure?"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
+msgid "Reset Demo Data"
+msgstr ""
+
+msgid "Reset all user-generated data back to the initial demo state."
+msgstr ""
+
+msgid "This will delete all assets, risks, incidents, policies, and other user data. Seed data will be preserved."
+msgstr ""
+
+msgid "This will permanently delete all user-generated data. Are you sure?"
+msgstr ""
+
+msgid "Reset Data"
+msgstr ""
+
+msgid "Backup History"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Delete this backup?"
+msgstr ""
+
+msgid "No backups yet."
+msgstr ""
+
+msgid "Department"
+msgstr ""
+
+msgid "New Department"
+msgstr ""
+
+msgid "Department Head"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Head"
+msgstr ""
+
+msgid "Delete this department? Users will be unassigned."
+msgstr ""
+
+msgid "New Email Alert"
+msgstr ""
+
+msgid "New Alert"
+msgstr ""
+
+msgid "Create Email Alert"
+msgstr ""
+
+msgid "Alert Name"
+msgstr ""
+
+msgid "e.g. Notify admins of failed logins"
+msgstr ""
+
+msgid "Event Type"
+msgstr ""
+
+msgid "-- Select --"
+msgstr ""
+
+msgid "Recipient Type"
+msgstr ""
+
+msgid "Role"
+msgstr ""
+
+msgid "Specific User"
+msgstr ""
+
+msgid "Create Alert"
+msgstr ""
+
+msgid "Recipient"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Delete this alert?"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "No email alerts configured."
+msgstr ""
+
+msgid "Create your first alert"
+msgstr ""
+
+msgid "ISMS Role"
+msgstr ""
+
+msgid "New Role"
+msgstr ""
+
+msgid "New ISMS Role"
+msgstr ""
+
+msgid "Role Title"
+msgstr ""
+
+msgid "e.g. ISMS Manager, DPO, CISO"
+msgstr ""
+
+msgid "Sort Order"
+msgstr ""
+
+msgid "Top Management"
+msgstr ""
+
+msgid "-- None --"
+msgstr ""
+
+msgid "Assigned User"
+msgstr ""
+
+msgid "Reports To"
+msgstr ""
+
+msgid "-- None (Top Level) --"
+msgstr ""
+
+msgid "View Org Chart"
+msgstr ""
+
+msgid "Assigned To"
+msgstr ""
+
+msgid "Operational"
+msgstr ""
+
+msgid "Delete this role?"
+msgstr ""
+
+msgid "No ISMS roles defined yet."
+msgstr ""
+
+msgid "Create your first role"
+msgstr ""
+
+msgid "LDAP / Active Directory Configuration"
+msgstr ""
+
+msgid "Search..."
+msgstr ""
+
+msgid "List Users"
+msgstr ""
+
+msgid "Enable LDAP Authentication"
+msgstr ""
+
+msgid "When enabled, users can authenticate using their LDAP / AD credentials."
+msgstr ""
+
+msgid "LDAP Server"
+msgstr ""
+
+msgid "Port"
+msgstr ""
+
+msgid "Use TLS"
+msgstr ""
+
+msgid "Base DN"
+msgstr ""
+
+msgid "Bind DN"
+msgstr ""
+
+msgid "Optional. Leave empty for anonymous bind."
+msgstr ""
+
+msgid "Bind Password"
+msgstr ""
+
+msgid "(leave empty to keep current)"
+msgstr ""
+
+msgid "User Filter"
+msgstr ""
+
+#, python-brace-format
+msgid "Use {username} as placeholder for the login name."
+msgstr ""
+
+msgid "Attribute Mapping (JSON)"
+msgstr ""
+
+msgid "Maps local fields (email, first_name, last_name) to LDAP attributes."
+msgstr ""
+
+msgid "Test Connection"
+msgstr ""
+
+msgid "Connection Test Result"
+msgstr ""
+
+msgid "LDAP Users"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Imported"
+msgstr ""
+
+msgid "Local user"
+msgstr ""
+
+msgid "No users found."
+msgstr ""
+
+msgid "Import Selected Users"
+msgstr ""
+
+#, python-format
+msgid "Page %(page)s of %(total)s (%(count)s users)"
+msgstr ""
+
+msgid "Search Log"
+msgstr ""
+
+msgid "Log Settings"
+msgstr ""
+
+msgid "Application Log Level"
+msgstr ""
+
+msgid "Changes the verbosity of the application log file (logs/app.jsonl). Lower levels produce more output."
+msgstr ""
+
+msgid "SMTP Mail Server Configuration"
+msgstr ""
+
+msgid "SMTP Server"
+msgstr ""
+
+msgid "Encryption"
+msgstr ""
+
+msgid "TLS (STARTTLS)"
+msgstr ""
+
+msgid "SSL / SMTPS"
+msgstr ""
+
+msgid "Optional"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Leave empty to keep current"
+msgstr ""
+
+msgid "Default Sender Email"
+msgstr ""
+
+msgid "Send Test Email"
+msgstr ""
+
+msgid "Test Result"
+msgstr ""
+
+msgid "Test email sent successfully."
+msgstr ""
+
+msgid "Failed to send test email. Check the server logs."
+msgstr ""
+
+msgid "Manage Roles"
+msgstr ""
+
+msgid "Download PDF"
+msgstr ""
+
+msgid "No organisation chart data yet"
+msgstr ""
+
+msgid "Define ISMS roles and departments to build your chart."
+msgstr ""
+
+msgid "Add Your First Role"
+msgstr ""
+
+msgid "Manage Departments"
+msgstr ""
+
+msgid "ISMS Roles &amp; Departments"
+msgstr ""
+
+msgid "Head:"
+msgstr ""
+
+msgid "Generated on"
+msgstr ""
+
+#, python-format
+msgid "Edit Role: %(name)s"
+msgstr ""
+
+msgid "Roles"
+msgstr ""
+
+msgid "Permissions for"
+msgstr ""
+
+msgid "Save Permissions"
+msgstr ""
+
+msgid "users"
+msgstr ""
+
+msgid "Edit Permissions"
+msgstr ""
+
+msgid "Permissions:"
+msgstr ""
+
+msgid "Single Sign-On Configuration"
+msgstr ""
+
+msgid "Enable SSO Authentication"
+msgstr ""
+
+msgid "Provider"
+msgstr ""
+
+msgid "Custom (SAML 2.0)"
+msgstr ""
+
+msgid "Client ID / Entity ID"
+msgstr ""
+
+msgid "Client Secret"
+msgstr ""
+
+msgid "Issuer URL"
+msgstr ""
+
+msgid "Metadata URL"
+msgstr ""
+
+msgid "SAML IdP X.509 Certificate"
+msgstr ""
+
+msgid "Validate Settings"
+msgstr ""
+
+msgid "Validation Result"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "(leave blank to keep current)"
+msgstr ""
+
+msgid "Min 12 chars, must contain uppercase, lowercase, digit & special character"
+msgstr ""
+
+msgid "Manager"
+msgstr ""
+
+msgid "Active Sessions"
+msgstr ""
+
+msgid "Terminate all sessions for this user?"
+msgstr ""
+
+msgid "Kill All Sessions"
+msgstr ""
+
+msgid "Last Activity"
+msgstr ""
+
+msgid "Terminate this session?"
+msgstr ""
+
+msgid "No active sessions."
+msgstr ""
+
+msgid "Account is locked due to too many failed login attempts."
+msgstr ""
+
+msgid "Unlock Account"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Import Users from CSV"
+msgstr ""
+
+msgid "Upload a CSV file with columns: username, email, first_name, last_name, password, is_active, roles."
+msgstr ""
+
+msgid "Roles should be comma-separated role names (e.g. \"user,admin\"). Password is optional — a random one is generated if empty."
+msgstr ""
+
+msgid "CSV File"
+msgstr ""
+
+msgid "MFA"
+msgstr ""
+
+msgid "Last Login"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "Inactive"
+msgstr ""
+
+msgid "Deactivate this user?"
+msgstr ""
+
+msgid "Activate this user?"
+msgstr ""
+
+msgid "Approver"
+msgstr ""
+
+msgid "Item"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Cancel this request?"
+msgstr ""
+
+msgid "No requests yet."
+msgstr ""
+
+msgid "Approval History"
+msgstr ""
+
+msgid "Pending"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
+msgid "Search by requester or type..."
+msgstr ""
+
+msgid "Requester"
+msgstr ""
+
+msgid "Approve this request?"
+msgstr ""
+
+msgid "Approve"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Reject Request"
+msgstr ""
+
+msgid "Delete this approval request permanently?"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "No pending approvals."
+msgstr ""
+
+msgid "No approval history."
+msgstr ""
+
+msgid "Asset Name"
+msgstr ""
+
+msgid "optional"
+msgstr ""
+
+msgid "e.g. SN-12345 or asset tag"
+msgstr ""
+
+msgid "Import Assets"
+msgstr ""
+
+msgid "Import Assets from File"
+msgstr ""
+
+msgid "Select CSV or Excel file"
+msgstr ""
+
+msgid "File Format Instructions"
+msgstr ""
+
+msgid "Upload a CSV or Excel file with the following columns:"
+msgstr ""
+
+msgid "required"
+msgstr ""
+
+msgid "hardware, software, data, personnel, facility, other"
+msgstr ""
+
+msgid "public, internal, confidential, restricted"
+msgstr ""
+
+msgid "low, medium, high, critical"
+msgstr ""
+
+msgid "active, inactive, disposed"
+msgstr ""
+
+msgid "full name of existing active user"
+msgstr ""
+
+msgid "Column headers can be in English or the current language. Only Name is required — all other fields are optional."
+msgstr ""
+
+msgid "Import Results"
+msgstr ""
+
+msgid "Skipped"
+msgstr ""
+
+msgid "Errors"
+msgstr ""
+
+msgid "View Assets"
+msgstr ""
+
+msgid "All Classifications"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Internal"
+msgstr ""
+
+msgid "Confidential"
+msgstr ""
+
+msgid "Restricted"
+msgstr ""
+
+msgid "All Types"
+msgstr ""
+
+msgid "Hardware"
+msgstr ""
+
+msgid "Software"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Search assets..."
+msgstr ""
+
+msgid "Check Out"
+msgstr ""
+
+msgid "Delete this asset?"
+msgstr ""
+
+msgid "No assets registered"
+msgstr ""
+
+msgid "Assignments"
+msgstr ""
+
+msgid "Asset Details"
+msgstr ""
+
+msgid "Related Risks"
+msgstr ""
+
+msgid "No risks linked"
+msgstr ""
+
+msgid "Assignment History"
+msgstr ""
+
+msgid "Assignee"
+msgstr ""
+
+msgid "Checkout"
+msgstr ""
+
+msgid "Return"
+msgstr ""
+
+msgid "Overdue"
+msgstr ""
+
+msgid "Out"
+msgstr ""
+
+msgid "Returned"
+msgstr ""
+
+msgid "No assignments yet."
+msgstr ""
+
+msgid "Check In Asset"
+msgstr ""
+
+msgid "Assignment"
+msgstr ""
+
+msgid "Check In"
+msgstr ""
+
+msgid "Check In Asset:"
+msgstr ""
+
+msgid "Return Details"
+msgstr ""
+
+msgid "Describe the condition of the asset upon return"
+msgstr ""
+
+msgid "Digital Signature (Person Returning)"
+msgstr ""
+
+msgid "The person returning the asset must sign below."
+msgstr ""
+
+msgid "Return Signature:"
+msgstr ""
+
+msgid "Assignment Summary"
+msgstr ""
+
+msgid "Asset"
+msgstr ""
+
+msgid "Checkout Date"
+msgstr ""
+
+msgid "Expected Return"
+msgstr ""
+
+msgid "Days Out"
+msgstr ""
+
+msgid "Check Out Asset"
+msgstr ""
+
+msgid "Check Out Asset:"
+msgstr ""
+
+msgid "e.g. IT Department"
+msgstr ""
+
+msgid "Full name of external person"
+msgstr ""
+
+msgid "+30 69X XXX XXXX"
+msgstr ""
+
+msgid "Assignment Details"
+msgstr ""
+
+msgid "Why is this asset needed?"
+msgstr ""
+
+msgid "Digital Signature"
+msgstr ""
+
+msgid "The assignee must sign below to acknowledge receipt of this asset."
+msgstr ""
+
+msgid "Signature:"
+msgstr ""
+
+msgid "Asset Info"
+msgstr ""
+
+msgid "Serial"
+msgstr ""
+
+msgid "All Statuses"
+msgstr ""
+
+msgid "Checked Out"
+msgstr ""
+
+msgid "Search asset or person..."
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Deleted"
+msgstr ""
+
+msgid "Delete this assignment?"
+msgstr ""
+
+msgid "No assignments found"
+msgstr ""
+
+msgid "Checkout Receipt"
+msgstr ""
+
+msgid "ASSET CHECKOUT RECEIPT"
+msgstr ""
+
+msgid "Receipt"
+msgstr ""
+
+msgid "Asset Type"
+msgstr ""
+
+msgid "Contact Email"
+msgstr ""
+
+msgid "Contact Phone"
+msgstr ""
+
+msgid "Expected Return Date"
+msgstr ""
+
+msgid "Actual Return Date"
+msgstr ""
+
+msgid "Released By"
+msgstr ""
+
+msgid "Purpose / Reason"
+msgstr ""
+
+msgid "Condition on Return"
+msgstr ""
+
+msgid "Checkout Signature"
+msgstr ""
+
+msgid "Signature"
+msgstr ""
+
+msgid "Signed:"
+msgstr ""
+
+msgid "Check-in Signature"
+msgstr ""
+
+msgid "Return Signature"
+msgstr ""
+
+msgid "This is a computer-generated receipt."
+msgstr ""
+
+msgid "Generated"
+msgstr ""
+
+msgid "Print / Save PDF"
+msgstr ""
+
+msgid "Total Assignments"
+msgstr ""
+
+msgid "Currently Checked Out"
+msgstr ""
+
+msgid "Per User / Department"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "External / Unknown"
+msgstr ""
+
+msgid "No data"
+msgstr ""
+
+msgid "Recent Assignments"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "active"
+msgstr ""
+
+msgid "Return ALL checked-out assets for this user? This action cannot be undone."
+msgstr ""
+
+msgid "Return All Assets"
+msgstr ""
+
+msgid "Actual Return"
+msgstr ""
+
+msgid "Duration"
+msgstr ""
+
+msgid "d"
+msgstr ""
+
+msgid "No assignments for this user."
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "days"
+msgstr ""
+
+msgid "Purpose"
+msgstr ""
+
+msgid "Signatures"
+msgstr ""
+
+msgid "View Asset"
+msgstr ""
+
+msgid "User Info"
+msgstr ""
+
+msgid "View History"
+msgstr ""
+
+msgid "Corrective Actions"
+msgstr ""
+
+msgid "All Status"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "In Progress"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Verified Closed"
+msgstr ""
+
+msgid "No corrective actions"
+msgstr ""
+
+msgid "Audits"
+msgstr ""
+
+msgid "Finding Type"
+msgstr ""
+
+msgid "Related Control"
+msgstr ""
+
+msgid "Save Finding"
+msgstr ""
+
+msgid "Lead Auditor"
+msgstr ""
+
+msgid "Audit Date"
+msgstr ""
+
+msgid "Scope"
+msgstr ""
+
+msgid "Findings Summary"
+msgstr ""
+
+msgid "Conclusion"
+msgstr ""
+
+msgid "Planned"
+msgstr ""
+
+msgid "Schedule Audit"
+msgstr ""
+
+msgid "findings"
+msgstr ""
+
+msgid "NCs"
+msgstr ""
+
+msgid "Delete this audit?"
+msgstr ""
+
+msgid "No audits scheduled"
+msgstr ""
+
+msgid "Non-Conformities"
+msgstr ""
+
+msgid "Closed"
+msgstr ""
+
+msgid "Audit"
+msgstr ""
+
+msgid "No non-conformities"
+msgstr ""
+
+msgid "Audit Details"
+msgstr ""
+
+msgid "Findings"
+msgstr ""
+
+msgid "Delete this finding?"
+msgstr ""
+
+msgid "No findings recorded"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "Total Findings"
+msgstr ""
+
+msgid "Observations"
+msgstr ""
+
+msgid "OFIs"
+msgstr ""
+
+msgid "Current Password"
+msgstr ""
+
+msgid "New Password"
+msgstr ""
+
+msgid "Min 12 chars with uppercase, lowercase, digit & special character"
+msgstr ""
+
+msgid "Confirm New Password"
+msgstr ""
+
+msgid "Sign In"
+msgstr ""
+
+msgid "Information Security Management System"
+msgstr ""
+
+msgid "Enter your username"
+msgstr ""
+
+msgid "Enter your password"
+msgstr ""
+
+msgid "Show password"
+msgstr ""
+
+msgid "Sign in with SSO"
+msgstr ""
+
+msgid "Secured with bcrypt + TOTP 2FA"
+msgstr ""
+
+msgid "Hide password"
+msgstr ""
+
+msgid "MFA Verification"
+msgstr ""
+
+msgid "Two-Factor Authentication"
+msgstr ""
+
+msgid "Enter the code from your authenticator app"
+msgstr ""
+
+msgid "Authentication Code"
+msgstr ""
+
+msgid "Verify"
+msgstr ""
+
+msgid "Back to login"
+msgstr ""
+
+msgid "My Profile"
+msgstr ""
+
+msgid "Pass. Changed"
+msgstr ""
+
+msgid "Never"
+msgstr ""
+
+msgid "Personal Info"
+msgstr ""
+
+msgid "Edit Profile"
+msgstr ""
+
+msgid "Security"
+msgstr ""
+
+msgid "My Assets"
+msgstr ""
+
+msgid "Preferences"
+msgstr ""
+
+msgid "Contact Information"
+msgstr ""
+
+msgid "Internal Phone"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
+msgid "Mobile Phone"
+msgstr ""
+
+msgid "Account Information"
+msgstr ""
+
+msgid "Member Since"
+msgstr ""
+
+msgid "Timezone"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Browser default"
+msgstr ""
+
+msgid "e.g. 1234"
+msgstr ""
+
+msgid "e.g. +30 69X XXX XXXX"
+msgstr ""
+
+msgid "Upload Profile Image"
+msgstr ""
+
+msgid "Upload from disk. Allowed: PNG, JPG, GIF, WebP, SVG."
+msgstr ""
+
+msgid "Profile Image URL"
+msgstr ""
+
+msgid "https://example.com/avatar.jpg or leave blank for Gravatar"
+msgstr ""
+
+msgid "Leave empty to use Gravatar based on your email."
+msgstr ""
+
+msgid "Set up Gravatar"
+msgstr ""
+
+msgid "Administrator Preferences"
+msgstr ""
+
+msgid "Default Language"
+msgstr ""
+
+msgid "Enforce language for all users"
+msgstr ""
+
+msgid "When enabled, all users will use this language and cannot change it."
+msgstr ""
+
+msgid "Enforce timezone for all users"
+msgstr ""
+
+msgid "When enabled, all users will use this timezone."
+msgstr ""
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "Last changed"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Disable MFA?"
+msgstr ""
+
+msgid "Enable 2FA"
+msgstr ""
+
+msgid "Sessions"
+msgstr ""
+
+msgid "Manage your active login sessions."
+msgstr ""
+
+msgid "View Sessions"
+msgstr ""
+
+msgid "No assets are currently checked out to you."
+msgstr ""
+
+msgid "Your Preferences"
+msgstr ""
+
+msgid "Current Session"
+msgstr ""
+
+msgid "System-Wide Settings"
+msgstr ""
+
+msgid "Forced Language"
+msgstr ""
+
+msgid "Not enforced"
+msgstr ""
+
+msgid "Forced Timezone"
+msgstr ""
+
+msgid "Set enforced values in the Edit Profile tab. When enforced, all users must use the selected language/timezone."
+msgstr ""
+
+msgid "My Sessions"
+msgstr ""
+
+msgid "Terminate all other sessions?"
+msgstr ""
+
+msgid "Kill Other Sessions"
+msgstr ""
+
+msgid "Current"
+msgstr ""
+
+msgid "Sessions are created when you log in and destroyed when you log out."
+msgstr ""
+
+msgid "Setup Two-Factor Authentication"
+msgstr ""
+
+msgid "Scan with Authenticator App"
+msgstr ""
+
+msgid "Use Google Authenticator, Microsoft Authenticator, or Authy to scan the QR code below."
+msgstr ""
+
+msgid "Or enter this key manually:"
+msgstr ""
+
+msgid "Verify Setup"
+msgstr ""
+
+msgid "Business Impact Analysis (BIA) Records"
+msgstr ""
+
+msgid "Impact Assessment"
+msgstr ""
+
+msgid "Recovery Requirements"
+msgstr ""
+
+msgid "Business Impact Analysis (BIA)"
+msgstr ""
+
+msgid "All Criticalities"
+msgstr ""
+
+msgid "Search processes..."
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "Process"
+msgstr ""
+
+msgid "RTO (Recovery Time Objective)"
+msgstr ""
+
+msgid "RPO (Recovery Point Objective)"
+msgstr ""
+
+msgid "Review"
+msgstr ""
+
+msgid "No Business Impact Analysis (BIA) records yet."
+msgstr ""
+
+msgid "Create Plan"
+msgstr ""
+
+msgid "Process Details"
+msgstr ""
+
+msgid "Recovery Objectives"
+msgstr ""
+
+msgid "MTPD (Maximum Tolerable Period of Disruption)"
+msgstr ""
+
+msgid "Next Review Date"
+msgstr ""
+
+msgid "Dependencies"
+msgstr ""
+
+msgid "Financial Impact"
+msgstr ""
+
+msgid "Operational Impact"
+msgstr ""
+
+msgid "Legal / Regulatory Impact"
+msgstr ""
+
+msgid "Reputation Impact"
+msgstr ""
+
+msgid "Minimum Resources"
+msgstr ""
+
+msgid "Manual Workaround"
+msgstr ""
+
+msgid "Tabletop"
+msgstr ""
+
+msgid "Walkthrough"
+msgstr ""
+
+msgid "Technical Recovery"
+msgstr ""
+
+msgid "Full Interruption"
+msgstr ""
+
+msgid "Disaster Recovery Plan (DRP) Test"
+msgstr ""
+
+msgid "Passed"
+msgstr ""
+
+msgid "Partially Passed"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "View Business Impact Analysis (BIA)"
+msgstr ""
+
+msgid "Active Plans"
+msgstr ""
+
+msgid "View plans"
+msgstr ""
+
+msgid "Tests Due"
+msgstr ""
+
+msgid "View tests"
+msgstr ""
+
+msgid "Open Actions"
+msgstr ""
+
+msgid "Review actions"
+msgstr ""
+
+msgid "Business Continuity Lifecycle"
+msgstr ""
+
+msgid "New Plan"
+msgstr ""
+
+msgid "Schedule Disaster Recovery Plan (DRP) Test"
+msgstr ""
+
+msgid "PDF Report"
+msgstr ""
+
+msgid "Recent Tests"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+msgid "Outcome"
+msgstr ""
+
+msgid "Performed"
+msgstr ""
+
+msgid "No Disaster Recovery Plan (DRP) tests recorded."
+msgstr ""
+
+msgid "Disaster Recovery"
+msgstr ""
+
+msgid "Crisis Management"
+msgstr ""
+
+msgid "Combined"
+msgstr ""
+
+msgid "All Stages"
+msgstr ""
+
+msgid "Search plans..."
+msgstr ""
+
+msgid "No continuity plans yet."
+msgstr ""
+
+msgid "Continuity Plan"
+msgstr ""
+
+msgid "Schedule Test"
+msgstr ""
+
+msgid "Plan Details"
+msgstr ""
+
+msgid "Linked Business Impact Analysis (BIA)"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "Responsible Team"
+msgstr ""
+
+msgid "Review Date"
+msgstr ""
+
+msgid "Next Test Date"
+msgstr ""
+
+msgid "Lifecycle Content"
+msgstr ""
+
+msgid "Objectives"
+msgstr ""
+
+msgid "Activation Criteria"
+msgstr ""
+
+msgid "Critical Processes"
+msgstr ""
+
+msgid "Recovery Strategy"
+msgstr ""
+
+msgid "Communication Plan"
+msgstr ""
+
+msgid "Disaster Recovery Plan (DRP) Tests"
+msgstr ""
+
+msgid "No tests recorded."
+msgstr ""
+
+msgid "Improvement Actions"
+msgstr ""
+
+msgid "Action Description"
+msgstr ""
+
+msgid "Add Action"
+msgstr ""
+
+msgid "Due"
+msgstr ""
+
+msgid "Complete"
+msgstr ""
+
+msgid "No improvement actions yet."
+msgstr ""
+
+msgid "All Outcomes"
+msgstr ""
+
+msgid "All Test Types"
+msgstr ""
+
+msgid "New Test"
+msgstr ""
+
+msgid "Scheduled"
+msgstr ""
+
+msgid "Test Details"
+msgstr ""
+
+msgid "Test Type"
+msgstr ""
+
+msgid "Facilitator"
+msgstr ""
+
+msgid "Evidence Reference"
+msgstr ""
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Scheduled Date"
+msgstr ""
+
+msgid "Performed Date"
+msgstr ""
+
+msgid "RTO (Recovery Time Objective) Met"
+msgstr ""
+
+msgid "RPO (Recovery Point Objective) Met"
+msgstr ""
+
+msgid "Execution"
+msgstr ""
+
+msgid "Participants"
+msgstr ""
+
+msgid "Scenario"
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Issues Found"
+msgstr ""
+
+msgid "Corrective and Preventive Action (CAPA)"
+msgstr ""
+
+msgid "Root Cause Analysis"
+msgstr ""
+
+msgid "Corrective Action Plan"
+msgstr ""
+
+msgid "Effectiveness Verification"
+msgstr ""
+
+msgid "Under Review"
+msgstr ""
+
+msgid "Action Planned"
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "All Sources"
+msgstr ""
+
+msgid "Incident"
+msgstr ""
+
+msgid "Complaint"
+msgstr ""
+
+msgid "Supplier"
+msgstr ""
+
+msgid "Regulatory"
+msgstr ""
+
+#, python-format
+msgid "%(count)s open"
+msgstr ""
+
+#, python-format
+msgid "%(count)s critical"
+msgstr ""
+
+msgid "New Corrective and Preventive Action (CAPA)"
+msgstr ""
+
+msgid "Delete this Corrective and Preventive Action (CAPA)?"
+msgstr ""
+
+msgid "No Corrective and Preventive Action (CAPA) requests yet."
+msgstr ""
+
+msgid "Create your first Corrective and Preventive Action (CAPA)"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Ref"
+msgstr ""
+
+msgid "Created By"
+msgstr ""
+
+msgid "Effectiveness Review"
+msgstr ""
+
+msgid "Closure Notes"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Edit Corrective and Preventive Action (CAPA)"
+msgstr ""
+
+msgid "Mark as"
+msgstr ""
+
+msgid "Submit for Approval"
+msgstr ""
+
+msgid "Pending approval by"
+msgstr ""
+
+msgid "Progress"
+msgstr ""
+
+msgid "Age"
+msgstr ""
+
+msgid "Remaining"
+msgstr ""
+
+msgid "Root Cause"
+msgstr ""
+
+msgid "ISO Clauses 4–10"
+msgstr ""
+
+msgid "Clauses"
+msgstr ""
+
+msgid "Clause"
+msgstr ""
+
+msgid "Learn more"
+msgstr ""
+
+msgid "Implementation Notes"
+msgstr ""
+
+msgid "No implementation notes yet."
+msgstr ""
+
+msgid "Clause Number"
+msgstr ""
+
+msgid "Mandatory"
+msgstr ""
+
+msgid "Order"
+msgstr ""
+
+msgid "Back to Clauses"
+msgstr ""
+
+msgid "Controls"
+msgstr ""
+
+msgid "Code cannot be changed after creation."
+msgstr ""
+
+msgid "Description (Greek)"
+msgstr ""
+
+msgid "Detailed Description"
+msgstr ""
+
+msgid "Detailed Description (Greek)"
+msgstr ""
+
+msgid "Guidance"
+msgstr ""
+
+msgid "Implementation Status"
+msgstr ""
+
+msgid "Evidence Notes"
+msgstr ""
+
+msgid "All Domains"
+msgstr ""
+
+msgid "Not Started"
+msgstr ""
+
+msgid "Implemented"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "Search controls..."
+msgstr ""
+
+msgid "SoA"
+msgstr ""
+
+msgid "implemented"
+msgstr ""
+
+msgid "Target"
+msgstr ""
+
+msgid "Delete this control?"
+msgstr ""
+
+msgid "Control Details"
+msgstr ""
+
+msgid "2022 Update"
+msgstr ""
+
+msgid "New control in 2022"
+msgstr ""
+
+msgid "Carried forward"
+msgstr ""
+
+msgid "Quick Status Update"
+msgstr ""
+
+msgid "Not Applicable"
+msgstr ""
+
+msgid "Update Status"
+msgstr ""
+
+msgid "No evidence notes recorded."
+msgstr ""
+
+msgid "ISO-27001 · NIS2 · GDPR Dashboard"
+msgstr ""
+
+msgid "Consolidated view of ISMS, NIS2 compliance, and privacy posture"
+msgstr ""
+
+msgid "ISO-27001 ISMS"
+msgstr ""
+
+msgid "View all controls"
+msgstr ""
+
+msgid "Risks"
+msgstr ""
+
+msgid "critical"
+msgstr ""
+
+msgid "high"
+msgstr ""
+
+msgid "total risks"
+msgstr ""
+
+msgid "Manage risks"
+msgstr ""
+
+msgid "open"
+msgstr ""
+
+msgid "total incidents"
+msgstr ""
+
+msgid "View incidents"
+msgstr ""
+
+msgid "open NCs"
+msgstr ""
+
+msgid "policies need review"
+msgstr ""
+
+msgid "View Corrective and Preventive Action (CAPA)"
+msgstr ""
+
+msgid "Training"
+msgstr ""
+
+msgid "completed"
+msgstr ""
+
+msgid "courses"
+msgstr ""
+
+msgid "upcoming"
+msgstr ""
+
+msgid "View training"
+msgstr ""
+
+msgid "scheduled"
+msgstr ""
+
+msgid "overdue"
+msgstr ""
+
+msgid "open actions"
+msgstr ""
+
+msgid "View reviews"
+msgstr ""
+
+msgid "active plans"
+msgstr ""
+
+msgid "Business Impact Analysis (BIA) records"
+msgstr ""
+
+msgid "tests due"
+msgstr ""
+
+msgid "View continuity"
+msgstr ""
+
+msgid "NIS2 Compliance"
+msgstr ""
+
+msgid "Compliance"
+msgstr ""
+
+msgid "View compliance"
+msgstr ""
+
+msgid "pending"
+msgstr ""
+
+msgid "Incident notifications requiring action"
+msgstr ""
+
+msgid "View notifications"
+msgstr ""
+
+msgid "Continuity"
+msgstr ""
+
+msgid "Business continuity & DR plans"
+msgstr ""
+
+msgid "critical risk"
+msgstr ""
+
+msgid "Suppliers with critical NIS2 risk"
+msgstr ""
+
+msgid "View supply chain"
+msgstr ""
+
+msgid "GDPR Compliance"
+msgstr ""
+
+msgid "approved"
+msgstr ""
+
+msgid "Open DSARs"
+msgstr ""
+
+msgid "All on track"
+msgstr ""
+
+msgid "Consent Records"
+msgstr ""
+
+msgid "active consents"
+msgstr ""
+
+msgid "Controls Implementation Status"
+msgstr ""
+
+msgid "Recent Incidents"
+msgstr ""
+
+msgid "No incidents reported"
+msgstr ""
+
+msgid "Quick Actions"
+msgstr ""
+
+msgid "ISO-27001"
+msgstr ""
+
+msgid "Browse Annex A Controls"
+msgstr ""
+
+msgid "Schedule Internal Audit"
+msgstr ""
+
+msgid "View SoA Summary"
+msgstr ""
+
+msgid "NIS2"
+msgstr ""
+
+msgid "Report NIS2 Incident"
+msgstr ""
+
+msgid "Add Compliance Check"
+msgstr ""
+
+msgid "GDPR"
+msgstr ""
+
+msgid "ISMS Health"
+msgstr ""
+
+msgid "Controls Implemented"
+msgstr ""
+
+msgid "Policies Up to Date"
+msgstr ""
+
+msgid "Data Breaches"
+msgstr ""
+
+msgid "Breaches Notified to SA"
+msgstr ""
+
+msgid "Suppliers / Vendors"
+msgstr ""
+
+msgid "High / Critical Supplier Risk"
+msgstr ""
+
+msgid "Overdue Supplier Reviews"
+msgstr ""
+
+msgid "View Request"
+msgstr ""
+
+msgid "ISMS Manager - ISO 27001, NIS2, GDPR Compliance"
+msgstr ""
+
+msgid "View Details"
+msgstr ""
+
+msgid "You have sent too many requests in a short period. Please wait a moment and try again."
+msgstr ""
+
+msgid "Back to Login"
+msgstr ""
+
+msgid "All Years"
+msgstr ""
+
+msgid "All Users"
+msgstr ""
+
+msgid "Search by title, description or filename..."
+msgstr ""
+
+msgid "Upload Form"
+msgstr ""
+
+msgid "Checked-out Assets"
+msgstr ""
+
+msgid "Delete this form?"
+msgstr ""
+
+msgid "No filled-out forms yet."
+msgstr ""
+
+msgid "Upload your first"
+msgstr ""
+
+msgid "Upload Filled-out Form"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Concerns User"
+msgstr ""
+
+msgid "Select user..."
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Allowed: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, TXT, RTF, CSV, PNG, JPG, GIF, SVG"
+msgstr ""
+
+msgid "GDPR Compliance Dashboard"
+msgstr ""
+
+msgid "Active Consents"
+msgstr ""
+
+msgid "Total breaches"
+msgstr ""
+
+msgid "Notified SA"
+msgstr ""
+
+msgid "DSAR Deadlines"
+msgstr ""
+
+msgid "Overdue data subject requests"
+msgstr ""
+
+msgid "No overdue DSARs"
+msgstr ""
+
+msgid "Quick Links"
+msgstr ""
+
+msgid "Controllers / Processors"
+msgstr ""
+
+msgid "Incidents & Breaches"
+msgstr ""
+
+msgid "Data Breach Notification"
+msgstr ""
+
+msgid "Breach Notification"
+msgstr ""
+
+msgid "Data Breach Notification Details"
+msgstr ""
+
+msgid "Breach Type"
+msgstr ""
+
+msgid "Personal Data Breach"
+msgstr ""
+
+msgid "Notification to Supervisory Authority (Art 33)"
+msgstr ""
+
+msgid "Notified Supervisory Authority"
+msgstr ""
+
+msgid "SA Notification Date"
+msgstr ""
+
+msgid "SA Reference Number"
+msgstr ""
+
+msgid "Notification to Data Subjects (Art 34)"
+msgstr ""
+
+msgid "Notified Data Subjects"
+msgstr ""
+
+msgid "DS Notification Date"
+msgstr ""
+
+msgid "Data Subjects Affected"
+msgstr ""
+
+msgid "Personal Data Records Affected"
+msgstr ""
+
+msgid "Likelihood & Severity of Risk to Rights"
+msgstr ""
+
+msgid "Mitigation Measures Taken"
+msgstr ""
+
+msgid "Notification Delay"
+msgstr ""
+
+msgid "Reason for Delay (if > 72 hours)"
+msgstr ""
+
+msgid "Delay Justified (Art 33(3))"
+msgstr ""
+
+msgid "Save Breach Details"
+msgstr ""
+
+msgid "Data Subject Identifier"
+msgstr ""
+
+msgid "Data Subject Email"
+msgstr ""
+
+msgid "Processing Purpose"
+msgstr ""
+
+msgid "Consent Source"
+msgstr ""
+
+msgid "Consent Version"
+msgstr ""
+
+msgid "Consent Granted"
+msgstr ""
+
+msgid "Proof of Consent"
+msgstr ""
+
+msgid "Withdrawn"
+msgstr ""
+
+msgid "Search by identifier or purpose..."
+msgstr ""
+
+msgid "New Record"
+msgstr ""
+
+msgid "Data Subject"
+msgstr ""
+
+msgid "Given"
+msgstr ""
+
+msgid "Revoked"
+msgstr ""
+
+msgid "Withdraw this consent?"
+msgstr ""
+
+msgid "Delete this consent?"
+msgstr ""
+
+msgid "No consent records yet."
+msgstr ""
+
+msgid "Entity Name"
+msgstr ""
+
+msgid "Contact Person"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "Registration / ID Number"
+msgstr ""
+
+msgid "EU Representative (Art 27)"
+msgstr ""
+
+msgid "Representative Name"
+msgstr ""
+
+msgid "Representative Contact"
+msgstr ""
+
+msgid "Data Protection Officer"
+msgstr ""
+
+msgid "DPO Name"
+msgstr ""
+
+msgid "DPO Email"
+msgstr ""
+
+msgid "Data Controllers & Processors"
+msgstr ""
+
+msgid "All Roles"
+msgstr ""
+
+msgid "Processors"
+msgstr ""
+
+msgid "Joint Controllers"
+msgstr ""
+
+msgid "Search by name..."
+msgstr ""
+
+msgid "New Entity"
+msgstr ""
+
+msgid "DPO"
+msgstr ""
+
+msgid "Delete this entity?"
+msgstr ""
+
+msgid "No controllers or processors registered."
+msgstr ""
+
+msgid "Register entity"
+msgstr ""
+
+msgid "Entity Details"
+msgstr ""
+
+msgid "Registration Number"
+msgstr ""
+
+msgid "Governance"
+msgstr ""
+
+msgid "EU Representative"
+msgstr ""
+
+msgid "Metadata"
+msgstr ""
+
+msgid "Project / System Name"
+msgstr ""
+
+msgid "Project Description"
+msgstr ""
+
+msgid "Processing Description"
+msgstr ""
+
+msgid "Necessity & Proportionality"
+msgstr ""
+
+msgid "Necessity Assessment"
+msgstr ""
+
+msgid "Proportionality Assessment"
+msgstr ""
+
+msgid "Data Categories"
+msgstr ""
+
+msgid "Data Subject Categories"
+msgstr ""
+
+msgid "Personal Data Categories"
+msgstr ""
+
+msgid "Special Category Data"
+msgstr ""
+
+msgid "Risk Assessment"
+msgstr ""
+
+msgid "Risks to Rights & Freedoms"
+msgstr ""
+
+msgid "Residual Risk Level"
+msgstr ""
+
+msgid "Mitigation Measures"
+msgstr ""
+
+msgid "DPO Review"
+msgstr ""
+
+msgid "DPO Review / Comments"
+msgstr ""
+
+msgid "Data Protection Impact Assessments (DPIA)"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Reviewed"
+msgstr ""
+
+msgid "Residual risk"
+msgstr ""
+
+msgid "Delete this DPIA?"
+msgstr ""
+
+msgid "No DPIAs yet."
+msgstr ""
+
+msgid "Create DPIA"
+msgstr ""
+
+msgid "DPIA Details"
+msgstr ""
+
+msgid "Project Name"
+msgstr ""
+
+msgid "Project & Processing"
+msgstr ""
+
+msgid "Data Subjects"
+msgstr ""
+
+msgid "Personal Data"
+msgstr ""
+
+msgid "Special Category"
+msgstr ""
+
+msgid "by"
+msgstr ""
+
+msgid "Created by"
+msgstr ""
+
+msgid "Request Type"
+msgstr ""
+
+msgid "Requester Name"
+msgstr ""
+
+msgid "Requester Email"
+msgstr ""
+
+msgid "Requester Phone"
+msgstr ""
+
+msgid "Identity Verified"
+msgstr ""
+
+msgid "Request Details"
+msgstr ""
+
+msgid "Response"
+msgstr ""
+
+msgid "Extension Granted"
+msgstr ""
+
+msgid "Extend by 2 months"
+msgstr ""
+
+msgid "Extension Deadline"
+msgstr ""
+
+msgid "Response Summary"
+msgstr ""
+
+msgid "Denial Reason"
+msgstr ""
+
+msgid "Extension Reason"
+msgstr ""
+
+msgid "Internal Notes"
+msgstr ""
+
+msgid "Data Subject Access Requests (DSAR)"
+msgstr ""
+
+msgid "Awaiting Info"
+msgstr ""
+
+msgid "Access"
+msgstr ""
+
+msgid "Rectification"
+msgstr ""
+
+msgid "Erasure"
+msgstr ""
+
+msgid "Portability"
+msgstr ""
+
+msgid "Restriction"
+msgstr ""
+
+msgid "Objection"
+msgstr ""
+
+msgid "Search by name or email..."
+msgstr ""
+
+msgid "Received"
+msgstr ""
+
+msgid "Deadline"
+msgstr ""
+
+msgid "OVERDUE"
+msgstr ""
+
+msgid "Delete this request?"
+msgstr ""
+
+msgid "No data subject requests yet."
+msgstr ""
+
+msgid "DSAR"
+msgstr ""
+
+msgid "Extended to"
+msgstr ""
+
+msgid "Responded"
+msgstr ""
+
+msgid "Extension"
+msgstr ""
+
+msgid "Assigned to"
+msgstr ""
+
+msgid "Notice Title"
+msgstr ""
+
+msgid "Effective Date"
+msgstr ""
+
+msgid "Notice Content"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+msgid "Retired"
+msgstr ""
+
+msgid "New Notice"
+msgstr ""
+
+msgid "v"
+msgstr ""
+
+msgid "Delete this notice?"
+msgstr ""
+
+msgid "No privacy notices yet."
+msgstr ""
+
+msgid "Create your first notice"
+msgstr ""
+
+msgid "Notice"
+msgstr ""
+
+msgid "Effective"
+msgstr ""
+
+msgid "Activity & Controller"
+msgstr ""
+
+msgid "Processing Activity Name"
+msgstr ""
+
+msgid "Data Controller Name"
+msgstr ""
+
+msgid "Controller Contact"
+msgstr ""
+
+msgid "Controller Email"
+msgstr ""
+
+msgid "DPO Contact"
+msgstr ""
+
+msgid "Processing Details"
+msgstr ""
+
+msgid "Legal Basis"
+msgstr ""
+
+msgid "Legal Basis Details"
+msgstr ""
+
+msgid "Special Category Data (Art 9)"
+msgstr ""
+
+msgid "Criminal Conviction Data (Art 10)"
+msgstr ""
+
+msgid "Special Category Details"
+msgstr ""
+
+msgid "Recipients & Retention"
+msgstr ""
+
+msgid "Categories of Recipients"
+msgstr ""
+
+msgid "Data Retention / Erasure Schedule"
+msgstr ""
+
+msgid "Technical & Organisational Measures"
+msgstr ""
+
+msgid "Cross-border Transfers"
+msgstr ""
+
+msgid "Cross-border Transfer (outside EU/EEA)"
+msgstr ""
+
+msgid "Third Countries"
+msgstr ""
+
+msgid "Safeguards (SCCs, BCRs, etc.)"
+msgstr ""
+
+msgid "Processing Activities (ROPA)"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Search activities..."
+msgstr ""
+
+msgid "New Activity"
+msgstr ""
+
+msgid "Controller"
+msgstr ""
+
+msgid "Cross-border transfer"
+msgstr ""
+
+msgid "Special category"
+msgstr ""
+
+msgid "Delete this activity?"
+msgstr ""
+
+msgid "No processing activities recorded."
+msgstr ""
+
+msgid "Record your first activity"
+msgstr ""
+
+msgid "Activity Details"
+msgstr ""
+
+msgid "Processing Information"
+msgstr ""
+
+msgid "Criminal Data"
+msgstr ""
+
+msgid "Controller & Governance"
+msgstr ""
+
+msgid "Additional Information"
+msgstr ""
+
+msgid "Recipients"
+msgstr ""
+
+msgid "Retention / Erasure"
+msgstr ""
+
+msgid "Tech & Org Measures"
+msgstr ""
+
+msgid "Not specified"
+msgstr ""
+
+msgid "Safeguards"
+msgstr ""
+
+msgid "Description / Details"
+msgstr ""
+
+msgid "Attachment (optional)"
+msgstr ""
+
+msgid "Drag & drop a file here or click to browse"
+msgstr ""
+
+msgid "Allowed: PDF, DOC, DOCX, XLS, XLSX, PPT, TXT, CSV, images"
+msgstr ""
+
+msgid "File selected"
+msgstr ""
+
+msgid "Create Your First Request"
+msgstr ""
+
+msgid "Pending Approval"
+msgstr ""
+
+msgid "Rejection Reason"
+msgstr ""
+
+msgid "Approved by"
+msgstr ""
+
+msgid "Rejected by"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "Submitted"
+msgstr ""
+
+msgid "Attachment"
+msgstr ""
+
+msgid "Back to My Requests"
+msgstr ""
+
+msgid "Cancel Request"
+msgstr ""
+
+msgid "Assign To"
+msgstr ""
+
+msgid "Impact Description"
+msgstr ""
+
+msgid "Lessons Learned"
+msgstr ""
+
+msgid "All Severities"
+msgstr ""
+
+msgid "Low"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "High"
+msgstr ""
+
+msgid "Critical"
+msgstr ""
+
+msgid "Investigating"
+msgstr ""
+
+msgid "Contained"
+msgstr ""
+
+msgid "Search incidents..."
+msgstr ""
+
+msgid "Reported By"
+msgstr ""
+
+msgid "Delete this incident?"
+msgstr ""
+
+msgid "Incident Details"
+msgstr ""
+
+msgid "Detected At"
+msgstr ""
+
+msgid "Contained At"
+msgstr ""
+
+msgid "Resolved At"
+msgstr ""
+
+msgid "Data Breach"
+msgstr ""
+
+msgid "SA Notification"
+msgstr ""
+
+msgid "Notified DS"
+msgstr ""
+
+msgid "DS Notification"
+msgstr ""
+
+msgid "Subjects Affected"
+msgstr ""
+
+msgid "Records Affected"
+msgstr ""
+
+msgid "Timeline"
+msgstr ""
+
+msgid "Reported:"
+msgstr ""
+
+msgid "Contained:"
+msgstr ""
+
+msgid "Resolved:"
+msgstr ""
+
+msgid "Updated:"
+msgstr ""
+
+msgid "Metrics & KPIs Dashboard"
+msgstr ""
+
+msgid "Recalculate All"
+msgstr ""
+
+msgid "Computes all KPIs with formulas from live database data"
+msgstr ""
+
+msgid "Trend"
+msgstr ""
+
+msgid "No measurements yet."
+msgstr ""
+
+msgid "Auto-calculate from live data"
+msgstr ""
+
+msgid "Calculate"
+msgstr ""
+
+msgid "Record Measurement"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "No KPIs configured."
+msgstr ""
+
+#, python-format
+msgid "%(count)s overdue"
+msgstr ""
+
+msgid "Schedule Review"
+msgstr ""
+
+msgid "Delete this review?"
+msgstr ""
+
+msgid "No management reviews scheduled yet."
+msgstr ""
+
+msgid "Schedule your first review"
+msgstr ""
+
+msgid "Conducted By"
+msgstr ""
+
+msgid "Next Review"
+msgstr ""
+
+msgid "Attendees"
+msgstr ""
+
+msgid "Agenda"
+msgstr ""
+
+msgid "Minutes / Notes"
+msgstr ""
+
+msgid "Recommendations"
+msgstr ""
+
+msgid "Action Items"
+msgstr ""
+
+msgid "Delete this action?"
+msgstr ""
+
+msgid "No action items yet."
+msgstr ""
+
+msgid "Add Action Item"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Total Actions"
+msgstr ""
+
+msgid "complete"
+msgstr ""
+
+msgid "ISO 27001 Reference"
+msgstr ""
+
+msgid "Clause 9.3"
+msgstr ""
+
+msgid "Management Review"
+msgstr ""
+
+msgid "Top management shall review the ISMS at planned intervals to ensure its continuing suitability, adequacy, effectiveness and alignment with strategic direction."
+msgstr ""
+
+msgid "Edit Action Item"
+msgstr ""
+
+msgid "Completed Date"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "NIS2 Compliance Checks"
+msgstr ""
+
+msgid "All Measures"
+msgstr ""
+
+msgid "Risk Analysis & IS Policies"
+msgstr ""
+
+msgid "Incident Handling"
+msgstr ""
+
+msgid "Supply Chain Security"
+msgstr ""
+
+msgid "Network & Information Security"
+msgstr ""
+
+msgid "Access Control"
+msgstr ""
+
+msgid "Cryptography"
+msgstr ""
+
+msgid "HR Security"
+msgstr ""
+
+msgid "Multi-Factor Authentication"
+msgstr ""
+
+msgid "Security Training"
+msgstr ""
+
+msgid "Review Required"
+msgstr ""
+
+msgid "New Check"
+msgstr ""
+
+msgid "Measure"
+msgstr ""
+
+msgid "Article"
+msgstr ""
+
+msgid "Completion Date"
+msgstr ""
+
+msgid "Responsible"
+msgstr ""
+
+msgid "Delete this check?"
+msgstr ""
+
+msgid "No compliance checks defined."
+msgstr ""
+
+msgid "Compliance Check"
+msgstr ""
+
+msgid "Measure Info"
+msgstr ""
+
+msgid "Article Reference"
+msgstr ""
+
+msgid "Control References"
+msgstr ""
+
+msgid "Dates"
+msgstr ""
+
+msgid "Responsible Person"
+msgstr ""
+
+msgid "Implementation Details"
+msgstr ""
+
+msgid "Testing & Maintenance"
+msgstr ""
+
+msgid "NIS2 Continuity Plans"
+msgstr ""
+
+msgid "Last Test"
+msgstr ""
+
+msgid "Delete this plan?"
+msgstr ""
+
+msgid "Plan Type"
+msgstr ""
+
+msgid "Testing Frequency"
+msgstr ""
+
+msgid "Testing Status"
+msgstr ""
+
+msgid "Last Test Date"
+msgstr ""
+
+msgid "Critical Services"
+msgstr ""
+
+msgid "Maintenance Schedule"
+msgstr ""
+
+msgid "Full Description"
+msgstr ""
+
+msgid "Recovery Procedures"
+msgstr ""
+
+msgid "Last Test Result"
+msgstr ""
+
+msgid "NIS2 Compliance Dashboard"
+msgstr ""
+
+msgid "Export PDF Report"
+msgstr ""
+
+msgid "Compliance Measures"
+msgstr ""
+
+msgid "Pending Notifications"
+msgstr ""
+
+msgid "Active Continuity Plans"
+msgstr ""
+
+msgid "Critical Supply Chain"
+msgstr ""
+
+msgid "Entity Registration"
+msgstr ""
+
+msgid "Register"
+msgstr ""
+
+msgid "Sector"
+msgstr ""
+
+msgid "Entity Type"
+msgstr ""
+
+msgid "No entity registered yet. Click Register to add your NIS2 entity details."
+msgstr ""
+
+msgid "Supply Chain Reviews"
+msgstr ""
+
+msgid "Total Assessments"
+msgstr ""
+
+msgid "Critical Risk"
+msgstr ""
+
+msgid "Overdue Reviews"
+msgstr ""
+
+msgid "Compliance Status"
+msgstr ""
+
+msgid "All Compliance Checks"
+msgstr ""
+
+msgid "Add Check"
+msgstr ""
+
+msgid "Recent Notifications"
+msgstr ""
+
+msgid "CSIRT Ref"
+msgstr ""
+
+msgid "No notifications yet."
+msgstr ""
+
+msgid "All Notifications"
+msgstr ""
+
+msgid "New Notification"
+msgstr ""
+
+msgid "NIS2 Entity Registration"
+msgstr ""
+
+msgid "Entity Registration Details"
+msgstr ""
+
+msgid "CSIRT Contact"
+msgstr ""
+
+msgid "Organisation Details"
+msgstr ""
+
+msgid "Early Warning"
+msgstr ""
+
+msgid "24 hours"
+msgstr ""
+
+msgid "Notification"
+msgstr ""
+
+msgid "72 hours"
+msgstr ""
+
+msgid "Final Report"
+msgstr ""
+
+msgid "1 month"
+msgstr ""
+
+msgid "CSIRT Information"
+msgstr ""
+
+msgid "NIS2 Incident Notification"
+msgstr ""
+
+msgid "Delete this notification?"
+msgstr ""
+
+msgid "Incident Information"
+msgstr ""
+
+msgid "Related Incident"
+msgstr ""
+
+msgid "CSIRT Reference"
+msgstr ""
+
+msgid "CSIRT Name"
+msgstr ""
+
+msgid "Reportable Criteria"
+msgstr ""
+
+msgid "Service Disruption"
+msgstr ""
+
+msgid "Data Impact"
+msgstr ""
+
+msgid "Financial Loss"
+msgstr ""
+
+msgid "Affected Users"
+msgstr ""
+
+msgid "Notification Timeline"
+msgstr ""
+
+msgid "Early Warning Details"
+msgstr ""
+
+msgid "Notification Details"
+msgstr ""
+
+msgid "Final Report Details"
+msgstr ""
+
+msgid "NIS2 Incident Notifications"
+msgstr ""
+
+msgid "Early Warning Due"
+msgstr ""
+
+msgid "Early Warning Submitted"
+msgstr ""
+
+msgid "Notification Due"
+msgstr ""
+
+msgid "Notification Submitted"
+msgstr ""
+
+msgid "Final Report Due"
+msgstr ""
+
+msgid "Final Report Submitted"
+msgstr ""
+
+msgid "72h Notification"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "No NIS2 incident notifications yet."
+msgstr ""
+
+msgid "Assessment Dates"
+msgstr ""
+
+msgid "Contractual Safeguards"
+msgstr ""
+
+msgid "Subcontractors"
+msgstr ""
+
+msgid "NIS2 Supply Chain Assessments"
+msgstr ""
+
+msgid "All Risk Levels"
+msgstr ""
+
+msgid "Assessed"
+msgstr ""
+
+msgid "Search suppliers..."
+msgstr ""
+
+msgid "New Assessment"
+msgstr ""
+
+msgid "ICT Service"
+msgstr ""
+
+msgid "Tier"
+msgstr ""
+
+msgid "Last Assessment"
+msgstr ""
+
+msgid "Next Assessment"
+msgstr ""
+
+msgid "Delete this assessment?"
+msgstr ""
+
+msgid "No supply chain assessments yet."
+msgstr ""
+
+msgid "Supply Chain Assessment"
+msgstr ""
+
+msgid "Service Details"
+msgstr ""
+
+msgid "Related Supplier"
+msgstr ""
+
+msgid "ICT Service Type"
+msgstr ""
+
+msgid "Service Criticality"
+msgstr ""
+
+msgid "Dependency Tier"
+msgstr ""
+
+msgid "In NIS2 Scope"
+msgstr ""
+
+msgid "Security Certifications"
+msgstr ""
+
+msgid "Assessment Info"
+msgstr ""
+
+msgid "SLA in Place"
+msgstr ""
+
+msgid "Incident Reporting Defined"
+msgstr ""
+
+msgid "Right to Audit"
+msgstr ""
+
+msgid "DPA in Place"
+msgstr ""
+
+msgid "Termination Notice"
+msgstr ""
+
+msgid "Subcontractors Known"
+msgstr ""
+
+msgid "Detailed Findings"
+msgstr ""
+
+msgid "Assessment Findings"
+msgstr ""
+
+msgid "Mitigation Actions"
+msgstr ""
+
+msgid "Mark All Read"
+msgstr ""
+
+msgid "Mark as read"
+msgstr ""
+
+msgid "This is an uploaded document (PDF, Word, Excel, etc.)"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Upload File"
+msgstr ""
+
+msgid "Current file"
+msgstr ""
+
+msgid "Policies"
+msgstr ""
+
+msgid "Documents"
+msgstr ""
+
+msgid "All Categories"
+msgstr ""
+
+msgid "Information Security"
+msgstr ""
+
+msgid "Incident Response"
+msgstr ""
+
+msgid "Data Protection"
+msgstr ""
+
+msgid "Physical Security"
+msgstr ""
+
+msgid "Supplier Security"
+msgstr ""
+
+msgid "Forms"
+msgstr ""
+
+msgid "Document"
+msgstr ""
+
+msgid "Delete this policy?"
+msgstr ""
+
+msgid "No policies or documents yet."
+msgstr ""
+
+msgid "Create your first"
+msgstr ""
+
+msgid "New Version"
+msgstr ""
+
+msgid "Current version:"
+msgstr ""
+
+msgid "Next:"
+msgstr ""
+
+msgid "Change Summary"
+msgstr ""
+
+msgid "Brief description of changes..."
+msgstr ""
+
+msgid "Upload New File"
+msgstr ""
+
+msgid "Updated Content"
+msgstr ""
+
+msgid "Create Version"
+msgstr ""
+
+msgid "Document Content"
+msgstr ""
+
+msgid "Policy Content"
+msgstr ""
+
+msgid "Download File"
+msgstr ""
+
+msgid "No content yet."
+msgstr ""
+
+msgid "Policy"
+msgstr ""
+
+msgid "Version History"
+msgstr ""
+
+msgid "No version history"
+msgstr ""
+
+msgid "File Preview"
+msgstr ""
+
+msgid "Preview not available for this file type."
+msgstr ""
+
+msgid "Download to view"
+msgstr ""
+
+msgid "details, IP..."
+msgstr ""
+
+msgid "No audit log entries"
+msgstr ""
+
+msgid "Incident Trends"
+msgstr ""
+
+msgid "By Severity"
+msgstr ""
+
+msgid "By Status"
+msgstr ""
+
+msgid "By Category"
+msgstr ""
+
+msgid "Controls Status"
+msgstr ""
+
+msgid "Implementation progress by domain"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Risk Summary"
+msgstr ""
+
+msgid "Risk levels, treatments, and status"
+msgstr ""
+
+msgid "Incidents by severity and status"
+msgstr ""
+
+msgid "CSV Exports"
+msgstr ""
+
+msgid "PDF Exports"
+msgstr ""
+
+msgid "Detailed Reports for External Assessment"
+msgstr ""
+
+msgid "Audits & NCs"
+msgstr ""
+
+msgid "Supplier/Vendor Risk"
+msgstr ""
+
+msgid "Mgmt Reviews"
+msgstr ""
+
+msgid "View Audit Log"
+msgstr ""
+
+msgid "Risk Levels"
+msgstr ""
+
+msgid "Treatment Options"
+msgstr ""
+
+msgid "Total Assets"
+msgstr ""
+
+msgid "Total Audits"
+msgstr ""
+
+msgid "Open NCs"
+msgstr ""
+
+msgid "Open CAs"
+msgstr ""
+
+msgid "Auditor"
+msgstr ""
+
+msgid "Detailed Compliance Report"
+msgstr ""
+
+msgid "Page"
+msgstr ""
+
+msgid "Plans"
+msgstr ""
+
+msgid "No Corrective and Preventive Action (CAPA) requests recorded."
+msgstr ""
+
+msgid "Processing"
+msgstr ""
+
+msgid "Breaches"
+msgstr ""
+
+msgid "Project"
+msgstr ""
+
+msgid "Residual Risk"
+msgstr ""
+
+msgid "Affected"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Granted"
+msgstr ""
+
+msgid "This Month"
+msgstr ""
+
+msgid "Detected"
+msgstr ""
+
+msgid "No management reviews recorded."
+msgstr ""
+
+msgid "Critical Supply"
+msgstr ""
+
+msgid "CSIRT"
+msgstr ""
+
+msgid "EW Status"
+msgstr ""
+
+msgid "72h Status"
+msgstr ""
+
+msgid "Final Status"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Supply Chain Assessments"
+msgstr ""
+
+msgid "Review Needed"
+msgstr ""
+
+msgid "Total Risks"
+msgstr ""
+
+msgid "Mitigated"
+msgstr ""
+
+msgid "Level"
+msgstr ""
+
+msgid "Total Entries"
+msgstr ""
+
+msgid "High Risk"
+msgstr ""
+
+msgid "Lifecycle"
+msgstr ""
+
+msgid "Risk Score"
+msgstr ""
+
+msgid "Assessment"
+msgstr ""
+
+msgid "Training & Competence Report"
+msgstr ""
+
+msgid "Courses"
+msgstr ""
+
+msgid "No courses recorded."
+msgstr ""
+
+msgid "Risk Owner"
+msgstr ""
+
+msgid "Likelihood (1–5)"
+msgstr ""
+
+msgid "Impact (1–5)"
+msgstr ""
+
+msgid "Treatment Plan"
+msgstr ""
+
+msgid "Residual Likelihood"
+msgstr ""
+
+msgid "Residual Impact"
+msgstr ""
+
+msgid "Identified"
+msgstr ""
+
+msgid "Treatment In Progress"
+msgstr ""
+
+msgid "Residual Accepted"
+msgstr ""
+
+msgid "Search risks..."
+msgstr ""
+
+msgid "New Risk"
+msgstr ""
+
+msgid "Delete this risk?"
+msgstr ""
+
+msgid "No risks registered"
+msgstr ""
+
+msgid "Risk Details"
+msgstr ""
+
+msgid "Not selected"
+msgstr ""
+
+msgid "Risk Heat Map"
+msgstr ""
+
+msgid "Risk Score (L×I)"
+msgstr ""
+
+msgid "Edit SoA Entry"
+msgstr ""
+
+msgid "Justification (if not applicable)"
+msgstr ""
+
+msgid "Control Description"
+msgstr ""
+
+msgid "(Detailed description of how this control is implemented)"
+msgstr ""
+
+msgid "New SoA Entry"
+msgstr ""
+
+msgid "New Entry"
+msgstr ""
+
+msgid "PDF Export"
+msgstr ""
+
+msgid "SoA Summary"
+msgstr ""
+
+msgid "Total Controls"
+msgstr ""
+
+msgid "Supplier Name"
+msgstr ""
+
+msgid "Supplier/Vendor Type"
+msgstr ""
+
+msgid "Data Access Level"
+msgstr ""
+
+msgid "Contact Name"
+msgstr ""
+
+msgid "Service Description"
+msgstr ""
+
+msgid "Security Requirements"
+msgstr ""
+
+msgid "Assessment Status"
+msgstr ""
+
+msgid "Assessment Date"
+msgstr ""
+
+msgid "Last Supply Chain Review"
+msgstr ""
+
+msgid "Contract Start"
+msgstr ""
+
+msgid "Contract End"
+msgstr ""
+
+msgid "Risk Score (0-100)"
+msgstr ""
+
+msgid "Inherent Risk"
+msgstr ""
+
+msgid "Risk Treatment"
+msgstr ""
+
+msgid "Monitoring Frequency"
+msgstr ""
+
+msgid "Risk Treatment Plan"
+msgstr ""
+
+msgid "Assessment Notes"
+msgstr ""
+
+msgid "Controls and Contract Requirements"
+msgstr ""
+
+msgid "Data Processing Agreement in place"
+msgstr ""
+
+msgid "Due Diligence Completed"
+msgstr ""
+
+msgid "Security Clauses in Contract"
+msgstr ""
+
+msgid "Audit Rights Included"
+msgstr ""
+
+msgid "In NIS2 Supply Chain Scope"
+msgstr ""
+
+msgid "Subcontractors Allowed"
+msgstr ""
+
+msgid "Incident Notification SLA"
+msgstr ""
+
+msgid "SLA Requirements"
+msgstr ""
+
+msgid "Exit and Offboarding"
+msgstr ""
+
+msgid "Offboarding Date"
+msgstr ""
+
+msgid "Exit Strategy / Offboarding Plan"
+msgstr ""
+
+msgid "High / Critical Risk"
+msgstr ""
+
+msgid "Due Diligence Open"
+msgstr ""
+
+msgid "All Assessments"
+msgstr ""
+
+msgid "Medium Risk"
+msgstr ""
+
+msgid "Low Risk"
+msgstr ""
+
+msgid "Overdue Review"
+msgstr ""
+
+msgid "All Lifecycle Stages"
+msgstr ""
+
+msgid "Due Diligence"
+msgstr ""
+
+msgid "Contracting"
+msgstr ""
+
+msgid "Onboarded"
+msgstr ""
+
+msgid "Active Monitoring"
+msgstr ""
+
+msgid "Renewal"
+msgstr ""
+
+msgid "Offboarding"
+msgstr ""
+
+msgid "Terminated"
+msgstr ""
+
+msgid "Not Scheduled"
+msgstr ""
+
+msgid "Delete this supplier?"
+msgstr ""
+
+msgid "No suppliers or vendors registered"
+msgstr ""
+
+msgid "Supplier/Vendor Risk Profile"
+msgstr ""
+
+msgid "Service"
+msgstr ""
+
+msgid "NIS2 Scope"
+msgstr ""
+
+msgid "Contract Period"
+msgstr ""
+
+msgid "My Training"
+msgstr ""
+
+msgid "Training Records"
+msgstr ""
+
+msgid "Course"
+msgstr ""
+
+msgid "Trainer"
+msgstr ""
+
+msgid "Score"
+msgstr ""
+
+msgid "Certificate"
+msgstr ""
+
+msgid "No training records yet."
+msgstr ""
+
+msgid "Competence Profile"
+msgstr ""
+
+msgid "No competence records yet."
+msgstr ""
+
+msgid "Competence"
+msgstr ""
+
+msgid "Competence Matrix"
+msgstr ""
+
+msgid "Add Competence"
+msgstr ""
+
+msgid "Skill"
+msgstr ""
+
+msgid "Expiry"
+msgstr ""
+
+msgid "Delete this competence?"
+msgstr ""
+
+msgid "Training Courses"
+msgstr ""
+
+msgid "Awareness"
+msgstr ""
+
+msgid "Technical"
+msgstr ""
+
+msgid "Management"
+msgstr ""
+
+msgid "New Course"
+msgstr ""
+
+msgid "No training courses yet."
+msgstr ""
+
+msgid "Create your first course"
+msgstr ""
+
+msgid "Delete this course?"
+msgstr ""
+
+msgid "Validity"
+msgstr ""
+
+msgid "Mandatory Course"
+msgstr ""
+
+msgid "Upcoming Sessions"
+msgstr ""
+
+msgid "Schedule Session"
+msgstr ""
+
+msgid "Enrolled"
+msgstr ""
+
+msgid "No upcoming sessions."
+msgstr ""
+
+msgid "Past Sessions"
+msgstr ""
+
+msgid "Trained"
+msgstr ""
+
+msgid "Total Sessions"
+msgstr ""
+
+msgid "People Trained"
+msgstr ""
+
+msgid "Upcoming"
+msgstr ""
+
+msgid "Refresher"
+msgstr ""
+
+#, python-format
+msgid "This course requires retraining every %(days)d days."
+msgstr ""
+
+msgid "All Training Records"
+msgstr ""
+
+msgid "Records"
+msgstr ""
+
+msgid "Session"
+msgstr ""
+
+msgid "Remove this record?"
+msgstr ""
+
+msgid "Delete this session?"
+msgstr ""
+
+msgid "Enroll Me"
+msgstr ""
+
+msgid "No attendees yet."
+msgstr ""
+
+msgid "Session Info"
+msgstr ""
+
+msgid "SSO integration is a placeholder. Configure your provider details below; actual SAML/OIDC authentication flow is not yet implemented."
+msgstr ""
+

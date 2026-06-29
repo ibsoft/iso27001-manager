@@ -975,3 +975,144 @@ def delete_email_alert(alert_id):
     _log_audit(f"Deleted email alert: {alert.name}")
     flash(_("Email alert deleted."), "success")
     return redirect(url_for("admin.list_email_alerts"))
+
+
+# ─── ISMS Roles ──────────────────────────────────────────────────────────
+
+@admin_bp.route("/isms-roles")
+@login_required
+@admin_required
+def list_isms_roles():
+    from app.models.isms_role import ISMSRole
+    roles = ISMSRole.query.order_by(ISMSRole.sort_order, ISMSRole.title).all()
+    return render_template("admin/isms_roles.html", roles=roles)
+
+
+@admin_bp.route("/isms-roles/create", methods=["GET", "POST"])
+@login_required
+@admin_required
+def create_isms_role():
+    from app.models.isms_role import ISMSRole
+    from app.models.user import Department, User
+
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        if not title:
+            flash(_("Title is required."), "danger")
+            return redirect(url_for("admin.create_isms_role"))
+        role = ISMSRole(
+            title=title,
+            description=request.form.get("description", "").strip() or None,
+            department_id=request.form.get("department_id", type=int) or None,
+            user_id=request.form.get("user_id", type=int) or None,
+            parent_role_id=request.form.get("parent_role_id", type=int) or None,
+            sort_order=request.form.get("sort_order", 0, type=int),
+            is_management=request.form.get("is_management") == "1",
+        )
+        db.session.add(role)
+        db.session.commit()
+        _log_audit(f"Created ISMS role: {title}")
+        flash(_("ISMS role created."), "success")
+        return redirect(url_for("admin.list_isms_roles"))
+
+    departments = Department.query.order_by(Department.name).all()
+    users = User.query.order_by(User.first_name).all()
+    parent_roles = ISMSRole.query.order_by(ISMSRole.title).all()
+    return render_template("admin/isms_role_form.html", departments=departments, users=users, parent_roles=parent_roles, role=None)
+
+
+@admin_bp.route("/isms-roles/<int:role_id>/edit", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_isms_role(role_id):
+    from app.models.isms_role import ISMSRole
+    from app.models.user import Department, User
+
+    role = ISMSRole.query.get_or_404(role_id)
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        if not title:
+            flash(_("Title is required."), "danger")
+            return redirect(url_for("admin.edit_isms_role", role_id=role_id))
+        role.title = title
+        role.description = request.form.get("description", "").strip() or None
+        role.department_id = request.form.get("department_id", type=int) or None
+        role.user_id = request.form.get("user_id", type=int) or None
+        role.parent_role_id = request.form.get("parent_role_id", type=int) or None
+        role.sort_order = request.form.get("sort_order", 0, type=int)
+        role.is_management = request.form.get("is_management") == "1"
+        role.updated_at = datetime.utcnow()
+        db.session.commit()
+        _log_audit(f"Edited ISMS role: {title}")
+        flash(_("ISMS role updated."), "success")
+        return redirect(url_for("admin.list_isms_roles"))
+
+    departments = Department.query.order_by(Department.name).all()
+    users = User.query.order_by(User.first_name).all()
+    parent_roles = ISMSRole.query.filter(ISMSRole.id != role_id).order_by(ISMSRole.title).all()
+    return render_template("admin/isms_role_form.html", departments=departments, users=users, parent_roles=parent_roles, role=role)
+
+
+@admin_bp.route("/isms-roles/<int:role_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def delete_isms_role(role_id):
+    from app.models.isms_role import ISMSRole
+    role = ISMSRole.query.get_or_404(role_id)
+    ISMSRole.query.filter_by(parent_role_id=role_id).update({ISMSRole.parent_role_id: None})
+    title = role.title
+    db.session.delete(role)
+    db.session.commit()
+    _log_audit(f"Deleted ISMS role: {title}")
+    flash(_("ISMS role deleted."), "success")
+    return redirect(url_for("admin.list_isms_roles"))
+
+
+# ─── Organisation Chart ─────────────────────────────────────────────────
+
+@admin_bp.route("/org-chart")
+@login_required
+@admin_required
+def org_chart():
+    from app.models.isms_role import ISMSRole
+    from app.models.user import Department, User
+
+    top_roles = ISMSRole.query.filter_by(is_management=True).order_by(ISMSRole.sort_order).all()
+    dept_roles = ISMSRole.query.filter_by(is_management=False).order_by(ISMSRole.department_id, ISMSRole.sort_order).all()
+    departments = Department.query.order_by(Department.name).all()
+    unassigned_users = User.query.filter(User.department_id.is_(None)).order_by(User.first_name).all()
+
+    return render_template("admin/org_chart.html",
+                           top_roles=top_roles, dept_roles=dept_roles,
+                           departments=departments, unassigned_users=unassigned_users)
+
+
+@admin_bp.route("/org-chart/pdf")
+@login_required
+@admin_required
+def org_chart_pdf():
+    from app.models.isms_role import ISMSRole
+    from app.models.user import Department, User
+    from app.utils.pdf import render_pdf
+    from datetime import datetime as _dt
+
+    top_roles = ISMSRole.query.filter_by(is_management=True).order_by(ISMSRole.sort_order).all()
+    dept_roles = ISMSRole.query.filter_by(is_management=False).order_by(ISMSRole.department_id, ISMSRole.sort_order).all()
+    departments = Department.query.order_by(Department.name).all()
+
+    dept_data = []
+    for dept in departments:
+        role_list = [r for r in dept_roles if r.department_id == dept.id]
+        member_list = dept.members.order_by(User.first_name).all() if dept.members else []
+        shown_ids = {r.user_id for r in role_list if r.user_id}
+        unassigned = [u for u in member_list if u.id not in shown_ids]
+        dept_data.append({"dept": dept, "roles": role_list, "members": unassigned})
+
+    response = render_pdf("admin/org_chart_pdf.html",
+                          top_roles=top_roles, dept_data=dept_data,
+                          now=_dt.utcnow(),
+                          filename="organisation_chart")
+    if response is None:
+        flash(_("Failed to generate PDF."), "danger")
+        return redirect(url_for("admin.org_chart"))
+    return response

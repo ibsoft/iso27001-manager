@@ -58,11 +58,9 @@
       --bs-heading-color: #f1f5f9;
       --bs-body-color: var(--text-primary);
       --bs-body-bg: var(--body-bg);
-      --bs-card-bg: var(--card-bg);
-      --bs-card-color: var(--text-primary);
-      --bs-card-cap-bg: rgba(255,255,255,0.04);
       --bs-border-color: var(--header-border);
     }
+
   </style>
   <script>
     try {
@@ -341,7 +339,7 @@
     .modal-header { border-color: var(--header-border); }
     .modal-footer { border-color: var(--header-border); }
     .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important; }
-    .dark-theme .card { border-color: rgba(255,255,255,0.06); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .dark-theme .card { border-color: #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
     .dark-theme .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important; }
     .bg-white { background: var(--card-bg) !important; }
     .border { border-color: var(--header-border) !important; }
@@ -566,13 +564,15 @@
         {% endif %}
 
         {% set sections = [
-          ('ISMS Framework', [
-            ('clauses.list_clauses', 'fas fa-list-check', _('ISO Clauses 4-10')),
-            ('controls.list_controls', 'fas fa-sliders-h', _('Annex A Controls')),
-            ('soa.list_soa', 'fas fa-file-signature', _('Statement of Applicability')),
-            ('management_review.list_reviews', 'fas fa-clipboard-list', _('Management Reviews')),
-            ('kpi.dashboard', 'fas fa-chart-bar', _('Metrics & KPIs Dashboard')),
-          ]),
+  ('ISMS Framework', [
+    ('clauses.list_clauses', 'fas fa-list-check', _('ISO Clauses 4-10')),
+    ('controls.list_controls', 'fas fa-sliders-h', _('Annex A Controls')),
+    ('soa.list_soa', 'fas fa-file-signature', _('Statement of Applicability')),
+    ('management_review.list_reviews', 'fas fa-clipboard-list', _('Management Reviews')),
+    ('kpi.dashboard', 'fas fa-chart-bar', _('Metrics & KPIs')),
+    ('admin.list_isms_roles', 'fas fa-user-tie', _('ISMS Roles')),
+    ('admin.org_chart', 'fas fa-sitemap', _('Organisation Chart')),
+  ]),
           ('Risk & Assets', [
             ('risks.list_risks', 'fas fa-exclamation-triangle', _('Risk Management')),
             ('assets.list_assets', 'fas fa-database', _('Asset Register')),

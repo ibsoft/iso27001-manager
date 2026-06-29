@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('ISMS Roles') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('ISMS Roles') }}</li>{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0"><i class="fas fa-user-tie me-2"></i>{{ _('ISMS Roles') }}</h5>
+    <div>
+      <a href="{{ url_for('admin.org_chart') }}" class="btn btn-outline-primary btn-sm me-1">
+        <i class="fas fa-sitemap me-1"></i>{{ _('View Org Chart') }}
+      </a>
+      <a href="{{ url_for('admin.create_isms_role') }}" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus me-1"></i>{{ _('New Role') }}
+      </a>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>{{ _('Title') }}</th>
+            <th>{{ _('Department') }}</th>
+            <th>{{ _('Assigned To') }}</th>
+            <th>{{ _('Reports To') }}</th>
+            <th>{{ _('Type') }}</th>
+            <th>{{ _('Actions') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in roles %}
+          <tr>
+            <td class="fw-medium">{{ r.title }}</td>
+            <td>{{ r.department.name if r.department else '—' }}</td>
+            <td>{{ r.user.full_name if r.user else '—' }}</td>
+            <td>{{ r.parent.title if r.parent else '—' }}</td>
+            <td>
+              {% if r.is_management %}
+              <span class="badge bg-warning text-dark">{{ _('Top Management') }}</span>
+              {% else %}
+              <span class="badge bg-info">{{ _('Operational') }}</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('admin.edit_isms_role', role_id=r.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+              <form method="POST" action="{{ url_for('admin.delete_isms_role', role_id=r.id) }}" class="d-inline" data-confirm="{{ _('Delete this role?') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">
+              <i class="fas fa-user-tie fa-2x mb-2 d-block"></i>
+              {{ _('No ISMS roles defined yet.') }}
+              <a href="{{ url_for('admin.create_isms_role') }}" class="d-block mt-2">{{ _('Create your first role') }}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
