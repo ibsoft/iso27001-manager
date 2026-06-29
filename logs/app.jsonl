@@ -1,138 +1,44 @@
-{"timestamp": "2026-06-26T08:12:21", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:12:25", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:12:57", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:13:06", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:13:19", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:17:31", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:17:44", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:17:54", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:18:18", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:18:37", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:19:23", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:19:35", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:19:40", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:19:57", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:20:07", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:20:36", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:20:39", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:21:40", "level": "INFO", "logger": "app", "message": "LDAP test: LDAP server address is empty", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:21:55", "level": "INFO", "logger": "app", "message": "LDAP test: LDAP server address is empty", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:22:27", "level": "INFO", "logger": "app", "message": "LDAP test: Base DN is empty", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:22:55", "level": "INFO", "logger": "app", "message": "LDAP test: Base DN is empty", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:23:12", "level": "INFO", "logger": "app", "message": "LDAP test: Base DN is empty", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:23:56", "level": "INFO", "logger": "app", "message": "LDAP test: Base DN is empty", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:24:02", "level": "INFO", "logger": "app", "message": "LDAP test: Base DN is empty", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:25:18", "level": "INFO", "logger": "app", "message": "LDAP test: LDAP error: malformed filter", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:26:11", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:26:16", "level": "INFO", "logger": "app", "message": "LDAP test: LDAP connection successful", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:26:20", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:26:37", "level": "INFO", "logger": "app", "message": "LDAP test: LDAP connection successful", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T08:27:27", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:27:36", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:27:49", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:30:14", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T08:30:24", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:31:55", "level": "INFO", "logger": "app", "message": "LDAP test: Connected but search returned 0 entries — check Base DN and filter", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T09:33:48", "level": "INFO", "logger": "app", "message": "LDAP test: LDAP error: password is mandatory in simple bind", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T09:34:03", "level": "INFO", "logger": "app", "message": "LDAP test: Bind failed — check credentials", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T09:36:44", "level": "INFO", "logger": "app", "message": "LDAP test: LDAP error: invalid attribute type dn", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T09:37:29", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:37:42", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:37:49", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:37:56", "level": "INFO", "logger": "app", "message": "LDAP test: Connected (search 1 returned 5 entries)", "module": "admin", "line": 526}
-{"timestamp": "2026-06-26T09:47:22", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:47:39", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:48:39", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user alesty", "module": "ldap_auth", "line": 386}
-{"timestamp": "2026-06-26T09:48:43", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:48:49", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:49:01", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T09:50:06", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user tasvla", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:50:17", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user GeoSte", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:50:31", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user alekat", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:50:41", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user ioapou", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:57:18", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user mixkyr", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:57:52", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user KA", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:57:52", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user koskal", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:58:10", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user dimkat", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:58:23", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user ioabuh", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:58:37", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user geozac", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:58:46", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user MarTal", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:59:09", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user epasia", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T09:59:54", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user VasSty", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:00:06", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user VasThe", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:00:41", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user nikgia", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:00:53", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user chrgia", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:01:12", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user dimioa", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:01:27", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user xrimpo", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:01:37", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user dimorf", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:01:47", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user leftso", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:02:24", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user dimpel", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:03:52", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user fotpet", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:04:01", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user olgram", "module": "ldap_auth", "line": 408}
-{"timestamp": "2026-06-26T10:10:44", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:12:01", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:12:07", "level": "INFO", "logger": "app.ldap", "message": "LDAP auth for ioabuh on ldap://dc01.unixfor.gr:389", "module": "ldap_auth", "line": 140}
-{"timestamp": "2026-06-26T10:12:08", "level": "INFO", "logger": "app.ldap", "message": "LDAP found DN: CN=Buhras Ioannis,OU=NSS,OU=ATHENS,DC=unixfor,DC=gr", "module": "ldap_auth", "line": 162}
-{"timestamp": "2026-06-26T10:12:08", "level": "INFO", "logger": "app.ldap", "message": "LDAP password verified for ioabuh", "module": "ldap_auth", "line": 168}
-{"timestamp": "2026-06-26T10:12:08", "level": "INFO", "logger": "app.ldap", "message": "LDAP: existing user ioabuh authenticated", "module": "ldap_auth", "line": 194}
-{"timestamp": "2026-06-26T10:13:31", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:13:34", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:14:00", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:14:33", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:15:24", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 307}
-{"timestamp": "2026-06-26T10:17:09", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 307}
-{"timestamp": "2026-06-26T10:17:17", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T10:18:00", "level": "INFO", "logger": "app.ldap", "message": "LDAP auth for ioabuh on ldap://dc01.unixfor.gr:389", "module": "ldap_auth", "line": 140}
-{"timestamp": "2026-06-26T10:18:00", "level": "INFO", "logger": "app.ldap", "message": "LDAP found DN: CN=Buhras Ioannis,OU=NSS,OU=ATHENS,DC=unixfor,DC=gr", "module": "ldap_auth", "line": 162}
-{"timestamp": "2026-06-26T10:18:01", "level": "INFO", "logger": "app.ldap", "message": "LDAP password verified for ioabuh", "module": "ldap_auth", "line": 168}
-{"timestamp": "2026-06-26T10:18:01", "level": "INFO", "logger": "app.ldap", "message": "LDAP: existing user ioabuh authenticated", "module": "ldap_auth", "line": 194}
-{"timestamp": "2026-06-26T10:19:04", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 300}
-{"timestamp": "2026-06-26T10:20:48", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 300}
-{"timestamp": "2026-06-26T10:20:51", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 300}
-{"timestamp": "2026-06-26T10:21:00", "level": "INFO", "logger": "app.ldap", "message": "LDAP auth for ioabuh on ldap://dc01.unixfor.gr:389", "module": "ldap_auth", "line": 140}
-{"timestamp": "2026-06-26T10:21:01", "level": "INFO", "logger": "app.ldap", "message": "LDAP found DN: CN=Buhras Ioannis,OU=NSS,OU=ATHENS,DC=unixfor,DC=gr", "module": "ldap_auth", "line": 162}
-{"timestamp": "2026-06-26T10:21:01", "level": "INFO", "logger": "app.ldap", "message": "LDAP password verified for ioabuh", "module": "ldap_auth", "line": 168}
-{"timestamp": "2026-06-26T10:21:01", "level": "INFO", "logger": "app.ldap", "message": "LDAP: existing user ioabuh authenticated", "module": "ldap_auth", "line": 194}
-{"timestamp": "2026-06-26T10:22:32", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 300}
-{"timestamp": "2026-06-26T10:22:44", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 300}
-{"timestamp": "2026-06-26T10:22:54", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:23:53", "level": "INFO", "logger": "app.ldap", "message": "LDAP auth for ioabuh on ldap://dc01.unixfor.gr:389", "module": "ldap_auth", "line": 140}
-{"timestamp": "2026-06-26T10:23:53", "level": "INFO", "logger": "app.ldap", "message": "LDAP found DN: CN=Buhras Ioannis,OU=NSS,OU=ATHENS,DC=unixfor,DC=gr", "module": "ldap_auth", "line": 162}
-{"timestamp": "2026-06-26T10:23:54", "level": "INFO", "logger": "app.ldap", "message": "LDAP password verified for ioabuh", "module": "ldap_auth", "line": 168}
-{"timestamp": "2026-06-26T10:23:54", "level": "INFO", "logger": "app.ldap", "message": "LDAP: existing user ioabuh authenticated", "module": "ldap_auth", "line": 194}
-{"timestamp": "2026-06-26T10:24:21", "level": "INFO", "logger": "app.ldap", "message": "LDAP auth for ioabuh on ldap://dc01.unixfor.gr:389", "module": "ldap_auth", "line": 140}
-{"timestamp": "2026-06-26T10:24:22", "level": "INFO", "logger": "app.ldap", "message": "LDAP found DN: CN=Buhras Ioannis,OU=NSS,OU=ATHENS,DC=unixfor,DC=gr", "module": "ldap_auth", "line": 162}
-{"timestamp": "2026-06-26T10:24:23", "level": "INFO", "logger": "app.ldap", "message": "LDAP password verified for ioabuh", "module": "ldap_auth", "line": 168}
-{"timestamp": "2026-06-26T10:24:23", "level": "INFO", "logger": "app.ldap", "message": "LDAP: existing user ioabuh authenticated", "module": "ldap_auth", "line": 194}
-{"timestamp": "2026-06-26T10:25:24", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:25:44", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:25:53", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:28:09", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:28:44", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:29:02", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:31:42", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:31:51", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:32:00", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:40:18", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 299}
-{"timestamp": "2026-06-26T10:40:24", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:40:47", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:40:58", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:41:06", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:41:12", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:41:41", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:41:45", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:41:52", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 302}
-{"timestamp": "2026-06-26T10:43:46", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T10:51:16", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T10:51:18", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:03:59", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:04:02", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:30:47", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:30:54", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:31:01", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:31:16", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:32:02", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:32:14", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:32:38", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:32:52", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
-{"timestamp": "2026-06-26T11:33:00", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:05:29", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:05:41", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:05:55", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:06:56", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:07:25", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:18:04", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:18:07", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T08:31:00", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T09:41:52", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T09:41:55", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:24:40", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:24:43", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:29:09", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:29:12", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:52:13", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:52:16", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:54:00", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T10:54:03", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T11:05:11", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T11:05:14", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T11:09:16", "level": "INFO", "logger": "app.ldap", "message": "LDAP: created local user panmen", "module": "ldap_auth", "line": 411}
+{"timestamp": "2026-06-29T12:58:10", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T12:58:13", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T12:59:11", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T12:59:14", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:01:29", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:01:32", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:01:53", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:01:55", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:02:42", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:02:45", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:04:15", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:04:18", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:05:57", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:06:00", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:06:23", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:06:25", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:07:54", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:07:56", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:07:57", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:08:19", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:08:23", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:10:43", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-29T13:10:45", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}

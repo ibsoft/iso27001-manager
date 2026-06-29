@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('ISMS Role') }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('admin.list_isms_roles') }}">{{ _('ISMS Roles') }}</a></li>
+<li class="breadcrumb-item active">{{ role.title if role else _('New Role') }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-user-tie me-2"></i>{{ role.title if role else _('New ISMS Role') }}</h5>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('admin.edit_isms_role', role_id=role.id) if role else url_for('admin.create_isms_role') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="title" class="form-label">{{ _('Role Title') }} <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="title" name="title" value="{{ role.title if role else '' }}" required maxlength="128" placeholder="{{ _('e.g. ISMS Manager, DPO, CISO') }}">
+            </div>
+            <div class="col-md-3">
+              <label for="sort_order" class="form-label">{{ _('Sort Order') }}</label>
+              <input type="number" class="form-control" id="sort_order" name="sort_order" value="{{ role.sort_order if role else 0 }}">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" id="is_management" name="is_management" value="1"
+                       {% if role and role.is_management %}checked{% endif %}>
+                <label class="form-check-label" for="is_management">{{ _('Top Management') }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">{{ _('Description') }}</label>
+            <textarea class="form-control" id="description" name="description" rows="3">{{ role.description if role else '' }}</textarea>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-4">
+              <label for="department_id" class="form-label">{{ _('Department') }}</label>
+              <select class="form-select" id="department_id" name="department_id">
+                <option value="">{{ _('-- None --') }}</option>
+                {% for d in departments %}
+                <option value="{{ d.id }}" {{ 'selected' if role and role.department_id == d.id }}>{{ d.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="user_id" class="form-label">{{ _('Assigned User') }}</label>
+              <select class="form-select" id="user_id" name="user_id">
+                <option value="">{{ _('-- None --') }}</option>
+                {% for u in users %}
+                <option value="{{ u.id }}" {{ 'selected' if role and role.user_id == u.id }}>{{ u.full_name }} ({{ u.username }})</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="parent_role_id" class="form-label">{{ _('Reports To') }}</label>
+              <select class="form-select" id="parent_role_id" name="parent_role_id">
+                <option value="">{{ _('-- None (Top Level) --') }}</option>
+                {% for p in parent_roles %}
+                <option value="{{ p.id }}" {{ 'selected' if role and role.parent_role_id == p.id }}>{{ p.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
+          <a href="{{ url_for('admin.list_isms_roles') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

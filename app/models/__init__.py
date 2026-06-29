@@ -28,3 +28,4 @@ from app.models.business_continuity import BusinessImpactAnalysis, BusinessConti
 from app.models.filled_form import FilledForm
 from app.models.general_request import GeneralRequest
 from app.models.email_alert import EmailAlert
+from app.models.isms_role import ISMSRole

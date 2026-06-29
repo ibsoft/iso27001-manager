@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    @page { size: A4 landscape; margin: 1.2cm; }
+    body { font-family: 'DejaVu Sans', sans-serif; font-size: 9pt; color: #1e293b; }
+    h1 { text-align: center; font-size: 16pt; color: #1e40af; margin-bottom: 0.2cm; }
+    h2 { text-align: center; font-size: 9pt; color: #64748b; font-weight: normal; margin-bottom: 0.5cm; }
+
+    /* ── Top row ── */
+    .top-row { text-align: center; margin-bottom: 0; }
+    .top-row .bx {
+      display: inline-block;
+      background: #1e40af; color: #fff;
+      border: 2px solid #1e3a8a;
+      padding: 0.25cm 0.5cm; margin: 0 0.3cm;
+      min-width: 3cm;
+    }
+    .top-row .bx .nm { font-size: 10pt; font-weight: bold; }
+    .top-row .bx .tl { font-size: 8pt; opacity: 0.85; }
+
+    /* ── Arrow between levels ── */
+    .arrow-row { text-align: center; font-size: 14pt; color: #475569; margin: 0; padding: 0; line-height: 1; }
+
+    /* ── Dept columns table ── */
+    .dept-table { width: 100%; border-collapse: collapse; }
+    .dept-table td {
+      vertical-align: top; text-align: center;
+      padding: 0 0.15cm;
+    }
+
+    /* ── Department box ── */
+    .dept-box {
+      background: #0369a1; color: #fff;
+      border: 2px solid #075985;
+      padding: 0.2cm 0.3cm;
+      margin: 0 auto;
+      min-width: 2.8cm;
+    }
+    .dept-box .nm { font-size: 9pt; font-weight: bold; }
+    .dept-box .tl { font-size: 7pt; opacity: 0.85; }
+
+    /* ── Role box ── */
+    .role-box {
+      background: #f1f5f9;
+      border: 1.5px solid #64748b;
+      padding: 0.12cm 0.25cm;
+      margin: 0.08cm auto;
+      min-width: 2.5cm;
+    }
+    .role-box .nm { font-size: 8pt; font-weight: bold; color: #0f172a; }
+    .role-box .tl { font-size: 7pt; color: #475569; }
+
+    /* ── Member (dashed) ── */
+    .role-box.member { border-style: dashed; opacity: 0.6; }
+
+    /* ── Child box ── */
+    .child-box {
+      background: #ffffff;
+      border: 1.5px solid #94a3b8;
+      padding: 0.08cm 0.2cm;
+      margin: 0.05cm auto;
+      min-width: 2cm;
+      display: inline-block;
+    }
+    .child-box .nm { font-size: 7pt; font-weight: bold; color: #1e293b; }
+    .child-box .tl { font-size: 6pt; color: #64748b; }
+
+    .footer {
+      text-align: center; font-size: 7pt; color: #94a3b8;
+      margin-top: 0.4cm; border-top: 1px solid #e2e8f0; padding-top: 0.15cm;
+    }
+    .pipe { font-size: 10pt; color: #64748b; margin: 0; padding: 0; line-height: 0.8; }
+  </style>
+</head>
+<body>
+  <h1>{% trans %}Organisation Chart{% endtrans %}</h1>
+  <h2>{% trans %}ISMS Roles &amp; Departments{% endtrans %}</h2>
+
+  {# ═══ TOP MANAGEMENT ═══ #}
+  {% if top_roles %}
+  <div class="top-row">
+    {% for r in top_roles %}
+    <div class="bx">
+      <div class="nm">{{ r.title }}</div>
+      {% if r.user %}<div class="tl">{{ r.user.full_name }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="arrow-row">&#x2193;</div>
+  {% endif %}
+
+  {# ═══ DEPARTMENTS (table for columns) ═══ #}
+  {% if dept_data %}
+  <table class="dept-table">
+    <tr>
+      {% for item in dept_data %}
+      <td>
+        {# ── Department box ── #}
+        <div class="dept-box">
+          <div class="nm">{{ item.dept.name }}</div>
+          {% if item.dept.head %}<div class="tl">{{ item.dept.head.full_name }}</div>{% endif %}
+        </div>
+        <div class="pipe">&#x2193;</div>
+
+        {# ── Roles ── #}
+        {% for r in item.roles %}
+        <div class="role-box">
+          <div class="nm">{{ r.title }}</div>
+          {% if r.user %}<div class="tl">{{ r.user.full_name }}</div>{% endif %}
+        </div>
+        {# children #}
+        {% set children = r.children.order_by('sort_order').all() if r.children else [] %}
+        {% if children %}
+        <div class="pipe">&#x2193;</div>
+        <div>
+          {% for c in children %}
+          <div class="child-box">
+            <div class="nm">{{ c.title }}</div>
+            {% if c.user %}<div class="tl">{{ c.user.full_name }}</div>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        {# ── Members without role ── #}
+        {% for u in item.members %}
+        <div class="role-box member">
+          <div class="nm">{{ u.full_name }}</div>
+        </div>
+        {% endfor %}
+      </td>
+      {% endfor %}
+    </tr>
+  </table>
+  {% endif %}
+
+  <div class="footer">
+    {% trans %}Generated on{% endtrans %} {{ now.strftime('%d/%m/%Y') }} &mdash; ISO 27001 Manager
+  </div>
+</body>
+</html>

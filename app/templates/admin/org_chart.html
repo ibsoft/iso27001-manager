@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Organisation Chart') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Organisation Chart') }}</li>{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── Full height layout (set via JS below) ── */
+.org-chart-page { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.org-chart-page .card-body { flex: 1; display: flex; flex-direction: column; padding: 0.5rem; overflow: hidden; min-height: 0; }
+.org-chart-page .tree { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 1rem 0; overflow-y: auto; min-height: 0; }
+.tree-filler { flex: 1; min-height: 0; }
+.tier {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* ── Node (box) ── */
+.node {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 8px 16px;
+  min-width: 130px;
+  font-family: 'Inter', 'DejaVu Sans', sans-serif;
+}
+.node .nm { font-size: 14px; font-weight: 700; line-height: 1.3; }
+.node .tl { font-size: 11px; margin-top: 2px; }
+
+/* Top */
+.node.top {
+  background: #1e40af !important; border: 3px solid #1e3a8a !important;
+  color: #fff !important; min-width: 150px; padding: 10px 20px;
+  box-shadow: 0 4px 12px rgba(30,64,175,0.3);
+}
+.node.top .tl { color: rgba(255,255,255,0.8); }
+
+/* Department */
+.node.dept {
+  background: #0369a1 !important; border: 3px solid #075985 !important;
+  color: #fff !important; min-width: 140px; padding: 8px 16px;
+  box-shadow: 0 3px 10px rgba(3,105,161,0.25);
+}
+.node.dept .tl { color: rgba(255,255,255,0.8); }
+
+/* Role */
+.node.role {
+  background: #f1f5f9 !important; border: 2.5px solid #64748b !important;
+  color: #0f172a !important; min-width: 120px; padding: 6px 12px;
+}
+.node.role .nm { font-size: 13px; }
+.node.role .tl { font-size: 10px; color: #475569; }
+
+/* Child */
+.node.child {
+  background: #ffffff !important; border: 2px solid #94a3b8 !important;
+  color: #1e293b !important; min-width: 100px; padding: 4px 10px;
+}
+.node.child .nm { font-size: 11px; }
+.node.child .tl { font-size: 9px; color: #64748b; }
+
+/* Member (dashed border) */
+.node.member { border-style: dashed !important; opacity: 0.65 !important; }
+
+/* Dark theme */
+.dark-theme .node.top {
+  background: #1e40af !important; border-color: #60a5fa !important;
+}
+.dark-theme .node.dept {
+  background: #0369a1 !important; border-color: #38bdf8 !important;
+}
+.dark-theme .node.role {
+  background: #1e293b !important; border-color: #64748b !important;
+  color: #f1f5f9 !important;
+}
+.dark-theme .node.role .tl { color: #94a3b8; }
+.dark-theme .node.child {
+  background: #0f172a !important; border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+.dark-theme .node.child .tl { color: #64748b; }
+
+/* ── Lines ── */
+.ln {
+  width: 3px; background: #475569; margin: 0 auto; flex-shrink: 0;
+}
+.lh {
+  height: 3px; background: #475569; margin: 0 auto;
+}
+.dark-theme .ln, .dark-theme .lh { background: #94a3b8; }
+
+
+
+/* ── Arrow mixin ── */
+.arrow-down {
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #475569;
+}
+.dark-theme .arrow-down { border-top-color: #94a3b8; }
+
+/* ── Department column ── */
+.dc {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; flex: 1; min-width: 140px; max-width: 240px;
+}
+.dc::before {
+  content: ''; position: absolute; top: 0; left: 50%;
+  width: 3px; height: 22px; background: #475569;
+  transform: translateX(-50%); z-index: 1;
+}
+.dark-theme .dc::before { background: #94a3b8; }
+.dc:first-child::after {
+  content: ''; position: absolute; top: 0; right: 50%;
+  width: 50%; height: 3px; background: #475569; z-index: 1;
+}
+.dc:last-child::after {
+  content: ''; position: absolute; top: 0; left: 50%;
+  width: 50%; height: 3px; background: #475569; z-index: 1;
+}
+.dc:not(:first-child):not(:last-child)::after {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px; background: #475569; z-index: 1;
+}
+.dark-theme .dc::after { background: #94a3b8; }
+
+/* ── Role list ── */
+.rl { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.ri { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; }
+.ri .arrow-down { margin: 6px 0 0 0; }
+.ri .node { width: 100%; }
+
+/* ── Children ── */
+.cr {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 10px; position: relative; padding-top: 8px; width: 100%;
+}
+.cr::before {
+  content: ''; position: absolute; top: 0; left: 10%;
+  width: 80%; height: 3px; background: #475569; z-index: 1;
+}
+.dark-theme .cr::before { background: #94a3b8; }
+.ci { position: relative; display: flex; flex-direction: column; align-items: center; }
+.ci .arrow-down { margin: 4px 0 0 0; }
+
+@media print {
+  .no-print { display: none !important; }
+  .node { border-color: #333 !important; background: #fff !important; color: #000 !important; }
+  .node.top { background: #1e40af !important; color: #fff !important; }
+  .node.dept { background: #0369a1 !important; color: #fff !important; }
+  .ln, .lh, .dc::after, .ri::before, .cr::before, .ci::before { background: #666 !important; }
+  .arrow-down { border-top-color: #666 !important; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow org-chart-page">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0"><i class="fas fa-sitemap me-2"></i>{{ _('Organisation Chart') }}</h5>
+    <div class="no-print">
+      <a href="{{ url_for('admin.list_isms_roles') }}" class="btn btn-outline-primary btn-sm me-1"><i class="fas fa-user-tie me-1"></i>{{ _('Manage Roles') }}</a>
+      <a href="{{ url_for('admin.org_chart_pdf') }}" class="btn btn-primary btn-sm"><i class="fas fa-file-pdf me-1"></i>{{ _('Download PDF') }}</a>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="tree">
+
+      {% if top_roles or departments %}
+
+      {# ═══ TOP ═══ #}
+      {% if top_roles %}
+      <div class="tier" style="gap:3rem">
+        {% for r in top_roles %}
+        <div class="node top">
+          <div class="nm">{{ r.title }}</div>
+          {% if r.user %}<div class="tl">{{ r.user.full_name }}</div>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="tier" style="gap:3rem">
+        {% for r in top_roles %}
+        <div style="width:150px;display:flex;flex-direction:column;align-items:center">
+          <div class="ln" style="height:18px"></div>
+          <div class="arrow-down" style="margin-top:-2px"></div>
+          <div class="ln" style="height:6px"></div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="lh" style="width:{{ (top_roles|length * 180 - 30) if top_roles|length > 1 else 150 }}px;max-width:95%"></div>
+
+      <div class="tier" style="gap:3rem">
+        {% for r in top_roles %}
+        <div style="width:150px;display:flex;flex-direction:column;align-items:center">
+          <div class="ln" style="height:6px"></div>
+          <div class="arrow-down" style="margin-top:-2px"></div>
+          <div class="ln" style="height:18px"></div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# ═══ DEPARTMENTS ═══ #}
+      {% if departments %}
+      <div class="tier" style="gap:1.5rem;width:100%">
+        {% for dept in departments %}
+        {% set dept_roles_list = dept_roles|selectattr('department_id', 'equalto', dept.id)|list %}
+        {% set dept_members = dept.members.order_by('first_name').all() if dept.members else [] %}
+        {% set shown_ids = dept_roles_list|map(attribute='user_id')|list %}
+        <div class="dc">
+
+          <div class="node dept" style="width:100%">
+            <div class="nm">{{ dept.name }}</div>
+            {% if dept.head %}<div class="tl">{{ dept.head.full_name }}</div>{% endif %}
+          </div>
+
+          <div class="rl">
+            {% for r in dept_roles_list %}
+            {% set children = r.children.order_by('sort_order').all() %}
+            <div class="ri">
+              <div class="node role">
+                <div class="nm">{{ r.title }}</div>
+                {% if r.user %}<div class="tl">{{ r.user.full_name }}</div>{% endif %}
+              </div>
+
+              {% if children %}
+              <div class="arrow-down"></div>
+              <div class="cr">
+                {% for c in children %}
+                <div class="ci">
+                  <div class="arrow-down"></div>
+                  <div class="node child">
+                    <div class="nm">{{ c.title }}</div>
+                    {% if c.user %}<div class="tl">{{ c.user.full_name }}</div>{% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            {% endfor %}
+
+            {% for u in dept_members %}
+            {% if u.id not in shown_ids %}
+            <div class="ri">
+              <div class="node role member">
+                <div class="nm" style="font-size:11px">{{ u.full_name }}</div>
+              </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% else %}
+      {# ═══ SAMPLE ═══ #}
+      <div class="tier" style="gap:3rem;margin-bottom:0">
+        <div class="node top"><div class="nm">CEO</div><div class="tl">John Smith</div></div>
+        <div class="node top"><div class="nm">CISO</div><div class="tl">Maria Johnson</div></div>
+      </div>
+      <div class="tier" style="gap:3rem">
+        <div style="width:150px;display:flex;flex-direction:column;align-items:center"><div class="ln" style="height:18px"></div><div class="arrow-down" style="margin-top:-2px"></div><div class="ln" style="height:6px"></div></div>
+        <div style="width:150px;display:flex;flex-direction:column;align-items:center"><div class="ln" style="height:18px"></div><div class="arrow-down" style="margin-top:-2px"></div><div class="ln" style="height:6px"></div></div>
+      </div>
+      <div class="lh" style="width:330px;max-width:95%"></div>
+      <div class="tier" style="gap:3rem">
+        <div style="width:150px;display:flex;flex-direction:column;align-items:center"><div class="ln" style="height:6px"></div><div class="arrow-down" style="margin-top:-2px"></div><div class="ln" style="height:18px"></div></div>
+        <div style="width:150px;display:flex;flex-direction:column;align-items:center"><div class="ln" style="height:6px"></div><div class="arrow-down" style="margin-top:-2px"></div><div class="ln" style="height:18px"></div></div>
+      </div>
+
+      <div class="tier" style="gap:1.5rem;width:100%">
+        <div class="dc" style="max-width:210px">
+          <div class="node dept" style="width:100%"><div class="nm">Information Security</div><div class="tl">Alice Williams</div></div>
+          <div class="rl">
+            <div class="ri"><div class="node role"><div class="nm">Security Manager</div><div class="tl">Bob Brown</div></div>
+              <div class="arrow-down"></div>
+              <div class="cr">
+                <div class="ci"><div class="arrow-down"></div><div class="node child"><div class="nm">Analyst</div><div class="tl">Carol Davis</div></div></div>
+                <div class="ci"><div class="arrow-down"></div><div class="node child"><div class="nm">Analyst</div><div class="tl">Dan Wilson</div></div></div>
+              </div>
+            </div>
+            <div class="ri"><div class="node role"><div class="nm">Compliance Officer</div><div class="tl">Eve Martin</div></div></div>
+          </div>
+        </div>
+        <div class="dc" style="max-width:210px">
+          <div class="node dept" style="width:100%"><div class="nm">IT Operations</div><div class="tl">Frank Lee</div></div>
+          <div class="rl">
+            <div class="ri"><div class="node role"><div class="nm">Infrastructure Lead</div><div class="tl">Grace Kim</div></div>
+              <div class="arrow-down"></div>
+              <div class="cr"><div class="ci"><div class="arrow-down"></div><div class="node child"><div class="nm">Engineer</div><div class="tl">Henry Clark</div></div></div></div>
+            </div>
+            <div class="ri"><div class="node role"><div class="nm">Network Admin</div><div class="tl">Iris Adams</div></div></div>
+          </div>
+        </div>
+        <div class="dc" style="max-width:210px">
+          <div class="node dept" style="width:100%"><div class="nm">Legal & Compliance</div><div class="tl">Jack Turner</div></div>
+          <div class="rl">
+            <div class="ri"><div class="node role"><div class="nm">DPO</div><div class="tl">Karen White</div></div></div>
+            <div class="ri"><div class="node role"><div class="nm">Legal Counsel</div><div class="tl">Leo Harris</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-muted mt-4">
+        <p>{{ _('Define ISMS roles and departments to build your chart.') }}</p>
+        <a href="{{ url_for('admin.create_isms_role') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>{{ _('Add Your First Role') }}</a>
+        <a href="{{ url_for('admin.list_departments') }}" class="btn btn-outline-primary ms-2"><i class="fas fa-building me-1"></i>{{ _('Manage Departments') }}</a>
+      </div>
+      {% endif %}
+      <div class="tree-filler"></div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+  var cw = document.querySelector('.content-wrapper');
+  if (!cw) return;
+  cw.style.display = 'flex';
+  cw.style.flexDirection = 'column';
+  cw.style.flex = '1';
+  cw.style.minHeight = '0';
+  var ch = cw.querySelector('.content-header');
+  if (ch) ch.style.flexShrink = '0';
+  var sc = cw.querySelector('section.content');
+  if (sc) {
+    sc.style.flex = '1';
+    sc.style.display = 'flex';
+    sc.style.flexDirection = 'column';
+    sc.style.minHeight = '0';
+  }
+})();
+</script>
+{% endblock %}

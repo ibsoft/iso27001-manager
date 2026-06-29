@@ -5,6 +5,18 @@ ENDPOINT_MENU_PERMISSION = {
     "soa.list_soa": "menu_soa",
     "management_review.list_reviews": "menu_reviews",
     "kpi.dashboard": "menu_kpi",
+    "admin.list_isms_roles": "menu_clauses",
+    "admin.create_isms_role": "menu_clauses",
+    "admin.edit_isms_role": "menu_clauses",
+    "admin.delete_isms_role": "menu_clauses",
+    "admin.org_chart": "menu_clauses",
+    "admin.org_chart_pdf": "menu_clauses",
+    "admin.mail_settings": "menu_mail_settings",
+    "admin.test_mail_settings": "menu_mail_settings",
+    "admin.list_email_alerts": "menu_email_alerts",
+    "admin.create_email_alert": "menu_email_alerts",
+    "admin.toggle_email_alert": "menu_email_alerts",
+    "admin.delete_email_alert": "menu_email_alerts",
     "risks.list_risks": "menu_risks",
     "assets.list_assets": "menu_assets",
     "assignments.list_assignments": "menu_assignments",
@@ -73,6 +85,8 @@ MENU_READ_WRITE = {
     "menu_gdpr_notices": "menu_gdpr_notices_write",
     "menu_general_requests": "menu_general_requests_write",
     "menu_approvals": "menu_approvals_write",
+    "menu_mail_settings": "menu_mail_settings_write",
+    "menu_email_alerts": "menu_email_alerts_write",
 }
 
 PERMISSION_GROUPS = {
@@ -84,6 +98,6 @@ PERMISSION_GROUPS = {
     "GDPR Compliance": ["menu_gdpr", "menu_gdpr_write", "menu_gdpr_processing", "menu_gdpr_processing_write", "menu_gdpr_dpia", "menu_gdpr_dpia_write", "menu_gdpr_dsar", "menu_gdpr_dsar_write", "menu_gdpr_consent", "menu_gdpr_consent_write", "menu_gdpr_controllers", "menu_gdpr_controllers_write", "menu_gdpr_notices", "menu_gdpr_notices_write"],
     "Reporting": ["menu_reports"],
     "Approvals": ["menu_approvals", "menu_approvals_write"],
-    "Administration": ["user_view", "user_create", "user_edit", "user_delete", "role_view", "role_create", "role_edit", "role_delete", "audit_log_view", "system_config"],
+    "Administration": ["user_view", "user_create", "user_edit", "user_delete", "role_view", "role_create", "role_edit", "role_delete", "audit_log_view", "system_config", "menu_mail_settings", "menu_mail_settings_write", "menu_email_alerts", "menu_email_alerts_write"],
     "Data": ["control_view", "control_create", "control_edit", "control_delete", "risk_view", "risk_create", "risk_edit", "risk_delete", "asset_view", "asset_create", "asset_edit", "asset_delete", "incident_view", "incident_create", "incident_edit", "incident_delete", "policy_view", "policy_create", "policy_edit", "policy_delete", "audit_view", "audit_create", "audit_edit", "audit_delete", "supplier_view", "supplier_create", "supplier_edit", "supplier_delete", "soa_view", "soa_edit", "report_view", "report_export", "nis2_edit", "management_review_view", "management_review_create", "management_review_edit", "management_review_delete", "business_continuity_view", "business_continuity_create", "business_continuity_edit", "business_continuity_delete", "capa_view", "capa_create", "capa_edit", "capa_delete", "training_view", "training_edit", "training_delete"],
 }
