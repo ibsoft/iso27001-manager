@@ -988,7 +988,7 @@ def delete_email_alert(alert_id):
 
 @admin_bp.route("/isms-roles")
 @login_required
-@admin_required
+@permission_required("menu_isms_roles")
 def list_isms_roles():
     from app.models.isms_role import ISMSRole
     roles = ISMSRole.query.order_by(ISMSRole.sort_order, ISMSRole.title).all()
@@ -997,7 +997,7 @@ def list_isms_roles():
 
 @admin_bp.route("/isms-roles/create", methods=["GET", "POST"])
 @login_required
-@admin_required
+@permission_required("menu_isms_roles_write")
 def create_isms_role():
     from app.models.isms_role import ISMSRole
     from app.models.user import Department, User
@@ -1030,7 +1030,7 @@ def create_isms_role():
 
 @admin_bp.route("/isms-roles/<int:role_id>/edit", methods=["GET", "POST"])
 @login_required
-@admin_required
+@permission_required("menu_isms_roles_write")
 def edit_isms_role(role_id):
     from app.models.isms_role import ISMSRole
     from app.models.user import Department, User
@@ -1062,7 +1062,7 @@ def edit_isms_role(role_id):
 
 @admin_bp.route("/isms-roles/<int:role_id>/delete", methods=["POST"])
 @login_required
-@admin_required
+@permission_required("menu_isms_roles_write")
 def delete_isms_role(role_id):
     from app.models.isms_role import ISMSRole
     role = ISMSRole.query.get_or_404(role_id)
@@ -1079,7 +1079,7 @@ def delete_isms_role(role_id):
 
 @admin_bp.route("/org-chart")
 @login_required
-@admin_required
+@permission_required("menu_org_chart")
 def org_chart():
     from app.models.isms_role import ISMSRole
     from app.models.user import Department, User
@@ -1096,7 +1096,7 @@ def org_chart():
 
 @admin_bp.route("/org-chart/pdf")
 @login_required
-@admin_required
+@permission_required("menu_org_chart")
 def org_chart_pdf():
     from app.models.isms_role import ISMSRole
     from app.models.user import Department, User
