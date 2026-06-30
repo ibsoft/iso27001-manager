@@ -126,6 +126,8 @@
         "menu_approvals_write",
         "menu_general_requests",
         "menu_general_requests_write",
+        "menu_groups",
+        "menu_groups_write",
         "menu_mail_settings",
         "menu_mail_settings_write",
         "menu_email_alerts",
@@ -235,7 +237,9 @@
         "menu_approvals",
         "menu_approvals_write",
         "menu_general_requests",
-        "menu_general_requests_write"
+        "menu_general_requests_write",
+        "menu_groups",
+        "menu_groups_write"
       ]
     },
     {

@@ -108,8 +108,10 @@ def import_users_csv():
 @login_required
 @admin_required
 def new_user():
+    from app.models.user import Group
     form = UserForm()
     form.roles.choices = [(r.id, r.name) for r in Role.query.order_by(Role.name).all()]
+    form.groups.choices = [(g.id, g.name) for g in Group.query.order_by(Group.name).all()]
     form.department.choices = [(0, _("None"))] + [(d.id, d.name) for d in Department.query.order_by(Department.name).all()]
     form.manager.choices = [(0, _("None"))] + [(u.id, u.full_name) for u in User.query.filter_by(is_active=True).order_by(User.first_name).all()]
 
@@ -140,6 +142,10 @@ def new_user():
             role = Role.query.get(role_id)
             if role:
                 user.roles.append(role)
+        for group_id in form.groups.data:
+            group = Group.query.get(group_id)
+            if group:
+                user.groups.append(group)
 
         db.session.add(user)
         db.session.commit()
@@ -154,9 +160,11 @@ def new_user():
 @login_required
 @admin_required
 def edit_user(user_id):
+    from app.models.user import Group
     user = User.query.get_or_404(user_id)
     form = UserForm(obj=user)
     form.roles.choices = [(r.id, r.name) for r in Role.query.order_by(Role.name).all()]
+    form.groups.choices = [(g.id, g.name) for g in Group.query.order_by(Group.name).all()]
     form.department.choices = [(0, _("None"))] + [(d.id, d.name) for d in Department.query.order_by(Department.name).all()]
     form.manager.choices = [(0, _("None"))] + [(u.id, u.full_name) for u in User.query.filter_by(is_active=True).order_by(User.first_name).all()]
 
@@ -185,6 +193,11 @@ def edit_user(user_id):
             role = Role.query.get(role_id)
             if role:
                 user.roles.append(role)
+        user.groups = []
+        for group_id in form.groups.data:
+            group = Group.query.get(group_id)
+            if group:
+                user.groups.append(group)
 
         user.updated_at = datetime.utcnow()
         db.session.commit()
@@ -193,6 +206,7 @@ def edit_user(user_id):
         return redirect(url_for("admin.list_users"))
 
     form.roles.data = [r.id for r in user.roles]
+    form.groups.data = [g.id for g in user.groups]
     form.department.data = user.department_id or 0
     form.manager.data = user.manager_id or 0
     sessions = UserSession.query.filter_by(user_id=user.id).order_by(UserSession.created_at.desc()).all()
@@ -844,6 +858,111 @@ def delete_department(dept_id):
     _log_audit(f"Deleted department: {name}")
     flash(_("Department deleted."), "success")
     return redirect(url_for("admin.list_departments"))
+
+
+# ─── Groups (standalone permission groups) ────────────────────────────────
+
+@admin_bp.route("/groups")
+@login_required
+@admin_required
+def list_groups():
+    from app.models.user import Group
+    groups = Group.query.order_by(Group.name).all()
+    return render_template("admin/groups.html", groups=groups)
+
+
+@admin_bp.route("/groups/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_group():
+    from app.models.user import Group, Permission, Role
+    all_perms = Permission.query.order_by(Permission.codename).all()
+    user_role = Role.query.filter_by(name="user").first()
+    user_perm_codenames = {p.codename for p in user_role.permissions} if user_role else set()
+
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        if not name:
+            flash(_("Group name is required."), "danger")
+            return render_template("admin/group_form.html", all_perms=all_perms, selected_perms=user_perm_codenames, group=None)
+        if Group.query.filter_by(name=name).first():
+            flash(_("Group name already exists."), "danger")
+            return render_template("admin/group_form.html", all_perms=all_perms, selected_perms=user_perm_codenames, group=None)
+
+        selected = request.form.getlist("permissions")
+        perms = []
+        for codename in selected:
+            perm = Permission.query.filter_by(codename=codename).first()
+            if not perm:
+                perm = Permission(name=codename.replace("_", " ").title(), codename=codename)
+                db.session.add(perm)
+            perms.append(perm)
+
+        group = Group(
+            name=name,
+            description=request.form.get("description", "").strip() or None,
+        )
+        group.permissions = perms
+        db.session.add(group)
+        db.session.commit()
+        _log_audit(f"Created group: {name}")
+        flash(_("Group created."), "success")
+        return redirect(url_for("admin.list_groups"))
+
+    return render_template("admin/group_form.html", all_perms=all_perms, selected_perms=user_perm_codenames, group=None)
+
+
+@admin_bp.route("/groups/<int:group_id>/edit", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_group(group_id):
+    from app.models.user import Group, Permission
+    group = Group.query.get_or_404(group_id)
+    all_perms = Permission.query.order_by(Permission.codename).all()
+    group_perm_codenames = {p.codename for p in group.permissions}
+
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        if not name:
+            flash(_("Group name is required."), "danger")
+            return render_template("admin/group_form.html", all_perms=all_perms, selected_perms=group_perm_codenames, group=group)
+        existing = Group.query.filter_by(name=name).first()
+        if existing and existing.id != group_id:
+            flash(_("Group name already exists."), "danger")
+            return render_template("admin/group_form.html", all_perms=all_perms, selected_perms=group_perm_codenames, group=group)
+
+        selected = request.form.getlist("permissions")
+        perms = []
+        for codename in selected:
+            perm = Permission.query.filter_by(codename=codename).first()
+            if not perm:
+                perm = Permission(name=codename.replace("_", " ").title(), codename=codename)
+                db.session.add(perm)
+            perms.append(perm)
+
+        group.name = name
+        group.description = request.form.get("description", "").strip() or None
+        group.permissions = perms
+        db.session.commit()
+        _log_audit(f"Updated group: {name}")
+        flash(_("Group updated."), "success")
+        return redirect(url_for("admin.list_groups"))
+
+    return render_template("admin/group_form.html", all_perms=all_perms, selected_perms=group_perm_codenames, group=group)
+
+
+@admin_bp.route("/groups/<int:group_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def delete_group(group_id):
+    from app.models.user import Group
+    group = Group.query.get_or_404(group_id)
+    name = group.name
+    db.session.delete(group)
+    db.session.commit()
+    _log_audit(f"Deleted group: {name}")
+    flash(_("Group deleted."), "success")
+    return redirect(url_for("admin.list_groups"))
 
 
 # ─── Mail Settings ───────────────────────────────────────────────────────

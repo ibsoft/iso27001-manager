@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block page_title %}{{ _('Groups') }}{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">{{ _('Groups') }}</li>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-users me-2"></i>{{ _('Permission Groups') }}</span>
+        <a href="{{ url_for('admin.new_group') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>{{ _('New Group') }}</a>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>{{ _('Name') }}</th>
+                <th>{{ _('Description') }}</th>
+                <th>{{ _('Permissions') }}</th>
+                <th>{{ _('Created') }}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for group in groups %}
+              <tr>
+                <td><strong>{{ group.name }}</strong></td>
+                <td class="text-muted small">{{ group.description or '-' }}</td>
+                <td>
+                  {% for perm in group.permissions %}
+                  <span class="badge bg-light text-dark me-1">{{ perm.codename }}</span>
+                  {% endfor %}
+                </td>
+                <td class="small">{{ group.created_at.strftime('%Y-%m-%d') }}</td>
+                <td class="text-end">
+                  <a href="{{ url_for('admin.edit_group', group_id=group.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="{{ url_for('admin.delete_group', group_id=group.id) }}" style="display:inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('{{ _('Delete this group?') }}')"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" class="text-center text-muted py-4">{{ _('No groups created yet.') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

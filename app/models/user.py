@@ -38,6 +38,8 @@ class User(UserMixin, db.Model):
 
     roles = db.relationship("Role", secondary=user_roles, lazy="subquery",
                             backref=db.backref("users", lazy=True))
+    groups = db.relationship("Group", secondary="user_groups", lazy="subquery",
+                             backref=db.backref("users", lazy=True))
 
     department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=True)
     manager_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
@@ -80,6 +82,8 @@ class User(UserMixin, db.Model):
 
     def has_permission(self, permission_codename):
         codenames = {perm.codename for role in self.roles for perm in role.permissions}
+        for group in self.groups:
+            codenames.update(perm.codename for perm in group.permissions)
         if permission_codename in codenames:
             return True
         if not permission_codename.endswith("_write") and (permission_codename + "_write") in codenames:
@@ -187,6 +191,34 @@ class Department(db.Model):
 
     def __repr__(self):
         return f"<Department {self.name}>"
+
+
+user_groups = db.Table(
+    "user_groups",
+    db.Column("user_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
+    db.Column("group_id", db.Integer, db.ForeignKey("group.id"), primary_key=True),
+)
+
+group_permissions = db.Table(
+    "group_permissions",
+    db.Column("group_id", db.Integer, db.ForeignKey("group.id"), primary_key=True),
+    db.Column("permission_id", db.Integer, db.ForeignKey("permission.id"), primary_key=True),
+)
+
+
+class Group(db.Model):
+    __tablename__ = "group"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), unique=True, nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    permissions = db.relationship("Permission", secondary=group_permissions,
+                                  lazy="subquery")
+
+    def __repr__(self):
+        return f"<Group {self.name}>"
 
 
 class UserSession(db.Model):
