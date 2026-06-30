@@ -1,2 +1,4 @@
 {"timestamp": "2026-06-30T14:02:30", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
 {"timestamp": "2026-06-30T14:02:33", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-30T14:40:39", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-06-30T14:40:42", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
