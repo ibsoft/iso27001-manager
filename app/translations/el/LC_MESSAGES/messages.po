@@ -221,27 +221,23 @@ msgstr "Η μέτρηση διαγράφηκε."
 #: app/routes/admin.py:886 app/routes/admin.py:927
 #, fuzzy
 msgid "Group name is required."
-msgstr "Απαιτείται υπογραφή."
+msgstr "Απαιτείται όνομα ομάδας."
 
 #: app/routes/admin.py:889 app/routes/admin.py:931
-#, fuzzy
 msgid "Group name already exists."
-msgstr "Το όνομα χρήστη υπάρχει ήδη."
+msgstr "Το όνομα ομάδας υπάρχει ήδη."
 
 #: app/routes/admin.py:909
-#, fuzzy
 msgid "Group created."
-msgstr "Δημιουργήθηκε"
+msgstr "Η ομάδα δημιουργήθηκε."
 
 #: app/routes/admin.py:948
-#, fuzzy
 msgid "Group updated."
-msgstr "Η εγγραφή SoA ενημερώθηκε."
+msgstr "Η ομάδα ενημερώθηκε."
 
 #: app/routes/admin.py:964
-#, fuzzy
 msgid "Group deleted."
-msgstr "Το αντίγραφο ασφαλείας διαγράφηκε."
+msgstr "Η ομάδα διαγράφηκε."
 
 #: app/routes/admin.py:984
 #, fuzzy
@@ -2263,15 +2259,14 @@ msgstr "Ρόλοι & Δικαιώματα"
 #: app/templates/admin/groups.html:3 app/templates/admin/user_form.html:49
 #: app/templates/base.html:652
 msgid "Groups"
-msgstr ""
+msgstr "Ομάδες"
 
 #: app/templates/admin/department_form.html:4
 #: app/templates/admin/departments.html:2
 #: app/templates/admin/departments.html:3
 #: app/templates/admin/departments.html:9 app/templates/base.html:653
-#, fuzzy
 msgid "Departments"
-msgstr "Μεταχείριση"
+msgstr "Τμήματα"
 
 #: app/templates/admin/audit_log.html:2 app/templates/base.html:654
 #: app/templates/reports/audit_log.html:2 app/templates/reports/index.html:83
@@ -2935,46 +2930,40 @@ msgstr "Δημιουργία Πολιτικής"
 
 #: app/templates/admin/group_form.html:2
 msgid "Group"
-msgstr ""
+msgstr "Ομάδα"
 
 #: app/templates/admin/group_form.html:2 app/templates/admin/group_form.html:5
 #: app/templates/admin/groups.html:11
-#, fuzzy
 msgid "New Group"
-msgstr "Νέος Ρόλος"
+msgstr "Νέα Ομάδα"
 
 #: app/templates/admin/group_form.html:15
-#, fuzzy
 msgid "Group Details"
-msgstr "Λεπτομέρειες Κινδύνου"
+msgstr "Λεπτομέρειες Ομάδας"
 
 #: app/templates/admin/group_form.html:33 app/templates/admin/groups.html:20
-#, fuzzy
 msgid "Permissions"
-msgstr "Δικαιώματα:"
+msgstr "Δικαιώματα"
 
 #: app/templates/admin/group_form.html:37
 msgid "New groups start with the User role permissions pre-selected."
-msgstr ""
+msgstr "Οι νέες ομάδες ξεκινούν με προεπιλεγμένες άδειες του ρόλου Χρήστη."
 
 #: app/templates/admin/group_form.html:51
 msgid "Save Group"
-msgstr ""
+msgstr "Αποθήκευση Ομάδας"
 
 #: app/templates/admin/groups.html:10
-#, fuzzy
 msgid "Permission Groups"
-msgstr "Δικαιώματα:"
+msgstr "Ομάδες Αδειών"
 
 #: app/templates/admin/groups.html:40
-#, fuzzy
 msgid "Delete this group?"
-msgstr "Διαγραφή αυτού του ελέγχου;"
+msgstr "Διαγραφή αυτής της ομάδας;"
 
 #: app/templates/admin/groups.html:46
-#, fuzzy
 msgid "No groups created yet."
-msgstr "Η νέα έκδοση δημιουργήθηκε."
+msgstr "Δεν δημιουργήθηκαν ακόμη ομάδες."
 
 #: app/templates/admin/isms_role_form.html:2
 #, fuzzy
