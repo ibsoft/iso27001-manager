@@ -5,6 +5,10 @@ ENDPOINT_MENU_PERMISSION = {
     "soa.list_soa": "menu_soa",
     "management_review.list_reviews": "menu_reviews",
     "kpi.dashboard": "menu_kpi",
+    "admin.list_groups": "menu_groups",
+    "admin.new_group": "menu_groups",
+    "admin.edit_group": "menu_groups",
+    "admin.delete_group": "menu_groups",
     "admin.list_isms_roles": "menu_isms_roles",
     "admin.create_isms_role": "menu_isms_roles",
     "admin.edit_isms_role": "menu_isms_roles",
@@ -56,6 +60,7 @@ SECTION_MENU_PERMISSION = {
 }
 
 MENU_READ_WRITE = {
+    "menu_groups": "menu_groups_write",
     "menu_isms_roles": "menu_isms_roles_write",
     "menu_org_chart": "menu_org_chart_write",
     "menu_controls": "menu_controls_write",
@@ -100,6 +105,6 @@ PERMISSION_GROUPS = {
     "GDPR Compliance": ["menu_gdpr", "menu_gdpr_write", "menu_gdpr_processing", "menu_gdpr_processing_write", "menu_gdpr_dpia", "menu_gdpr_dpia_write", "menu_gdpr_dsar", "menu_gdpr_dsar_write", "menu_gdpr_consent", "menu_gdpr_consent_write", "menu_gdpr_controllers", "menu_gdpr_controllers_write", "menu_gdpr_notices", "menu_gdpr_notices_write"],
     "Reporting": ["menu_reports"],
     "Approvals": ["menu_approvals", "menu_approvals_write"],
-    "Administration": ["user_view", "user_create", "user_edit", "user_delete", "role_view", "role_create", "role_edit", "role_delete", "audit_log_view", "system_config", "menu_mail_settings", "menu_mail_settings_write", "menu_email_alerts", "menu_email_alerts_write"],
+    "Administration": ["user_view", "user_create", "user_edit", "user_delete", "role_view", "role_create", "role_edit", "role_delete", "audit_log_view", "system_config", "menu_groups", "menu_groups_write", "menu_mail_settings", "menu_mail_settings_write", "menu_email_alerts", "menu_email_alerts_write"],
     "Data": ["control_view", "control_create", "control_edit", "control_delete", "risk_view", "risk_create", "risk_edit", "risk_delete", "asset_view", "asset_create", "asset_edit", "asset_delete", "incident_view", "incident_create", "incident_edit", "incident_delete", "policy_view", "policy_create", "policy_edit", "policy_delete", "audit_view", "audit_create", "audit_edit", "audit_delete", "supplier_view", "supplier_create", "supplier_edit", "supplier_delete", "soa_view", "soa_edit", "report_view", "report_export", "nis2_edit", "management_review_view", "management_review_create", "management_review_edit", "management_review_delete", "business_continuity_view", "business_continuity_create", "business_continuity_edit", "business_continuity_delete", "capa_view", "capa_create", "capa_edit", "capa_delete", "training_view", "training_edit", "training_delete"],
 }

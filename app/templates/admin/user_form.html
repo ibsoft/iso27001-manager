@@ -41,11 +41,15 @@
             {% for error in form.password.errors %}<small class="text-danger">{{ error }}</small>{% endfor %}
           </div>
           <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
               <label class="form-label small">{{ _('Roles') }}</label>
               {{ form.roles(class="form-select", size=4) }}
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
+              <label class="form-label small">{{ _('Groups') }}</label>
+              {{ form.groups(class="form-select", size=4) }}
+            </div>
+            <div class="col-md-4 mb-3">
               <div class="form-check mt-4">
                 {{ form.is_active(class="form-check-input") }}
                 <label class="form-check-label small">{{ _('Active') }}</label>

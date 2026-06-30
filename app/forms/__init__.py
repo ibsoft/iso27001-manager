@@ -81,6 +81,7 @@ class UserForm(BaseForm):
     password = PasswordField("Password", validators=[Optional(), Length(min=12)])
     is_active = BooleanField("Active")
     roles = SelectMultipleField("Roles", coerce=int)
+    groups = SelectMultipleField("Groups", coerce=int)
     department = SelectField("Department", coerce=int, validators=[Optional()])
     manager = SelectField("Manager", coerce=int, validators=[Optional()])
     submit = SubmitField("Save")
