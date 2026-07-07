@@ -183,9 +183,11 @@ def authenticate(username, password):
     # Auto-create or update local user
     user = User.query.filter_by(username=username).first()
     if user:
-        if user.auth_source != "ldap":
+        if user.auth_source not in ("ldap", "local") or user.password_hash != "__ldap__":
             _logger.warning("LDAP: user %s exists but auth_source=%s, skipping", username, user.auth_source)
             return None  # local-only user, skip LDAP auth
+        user.auth_source = "ldap"
+        user.password_hash = "__ldap__"
         user.last_login = datetime.utcnow()
         user.first_name = ldap_attrs["first_name"]
         user.last_name = ldap_attrs["last_name"]

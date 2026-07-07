@@ -51,12 +51,12 @@ def login():
         # Try LDAP authentication first if enabled and user is an LDAP user (or doesn't exist locally)
         from app.utils.ldap_auth import authenticate as ldap_authenticate
         ldap_result = None
-        if not user or user.auth_source == "ldap":
+        if not user or user.auth_source == "ldap" or (user and user.password_hash == "__ldap__"):
             ldap_result = ldap_authenticate(username, password)
 
         if ldap_result:
             user = User.query.get(ldap_result["id"])
-        elif user and user.auth_source != "ldap":
+        elif user and user.auth_source != "ldap" and user.password_hash != "__ldap__":
             # Local authentication
             if not user.verify_password(password):
                 user.increment_login_attempts()
