@@ -389,9 +389,21 @@ def _extract_attrs(entry, attr_map, username):
 
 
 def _create_ldap_user(attrs):
-    """Create a local user record for an LDAP user."""
+    """Create or update a local user record for an LDAP user."""
     from app.extensions import db
     from app.models.user import User, Role
+
+    user = User.query.filter_by(email=attrs["email"]).first()
+    if user:
+        user.first_name = attrs["first_name"]
+        user.last_name = attrs["last_name"]
+        user.last_login = datetime.utcnow()
+        if user.auth_source == "local":
+            user.auth_source = "ldap"
+            user.password_hash = "__ldap__"
+        db.session.commit()
+        _logger.info("LDAP: updated local user %s", attrs["username"])
+        return {"id": user.id, "username": user.username, "is_new": False}
 
     user_role = Role.query.filter_by(name="user").first()
     user = User(
