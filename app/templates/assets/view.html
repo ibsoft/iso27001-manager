@@ -50,6 +50,7 @@
             <table class="table table-borderless">
               <tr><td class="text-muted" style="width:160px">{{ _('Name') }}</td><td class="fw-bold">{{ asset.name }}</td></tr>
               {% if asset.serial_number %}<tr><td class="text-muted">{{ _('Serial Number') }}</td><td><code>{{ asset.serial_number }}</code></td></tr>{% endif %}
+              {% if asset.barcode %}<tr><td class="text-muted">{{ _('Barcode / QR Code') }}</td><td><code>{{ asset.barcode }}</code></td></tr>{% endif %}
               <tr><td class="text-muted">{{ _('Description') }}</td><td>{{ asset.description or '—' }}</td></tr>
               <tr><td class="text-muted">{{ _('Type') }}</td><td><span class="badge bg-secondary">{{ asset.asset_type|title if asset.asset_type else '—' }}</span></td></tr>
               <tr><td class="text-muted">{{ _('Classification') }}</td><td><span class="badge bg-{{ 'success' if asset.classification == 'public' else 'info' if asset.classification == 'internal' else 'warning text-dark' if asset.classification == 'confidential' else 'danger' }}">{{ asset.classification|title }}</span></td></tr>
@@ -65,6 +66,17 @@
         </div>
       </div>
       <div class="col-lg-4">
+        {% if asset.picture %}
+        <div class="card mb-3">
+          <div class="card-header">{{ _('Asset Picture') }}</div>
+          <div class="card-body text-center">
+            <img src="{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}"
+                 class="img-fluid rounded" alt="{{ asset.name }}"
+                 style="max-height:300px;cursor:pointer"
+                 data-bs-toggle="modal" data-bs-target="#pictureModal">
+          </div>
+        </div>
+        {% endif %}
         <div class="card">
           <div class="card-header">{{ _('Related Risks') }}</div>
           <div class="card-body p-0">
@@ -117,4 +129,21 @@
     </div>
   </div>
 </div>
+{% if asset.picture %}
+{# Picture Lightbox Modal #}
+<div class="modal fade" id="pictureModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ asset.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}"
+             class="img-fluid" alt="{{ asset.name }}">
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}
