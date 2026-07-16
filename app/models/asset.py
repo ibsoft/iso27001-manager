@@ -20,6 +20,8 @@ class Asset(db.Model):
     criticality = db.Column(db.String(16), default="medium", comment="low|medium|high|critical")
     retention_period = db.Column(db.String(64), nullable=True)
     notes = db.Column(db.Text, nullable=True)
+    picture = db.Column(db.String(256), nullable=True, comment="Asset picture filename")
+    barcode = db.Column(db.String(256), nullable=True, comment="Barcode or QR code value")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

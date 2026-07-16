@@ -25,10 +25,15 @@
           <option value="other" {{ 'selected' if request.args.get('asset_type') == 'other' }}>{{ _('Other') }}</option>
         </select>
       </div>
-      <div class="col-md-5 col-sm-8">
-        <input type="text" name="search" class="form-control" placeholder="{{ _('Search assets...') }}" value="{{ request.args.get('search', '') }}">
+      <div class="col-md-4 col-sm-8">
+        <div class="input-group">
+          <input type="text" name="search" class="form-control" placeholder="{{ _('Search assets...') }}" value="{{ request.args.get('search', '') }}">
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#barcodeScannerListModal" title="{{ _('Scan barcode/QR code') }}">
+            <i class="fas fa-camera"></i>
+          </button>
+        </div>
       </div>
-      <div class="col-md-2 col-sm-4">
+      <div class="col-md-1 col-sm-2">
         <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
       </div>
     </form>
@@ -51,10 +56,19 @@
 <div class="card">
   <div class="card-body p-0">
     <table class="table table-hover mb-0">
-      <thead><tr><th>{{ _('Name') }}</th><th>{{ _('Serial Number') }}</th><th>{{ _('Type') }}</th><th>{{ _('Classification') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('Status') }}</th><th>{{ _('Actions') }}</th></tr></thead>
+      <thead><tr><th style="width:50px">{{ _('Image') }}</th><th>{{ _('Name') }}</th><th>{{ _('Serial Number') }}</th><th>{{ _('Type') }}</th><th>{{ _('Classification') }}</th><th>{{ _('Criticality') }}</th><th>{{ _('Status') }}</th><th>{{ _('Actions') }}</th></tr></thead>
       <tbody>
         {% for asset in assets.items %}
         <tr>
+          <td>
+            {% if asset.picture %}
+            <img src="{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}"
+                 class="rounded" style="width:40px;height:40px;object-fit:cover"
+                 alt="{{ asset.name }}">
+            {% else %}
+            <span class="text-muted"><i class="fas fa-image fa-lg"></i></span>
+            {% endif %}
+          </td>
           <td><a href="{{ url_for('assets.view_asset', asset_id=asset.id) }}" class="text-decoration-none fw-medium">{{ asset.name }}</a></td>
           <td>{% if asset.serial_number %}<code class="small">{{ asset.serial_number }}</code>{% else %}<span class="text-muted">—</span>{% endif %}</td>
           <td><span class="badge bg-secondary">{{ asset.asset_type|title if asset.asset_type else '—' }}</span></td>
@@ -73,11 +87,68 @@
           </td>
         </tr>
         {% else %}
-        <tr><td colspan="7" class="text-center text-muted py-4">{{ _('No assets registered') }}</td></tr>
+        <tr><td colspan="8" class="text-center text-muted py-4">{{ _('No assets registered') }}</td></tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
 {{ render_pagination(assets, 'assets.list_assets', kwargs=request.args) }}
+
+{# Barcode Scanner Modal #}
+<div class="modal fade" id="barcodeScannerListModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-qrcode me-1"></i>{{ _('Scan Barcode / QR Code') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="barcode-list-scanner" style="width:100%;min-height:250px"></div>
+        <div class="mt-2 text-center text-muted small">{{ _('Point your camera at a barcode or QR code') }}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='vendor/html5-qrcode/html5-qrcode.min.js') }}"></script>
+<script>
+(function() {
+  const searchInput = document.querySelector('input[name="search"]');
+  const modal = document.getElementById('barcodeScannerListModal');
+  let html5QrCode = null;
+
+  modal.addEventListener('shown.bs.modal', function () {
+    if (!html5QrCode) {
+      html5QrCode = new Html5Qrcode("barcode-list-scanner");
+    }
+    html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 150 } },
+      function (decodedText) {
+        searchInput.value = decodedText;
+        html5QrCode.stop().catch(function(){});
+        bootstrap.Modal.getInstance(modal).hide();
+        searchInput.form.submit();
+      },
+      function () {}
+    ).catch(function (err) {
+      console.warn("Camera error:", err);
+      document.getElementById('barcode-list-scanner').innerHTML =
+        '<div class="alert alert-warning m-3">{{ _('Could not access camera. Please type the barcode manually.') }}</div>';
+    });
+  });
+
+  modal.addEventListener('hidden.bs.modal', function () {
+    if (html5QrCode) {
+      html5QrCode.stop().catch(function(){});
+    }
+  });
+})();
+</script>
 {% endblock %}

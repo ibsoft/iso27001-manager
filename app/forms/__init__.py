@@ -215,6 +215,8 @@ class AssetForm(BaseForm):
         default="medium",
     )
     notes = TextAreaField("Notes", validators=[Optional()])
+    picture = FileField("Asset Picture", validators=[Optional()])
+    barcode = StringField("Barcode / QR Code", validators=[Optional(), Length(max=256)])
     submit = SubmitField("Save")
 
 

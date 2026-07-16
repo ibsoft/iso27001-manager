@@ -10,53 +10,79 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-body">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
           {{ form.hidden_tag() }}
-          <div class="mb-3">
-            <label class="form-label small">{{ _('Asset Name') }}</label>
-            {{ form.name(class="form-control") }}
-          </div>
-          <div class="mb-3">
-            <label class="form-label small">{{ _('Serial Number') }} <span class="text-muted fw-normal">({{ _('optional') }})</span></label>
-            {{ form.serial_number(class="form-control", placeholder=_('e.g. SN-12345 or asset tag')) }}
-          </div>
-          <div class="mb-3">
-            <label class="form-label small">{{ _('Description') }}</label>
-            {{ form.description(class="form-control", rows=3) }}
-          </div>
           <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Type') }}</label>
-              {{ form.asset_type(class="form-select") }}
+            <div class="col-md-8">
+              <div class="mb-3">
+                <label class="form-label small">{{ _('Asset Name') }}</label>
+                {{ form.name(class="form-control") }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">{{ _('Serial Number') }} <span class="text-muted fw-normal">({{ _('optional') }})</span></label>
+                {{ form.serial_number(class="form-control", placeholder=_('e.g. SN-12345 or asset tag')) }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">{{ _('Description') }}</label>
+                {{ form.description(class="form-control", rows=3) }}
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label small">{{ _('Type') }}</label>
+                  {{ form.asset_type(class="form-select") }}
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label small">{{ _('Classification') }}</label>
+                  {{ form.classification(class="form-select") }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label small">{{ _('Criticality') }}</label>
+                  {{ form.criticality(class="form-select") }}
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label small">{{ _('Status') }}</label>
+                  {{ form.status(class="form-select") }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label small">{{ _('Owner') }}</label>
+                  {{ form.owner_id(class="form-select") }}
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label small">{{ _('Location') }}</label>
+                  {{ form.location(class="form-control") }}
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">{{ _('Barcode / QR Code') }}</label>
+                <div class="input-group">
+                  {{ form.barcode(class="form-control", placeholder=_('Scan or type barcode/QR code value')) }}
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#barcodeScannerModal">
+                    <i class="fas fa-camera"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">{{ _('Notes') }}</label>
+                {{ form.notes(class="form-control", rows=2) }}
+              </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Classification') }}</label>
-              {{ form.classification(class="form-select") }}
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label small">{{ _('Asset Picture') }}</label>
+                {% if asset and asset.picture %}
+                <div class="mb-2">
+                  <img src="{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}"
+                       class="img-fluid rounded border" style="max-height:200px" alt="{{ asset.name }}">
+                </div>
+                {% endif %}
+                {{ form.picture(class="form-control", accept="image/png,image/jpeg,image/gif,image/webp") }}
+                <div class="form-text text-muted">{{ _('Allowed: PNG, JPG, GIF, WebP. Max 16MB.') }}</div>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Criticality') }}</label>
-              {{ form.criticality(class="form-select") }}
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Status') }}</label>
-              {{ form.status(class="form-select") }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Owner') }}</label>
-              {{ form.owner_id(class="form-select") }}
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label small">{{ _('Location') }}</label>
-              {{ form.location(class="form-control") }}
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small">{{ _('Notes') }}</label>
-            {{ form.notes(class="form-control", rows=2) }}
           </div>
           <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
           <a href="{{ url_for('assets.list_assets') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
@@ -65,4 +91,60 @@
     </div>
   </div>
 </div>
+
+{# Barcode Scanner Modal #}
+<div class="modal fade" id="barcodeScannerModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-qrcode me-1"></i>{{ _('Scan Barcode / QR Code') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="barcode-scanner-reader" style="width:100%;min-height:250px"></div>
+        <div class="mt-2 text-center text-muted small">{{ _('Point your camera at a barcode or QR code') }}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Close') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='vendor/html5-qrcode/html5-qrcode.min.js') }}"></script>
+<script>
+(function() {
+  const barcodeInput = document.getElementById('barcode');
+  const modal = document.getElementById('barcodeScannerModal');
+  let html5QrCode = null;
+
+  modal.addEventListener('shown.bs.modal', function () {
+    if (!html5QrCode) {
+      html5QrCode = new Html5Qrcode("barcode-scanner-reader");
+    }
+    html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 150 } },
+      function (decodedText) {
+        barcodeInput.value = decodedText;
+        html5QrCode.stop().catch(function(){});
+        bootstrap.Modal.getInstance(modal).hide();
+      },
+      function () {}
+    ).catch(function (err) {
+      console.warn("Camera error:", err);
+      document.getElementById('barcode-scanner-reader').innerHTML =
+        '<div class="alert alert-warning m-3">{{ _('Could not access camera. Please type the barcode manually.') }}</div>';
+    });
+  });
+
+  modal.addEventListener('hidden.bs.modal', function () {
+    if (html5QrCode) {
+      html5QrCode.stop().catch(function(){});
+    }
+  });
+})();
+</script>
 {% endblock %}
