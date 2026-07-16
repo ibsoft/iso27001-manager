@@ -12,3 +12,5 @@
 {"timestamp": "2026-07-16T16:12:00", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
 {"timestamp": "2026-07-16T16:12:39", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
 {"timestamp": "2026-07-16T16:12:42", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-07-16T16:22:07", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
+{"timestamp": "2026-07-16T16:22:13", "level": "INFO", "logger": "app", "message": "ISO27001-Manager starting", "module": "__init__", "line": 304}
