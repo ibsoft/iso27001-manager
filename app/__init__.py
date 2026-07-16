@@ -282,11 +282,6 @@ def create_app(config_name=None):
     log_file = os.path.join(app.config["LOG_DIR"], "app.jsonl")
     handler = TimedRotatingFileHandler(log_file, when="midnight", backupCount=10, utc=True)
     _level_name = app.config.get("LOG_LEVEL", "INFO")
-    from app.models.user import SystemSetting
-    with app.app_context():
-        _db_level = SystemSetting.get("log_level")
-        if _db_level and _db_level in ("DEBUG", "INFO", "WARNING", "ERROR"):
-            _level_name = _db_level
     handler.setLevel(getattr(logging, _level_name))
     class JsonlFormatter(logging.Formatter):
         def format(self, record):
@@ -306,6 +301,15 @@ def create_app(config_name=None):
     with app.app_context():
         from app.extensions import db as _db
         _db.create_all()
+        try:
+            from app.models.user import SystemSetting
+            _db_level = SystemSetting.get("log_level")
+            if _db_level and _db_level in ("DEBUG", "INFO", "WARNING", "ERROR"):
+                _level_name = _db_level
+                handler.setLevel(getattr(logging, _level_name))
+                app.logger.setLevel(getattr(logging, _level_name))
+        except Exception:
+            pass
         from app.utils.schema import ensure_supplier_risk_columns, ensure_control_columns, ensure_nis2_columns, ensure_auth_columns, ensure_user_org_columns, ensure_notification_ref_columns
         ensure_supplier_risk_columns()
         ensure_control_columns()

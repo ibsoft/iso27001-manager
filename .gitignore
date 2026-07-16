@@ -217,6 +217,7 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 flask_session/
+logs/app.jsonl
 
 # User uploaded files
 app/static/uploads/*
