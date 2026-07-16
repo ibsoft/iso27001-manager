@@ -2,6 +2,7 @@ import os
 import logging
 from flask import url_for, current_app
 from authlib.integrations.flask_client import OAuth
+from sqlalchemy.exc import ProgrammingError, OperationalError
 from app.models.user import SystemSetting
 
 logger = logging.getLogger(__name__)
@@ -11,14 +12,28 @@ saml_settings_cache = {}
 
 
 def _get_sso_settings():
-    return {
-        "sso_enabled": SystemSetting.get("sso_enabled", "0") == "1",
-        "sso_provider": SystemSetting.get("sso_provider", ""),
-        "sso_client_id": SystemSetting.get("sso_client_id", ""),
-        "sso_client_secret": SystemSetting.get("sso_client_secret", ""),
-        "sso_issuer_url": SystemSetting.get("sso_issuer_url", ""),
-        "sso_metadata_url": SystemSetting.get("sso_metadata_url", ""),
+    defaults = {
+        "sso_enabled": "0",
+        "sso_provider": "",
+        "sso_client_id": "",
+        "sso_client_secret": "",
+        "sso_issuer_url": "",
+        "sso_metadata_url": "",
     }
+    try:
+        return {
+            "sso_enabled": SystemSetting.get("sso_enabled", "0") == "1",
+            "sso_provider": SystemSetting.get("sso_provider", ""),
+            "sso_client_id": SystemSetting.get("sso_client_id", ""),
+            "sso_client_secret": SystemSetting.get("sso_client_secret", ""),
+            "sso_issuer_url": SystemSetting.get("sso_issuer_url", ""),
+            "sso_metadata_url": SystemSetting.get("sso_metadata_url", ""),
+        }
+    except (ProgrammingError, OperationalError):
+        return {
+            k: (v == "1") if k == "sso_enabled" else v
+            for k, v in defaults.items()
+        }
 
 
 def _get_oidc_config(provider):
@@ -102,6 +117,11 @@ def get_saml_settings():
     entity_id = f"{base_url}/auth/sso/metadata"
     issuer_url = settings["sso_issuer_url"].rstrip("/") if settings["sso_issuer_url"] else ""
 
+    try:
+        x509cert = SystemSetting.get("saml_x509_cert", "")
+    except (ProgrammingError, OperationalError):
+        x509cert = ""
+
     return {
         "strict": True,
         "debug": True,
@@ -127,7 +147,7 @@ def get_saml_settings():
                 "url": f"{issuer_url}/slo" if issuer_url else "",
                 "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
             },
-            "x509cert": SystemSetting.get("saml_x509_cert", ""),
+            "x509cert": x509cert,
         },
     }
 
