@@ -81,22 +81,42 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="mb-3">
-                <label class="form-label small">{{ _('Asset Picture') }}</label>
-                <div class="mb-2" id="picture-preview-wrapper"{% if not (asset and asset.picture) %} style="display:none"{% endif %}>
-                  <img id="picture-preview-img"
-                       src="{% if asset and asset.picture %}{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}{% endif %}"
-                       class="img-fluid rounded border" style="max-height:200px" alt="{{ _('Picture') }}">
+              <label class="form-label small">{{ _('Pictures') }} <span class="text-muted fw-normal">({{ _('up to 5') }})</span></label>
+              {% set pics = asset.picture_list if asset else [] %}
+              {% for i in range(5) %}
+              {% set pic = pics[i] if i < pics|length else None %}
+              <div class="picture-slot mb-2 p-2 border rounded" data-slot="{{ i }}">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="picture-thumb" style="width:60px;height:60px;flex-shrink:0;overflow:hidden;border-radius:4px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;">
+                    {% if pic %}
+                    <img src="{{ url_for('static', filename='uploads/assets/' ~ pic) }}"
+                         class="thumb-img" style="max-width:100%;max-height:100%;object-fit:cover;"
+                         alt="{{ _('Picture') }} {{ i+1 }}">
+                    {% else %}
+                    <i class="fas fa-image text-muted" style="font-size:1.2rem"></i>
+                    {% endif %}
+                  </div>
+                  <div class="flex-grow-1">
+                    {% if pic %}
+                    <input type="hidden" name="existing_picture_{{ i }}" value="{{ pic }}">
+                    <div class="form-text small">{{ pic|truncate(30) }}</div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="delete_picture_{{ i }}" id="del_pic_{{ i }}">
+                      <label class="form-check-label small text-danger" for="del_pic_{{ i }}">{{ _('Remove') }}</label>
+                    </div>
+                    {% endif %}
+                    <input type="file" name="picture_{{ i }}" class="form-control form-control-sm slot-file-input" accept="image/png,image/jpeg,image/gif,image/webp">
+                  </div>
                 </div>
-                <div class="input-group flex-nowrap">
-                  {{ form.picture(class="form-control", accept="image/png,image/jpeg,image/gif,image/webp") }}
-                  <button type="button" class="btn btn-outline-primary" id="camera-btn" title="{{ _('Take a photo') }}">
-                    <i class="fas fa-camera"></i>
-                  </button>
-                </div>
-                <input type="file" accept="image/*" capture="environment" id="camera-input" style="display:none">
-                <div class="form-text text-muted">{{ _('Allowed: PNG, JPG, GIF, WebP. Max 16MB.') }}</div>
               </div>
+              {% endfor %}
+              <div class="mt-1">
+                <button type="button" class="btn btn-outline-primary btn-sm w-100" id="camera-btn">
+                  <i class="fas fa-camera me-1"></i>{{ _('Take a Photo') }}
+                </button>
+                <input type="file" accept="image/*" capture="environment" id="camera-input" style="display:none">
+              </div>
+              <div class="form-text text-muted mt-1">{{ _('Allowed: PNG, JPG, GIF, WebP. Max 16MB each.') }}</div>
             </div>
           </div>
           <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>{{ _('Save') }}</button>
@@ -287,41 +307,106 @@
 (function() {
   const cameraBtn = document.getElementById('camera-btn');
   const cameraInput = document.getElementById('camera-input');
-  const picInput = document.getElementById('picture');
-  const previewWrapper = document.getElementById('picture-preview-wrapper');
-  const previewImg = document.getElementById('picture-preview-img');
 
-  if (cameraBtn && cameraInput && picInput) {
+  function getFirstEmptySlot() {
+    const slots = document.querySelectorAll('.picture-slot');
+    for (let i = 0; i < slots.length; i++) {
+      const checkbox = slots[i].querySelector('input[type="checkbox"][name="delete_picture_' + i + '"]');
+      const hidden = slots[i].querySelector('input[type="hidden"][name="existing_picture_' + i + '"]');
+      const fileInput = slots[i].querySelector('.slot-file-input');
+      const hasExisting = hidden && !(checkbox && checkbox.checked);
+      const hasFile = fileInput && fileInput.files.length > 0;
+      if (!hasExisting && !hasFile) {
+        return { slot: i, input: fileInput };
+      }
+    }
+    return null;
+  }
+
+  function updateSlotPreview(slotIndex, file) {
+    const slot = document.querySelector('.picture-slot[data-slot="' + slotIndex + '"]');
+    if (!slot) return;
+    const thumb = slot.querySelector('.thumb-img') || slot.querySelector('.picture-thumb i') || slot.querySelector('.picture-thumb img');
+    const thumbContainer = slot.querySelector('.picture-thumb');
+    if (!thumbContainer) return;
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        thumbContainer.innerHTML = '<img src="' + e.target.result + '" style="max-width:100%;max-height:100%;object-fit:cover;" alt="{{ _('Picture') }}">';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  if (cameraBtn && cameraInput) {
     cameraBtn.addEventListener('click', function() {
-      cameraInput.click();
+      const slot = getFirstEmptySlot();
+      if (slot) {
+        cameraInput.setAttribute('data-target-slot', slot.slot);
+        cameraInput.click();
+      } else {
+        alert('{{ _('Maximum 5 pictures reached. Remove one first.') }}');
+      }
     });
 
     cameraInput.addEventListener('change', function() {
       if (this.files.length > 0) {
+        const slotIndex = parseInt(this.getAttribute('data-target-slot') || '0');
         const file = this.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          previewImg.src = e.target.result;
-          if (previewWrapper) previewWrapper.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-        const dt = new DataTransfer();
-        dt.items.add(file);
-        picInput.files = dt.files;
-      }
-    });
-
-    picInput.addEventListener('change', function() {
-      if (this.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          previewImg.src = e.target.result;
-          if (previewWrapper) previewWrapper.style.display = 'block';
-        };
-        reader.readAsDataURL(this.files[0]);
+        const slot = document.querySelector('.picture-slot[data-slot="' + slotIndex + '"]');
+        if (slot) {
+          const fileInput = slot.querySelector('.slot-file-input');
+          if (fileInput) {
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            fileInput.files = dt.files;
+            updateSlotPreview(slotIndex, file);
+            fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
       }
     });
   }
+
+  document.querySelectorAll('.slot-file-input').forEach(function(input) {
+    input.addEventListener('change', function() {
+      const slot = this.closest('.picture-slot');
+      if (!slot) return;
+      const i = parseInt(slot.getAttribute('data-slot'));
+      if (this.files.length > 0) {
+        updateSlotPreview(i, this.files[0]);
+      }
+    });
+  });
+
+  document.querySelectorAll('input[type="checkbox"][name^="delete_picture_"]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      const slot = this.closest('.picture-slot');
+      if (!slot) return;
+      const thumbContainer = slot.querySelector('.picture-thumb');
+      const hidden = slot.querySelector('input[type="hidden"]');
+      const fileInput = slot.querySelector('.slot-file-input');
+      if (this.checked) {
+        if (thumbContainer) {
+          thumbContainer.innerHTML = '<i class="fas fa-image text-muted" style="font-size:1.2rem"></i>';
+        }
+        if (fileInput) fileInput.value = '';
+      } else {
+        const hiddenVal = hidden ? hidden.value : null;
+        if (hiddenVal && thumbContainer) {
+          const img = document.createElement('img');
+          img.src = '{{ url_for('static', filename='uploads/assets/') }}' + hiddenVal;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          img.style.objectFit = 'cover';
+          img.alt = '{{ _('Picture') }}';
+          thumbContainer.innerHTML = '';
+          thumbContainer.appendChild(img);
+        }
+      }
+    });
+  });
 })();
 </script>
 {% endblock %}
