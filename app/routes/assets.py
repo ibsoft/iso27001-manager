@@ -3,6 +3,7 @@ import io
 import os
 import uuid
 from datetime import datetime
+from werkzeug.datastructures import FileStorage
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request, Response, current_app
 from flask_login import login_required, current_user
@@ -224,7 +225,7 @@ def new_asset():
         form.populate_obj(asset)
         if form.owner_id.data == 0:
             asset.owner_id = None
-        if form.picture.has_file():
+        if isinstance(form.picture.data, FileStorage):
             if _allowed_picture(form.picture.data.filename):
                 asset.picture = _save_picture(form.picture.data)
             else:
@@ -257,7 +258,7 @@ def edit_asset(asset_id):
         form.populate_obj(asset)
         if form.owner_id.data == 0:
             asset.owner_id = None
-        if form.picture.has_file():
+        if isinstance(form.picture.data, FileStorage):
             if _allowed_picture(form.picture.data.filename):
                 _delete_picture(asset.picture)
                 asset.picture = _save_picture(form.picture.data)
