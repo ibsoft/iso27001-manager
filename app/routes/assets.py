@@ -3,7 +3,6 @@ import io
 import os
 import uuid
 from datetime import datetime
-from werkzeug.datastructures import FileStorage
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request, Response, current_app
 from flask_login import login_required, current_user
@@ -37,6 +36,12 @@ def _delete_picture(filename):
         path = os.path.join(current_app.config["UPLOAD_FOLDER"], "assets", filename)
         if os.path.exists(path):
             os.remove(path)
+
+def _delete_pictures(filenames):
+    for fn in filenames or []:
+        _delete_picture(fn)
+
+MAX_PICTURES = 5
 
 
 @assets_bp.route("/")
@@ -245,11 +250,13 @@ def new_asset():
         form.populate_obj(asset)
         if form.owner_id.data == 0:
             asset.owner_id = None
-        if isinstance(form.picture.data, FileStorage):
-            if _allowed_picture(form.picture.data.filename):
-                asset.picture = _save_picture(form.picture.data)
-            else:
-                flash(_("Invalid picture format. Allowed: PNG, JPG, JPEG, GIF, WebP"), "warning")
+        pics = []
+        for i in range(MAX_PICTURES):
+            file = request.files.get(f"picture_{i}")
+            if file and file.filename:
+                if _allowed_picture(file.filename):
+                    pics.append(_save_picture(file))
+        asset.picture_list = pics[:MAX_PICTURES]
         db.session.add(asset)
         db.session.commit()
         _log_audit(f"Created asset: {asset.name}")
@@ -278,12 +285,26 @@ def edit_asset(asset_id):
         form.populate_obj(asset)
         if form.owner_id.data == 0:
             asset.owner_id = None
-        if isinstance(form.picture.data, FileStorage):
-            if _allowed_picture(form.picture.data.filename):
-                _delete_picture(asset.picture)
-                asset.picture = _save_picture(form.picture.data)
-            else:
-                flash(_("Invalid picture format. Allowed: PNG, JPG, JPEG, GIF, WebP"), "warning")
+        existing_pics = asset.picture_list
+        new_pics = []
+        for i in range(MAX_PICTURES):
+            file = request.files.get(f"picture_{i}")
+            if file and file.filename:
+                if _allowed_picture(file.filename):
+                    if i < len(existing_pics) and existing_pics[i]:
+                        _delete_picture(existing_pics[i])
+                    new_pics.append(_save_picture(file))
+                else:
+                    flash(_("Invalid picture format. Allowed: PNG, JPG, JPEG, GIF, WebP"), "warning")
+                continue
+            if request.form.get(f"delete_picture_{i}"):
+                if i < len(existing_pics) and existing_pics[i]:
+                    _delete_picture(existing_pics[i])
+                continue
+            existing = request.form.get(f"existing_picture_{i}")
+            if existing:
+                new_pics.append(existing)
+        asset.picture_list = new_pics[:MAX_PICTURES]
         asset.updated_at = datetime.utcnow()
         db.session.commit()
         _log_audit(f"Updated asset: {asset.name}")
@@ -300,7 +321,7 @@ def edit_asset(asset_id):
 def delete_asset(asset_id):
     asset = Asset.query.get_or_404(asset_id)
     name = asset.name
-    _delete_picture(asset.picture)
+    _delete_pictures(asset.picture_list)
     db.session.delete(asset)
     db.session.commit()
     _log_audit_action(f"Deleted asset: {name}")

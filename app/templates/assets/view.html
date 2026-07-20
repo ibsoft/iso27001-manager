@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+{% set pics = asset.picture_list %}
 <div class="card mb-3">
   <div class="card-body">
     <ul class="nav nav-tabs card-header-tabs" id="assetTabs">
@@ -66,14 +67,21 @@
         </div>
       </div>
       <div class="col-lg-4">
-        {% if asset.picture %}
+        {% if pics %}
         <div class="card mb-3">
-          <div class="card-header">{{ _('Asset Picture') }}</div>
-          <div class="card-body text-center">
-            <img src="{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}"
-                 class="img-fluid rounded" alt="{{ asset.name }}"
-                 style="max-height:300px;cursor:pointer"
-                 data-bs-toggle="modal" data-bs-target="#pictureModal">
+          <div class="card-header">{{ _('Pictures') }} ({{ pics|length }})</div>
+          <div class="card-body">
+            <div class="row g-1">
+              {% for pic in pics %}
+              <div class="col-4 col-sm-3">
+                <img src="{{ url_for('static', filename='uploads/assets/' ~ pic) }}"
+                     class="img-fluid rounded border" style="cursor:pointer;aspect-ratio:1;object-fit:cover;"
+                     alt="{{ _('Picture') }} {{ loop.index }}"
+                     data-bs-toggle="modal" data-bs-target="#pictureGalleryModal"
+                     data-index="{{ loop.index0 }}">
+              </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
         {% endif %}
@@ -129,9 +137,42 @@
     </div>
   </div>
 </div>
-{% if asset.picture %}
-{# Picture Lightbox Modal #}
-<div class="modal fade" id="pictureModal" tabindex="-1">
+
+{% if pics and pics|length > 1 %}
+{# Picture Gallery Carousel Modal #}
+<div class="modal fade" id="pictureGalleryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ asset.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="pictureCarousel" class="carousel slide" data-bs-ride="false">
+          <div class="carousel-inner">
+            {% for pic in pics %}
+            <div class="carousel-item{{ ' active' if loop.first }}">
+              <img src="{{ url_for('static', filename='uploads/assets/' ~ pic) }}"
+                   class="d-block w-100 img-fluid" alt="{{ _('Picture') }} {{ loop.index }}">
+            </div>
+            {% endfor %}
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#pictureCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">{{ _('Previous') }}</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#pictureCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">{{ _('Next') }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif pics and pics|length == 1 %}
+{# Single Picture Lightbox Modal #}
+<div class="modal fade" id="pictureGalleryModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -139,11 +180,39 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body text-center">
-        <img src="{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}"
+        <img src="{{ url_for('static', filename='uploads/assets/' ~ pics[0]) }}"
              class="img-fluid" alt="{{ asset.name }}">
       </div>
     </div>
   </div>
 </div>
 {% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var galleryModal = document.getElementById('pictureGalleryModal');
+  if (galleryModal) {
+    galleryModal.addEventListener('shown.bs.modal', function() {
+      var trigger = document.querySelector('[data-bs-target="#pictureGalleryModal"].active-thumb');
+      if (trigger) trigger.classList.remove('active-thumb');
+    });
+
+    document.querySelectorAll('[data-bs-target="#pictureGalleryModal"]').forEach(function(img) {
+      img.addEventListener('click', function() {
+        var carousel = document.querySelector('#pictureCarousel');
+        if (carousel) {
+          var idx = parseInt(this.getAttribute('data-index')) || 0;
+          var bsCarousel = bootstrap.Carousel.getInstance(carousel);
+          if (bsCarousel) {
+            bsCarousel.to(idx);
+          } else {
+            var carouselEl = new bootstrap.Carousel(carousel);
+            carouselEl.to(idx);
+          }
+        }
+      });
+    });
+  }
+});
+</script>
 {% endblock %}
