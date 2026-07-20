@@ -83,13 +83,18 @@
             <div class="col-md-4">
               <div class="mb-3">
                 <label class="form-label small">{{ _('Asset Picture') }}</label>
-                {% if asset and asset.picture %}
-                <div class="mb-2">
-                  <img src="{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}"
-                       class="img-fluid rounded border" style="max-height:200px" alt="{{ asset.name }}">
+                <div class="mb-2" id="picture-preview-wrapper"{% if not (asset and asset.picture) %} style="display:none"{% endif %}>
+                  <img id="picture-preview-img"
+                       src="{% if asset and asset.picture %}{{ url_for('static', filename='uploads/assets/' ~ asset.picture) }}{% endif %}"
+                       class="img-fluid rounded border" style="max-height:200px" alt="{{ _('Picture') }}">
                 </div>
-                {% endif %}
-                {{ form.picture(class="form-control", accept="image/png,image/jpeg,image/gif,image/webp") }}
+                <div class="input-group flex-nowrap">
+                  {{ form.picture(class="form-control", accept="image/png,image/jpeg,image/gif,image/webp") }}
+                  <button type="button" class="btn btn-outline-primary" id="camera-btn" title="{{ _('Take a photo') }}">
+                    <i class="fas fa-camera"></i>
+                  </button>
+                </div>
+                <input type="file" accept="image/*" capture="environment" id="camera-input" style="display:none">
                 <div class="form-text text-muted">{{ _('Allowed: PNG, JPG, GIF, WebP. Max 16MB.') }}</div>
               </div>
             </div>
@@ -168,6 +173,46 @@
     }
     document.getElementById('barcode-scanner-reader').innerHTML = '';
   });
+})();
+
+(function() {
+  const cameraBtn = document.getElementById('camera-btn');
+  const cameraInput = document.getElementById('camera-input');
+  const picInput = document.getElementById('picture');
+  const previewWrapper = document.getElementById('picture-preview-wrapper');
+  const previewImg = document.getElementById('picture-preview-img');
+
+  if (cameraBtn && cameraInput && picInput) {
+    cameraBtn.addEventListener('click', function() {
+      cameraInput.click();
+    });
+
+    cameraInput.addEventListener('change', function() {
+      if (this.files.length > 0) {
+        const file = this.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImg.src = e.target.result;
+          if (previewWrapper) previewWrapper.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        picInput.files = dt.files;
+      }
+    });
+
+    picInput.addEventListener('change', function() {
+      if (this.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImg.src = e.target.result;
+          if (previewWrapper) previewWrapper.style.display = 'block';
+        };
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+  }
 })();
 </script>
 {% endblock %}
