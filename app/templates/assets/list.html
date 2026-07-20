@@ -158,7 +158,7 @@
     ];
     html5QrCode.start(
       { facingMode: { exact: "environment" } },
-      { fps: 15, qrbox: { width: 280, height: 200 }, formatsToSupport: formats, aspectRatio: 1.7777778 },
+      { fps: 8, qrbox: { width: 400, height: 250 }, formatsToSupport: formats, aspectRatio: 1.7777778 },
       function (decodedText) {
         searchInput.value = decodedText;
         html5QrCode.stop().catch(function(){});
