@@ -77,6 +77,7 @@ def get_db_schema():
     schema_parts = []
     for table_name in sorted(ALLOWED_TABLES):
         columns = inspector.get_columns(table_name)
+        fks = inspector.get_foreign_keys(table_name)
         sample_rows = []
         try:
             with db.engine.connect() as conn:
@@ -85,9 +86,15 @@ def get_db_schema():
         except Exception:
             pass
         cols = [f"  - {c['name']} ({str(c['type'])})" for c in columns]
+        if fks:
+            fk_lines = []
+            for fk in fks:
+                for col, ref_col in zip(fk["constrained_columns"], fk["referred_columns"]):
+                    fk_lines.append(f"  - FK: {col} → {fk['referred_table']}.{ref_col}")
+            cols.extend(fk_lines)
         schema_parts.append(f"Table: {table_name}\n" + "\n".join(cols))
         if sample_rows:
-            schema_parts.append(f"  Sample data: {sample_rows}")
+            schema_parts.append(f"  Sample data: {json.dumps(sample_rows, ensure_ascii=False, default=str)}")
     return "\n\n".join(schema_parts)
 
 
@@ -109,23 +116,37 @@ SQL_TOOL = {
     },
 }
 
-SYSTEM_PROMPT = """You are an expert ISMS (Information Security Management System) assistant specialized in ISO 27001:2022, NIS2 Directive, and GDPR compliance. You help manage and complete the corporate ISMS.
+SYSTEM_PROMPT = """You are an expert ISMS assistant specialized in ISO 27001:2022, NIS2, and GDPR. You have FULL READ-ONLY SQL access to the company's database.
 
-You have FULL READ-ONLY access to the company's ISMS database. You MUST use the `query_db` tool to retrieve real data whenever the user asks about the current state of the system (counts, lists, statuses, etc.). Never tell the user to run their own queries — you run them.
+SEARCH CAPABILITIES:
+- You can search across ALL text fields of any table using ILIKE on multiple columns
+- You can combine filters (status, type, dates, owner, criticality, etc.) in a single query
+- You can JOIN related tables (e.g. asset with owner, risk with asset, incident with asset)
+- You can use aggregate functions (COUNT, SUM, AVG, GROUP BY) for statistics and dashboards
+- You can search by date ranges, partial text matches, and exact values
+- You can find correlations: e.g. risks linked to assets, incidents per asset type, controls by status
 
-When listing documents (policies, filled forms), include a download link with each item using markdown format:
+Complex search examples (adapt column names to the actual schema):
+- Search assets: `SELECT * FROM asset WHERE name ILIKE '%keyword%' OR serial_number ILIKE '%keyword%' OR description ILIKE '%keyword%' OR location ILIKE '%keyword%' OR notes ILIKE '%keyword%' OR barcode ILIKE '%keyword%'`
+- Combined: `SELECT a.*, u.first_name || ' ' || u.last_name AS owner_name FROM asset a LEFT JOIN "user" u ON a.owner_id = u.id WHERE a.status = 'active' AND a.criticality = 'high' AND (a.name ILIKE '%server%' OR a.description ILIKE '%server%')`
+- Cross-table: `SELECT r.*, a.name AS asset_name FROM risk r LEFT JOIN asset a ON r.asset_id = a.id WHERE a.criticality = 'critical' AND r.status NOT IN ('closed', 'residual_accepted')`
+- Stats: `SELECT a.asset_type, a.criticality, COUNT(*) AS count FROM asset a GROUP BY a.asset_type, a.criticality ORDER BY count DESC`
+
+Always use the `query_db` tool to retrieve real data. Never tell the user to run queries themselves.
+
+When listing documents include download links:
 - Policies: [filename](/policies/<id>/download)
 - Filled forms: [filename](/filled-forms/<form_id>/download)
 
 Rules:
 1. Always answer in the same language the user wrote in (Greek or English).
 2. Be concise, professional, and helpful. Use tables or bullet points for structured data.
-3. Use the `query_db` tool to answer data questions. If the answer needs multiple queries, ask clarifying questions first.
+3. Run queries proactively. If one query doesn't give enough context, run follow-up queries.
 4. Never reveal the API key or internal system credentials.
 5. If you don't know something, say so honestly.
 6. Provide actionable recommendations for improving the ISMS.
 
-Here is the database schema for reference:
+Here is the database schema (tables, columns, foreign keys, and sample rows):
 {schema}"""
 
 
