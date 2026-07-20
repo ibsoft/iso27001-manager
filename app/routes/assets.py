@@ -56,8 +56,18 @@ def list_assets():
     if status:
         query = query.filter_by(status=status)
     if search:
-        query = query.filter(
-            or_(Asset.name.ilike(f"%{search}%"), Asset.barcode == search)
+        query = query.outerjoin(Asset.owner).filter(
+            or_(
+                Asset.name.ilike(f"%{search}%"),
+                Asset.serial_number.ilike(f"%{search}%"),
+                Asset.description.ilike(f"%{search}%"),
+                Asset.location.ilike(f"%{search}%"),
+                Asset.notes.ilike(f"%{search}%"),
+                Asset.criticality.ilike(f"%{search}%"),
+                Asset.barcode.ilike(f"%{search}%"),
+                User.first_name.ilike(f"%{search}%"),
+                User.last_name.ilike(f"%{search}%"),
+            )
         )
 
     assets = paginate(query.order_by(Asset.name))
@@ -81,8 +91,18 @@ def export_assets():
     if status:
         query = query.filter_by(status=status)
     if search:
-        query = query.filter(
-            or_(Asset.name.ilike(f"%{search}%"), Asset.barcode == search)
+        query = query.outerjoin(Asset.owner).filter(
+            or_(
+                Asset.name.ilike(f"%{search}%"),
+                Asset.serial_number.ilike(f"%{search}%"),
+                Asset.description.ilike(f"%{search}%"),
+                Asset.location.ilike(f"%{search}%"),
+                Asset.notes.ilike(f"%{search}%"),
+                Asset.criticality.ilike(f"%{search}%"),
+                Asset.barcode.ilike(f"%{search}%"),
+                User.first_name.ilike(f"%{search}%"),
+                User.last_name.ilike(f"%{search}%"),
+            )
         )
     assets = query.order_by(Asset.name).all()
 
