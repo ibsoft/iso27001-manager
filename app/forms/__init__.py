@@ -438,6 +438,7 @@ class SupplierForm(BaseForm):
 
 
 class SoAForm(BaseForm):
+    control_id = SelectField(_l("Control"), coerce=int, validators=[DataRequired()])
     applicable = SelectField(
         _l("Applicable"),
         choices=[(1, _l("Yes - Control is applicable")), (0, _l("No - Control is not applicable"))],
