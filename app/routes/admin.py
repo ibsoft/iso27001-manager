@@ -410,14 +410,32 @@ def _get_db_path():
     uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
     m = re.match(r"sqlite:///(.*)", uri)
     if m:
-        return os.path.normpath(os.path.join(current_app.root_path, m.group(1)))
+        p = os.path.normpath(os.path.join(current_app.root_path, m.group(1)))
+        if os.path.exists(p):
+            return p
+        alt = os.path.normpath(os.path.join(data_root(), m.group(1)))
+        if os.path.exists(alt):
+            return alt
+        return p
     return None
+
+
+def _is_postgres():
+    uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+    return uri and uri.startswith("postgresql")
 
 
 def _get_backup_dir():
     backup_dir = os.path.join(data_root(), "backups")
     os.makedirs(backup_dir, exist_ok=True)
     return backup_dir
+
+
+def _dispose_db_engine():
+    try:
+        db.engine.dispose()
+    except Exception:
+        pass
 
 
 @admin_bp.route("/backup")
@@ -447,12 +465,39 @@ def create_backup():
     backup_path = os.path.join(backup_dir, backup_filename)
 
     db_path = _get_db_path()
+    is_pg = _is_postgres()
     upload_folder = current_app.config["UPLOAD_FOLDER"]
+    env_path = os.path.join(data_root(), ".env")
 
     try:
         with zipfile.ZipFile(backup_path, "w", zipfile.ZIP_DEFLATED) as zf:
-            if db_path and os.path.exists(db_path):
+            metadata = {
+                "created_at": datetime.utcnow().isoformat(),
+                "app_version": "1.0",
+                "db_type": "postgresql" if is_pg else "sqlite",
+                "notes": notes,
+            }
+            zf.writestr("manifest.json", __import__("json").dumps(metadata, indent=2))
+
+            if is_pg:
+                import subprocess
+                uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+                dump = subprocess.run(
+                    ["pg_dump", "--no-owner", "--no-acl", "--dbname", uri],
+                    capture_output=True, text=True, timeout=120
+                )
+                if dump.returncode == 0:
+                    zf.writestr("database/dump.sql", dump.stdout)
+                else:
+                    raise RuntimeError(f"pg_dump failed: {dump.stderr}")
+            elif db_path and os.path.exists(db_path):
                 zf.write(db_path, "database/isms.db")
+                journal = db_path + "-wal"
+                if os.path.exists(journal):
+                    zf.write(journal, "database/isms.db-wal")
+                shm = db_path + "-shm"
+                if os.path.exists(shm):
+                    zf.write(shm, "database/isms.db-shm")
 
             if notes:
                 zf.writestr("notes.txt", notes)
@@ -463,6 +508,9 @@ def create_backup():
                         full = os.path.join(root, f)
                         arcname = os.path.relpath(full, os.path.dirname(upload_folder))
                         zf.write(full, arcname)
+
+            if os.path.exists(env_path):
+                zf.write(env_path, "config/.env")
 
         try:
             log = AuditLog(
@@ -480,7 +528,7 @@ def create_backup():
 
         flash(_("Backup created successfully."), "success")
     except Exception as e:
-        flash(_("Database backup failed: ") + str(e), "danger")
+        flash(_("Backup failed: ") + str(e), "danger")
 
     return redirect(url_for("admin.list_backups"))
 
@@ -537,20 +585,68 @@ def restore_backup():
 
     zip_data = file.read()
     db_path = _get_db_path()
+    is_pg = _is_postgres()
     upload_folder = current_app.config["UPLOAD_FOLDER"]
 
     try:
         with zipfile.ZipFile(io.BytesIO(zip_data), "r") as zf:
-            if "database/isms.db" in zf.namelist():
-                if db_path and os.path.exists(db_path):
-                    os.replace(db_path, db_path + ".bak")
-                zf.extract("database/isms.db", os.path.dirname(db_path))
-                restored_db = os.path.join(os.path.dirname(db_path), "database", "isms.db")
-                if os.path.exists(restored_db):
-                    os.replace(restored_db, db_path)
-                    shutil.rmtree(os.path.join(os.path.dirname(db_path), "database"), ignore_errors=True)
+            names = zf.namelist()
 
-            for name in zf.namelist():
+            # Restore database
+            if is_pg and "database/dump.sql" in names:
+                import subprocess
+                uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+                _dispose_db_engine()
+                dump_data = zf.read("database/dump.sql")
+                restore = subprocess.run(
+                    ["psql", "--quiet", "--dbname", uri],
+                    input=dump_data, capture_output=True, text=True, timeout=300
+                )
+                if restore.returncode != 0:
+                    raise RuntimeError(f"psql restore failed: {restore.stderr}")
+                _dispose_db_engine()
+
+            elif "database/isms.db" in names:
+                if db_path and os.path.exists(db_path):
+                    bak = db_path + ".bak"
+                    if os.path.exists(bak):
+                        os.remove(bak)
+                    os.replace(db_path, bak)
+
+                temp_dir = os.path.join(os.path.dirname(db_path), "_restore_temp")
+                os.makedirs(temp_dir, exist_ok=True)
+                try:
+                    for entry in list(names):
+                        if entry.startswith("database/"):
+                            zf.extract(entry, temp_dir)
+
+                    restored_db = os.path.join(temp_dir, "database", "isms.db")
+                    if os.path.exists(restored_db):
+                        _dispose_db_engine()
+                        os.replace(restored_db, db_path)
+
+                        wal = os.path.join(temp_dir, "database", "isms.db-wal")
+                        if os.path.exists(wal):
+                            os.replace(wal, db_path + "-wal")
+                        shm = os.path.join(temp_dir, "database", "isms.db-shm")
+                        if os.path.exists(shm):
+                            os.replace(shm, db_path + "-shm")
+
+                        _dispose_db_engine()
+                finally:
+                    shutil.rmtree(temp_dir, ignore_errors=True)
+
+            # Restore .env
+            if "config/.env" in names:
+                env_path = os.path.join(data_root(), ".env")
+                zf.extract("config/.env", data_root())
+                extracted = os.path.join(data_root(), "config", ".env")
+                if os.path.exists(extracted):
+                    os.replace(extracted, env_path)
+                    shutil.rmtree(os.path.join(data_root(), "config"), ignore_errors=True)
+
+            # Restore uploaded files
+            for name in names:
                 if name.startswith("static/uploads/"):
                     zf.extract(name, os.path.dirname(upload_folder))
 
@@ -568,9 +664,9 @@ def restore_backup():
         except Exception:
             pass
 
-        flash(_("Backup restored successfully."), "success")
+        flash(_("Backup restored successfully. The restored database is now active."), "success")
     except Exception as e:
-        flash(_("Database restore failed: ") + str(e), "danger")
+        flash(_("Restore failed: ") + str(e), "danger")
 
     return redirect(url_for("admin.list_backups"))
 
