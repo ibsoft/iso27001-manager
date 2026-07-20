@@ -16,11 +16,21 @@
             <div class="col-md-8">
               <div class="mb-3">
                 <label class="form-label small">{{ _('Asset Name') }}</label>
-                {{ form.name(class="form-control") }}
+                <div class="input-group flex-nowrap">
+                  {{ form.name(class="form-control", placeholder=_('Asset name')) }}
+                  <button type="button" class="btn btn-outline-primary scan-btn" data-field="name" data-bs-toggle="modal" data-bs-target="#barcodeScannerModal" title="{{ _('Scan barcode/QR code') }}">
+                    <i class="fas fa-camera"></i>
+                  </button>
+                </div>
               </div>
               <div class="mb-3">
                 <label class="form-label small">{{ _('Serial Number') }} <span class="text-muted fw-normal">({{ _('optional') }})</span></label>
-                {{ form.serial_number(class="form-control", placeholder=_('e.g. SN-12345 or asset tag')) }}
+                <div class="input-group flex-nowrap">
+                  {{ form.serial_number(class="form-control", placeholder=_('e.g. SN-12345 or asset tag')) }}
+                  <button type="button" class="btn btn-outline-primary scan-btn" data-field="serial_number" data-bs-toggle="modal" data-bs-target="#barcodeScannerModal" title="{{ _('Scan barcode/QR code') }}">
+                    <i class="fas fa-camera"></i>
+                  </button>
+                </div>
               </div>
               <div class="mb-3">
                 <label class="form-label small">{{ _('Description') }}</label>
@@ -58,9 +68,9 @@
               </div>
               <div class="mb-3">
                 <label class="form-label small">{{ _('Barcode / QR Code') }}</label>
-                <div class="input-group">
+                <div class="input-group flex-nowrap">
                   {{ form.barcode(class="form-control", placeholder=_('Scan or type barcode/QR code value')) }}
-                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#barcodeScannerModal">
+                  <button type="button" class="btn btn-outline-primary scan-btn" data-field="barcode" data-bs-toggle="modal" data-bs-target="#barcodeScannerModal" title="{{ _('Scan barcode/QR code') }}">
                     <i class="fas fa-camera"></i>
                   </button>
                 </div>
@@ -103,6 +113,7 @@
       <div class="modal-body">
         <div id="barcode-scanner-reader" style="width:100%;min-height:250px"></div>
         <div class="mt-2 text-center text-muted small">{{ _('Point your camera at a barcode or QR code') }}</div>
+        <input type="hidden" id="scan-target-field" value="">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Close') }}</button>
@@ -116,9 +127,15 @@
 <script src="{{ url_for('static', filename='vendor/html5-qrcode/html5-qrcode.min.js') }}"></script>
 <script>
 (function() {
-  const barcodeInput = document.getElementById('barcode');
   const modal = document.getElementById('barcodeScannerModal');
+  const targetField = document.getElementById('scan-target-field');
   let html5QrCode = null;
+
+  document.querySelectorAll('.scan-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      targetField.value = this.getAttribute('data-field');
+    });
+  });
 
   modal.addEventListener('shown.bs.modal', function () {
     if (!html5QrCode) {
@@ -128,7 +145,12 @@
       { facingMode: "environment" },
       { fps: 10, qrbox: { width: 250, height: 150 } },
       function (decodedText) {
-        barcodeInput.value = decodedText;
+        const field = targetField.value;
+        const input = document.getElementById(field);
+        if (input) {
+          input.value = decodedText;
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
         html5QrCode.stop().catch(function(){});
         bootstrap.Modal.getInstance(modal).hide();
       },
@@ -144,6 +166,7 @@
     if (html5QrCode) {
       html5QrCode.stop().catch(function(){});
     }
+    document.getElementById('barcode-scanner-reader').innerHTML = '';
   });
 })();
 </script>
