@@ -57,7 +57,7 @@ def new_soa():
         (u.id, f"{u.first_name} {u.last_name}") for u in User.query.filter_by(is_active=True).all()
     ]
     control_choices = [(c.id, f"{c.code} - {c.localized_title(lang)}") for c in Control.query.order_by(Control.code).all()]
-    form.control_id = SelectField(_l("Control"), coerce=int, choices=control_choices, validators=[DataRequired()])
+    form.control_id.choices = control_choices
 
     if form.validate_on_submit():
         existing = SoAEntry.query.filter_by(control_id=form.control_id.data).first()
