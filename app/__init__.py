@@ -1,11 +1,20 @@
 import os
 import json
 import logging
+import hashlib
+import sys
 from logging.handlers import TimedRotatingFileHandler
 from flask import Flask
 from flask_talisman import Talisman
 from config import config
 from app.paths import data_root, app_root
+
+if sys.version_info < (3, 9):
+    _orig_md5 = hashlib.md5
+    def _patched_md5(data=b'', **kwargs):
+        kwargs.pop('usedforsecurity', None)
+        return _orig_md5(data)
+    hashlib.md5 = _patched_md5
 
 talisman = Talisman()
 
