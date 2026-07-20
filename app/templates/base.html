@@ -934,16 +934,16 @@ if ('serviceWorker' in navigator) {
       }, Math.max(0, 300 - elapsed));
     }
     if (lo) {
-      showSpinner();
       document.querySelectorAll('form').forEach(function(f) {
         f.addEventListener('submit', function(e) {
+          if (f.hasAttribute('data-confirm')) return;
           var btn = f.querySelector('[type=submit]');
           if (btn && btn.hasAttribute('data-no-spinner')) return;
           showSpinner();
         });
       });
       document.querySelectorAll('a').forEach(function(a) {
-        if (a.getAttribute('href') && a.href.indexOf('#') === -1 && !a.hasAttribute('data-no-spinner') && a.href.indexOf('/download') === -1 && a.href.indexOf('/preview') === -1 && a.href.indexOf('export') === -1) {
+        if (a.getAttribute('href') && a.href.indexOf('#') === -1 && !a.hasAttribute('data-bs-toggle') && !a.hasAttribute('data-no-spinner') && a.href.indexOf('/download') === -1 && a.href.indexOf('/preview') === -1 && a.href.indexOf('export') === -1) {
           a.addEventListener('click', function() {
             var sb = document.getElementById('sidebar');
             if (sb) sessionStorage.setItem('sidebarScroll', sb.scrollTop);
