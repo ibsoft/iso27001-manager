@@ -5,10 +5,6 @@
 <li class="breadcrumb-item active">{{ title }}</li>
 {% endblock %}
 
-{% block extra_css %}
-<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
-{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-12">
@@ -28,10 +24,12 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label small">{{ _('Asset') }}</label>
+              <input type="text" class="form-control mb-1" id="asset-search" placeholder="{{ _('Type to search...') }}" oninput="window.filterSelect(this, 'asset-select')">
               {{ form.asset_id(class="form-select", id="asset-select") }}
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label small">{{ _('Risk Owner') }}</label>
+              <input type="text" class="form-control mb-1" id="owner-search" placeholder="{{ _('Type to search...') }}" oninput="window.filterSelect(this, 'owner-select')">
               {{ form.owner_id(class="form-select", id="owner-select") }}
             </div>
           </div>
@@ -81,11 +79,13 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  new TomSelect('#asset-select', { create: false, maxOptions: 200 });
-  new TomSelect('#owner-select', { create: false, maxOptions: 200 });
-});
+window.filterSelect = function(input, selectId) {
+  var q = input.value.toLowerCase();
+  var sel = document.getElementById(selectId);
+  for (var i = 1; i < sel.options.length; i++) {
+    sel.options[i].hidden = q && !sel.options[i].text.toLowerCase().includes(q);
+  }
+};
 </script>
 {% endblock %}
