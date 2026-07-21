@@ -59,6 +59,10 @@
           <td><span class="badge bg-{{ 'secondary' if risk.status == 'identified' else 'info' if risk.status == 'assessed' else 'primary' if risk.status == 'treatment_in_progress' else 'success' if risk.status == 'residual_accepted' else 'secondary' }}">{{ risk.status|replace('_', ' ')|title }}</span></td>
           <td>
             <a href="{{ url_for('risks.edit_risk', risk_id=risk.id) }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+            <form method="POST" action="{{ url_for('risks.clone_risk', risk_id=risk.id) }}" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-sm btn-outline-info"><i class="fas fa-copy"></i></button>
+            </form>
             {% if current_user.has_role('admin') %}
             <form method="POST" action="{{ url_for('risks.delete_risk', risk_id=risk.id) }}" class="d-inline" data-confirm="{{ _('Delete this risk?') }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
