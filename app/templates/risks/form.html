@@ -5,6 +5,10 @@
 <li class="breadcrumb-item active">{{ title }}</li>
 {% endblock %}
 
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-12">
@@ -24,11 +28,11 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label small">{{ _('Asset') }}</label>
-              {{ form.asset_id(class="form-select") }}
+              {{ form.asset_id(class="form-select", id="asset-select") }}
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label small">{{ _('Risk Owner') }}</label>
-              {{ form.owner_id(class="form-select") }}
+              {{ form.owner_id(class="form-select", id="owner-select") }}
             </div>
           </div>
           <div class="row">
@@ -74,4 +78,14 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  new TomSelect('#asset-select', { create: false, maxOptions: 200 });
+  new TomSelect('#owner-select', { create: false, maxOptions: 200 });
+});
+</script>
 {% endblock %}
