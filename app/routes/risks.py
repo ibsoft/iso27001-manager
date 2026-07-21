@@ -108,6 +108,33 @@ def edit_risk(risk_id):
     return render_template("risks/form.html", form=form, title=_("Edit Risk Assessment"), risk=risk)
 
 
+@risks_bp.route("/<int:risk_id>/clone", methods=["POST"])
+@login_required
+@permission_required("risk_create")
+def clone_risk(risk_id):
+    original = Risk.query.get_or_404(risk_id)
+    clone = Risk()
+    clone.title = _("Copy of %(title)s", title=original.title)
+    clone.description = original.description
+    clone.asset_id = original.asset_id
+    clone.owner_id = original.owner_id
+    clone.likelihood = original.likelihood
+    clone.impact = original.impact
+    clone.treatment_option = original.treatment_option
+    clone.treatment_plan = original.treatment_plan
+    clone.residual_likelihood = original.residual_likelihood
+    clone.residual_impact = original.residual_impact
+    clone.target_date = original.target_date
+    clone.status = "identified"
+    clone.calculate_risk_level()
+    clone.calculate_residual_risk()
+    db.session.add(clone)
+    db.session.commit()
+    _log_audit(f"Created risk: {clone.title}")
+    flash(_("Risk cloned. You can now edit the copy."), "success")
+    return redirect(url_for("risks.edit_risk", risk_id=clone.id))
+
+
 @risks_bp.route("/risk-matrix")
 @login_required
 def risk_matrix():

@@ -13,6 +13,10 @@
         <span>{{ _('Risk Details') }}</span>
         <div>
           <a href="{{ url_for('risks.edit_risk', risk_id=risk.id) }}" class="btn btn-sm btn-primary"><i class="fas fa-edit me-1"></i>{{ _('Edit') }}</a>
+          <form method="POST" action="{{ url_for('risks.clone_risk', risk_id=risk.id) }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-sm btn-info"><i class="fas fa-copy me-1"></i>{{ _('Clone') }}</button>
+          </form>
           {% if current_user.has_role('admin') %}
           <form method="POST" action="{{ url_for('risks.delete_risk', risk_id=risk.id) }}" class="d-inline" data-confirm="{{ _('Delete this risk?') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
