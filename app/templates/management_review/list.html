@@ -43,7 +43,7 @@
           <a href="{{ url_for('management_review.view_review', review_id=review.id) }}" class="text-decoration-none">{{ review.title }}</a>
         </h5>
         {% if review.agenda %}
-        <p class="text-muted small mb-2">{{ review.agenda|truncate(150) }}</p>
+         <p class="text-muted small mb-2">{{ review.agenda|striptags|truncate(150) }}</p>
         {% endif %}
         <div class="mt-auto d-flex justify-content-between align-items-center small text-muted pt-2">
           <div>

@@ -55,21 +55,21 @@
         {% if review.agenda %}
         <div class="mb-4">
           <h6 class="text-muted mb-2"><i class="fas fa-list me-1"></i>{{ _('Agenda') }}</h6>
-          <div class="p-3 bg-light rounded">{{ review.agenda|nl2br }}</div>
+          <div class="p-3 bg-light rounded">{{ review.agenda|striptags|nl2br }}</div>
         </div>
         {% endif %}
 
         {% if review.minutes %}
         <div class="mb-4">
           <h6 class="text-muted mb-2"><i class="fas fa-file-alt me-1"></i>{{ _('Minutes / Notes') }}</h6>
-          <div class="p-3 bg-light rounded">{{ review.minutes|nl2br }}</div>
+          <div class="p-3 bg-light rounded">{{ review.minutes|striptags|nl2br }}</div>
         </div>
         {% endif %}
 
         {% if review.recommendations %}
         <div class="mb-3">
           <h6 class="text-muted mb-2"><i class="fas fa-lightbulb me-1"></i>{{ _('Recommendations') }}</h6>
-          <div class="p-3 bg-light rounded">{{ review.recommendations|nl2br }}</div>
+          <div class="p-3 bg-light rounded">{{ review.recommendations|striptags|nl2br }}</div>
         </div>
         {% endif %}
 

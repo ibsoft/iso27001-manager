@@ -346,6 +346,11 @@ def create_app(config_name=None):
         except Exception:
             app.logger.warning("Translation compilation failed")
 
+    @app.template_filter("striptags")
+    def do_striptags(text):
+        import re
+        return re.sub(r"<[^>]+>", "", str(text)).strip()
+
     register_commands(app)
 
     return app
