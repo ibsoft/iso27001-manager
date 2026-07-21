@@ -95,6 +95,7 @@ def edit_entry(entry_id):
     form.responsible_person_id.choices = [(0, _("Unassigned"))] + [
         (u.id, f"{u.first_name} {u.last_name}") for u in User.query.filter_by(is_active=True).all()
     ]
+    form.control_id.choices = [(c.id, f"{c.code} - {c.localized_title(lang)}") for c in Control.query.order_by(Control.code).all()]
 
     if form.validate_on_submit():
         form.populate_obj(entry)

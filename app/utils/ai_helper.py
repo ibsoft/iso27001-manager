@@ -47,7 +47,14 @@ def _sanitize_sql(sql):
     return stripped
 
 
+def _strip_html(text):
+    import re
+    return re.sub(r"<[^>]+>", "", text).strip()
+
+
 def _serialize(val):
+    if isinstance(val, str):
+        return _strip_html(val)
     if isinstance(val, (datetime, date)):
         return val.isoformat()
     if isinstance(val, Decimal):
