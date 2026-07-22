@@ -8,6 +8,7 @@ from app.models.control import Control
 from app.models.user import User
 from app.models.audit_log import AuditLog
 from app.forms import RiskForm
+from sqlalchemy import or_
 from app.utils.decorators import permission_required, admin_required
 from app.utils.pagination import paginate
 from datetime import datetime
@@ -29,7 +30,19 @@ def list_risks():
     if risk_level:
         query = query.filter_by(risk_level=risk_level)
     if search:
-        query = query.filter(Risk.title.ilike(f"%{search}%"))
+        query = query.outerjoin(Risk.owner).outerjoin(Risk.asset).filter(
+            or_(
+                Risk.title.ilike(f"%{search}%"),
+                Risk.description.ilike(f"%{search}%"),
+                Risk.treatment_plan.ilike(f"%{search}%"),
+                Risk.status.ilike(f"%{search}%"),
+                Risk.risk_level.ilike(f"%{search}%"),
+                Risk.treatment_option.ilike(f"%{search}%"),
+                User.first_name.ilike(f"%{search}%"),
+                User.last_name.ilike(f"%{search}%"),
+                Asset.name.ilike(f"%{search}%"),
+            )
+        )
 
     risks = paginate(query.order_by(Risk.created_at.desc()))
     return render_template("risks/list.html", risks=risks)
