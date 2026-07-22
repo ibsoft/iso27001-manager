@@ -117,19 +117,24 @@ def export_assets():
 
     if fmt == "xlsx":
         try:
+            import re
+            def _sanitize(v):
+                if isinstance(v, str):
+                    return re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', v)
+                return v
             from openpyxl import Workbook
             wb = Workbook()
             ws = wb.active
             ws.title = _("Assets")
             ws.append(headers)
             for a in assets:
-                ws.append([a.name, a.serial_number, a.description, a.asset_type,
-                          a.classification, a.criticality, a.status, a.location,
-                          a.barcode or "",
-                          f"{a.owner.first_name} {a.owner.last_name}" if a.owner else "",
-                          a.retention_period, a.notes,
-                          a.created_at.strftime("%Y-%m-%d %H:%M") if a.created_at else "",
-                          a.updated_at.strftime("%Y-%m-%d %H:%M") if a.updated_at else ""])
+                ws.append([_sanitize(a.name), _sanitize(a.serial_number), _sanitize(a.description), _sanitize(a.asset_type),
+                          _sanitize(a.classification), _sanitize(a.criticality), _sanitize(a.status), _sanitize(a.location),
+                          _sanitize(a.barcode or ""),
+                          _sanitize(f"{a.owner.first_name} {a.owner.last_name}" if a.owner else ""),
+                          _sanitize(a.retention_period), _sanitize(a.notes),
+                          _sanitize(a.created_at.strftime("%Y-%m-%d %H:%M") if a.created_at else ""),
+                          _sanitize(a.updated_at.strftime("%Y-%m-%d %H:%M") if a.updated_at else "")])
             bio = io.BytesIO()
             wb.save(bio)
             bio.seek(0)
