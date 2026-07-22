@@ -50,6 +50,7 @@ MAX_PICTURES = 5
 def list_assets():
     classification = request.args.get("classification")
     asset_type = request.args.get("asset_type")
+    criticality = request.args.get("criticality")
     status = request.args.get("status")
     search = request.args.get("search", "")
 
@@ -58,6 +59,8 @@ def list_assets():
         query = query.filter_by(classification=classification)
     if asset_type:
         query = query.filter_by(asset_type=asset_type)
+    if criticality:
+        query = query.filter_by(criticality=criticality)
     if status:
         query = query.filter_by(status=status)
     if search:
@@ -85,6 +88,7 @@ def export_assets():
     fmt = request.args.get("format", "csv")
     classification = request.args.get("classification")
     asset_type = request.args.get("asset_type")
+    criticality = request.args.get("criticality")
     status = request.args.get("status")
     search = request.args.get("search", "")
 
@@ -93,6 +97,8 @@ def export_assets():
         query = query.filter_by(classification=classification)
     if asset_type:
         query = query.filter_by(asset_type=asset_type)
+    if criticality:
+        query = query.filter_by(criticality=criticality)
     if status:
         query = query.filter_by(status=status)
     if search:
