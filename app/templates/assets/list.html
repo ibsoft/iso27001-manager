@@ -7,7 +7,7 @@
 <div class="card mb-3">
   <div class="card-body">
     <form method="GET" class="row g-2 mb-2">
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-2 col-sm-6">
         <select name="classification" class="form-select" onchange="this.form.submit()">
           <option value="">{{ _('All Classifications') }}</option>
           <option value="public" {{ 'selected' if request.args.get('classification') == 'public' }}>{{ _('Public') }}</option>
@@ -25,7 +25,24 @@
           <option value="other" {{ 'selected' if request.args.get('asset_type') == 'other' }}>{{ _('Other') }}</option>
         </select>
       </div>
-      <div class="col-md-4 col-sm-8">
+      <div class="col-md-2 col-sm-6">
+        <select name="criticality" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Criticality') }}</option>
+          <option value="low" {{ 'selected' if request.args.get('criticality') == 'low' }}>{{ _('Low') }}</option>
+          <option value="medium" {{ 'selected' if request.args.get('criticality') == 'medium' }}>{{ _('Medium') }}</option>
+          <option value="high" {{ 'selected' if request.args.get('criticality') == 'high' }}>{{ _('High') }}</option>
+          <option value="critical" {{ 'selected' if request.args.get('criticality') == 'critical' }}>{{ _('Critical') }}</option>
+        </select>
+      </div>
+      <div class="col-md-2 col-sm-6">
+        <select name="status" class="form-select" onchange="this.form.submit()">
+          <option value="">{{ _('All Status') }}</option>
+          <option value="active" {{ 'selected' if request.args.get('status') == 'active' }}>{{ _('Active') }}</option>
+          <option value="inactive" {{ 'selected' if request.args.get('status') == 'inactive' }}>{{ _('Inactive') }}</option>
+          <option value="disposed" {{ 'selected' if request.args.get('status') == 'disposed' }}>{{ _('Disposed') }}</option>
+        </select>
+      </div>
+      <div class="col-md-3 col-sm-8">
         <div class="input-group flex-nowrap">
           <input type="text" name="search" class="form-control" placeholder="{{ _('Search assets...') }}" value="{{ request.args.get('search', '') }}">
           <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#barcodeScannerListModal" title="{{ _('Scan barcode/QR code') }}">
