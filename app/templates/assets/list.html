@@ -80,7 +80,7 @@
           <td>
             {% set pics = asset.picture_list %}
             {% if pics %}
-            <img src="{{ url_for('static', filename='uploads/assets/' ~ pics[0]) }}"
+            <img src="{{ url_for('assets.asset_thumbnail', filename=pics[0]) }}"
                  class="rounded" style="width:40px;height:40px;object-fit:cover"
                  alt="{{ asset.name }}">
             {% else %}

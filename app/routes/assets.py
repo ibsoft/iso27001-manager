@@ -4,7 +4,7 @@ import os
 import uuid
 from datetime import datetime
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request, Response, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, Response, send_file, current_app
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
 from app.extensions import db
@@ -339,6 +339,28 @@ def delete_asset(asset_id):
     flash(_("Asset deleted."), "success")
     return redirect(url_for("assets.list_assets"))
 
+
+@assets_bp.route("/thumbnail/<filename>")
+def asset_thumbnail(filename):
+    from PIL import Image
+    import re
+    if not re.match(r'^[a-zA-Z0-9_.-]+$', filename):
+        return Response("Invalid filename", status=400)
+    upload_dir = os.path.join(current_app.config["UPLOAD_FOLDER"], "assets")
+    thumb_dir = os.path.join(upload_dir, ".thumbnails")
+    src_path = os.path.join(upload_dir, filename)
+    thumb_path = os.path.join(thumb_dir, filename)
+    if not os.path.exists(src_path):
+        return Response("Not found", status=404)
+    if not os.path.exists(thumb_path):
+        os.makedirs(thumb_dir, exist_ok=True)
+        try:
+            img = Image.open(src_path)
+            img.thumbnail((120, 120))
+            img.save(thumb_path, optimize=True)
+        except Exception:
+            return send_file(src_path)
+    return send_file(thumb_path)
 
 def _log_audit(details):
     _log_audit_action(details)
